@@ -86,23 +86,23 @@
       const ov = c.card('<div class="over" style="font-size:34px">интерактивный сериал</div>', { x: 540, y: 400, at: 0.25, cls: 'plain', anim: 'pop', sfx: false });
       c.label('решаешь ты', { x: 540, y: 550, at: c.Wd('r1', 'решаешь'), color: 'amber', rot: -3, size: 92, anim: 'stamp', sfx: 'ding' });
       // буквы-варианты
-      const tV = c.Wd('r2', 'выбор');
+      const tV = c.T('r2') + 0.1;
       [['А', '#2D6CDF'], ['Б', '#F28C28'], ['В', '#E5484D']].forEach(([l, col], i) => {
         const n = c.card(`<div class="let" style="width:170px;height:170px;border-radius:50%;background:${col};display:grid;place-items:center;color:#fff;font-size:96px;font-weight:900;border:8px solid #fff;box-sizing:border-box">${l}</div>`,
           { x: 300 + i * 240, y: 820, at: tV - 0.25 + i * 0.16, cls: 'plain', anim: 'pop', sfx: 'pop' });
         n.fn((lt, st) => { st.y += Math.sin(lt * 2.4 + i * 1.3) * 7; });
       });
       // комментарии и лайки
-      const tC = c.Wd('r2', 'Какой') - 0.15;
+      const tC = c.Wd('r2', 'победит') - 0.25;
       const cm = (y, ava, col, txt, id, at, likes) => {
         const n = c.card(`<div class="comment"><div class="ava" style="background:${col}">${ava}</div><div><div class="src">комментарий</div><div class="txt">${txt}</div></div><div class="likes">${heart}<br><span id="${id}">0</span></div></div>`,
           { x: 540, y, at, anim: y % 2 ? 'left' : 'right' });
-        c.counter(c.q('#' + id), { from: 0, to: likes, t0: at + 0.3, d: 1.7, sfx: false });
+        c.counter(c.q('#' + id), { from: 0, to: likes, t0: at + 0.25, d: 1.2, sfx: false });
         return n;
       };
       cm(1080, 'К', '#2D6CDF', 'Б! Тут без вариантов', 'rl1', tC, 2481);
-      cm(1250, 'М', '#F28C28', 'А, и не спорьте', 'rl2', tC + 0.3, 964);
-      cm(1420, 'Д', '#7B4B7A', 'только В, я серьёзно', 'rl3', tC + 0.6, 312);
+      cm(1250, 'М', '#F28C28', 'А, и не спорьте', 'rl2', tC + 0.2, 964);
+      cm(1420, 'Д', '#7B4B7A', 'только В, я серьёзно', 'rl3', tC + 0.4, 312);
       const tW = c.Wd('r2', 'так');
       const win = c.card('<div style="width:848px;height:150px;border:9px solid #FFC83A;border-radius:40px;box-sizing:border-box"></div>', { x: 540, y: 1080, at: tW - 0.1, cls: 'plain', anim: 'pop', sfx: 'ding' });
       c.label('так и будет', { x: 540, y: 1600, at: tW, color: 'green', rot: -2, size: 70, anim: 'stamp', sfx: false });
@@ -170,7 +170,7 @@
       H.look(c.T('c4'), 0.3, 0).face(c.T('c4'), 'neutral').face(c.Wd('c4', 'соболезнования'), 'sad').face(c.Wd('c4', 'маяк') + 0.1, 'wow');
       c.label('маяк?!', { x: 600, y: 900, at: c.Wd('c4', 'маяк') + 0.25, color: 'amber', rot: 4, size: 84, anim: 'stamp', sfx: 'ding', out: c.T('c5') + 0.5 });
       H.raise('R', c.T('c5') - 0.1, 0.5, 0, ease.io2).face(c.T('c5'), 'think');
-      c.label('видел деда 2 раза в жизни', { x: 540, y: 520, at: c.Wd('c5', 'видел'), color: 'navy', rot: -2, size: 46 });
+      c.label('деда почти не знал', { x: 540, y: 520, at: c.Wd('c5', 'почти'), color: 'navy', rot: -2, size: 46 });
       c.label('выбирать не из чего', { x: 540, y: 670, at: c.Wd('c5', 'выбирать'), color: 'red', rot: 2, size: 52 });
       H.face(c.Wd('c5', 'выбирать'), 'tight');
     },
@@ -229,8 +229,7 @@
       c.track(lt => rl.setAttribute('stroke-dashoffset', (RL * (1 - ease.out3(clamp((lt - tM) / 0.7)))).toFixed(1)));
       const o = c.T('a3') - 0.12;
       c.label('32 метра', { x: 360, y: 470, at: c.Wd('a1', 'Тридцать'), color: 'navy', rot: -3, size: 70, out: o });
-      c.label('построен в 1958', { x: 330, y: 630, at: c.Wd('a2', 'Построен'), color: 'white', rot: 2, size: 46, out: o });
-      c.label('отключён в 2009', { x: 350, y: 770, at: c.Wd('a2', 'Отключён'), color: 'red', rot: -2, size: 48, out: o });
+      c.label('отключён в 2009', { x: 350, y: 640, at: c.Wd('a2', 'Отключён'), color: 'red', rot: -2, size: 48, out: o });
       c.label('теперь — твой', { x: 480, y: 640, at: c.Wd('a3', 'Теперь'), color: 'amber', rot: -3, size: 76, anim: 'stamp', sfx: false });
       H.face(c.T('a3'), 'smile').look(c.T('a3'), 0.4, 0.3);
     },
@@ -319,7 +318,7 @@
       H.face(c.Wd('d2', 'Улыбается'), 'think');
       // предложение
       const bb = (txt, a, b) => c.bubble(txt, { x: 560, y: 600, w: 820, at: a, out: b, tail: 'bc', who: 'Лядов', whoColor: '#9A6B3F', size: 46 });
-      bb('«Соболезную. Давай по-простому»', c.T('d3'), c.Wd('d3', 'Я') - 0.1);
+      bb('«Соболезную»', c.T('d3'), c.Wd('d3', 'Я') - 0.1);
       bb('«Я закрываю твой долг и даю пятьсот тысяч сверху. А&nbsp;маяк — мне»', c.Wd('d3', 'Я'), c.T('d4') - 0.12);
       Y.talk(c.T('d3'), c.T('d3', 1)).face(c.T('d3'), 'sly').face(c.Wd('d3', 'Я'), 'grin');
       Y.raise('L', c.Wd('d3', 'закрываю'), 0.35, 60); Y.raise('L', c.Wd('d3', 'А') - 0.1, 0.3, 0, ease.io2);
@@ -361,8 +360,8 @@
       const o = c.Wd('b1', 'И') - 0.1;
       c.label('баба Нюра', { x: 560, y: 470, at: c.Wd('b1', 'баба'), color: 'navy', rot: -2, size: 64, out: o });
       c.label('соседка', { x: 760, y: 590, at: c.Wd('b1', 'баба') + 0.3, color: 'teal', rot: 3, size: 40, out: o });
-      c.label('пирожки с треской', { x: 520, y: 730, at: c.Wd('b1', 'пирожки'), color: 'amber', rot: -2, size: 52, out: o });
-      H.face(c.Wd('b1', 'пирожки'), 'smile');
+      c.label('с пирожками', { x: 520, y: 730, at: c.Wd('b1', 'Нюра') + 0.45, color: 'amber', rot: -2, size: 48, out: o });
+      H.face(c.Wd('b1', 'Нюра') + 0.4, 'smile');
       // «говорит тихо» — наезд камеры
       const tQ = c.Wd('b1', 'И');
       c.cam.to(tQ, 1.0, { x: 500, y: 1200, s: 1.28 }, ease.io3);
@@ -504,8 +503,7 @@
       c.cam.set(0, { x: 540, y: 960, s: 1.0 });
       const o1 = c.T('x3') - 0.15;
       c.label('маяк горит', { x: 420, y: 470, at: c.Wd('x1', 'Маяк'), color: 'amber', rot: -3, size: 72, anim: 'stamp', sfx: 'impact', gain: 0.7, out: o1 });
-      c.label('15 лет', { x: 290, y: 650, at: c.Wd('x2', 'пятнадцать'), color: 'navy', rot: 3, size: 66, out: o1 });
-      c.label('как отключён от сети', { x: 400, y: 790, at: c.Wd('x2', 'отключён'), color: 'red', rot: -2, size: 46, out: o1 });
+      c.label('отключён 15 лет назад', { x: 420, y: 640, at: c.Wd('x1', 'горит') + 0.35, color: 'red', rot: 2, size: 46, out: o1 });
       // море отвечает
       const tS = c.T('x3') - 0.1;
       c.cam.to(tS, 1.0, { x: 560, y: 1010, s: 1.6 }, ease.io3);
@@ -572,14 +570,14 @@
       c.cam.set(0, { x: 600, y: 800, s: 1.25 }).to(0, c.dur, { s: 1.15 }, ease.lin);
       const dim = E.h('<div style="position:absolute;inset:0;background:rgba(5,8,18,.66)"></div>'); c.ui.appendChild(dim);
       c.music('title', 0);
-      c.card('<div style="font-size:36px;font-weight:700;color:#C9D2EA;white-space:nowrap">что будет дальше — решаете вы</div>', { x: 540, y: 700, at: 0.2, cls: 'plain', anim: 'pop', sfx: false });
-      const tt = c.card('<div class="title-xl" style="font-size:104px">СМОТРИТЕЛЬ</div>', { x: 540, y: 830, at: 0.35, cls: 'plain', anim: 'none', sfx: 'horn' });
-      tt.set(0.35, { s: 1.3 }).to(0.35, 0.5, { s: 1 }, ease.out5);
+      c.card('<div style="font-size:36px;font-weight:700;color:#C9D2EA;white-space:nowrap">что будет дальше — решаете вы</div>', { x: 540, y: 700, at: 0.12, cls: 'plain', anim: 'pop', sfx: false });
+      const tt = c.card('<div class="title-xl" style="font-size:104px">СМОТРИТЕЛЬ</div>', { x: 540, y: 830, at: 0.2, cls: 'plain', anim: 'none', sfx: 'horn' });
+      tt.set(0.2, { s: 1.3 }).to(0.2, 0.4, { s: 1 }, ease.out5);
       const ln = E.h('<div class="anc"><div style="position:absolute;left:-150px;top:0;width:300px;height:10px;border-radius:5px;background:#FFB627"></div></div>'); c.ui.appendChild(ln);
-      c.nd(ln, { x: 540, y: 916, o: 0, sx: 0 }).set(0.6, { o: 1 }).to(0.6, 0.4, { sx: 1 });
-      c.label('маяк · день 1', { x: 540, y: 1030, at: 0.9, color: 'navy', rot: -2, size: 54 });
-      c.label(`долг 1 800 000${RUB} · 30 дней`, { x: 540, y: 1150, at: 1.2, color: 'red', rot: 2, size: 44 });
-      c.card('<div class="over" style="font-size:32px">сезон 1 · серия 1</div>', { x: 540, y: 1270, at: 1.5, cls: 'plain', anim: 'pop', sfx: false });
+      c.nd(ln, { x: 540, y: 916, o: 0, sx: 0 }).set(0.35, { o: 1 }).to(0.35, 0.35, { sx: 1 });
+      c.label('маяк · день 1', { x: 540, y: 1030, at: 0.5, color: 'navy', rot: -2, size: 54 });
+      c.label(`долг 1 800 000${RUB} · 30 дней`, { x: 540, y: 1150, at: 0.7, color: 'red', rot: 2, size: 44 });
+      c.card('<div class="over" style="font-size:32px">сезон 1 · серия 1</div>', { x: 540, y: 1270, at: 0.9, cls: 'plain', anim: 'pop', sfx: false });
     },
   });
 })();

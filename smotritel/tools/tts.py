@@ -215,7 +215,7 @@ async def main(ep_dir):
                         words += [{"w": w["w"], "t": round(off + w["t"], 3)} for w in pw]
                         chunks.append(px)
                         if k < len(parts) - 1:
-                            chunks.append(np.zeros(int((pause or 0.3) * SR), dtype=np.float32))
+                            chunks.append(np.zeros(int((pause or 0.3) * data.get('pause_scale', 1.0) * SR), dtype=np.float32))
                     x = np.concatenate(chunks)
                 x = normalize(x)
                 dur = len(x) / SR
@@ -242,6 +242,9 @@ async def main(ep_dir):
     (build / "timing.json").write_text(
         json.dumps(timing, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"\nИтого: {t:.1f} c  ->  {build / 'timing.json'}")
+    lim = data.get("max_duration")
+    if lim and t > lim:
+        print(f"ВНИМАНИЕ: серия длиннее лимита на {t - lim:.1f} c (max_duration = {lim} c, YouTube Shorts — до 180 c)")
     for s in scenes_out:
         print(f"  {s['id']:<9} {s['start']:7.2f} – {s['end']:7.2f}  ({s['end'] - s['start']:.2f} c)")
 

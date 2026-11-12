@@ -22,3 +22,7 @@ ffmpeg -y -v warning -thread_queue_size 64 -framerate 30 -i "build/$EP/frames/f_
   -af "volume=${GAIN}dB,alimiter=limit=0.8:attack=3:release=80:level=false" -ar 48000 -c:a aac -b:a 192k \
   -movflags +faststart -shortest "out/$EP.mp4"
 echo "Готово: out/$EP.mp4"
+# если бот настроен (TG_BOT_TOKEN + привязанный ID) — готовая серия уходит владельцу в Telegram
+if [[ -n "${TG_BOT_TOKEN:-}" && ( -n "${TG_CHAT_ID:-}" || -f .tg.json ) ]]; then
+  "$PY" tools/tg_send.py "out/$EP.mp4" --caption "Смотритель · $EP" || echo "Telegram: не отправлено"
+fi

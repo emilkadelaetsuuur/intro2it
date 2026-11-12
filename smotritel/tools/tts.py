@@ -9,6 +9,10 @@
 По длительностям реплик собирается таймлайн серии (timing.json) — под него
 потом подстраиваются анимация и звук.
 
+Интонация: в lines.json у реплики можно задать "parts" — куски фразы со своей
+подачей: [текст, темп %, высота Гц, пауза после]. Поправки прибавляются к базовым
+настройкам голоса; так напряжённые фразы звучат ниже и медленнее, тревожные — быстрее.
+
 Свой голос вместо синтеза: положи запись реплики в
 episodes/<ep>/voice_override/<id>.wav — она заменит синтез для этой реплики.
 
@@ -18,6 +22,7 @@ import asyncio
 import hashlib
 import json
 import os
+import re
 import ssl
 import subprocess
 import sys
@@ -67,6 +72,12 @@ async def synth(text, cfg, mp3_path, tries=9):
             last = e
             await asyncio.sleep(2 + attempt * 3)  # сервис иногда отдаёт пустой ответ
     raise RuntimeError(f"не удалось синтезировать «{text[:40]}…»: {last}")
+
+
+def _num(v):
+    """'+8%' / '-16Hz' -> целое."""
+    m = re.search(r"-?\d+", str(v or 0))
+    return int(m.group()) if m else 0
 
 
 def decode(path):
@@ -174,29 +185,42 @@ async def main(ep_dir):
             for ln in sc["lines"]:
                 cfg = data["voices"][ln["who"]]
                 text = ln.get("tts", ln["text"])
-                key = hashlib.sha1(json.dumps(
-                    [text, cfg["voice"], cfg.get("rate"), cfg.get("pitch")],
-                    ensure_ascii=False).encode()).hexdigest()[:12]
-                mp3, meta = cache / f"{ln['id']}.mp3", cache / f"{ln['id']}.json"
+                # фраза целиком или по кускам со своей подачей: [текст, темп %, высота Гц, пауза после]
+                parts = ln.get("parts") or [[text, ln.get("rate", 0), ln.get("pitch", 0), 0]]
                 ovr = override / f"{ln['id']}.wav"
                 if ovr.exists():
-                    x, words = decode(ovr), []
+                    x, words = tighten(decode(ovr), [], max_pause=ln.get("max_pause", 0.30))
                     src = "override"
                 else:
-                    m = json.loads(meta.read_text()) if meta.exists() else {}
-                    if m.get("key") != key or not mp3.exists():
-                        words = await synth(text, cfg, mp3)
-                        meta.write_text(json.dumps({"key": key, "words": words},
-                                                   ensure_ascii=False))
-                        src = "synth"
-                    else:
-                        words, src = m["words"], "cache"
-                    x = decode(mp3)
-                x, words = tighten(x, words, max_pause=ln.get("max_pause", 0.30))
+                    chunks, words, src = [], [], "cache"
+                    for k, part in enumerate(parts):
+                        ptext, drate, dpitch, pause = (list(part) + [0, 0, 0])[:4]
+                        pcfg = {"voice": cfg["voice"],
+                                "rate": f"{_num(cfg.get('rate')) + drate:+d}%",
+                                "pitch": f"{_num(cfg.get('pitch')) + dpitch:+d}Hz"}
+                        key = hashlib.sha1(json.dumps(
+                            [ptext, pcfg["voice"], pcfg["rate"], pcfg["pitch"]],
+                            ensure_ascii=False).encode()).hexdigest()[:12]
+                        stem = ln["id"] if len(parts) == 1 else f"{ln['id']}_{k}"
+                        mp3, meta = cache / f"{stem}.mp3", cache / f"{stem}.json"
+                        m = json.loads(meta.read_text()) if meta.exists() else {}
+                        if m.get("key") != key or not mp3.exists():
+                            pw = await synth(ptext, pcfg, mp3)
+                            meta.write_text(json.dumps({"key": key, "words": pw}, ensure_ascii=False))
+                            src = "synth"
+                        else:
+                            pw = m["words"]
+                        px, pw = tighten(decode(mp3), pw, max_pause=ln.get("max_pause", 0.30))
+                        off = sum(len(c) for c in chunks) / SR
+                        words += [{"w": w["w"], "t": round(off + w["t"], 3)} for w in pw]
+                        chunks.append(px)
+                        if k < len(parts) - 1:
+                            chunks.append(np.zeros(int((pause or 0.3) * SR), dtype=np.float32))
+                    x = np.concatenate(chunks)
                 x = normalize(x)
                 dur = len(x) / SR
                 if not words:  # своя запись: слова распределяем равномерно
-                    ws = text.replace("—", " ").split()
+                    ws = ln["text"].replace("—", " ").split()
                     words = [{"w": w.strip(".,!?:;«»\""), "t": round(dur * i / max(1, len(ws)), 3)}
                              for i, w in enumerate(ws)]
                 sf.write(build / "voice" / f"{ln['id']}.wav", x, SR, subtype="PCM_16")
@@ -206,7 +230,7 @@ async def main(ep_dir):
                     "fx": cfg.get("fx"),
                     "words": [{"w": w["w"], "t": round(t + w["t"], 3)} for w in words],
                     "file": f"voice/{ln['id']}.wav"})
-                print(f"{ln['id']:>4} {src:8} {dur:5.2f}s  {text[:60]}")
+                print(f"{ln['id']:>4} {src:8} {dur:5.2f}s  {ln['text'][:60]}", flush=True)
                 t += dur + ln.get("gap", 0.25)
             t += sc.get("post", 0.4)
             t = max(t, s_out["start"] + sc.get("minDur", 0))

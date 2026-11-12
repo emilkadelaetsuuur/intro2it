@@ -1,0 +1,68 @@
+html, body { margin: 0; background: #05070c; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #0b1020;
+  font-family: 'Montserrat', 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+.scene { position: absolute; inset: 0; overflow: hidden; display: none; }
+.scene.global { display: block !important; pointer-events: none; z-index: 10; }
+.world { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }
+.ui { position: absolute; inset: 0; }
+.anc { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+.dip { position: absolute; inset: 0; background: #05070c; opacity: 0; }
+.flash { position: absolute; inset: 0; background: #fff8e0; opacity: 0; }
+
+/* плашка-слово */
+.label { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; text-align: center;
+  padding: 0.3em 0.62em 0.32em; border-radius: 0.36em; border: 6px solid #fff;
+  font-weight: 800; letter-spacing: 0.045em; line-height: 1.12; text-transform: uppercase;
+  box-shadow: 0 10px 0 rgba(8, 12, 24, 0.22), 0 18px 34px rgba(8, 12, 24, 0.28); }
+
+/* реплика */
+.bubble { position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; background: #fff; color: #171922;
+  padding: 30px 38px 32px; border-radius: 40px; font-weight: 700; line-height: 1.24; text-align: center;
+  box-shadow: 0 16px 40px rgba(8, 12, 24, 0.3); }
+.bubble .tail { position: absolute; }
+.bubble .who { font-size: 0.6em; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* карточки */
+.card { position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; background: #fff; color: #171922;
+  border-radius: 34px; padding: 30px 36px; box-shadow: 0 18px 46px rgba(8, 12, 24, 0.34); font-weight: 700; }
+.card.plain { background: none; box-shadow: none; padding: 0; border-radius: 0; }
+.card .cap { font-size: 26px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #8a90a0; }
+.card .big { font-size: 76px; font-weight: 900; letter-spacing: -0.01em; line-height: 1.05; }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 30px; padding: 16px 0;
+  border-top: 2px solid #eceef3; font-size: 38px; }
+.row:first-of-type { border-top: 0; }
+.row .k { color: #6f7687; font-weight: 700; }
+.row .v { font-weight: 800; white-space: nowrap; }
+.neg { color: #E5484D; } .pos { color: #1E9E5E; } .blu { color: #2D6CDF; }
+
+/* комментарий */
+.comment { display: flex; align-items: center; gap: 26px; width: 800px; padding: 26px 34px; }
+.comment .ava { flex: none; width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
+  color: #fff; font-size: 40px; font-weight: 800; }
+.comment .src { font-size: 24px; font-weight: 800; color: #1E9E5E; letter-spacing: 0.02em; margin-bottom: 4px; }
+.comment .txt { font-size: 40px; font-weight: 800; line-height: 1.15; }
+.comment .likes { margin-left: auto; text-align: center; color: #E5484D; font-size: 26px; font-weight: 800; }
+
+/* вариант выбора */
+.opt { display: flex; align-items: center; gap: 34px; width: 880px; padding: 6px 4px; }
+.opt .let { flex: none; width: 132px; height: 132px; border-radius: 50%; display: grid; place-items: center;
+  color: #fff; font-size: 74px; font-weight: 900; }
+.opt .tt { font-size: 54px; font-weight: 800; line-height: 1.1; }
+.opt .sub { font-size: 33px; font-weight: 700; color: #7b8294; margin-top: 8px; }
+
+/* HUD */
+.hud { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 18px; white-space: nowrap;
+  background: #132036; border: 6px solid #fff; border-radius: 60px; padding: 12px 16px 12px 34px; color: #fff;
+  font-size: 34px; font-weight: 800; letter-spacing: 0.12em; box-shadow: 0 10px 26px rgba(8, 12, 24, 0.35); }
+.hud .num { width: 64px; height: 64px; border-radius: 50%; background: #FFB627; color: #1A1B22; display: grid; place-items: center;
+  font-size: 38px; font-weight: 900; letter-spacing: 0; }
+.chip { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 16px; white-space: nowrap;
+  background: rgba(10, 14, 24, 0.86); border-radius: 40px; padding: 12px 30px; color: #fff;
+  font-size: 30px; font-weight: 800; letter-spacing: 0.04em; }
+.chip b { color: #FFB627; font-weight: 900; } .chip i { font-style: normal; color: #FF7A7A; font-weight: 900; }
+.chip .dot { width: 10px; height: 10px; border-radius: 50%; background: #5d6680; }
+
+.title-xl { font-family: 'Unbounded', 'Montserrat', sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1.02;
+  letter-spacing: 0.01em; text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); white-space: nowrap; }
+.over { font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: #FFB627; text-align: center; white-space: nowrap; }
+.hand { font-family: 'Caveat', cursive; font-weight: 700; }

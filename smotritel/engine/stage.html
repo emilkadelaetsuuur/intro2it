@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Смотритель — сцена</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage"></div>
+<script src="engine.js"></script>
+<script src="art.js"></script>
+<script src="sets.js"></script>
+<script>
+(async function () {
+  const q = new URLSearchParams(location.search);
+  const ep = q.get('ep') || 'ep01';
+  const timing = await (await fetch(`../build/${ep}/timing.json`)).json();
+  await new Promise((ok, err) => {
+    const s = document.createElement('script');
+    s.src = `../episodes/${ep}/episode.js`; s.onload = ok; s.onerror = err; document.body.appendChild(s);
+  });
+  for (const f of ['800 40px Montserrat', '900 40px Montserrat', '700 40px Montserrat', '600 40px Montserrat',
+                   '900 40px Unbounded', '700 40px Unbounded', '700 40px Caveat'])
+    await document.fonts.load(f, 'Смотритель 1 800 000 ₽ Aa');
+  await E.init(timing);
+  // предпросмотр в браузере: ?play=1 или ?t=12.5
+  if (q.get('t')) E.seek(parseFloat(q.get('t')));
+  if (q.get('play')) {
+    const t0 = performance.now() - (parseFloat(q.get('t')) || 0) * 1000;
+    (function loop() { E.seek(((performance.now() - t0) / 1000) % timing.duration); requestAnimationFrame(loop); })();
+  }
+})();
+</script>
+</body>
+</html>

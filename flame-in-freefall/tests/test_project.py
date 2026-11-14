@@ -9,6 +9,7 @@ the video results, the materials table, the answer checker and the offline answe
 Standard library only, plus numpy for the model check.
 """
 import csv
+from collections import Counter
 import io
 import json
 import math
@@ -322,13 +323,78 @@ class Challenge(unittest.TestCase):
         self.assertEqual(len(near), D["stats"]["moon_near"]["droplet"])
         self.assertEqual([round(min(near), 1), round(max(near), 1)], D["stats"]["moon_near_psia"])
 
-    def test_highest_oxygen_is_cfig_as_the_statement_says(self):
+    def test_inverse_burner_oxygen_is_retained_separately(self):
         h, b = rows("PSI-159_Experimental table_CFI-G_Inverse Flames.csv")
-        i = next(k for k, x in enumerate(h) if x.strip() == "XO2")
-        top = max(float(r[i]) for r in b if re.fullmatch(r"\d+(\.\d+)?", r[i].strip()))
-        self.assertEqual(round(top * 100), 85)
-        self.assertEqual(D["stats"]["o2_max_all"], 85)
+        source = {r[h.index("Test")]: r for r in b}
+        projected = [t for t in D["tests"] if t.get("flame_config") == "inverse"]
+        self.assertEqual(len(projected), len(source))
+        spurious = 0
+        for t in projected:
+            r = source[t["id"]]
+            o2 = float(r[h.index("XO2")]) * 100
+            atm = float(r[h.index("approx p (bar)")]) / 1.01325
+            self.assertIsNone(t["o"])
+            self.assertAlmostEqual(t["burner_o2"], o2)
+            self.assertAlmostEqual(t["p"], atm)
+            spurious += abs(o2 - 34) <= 4 and abs(atm / (8.2 / 14.696) - 1) <= 0.15
+        self.assertEqual(spurious, 9)
+        self.assertEqual(max(t["burner_o2"] for t in projected), D["stats"]["burner_o2_max"])
+        self.assertEqual(D["stats"]["burner_o2_max"], 85)
+        self.assertEqual(D["stats"]["o2_max_all"], 40)
         self.assertIn("85%", D["challenge"]["cfig_85"]["text"])
+
+    def test_source_rows_and_all_cabin_matches(self):
+        # Rebuild each eligible O2/pressure pair from NASA's actual column
+        # meanings without calling QUENCH's parser, conversions, or predicates.
+        pairs = []
+        for acc, filename, o_header, p_header, divisor in (
+                ("PSI-69", "FLEX", "O initial ambient composition; mole fraction", "Ambient pressure; mmHg", 760),
+                ("PSI-39", "CFI", "Oxygen", "Pressure", 1),
+                ("PSI-10", "Flame Design_Normal Flame", "XO2 (init)", "pinit (atm)", 1),
+                ("PSI-159", "CFI-G_Normal Flames", "XO2 before test", "approx p (bar)", 1.01325)):
+            h, b = rows(f"{acc}_Experimental table_{filename}.csv")
+            if acc == "PSI-39":
+                b = list(dict.fromkeys(tuple(c.strip() for c in r) for r in b))
+                self.assertEqual(len(b), 79)
+            i, j = h.index(o_header), h.index(p_header)
+            source_pairs = [(float(r[i]) * 100, float(r[j].split()[0]) / divisor) for r in b]
+            published = [t for t in D["tests"] if t["i"] == acc and t.get("flame_config") != "inverse"]
+            self.assertEqual(len(published), len(source_pairs))
+            for t, (o2, p) in zip(published, source_pairs):
+                self.assertAlmostEqual(t["o"], o2)
+                if p:
+                    self.assertAlmostEqual(t["p"], p)
+                    self.assertEqual(t["ps"], "recorded")
+                    pairs.append((acc, t["k"], o2, p))
+                else:
+                    self.assertIsNone(t["p"])
+        for a in D["atmospheres"]:
+            hits = [(acc, k) for acc, k, o2, p in pairs if abs(o2 - a["o2"]) <= 4 and abs(p * 14.696 / a["psia"] - 1) <= .15]
+            self.assertEqual(Counter(acc for acc, _ in hits), D["stats"]["coverage_by_study"][a["id"]])
+            by_kind = Counter(k for _, k in hits)
+            self.assertEqual({k: by_kind[k] for k in ("solid", "droplet", "gas")}, D["stats"]["coverage"][a["id"]])
+        self.assertEqual(D["stats"]["coverage_by_study"]["exp"], {"PSI-159": 15})
+        self.assertEqual(sum(acc == "PSI-159" and o2 >= 30 and p * 14.696 <= 10.2 for acc, _, o2, p in pairs), 20)
+        self.assertEqual(sum(k == "gas" and o2 >= 30 for _, k, o2, _ in pairs), D["stats"]["hi_o2"]["gas"])
+        self.assertEqual(sum(k == "gas" and o2 >= 30 and p * 14.696 <= 10.2 for _, k, o2, p in pairs), D["stats"]["moon_range"]["gas"])
+        f1 = next(t for t in D["tests"] if t["id"] == "21153 F1")
+        self.assertEqual((f1["flame_config"], f1["o"], f1["r"], f1["t"]), ("normal", 34.080788, "ext", 44))
+        self.assertAlmostEqual(f1["p"] * 1.01325, .50665)
+
+    def test_distinct_source_attempts_and_outcomes(self):
+        self.assertEqual(len(D["tests"]), 1156)
+        self.assertEqual(len([t for t in D["tests"] if t["o"] is not None]), 879)
+        self.assertTrue(all(t["id"] for t in D["tests"]))
+        cfig = {t["id"]: t for t in D["tests"] if t["i"] == "PSI-159"}
+        self.assertEqual(len(cfig), 333)
+        self.assertEqual(cfig["21106 F2"]["r"], "cool")
+        self.assertEqual(cfig["21106 F5"]["r"], "cool")
+        self.assertEqual(cfig["21106 F4"]["r"], "burn")
+        self.assertEqual(cfig["21209 A2"]["r"], "other")
+        self.assertEqual(sum(t["r"] == "ext" for t in cfig.values()), 183)
+        self.assertEqual(sum(t["r"] == "nospread" for t in D["tests"] if t["i"] == "PSI-99"), 4)
+        self.assertTrue(all(t["p"] is None for t in D["tests"] if t["k"] == "solid"))
+        self.assertEqual([t["id"] for t in D["tests"] if t["i"] == "PSI-39" and t["p"] == .5], ["1356", "1357", "1358"])
 
     def test_named_investigations_are_tier_one(self):
         named = {"PSI-26", "PSI-25", "PSI-98", "PSI-99", "PSI-100", "PSI-102", "PSI-101", "PSI-69"}
@@ -390,11 +456,20 @@ class Challenge(unittest.TestCase):
         with open(os.path.join(dl, "quench-runs.csv"), encoding="utf-8", newline="") as fh:
             runs = list(csv.DictReader(fh))
         self.assertEqual(len(runs), len(D["tests"]))
+        for r, t in zip(runs, D["tests"]):
+            self.assertEqual(r["o2_percent"], r["ambient_o2_percent"])
+            self.assertEqual(float(r["ambient_o2_percent"]) if r["ambient_o2_percent"] else None, t["o"])
+            self.assertEqual(float(r["burner_oxidizer_o2_percent"]) if r["burner_oxidizer_o2_percent"] else None, t.get("burner_o2"))
+            self.assertEqual(r["pressure_source"], "recorded" if t["p"] is not None else "not recorded")
         self.assertEqual(sum(1 for r in runs if r["fuel_type"] == "solid" and r["o2_percent"] and float(r["o2_percent"]) > 22.2), 0)
         self.assertEqual(sum(1 for r in runs if r["outcome"]), D["stats"]["with_outcome"])
         with open(os.path.join(dl, "quench-investigations.csv"), encoding="utf-8", newline="") as fh:
             invs = list(csv.DictReader(fh))
         self.assertEqual(len(invs), len(self.inv))
+        ci = next(i for i in invs if i["accession"] == "PSI-159")
+        self.assertEqual((ci["runs_listed"], ci["runs_with_oxygen"]), ("333", "179"))
+        self.assertEqual(float(ci["o2_max_percent"]), 39.97)
+        self.assertEqual(float(ci["burner_oxidizer_o2_max_percent"]), 85)
         with open(os.path.join(dl, "README.txt"), encoding="utf-8") as fh:
             self.assertIn("SI notice", fh.read())
 

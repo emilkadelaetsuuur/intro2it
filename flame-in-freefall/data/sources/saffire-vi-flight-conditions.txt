@@ -1,0 +1,11 @@
+Urban et al., Preliminary Results from the Saffire VI Experiment (2024), Table 1 (page 3).
+NASA Technical Reports Server: https://ntrs.nasa.gov/citations/20240002981
+Transcription of the measured flight conditions selected for comparison in the paper.
+Fractions are reported as mol percent oxygen. Pressure is the ambient pressure in kPa.
+
+sample,material_id,oxygen_percent,pressure_kpa
+IV-1,sibal,22.0,100.0
+V-2,cotton,26.2,70.7
+VI-2,sibal,31.0,54.1
+VI-3,pmma,30.3,54.6
+VI-4,pmma,28.8,55.2

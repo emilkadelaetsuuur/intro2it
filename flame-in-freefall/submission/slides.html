@@ -1,16 +1,17 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><title>QUENCH demo</title>
 <!-- SI notice: these slides were laid out with SI (AI) assistance (Claude, Anthropic). The pictures are screenshots of the live site. -->
 <meta name="si-disclosure" content="Slides laid out with SI assistance; screenshots of the live site; no SI-generated images.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+
 <style>
+@font-face {font-family:QLocal;src:url(../web/fonts/barlow-400.woff2)} @font-face {font-family:QLocal;font-weight:700 900;src:url(../web/fonts/barlow-700.woff2)} @font-face {font-family:QMono;src:url(../web/fonts/ibmplexmono-500.woff2)}
 @page { size: 1280px 720px; margin: 0; }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: "Public Sans", "Liberation Sans", sans-serif; color: #0b0c0e; }
+body { margin: 0; font-family: QLocal, "Liberation Sans", sans-serif; color: #0b0c0e; }
 .s { width: 1280px; height: 720px; padding: 44px 60px 54px; position: relative; overflow: hidden; break-after: page; background: #fff; display: flex; flex-direction: column; gap: 18px; }
 .s:last-child { break-after: auto; }
-.lab { font: 500 13px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #6a7280; }
+.lab { font: 500 13px QMono, monospace; letter-spacing: .1em; text-transform: uppercase; color: #6a7280; }
 .rule { border-top: 3px solid #0b0c0e; padding-top: 12px; display: flex; gap: 26px; align-items: baseline; }
-.rule .no { font: 500 14px "DM Mono", monospace; color: #6a7280; }
+.rule .no { font: 500 14px QMono, monospace; color: #6a7280; }
 h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin: 0; line-height: 1.08; max-width: 27ch; }
 p, li { font-size: 20px; line-height: 1.42; color: #434851; margin: 0; }
 ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 9px; }
@@ -19,17 +20,17 @@ b { color: #0b0c0e; } .hot { color: #d42a1a; }
 .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 .shot { border: 1px solid #d4d8df; overflow: hidden; }
 .shot img { display: block; width: 100%; height: auto; }
-.foot { position: absolute; left: 60px; right: 60px; bottom: 20px; display: flex; justify-content: space-between; font: 500 12px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #6a7280; }
+.foot { position: absolute; left: 60px; right: 60px; bottom: 20px; display: flex; justify-content: space-between; font: 500 12px QMono, monospace; letter-spacing: .08em; text-transform: uppercase; color: #6a7280; }
 .stat { display: flex; gap: 34px; }
 .stat div b { display: block; font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
 .stat div span { font-size: 15px; color: #434851; display: block; margin-top: 6px; max-width: 16ch; }
 blockquote { margin: 0; border-left: 3px solid #d42a1a; padding: 2px 0 2px 16px; font-size: 19px; }
-blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6a7280; margin-top: 6px; font-style: normal; }
+blockquote cite { display: block; font: 400 12px QMono, monospace; color: #6a7280; margin-top: 6px; font-style: normal; }
 .cover { background: #05070b; color: #f4f6f9; padding: 0 60px; gap: 0; }
-.cover .strip { display: flex; justify-content: space-between; padding: 22px 0 16px; border-bottom: 1px solid #2b3241; font: 500 13px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; }
+.cover .strip { display: flex; justify-content: space-between; padding: 22px 0 16px; border-bottom: 1px solid #2b3241; font: 500 13px QMono, monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; }
 .cover h1 { font-size: 236px; font-weight: 900; letter-spacing: -0.045em; line-height: .86; margin: 46px 0 0 -10px; }
 .cover h1 span { color: #ff4b2e; }
-.cover .long { font: 500 14px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; margin-top: 16px; }
+.cover .long { font: 500 14px QMono, monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; margin-top: 16px; }
 .cover .thesis { font-size: 30px; line-height: 1.3; font-weight: 500; color: #f4f6f9; margin-top: 34px; max-width: 30ch; }
 .cover .thesis b { color: #ff4b2e; }
 .cover .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #2b3241; margin-top: auto; margin-bottom: 26px; }
@@ -38,14 +39,15 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
 .cover .facts b.hot { color: #ff4b2e; }
 .cover .facts span { font-size: 14px; color: #a9b1bf; }
 
-.cover .team { margin-top: 18px; font: 500 15px "DM Mono", monospace; letter-spacing: .06em; color: #f4f6f9; }
+.cover .team { margin-top: 18px; font: 500 15px QMono, monospace; letter-spacing: .06em; color: #f4f6f9; }
 .cover .team span { color: #a9b1bf; }
 .cover h1 { font-size: 200px; margin-top: 34px; }
 .cover .thesis { margin-top: 26px; font-size: 28px; max-width: 34ch; }
 .s.tight { gap: 14px; } .s.tight p, .s.tight li { font-size: 18.5px; }
 .shot.fix { flex: none; }
-.pill { display: inline-block; font: 500 12px "DM Mono", monospace; letter-spacing: .06em; text-transform: uppercase; background: #e6f3ea; color: #1c6b3a; padding: 2px 8px; margin-right: 6px; }
+.pill { display: inline-block; font: 500 12px QMono, monospace; letter-spacing: .06em; text-transform: uppercase; background: #e6f3ea; color: #1c6b3a; padding: 2px 8px; margin-right: 6px; }
 .small { font-size: 15px !important; color: #6a7280 !important; }
+.evidence-strip{background:#111b2a;color:#dbe3ed;padding:26px 30px;display:flex;gap:48px;font-size:19px;line-height:1.25}.evidence-strip>div{flex:1}.evidence-strip b{display:block;color:#ff966f;font-size:38px;margin-bottom:6px}.shot-score{max-height:292px}.s.tight .foot{background:#fff}
 </style></head><body>
 
 <section class="s cover">
@@ -53,23 +55,23 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
   <h1>QUENCH<span>.</span></h1>
   <p class="long">Quantified Evidence Navigator for Combustion Hazards</p>
   <p class="team"><span>Team</span> [TEAM NAME] &nbsp;·&nbsp; <span>Members</span> [NAMES OF TEAM MEMBERS]</p>
-  <p class="thesis">NASA expects Moon-base air with <b>30 % oxygen or more</b>. NASA's open combustion archive holds no solid-fuel flight test above <b>22.2 %</b>.</p>
-  <div class="facts"><div><b class="hot">22.2 %</b><span>highest oxygen of any solid-fuel flight test in the archive</span></div><div><b>30 %+</b><span>oxygen NASA expects on the Moon, at 10.2 psi or less</span></div><div><b class="hot">0</b><span>solid-fuel runs at 30 % oxygen or more</span></div><div><b>986</b><span>flight test runs read from 24 NASA investigations</span></div></div>
+  <p class="thesis">Which flight tests match the <b>oxygen and pressure</b> of a proposed lunar cabin?</p>
+  <div class="facts"><div><b>24</b><span>PSI investigations catalogued</span></div><div><b>1,156</b><span>distinct flight test records in the CSV</span></div><div><b class="hot">34 %</b><span>proposed exploration atmosphere at 8.2 psia</span></div><div><b class="hot">15</b><span>gas tests within the project’s comparison window</span></div></div>
 </section>
 
 <section class="s">
-  <div class="rule"><span class="no">01</span><h2>Decades of fire experiments in orbit. Do they cover the air a Moon base will use?</h2></div>
+  <div class="rule"><span class="no">01</span><h2>Decades of fire experiments in orbit. Do they cover a proposed Moon-base atmosphere?</h2></div>
   <div class="row">
     <div class="col">
       <p>The challenge: a dashboard that <b>summarizes, ranks and interprets</b> NASA's microgravity combustion investigations for fire safety.</p>
-      <p>We read all of them in NASA's PSI archive: <b>24 investigations, 986 flight test runs</b>, 352 papers, 6.3 TB of raw data, and placed every run by the oxygen and pressure it burned in.</p>
+      <p><b>1,156 distinct flight test records</b> from nine of 24 catalogued investigations. The map uses ambient oxygen and chamber pressure; oxygen supplied to a burner is kept separate.</p>
     </div>
     <div class="col">
       <blockquote>“The intermediate oxygen concentration used on the Moon will likely be 30% or greater, with a corresponding pressure of 10.2 psi or less.”<cite>Flame in Freefall challenge statement</cite></blockquote>
-      <p>At that oxygen level the archive holds <b class="hot">0 solid-fuel runs</b>, 24 droplet runs and 246 gas-flame runs.</p>
+      <p>Both conditions match <b>20 gas tests</b> in our tables, with no matching droplet or solid tests. NASA’s separate <b>Saffire-VI</b> flight results include solids in this region.</p>
     </div>
   </div>
-  <div class="shot fix"><img src="img/gap.png" alt="Oxygen range of solid-fuel flight tests, 13.6 to 22.2 percent, against the Moon-base range of 30 percent or more"></div>
+  <div class="evidence-strip"><div><b>179</b>Normal-flame records<br>Ambient oxygen is reported.</div><div><b>154</b>Inverse-flame records<br>Oxygen is measured in the burner feed.</div><div><b>15</b>Normal-flame gas tests within ±4 points O₂<br>and ±15% pressure of 34% / 8.2 psia.</div></div>
   <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>2 / 7</span></div>
 </section>
 
@@ -98,7 +100,7 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
         <li>Each investigation opens to its objective, fuels with sample or burner size, <b>what changed between runs, what stayed the same</b> and what was recorded.</li>
         <li>These lists are computed from NASA's run tables, not typed in.</li>
         <li>Tick two or three to see them <b>side by side</b>. Matching rows are marked.</li>
-        <li>Six hardware families show which experiments can be compared directly.</li>
+        <li>Six hardware families help identify shared apparatus. Fuel, flow and atmosphere can still differ.</li>
       </ul>
     </div>
   </div>
@@ -108,13 +110,13 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
 <section class="s tight">
   <div class="rule"><span class="no">04</span><h2>Interpret: grade the evidence for any cabin and list the tests still needed</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.05"><div class="shot"><img src="img/verdict.png" alt="Moon base: 3 of 6 questions have no flight evidence"></div><div class="shot" style="max-height:388px"><img src="img/scorecard.png" alt="Evidence scorecard with grades A to D"></div></div>
+    <div class="col" style="flex:1.05"><div class="shot"><img src="img/verdict.png" alt="Moon base: coverage varies across six questions"></div><div class="shot shot-score"><img src="img/scorecard.png" alt="Evidence scorecard with grades A to D"></div></div>
     <div class="col">
       <ul>
         <li><b>Mission check:</b> set oxygen, pressure, gravity, ventilation, materials and extinguishing agent. Six fire-safety questions are graded A to D by written rules.</li>
-        <li>Moon base: <b class="hot">3 of 6 questions have no flight evidence.</b> Space station: evidence for all six.</li>
+        <li>The scorecard separates <b>two-coordinate matches</b> from tests with missing pressure, and flags results outside its tables.</li>
         <li><b>15 ranked findings</b> for prevention, detection and suppression, each with evidence, limits, an action and NASA sources.</li>
-        <li>Example: in elevated oxygen, flames kept burning after the airflow stopped, the first step of today's fire response.</li>
+        <li>In preliminary BRE gas-burner experiments, some flames persisted after forced airflow stopped.</li>
       </ul>
     </div>
   </div>
@@ -124,13 +126,13 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
 <section class="s tight">
   <div class="rule"><span class="no">05</span><h2>Data for models: every run as CSV, a predictor that knows its limits, results read from NASA video</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.5"><div class="shot"><img src="img/map.png" alt="Every flight run by oxygen and pressure, with the Moon-base range"></div></div>
+    <div class="col" style="flex:1.5"><div class="shot"><img src="img/map.png" alt="Tests with ambient oxygen and chamber pressure, with the Moon-base range"></div></div>
     <div class="col">
       <div class="stat"><div><b>82 %</b><span>right on test days the model never saw</span></div><div><b>69 %</b><span>always guessing the common outcome</span></div></div>
       <ul>
-        <li>All <b>986 runs download as CSV</b>, or only those near your cabin.</li>
+        <li>All <b>1,156 records download as CSV</b>, or only those near your cabin.</li>
         <li>Predictor trained on 261 FLEX droplet runs. It flags extrapolation.</li>
-        <li>Flame spread measured from raw BASS-II video: <b>5 of 5</b> independent checks pass.</li>
+        <li>BASS-II video: one calibration run and <b>five</b> consistency checks.</li>
       </ul>
     </div>
   </div>
@@ -143,24 +145,24 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
     <div class="col">
       <p class="lab">Trust</p>
       <ul>
-        <li>One script recomputes every number from NASA's raw tables.</li>
-        <li>Every quote is matched word for word to its source, or the build stops.</li>
-        <li>44 automated tests recount key facts with independent code.</li>
+        <li>The run count can be rebuilt from the archived tables.</li>
+        <li>Quotations are checked against archived source text.</li>
+        <li>Regression tests check the two CFI-G configurations, missing values and matching windows.</li>
       </ul>
     </div>
     <div class="col">
       <p class="lab">Use of SI</p>
       <ul>
         <li>SI (Claude) helped write code and draft summaries, findings and answers.</li>
-        <li>Code checks all 81 claims in the answers against NASA records.</li>
+        <li>Code checks cited records and numeric tokens; these checks cannot establish scientific validity.</li>
         <li>No model runs when you use it: no API, no key, no cost.</li>
       </ul>
     </div>
     <div class="col">
       <p class="lab">Next</p>
       <ul>
-        <li>Bring the Saffire-IV, -V and -VI and FLEX-2 run data into PSI.</li>
-        <li>Read all 244 BASS-II videos into a public results table.</li>
+        <li>Extend exports with run-level Saffire and FLEX-2 measurements.</li>
+        <li>Publish more measurements extracted from BASS-II video.</li>
         <li>On Earth the same science already made firefighter gear and smoke detectors better.</li>
       </ul>
     </div>

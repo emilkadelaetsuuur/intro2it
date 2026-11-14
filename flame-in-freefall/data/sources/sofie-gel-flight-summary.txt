@@ -1,0 +1,6 @@
+T'ien et al., Experimental determination of diffusion flame extinction boundaries over a PMMA sphere: The effect of sub-surface solid heating. Combustion and Flame 277 (2025), 114244.
+https://doi.org/10.1016/j.combustflame.2025.114244
+Transcription of the experimental ranges in the authors' abstract for SoFIE-GEL on the International Space Station. These ranges do not specify paired oxygen/pressure values for individual runs.
+
+material_id,sphere_diameter_cm,oxygen_min_percent,oxygen_max_percent,pressure_min_atm,pressure_max_atm,flow_min_cm_s,flow_max_cm_s
+pmma,4,13,34,0.15,1.1,0.2,80

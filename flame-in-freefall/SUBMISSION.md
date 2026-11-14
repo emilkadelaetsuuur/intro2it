@@ -18,16 +18,16 @@ QUENCH (Quantified Evidence Navigator for Combustion Hazards)
 
 ## High-Level Project Summary
 
-NASA expects the Moon base and its rovers to run on air with 30 % oxygen or more, at 10.2 psi or less.
-QUENCH is a web dashboard that summarizes, ranks and interprets every combustion investigation in NASA's
+The challenge asks about possible lunar cabin atmospheres with at least 30% oxygen at no more than 10.2 psia.
+QUENCH is a web dashboard that summarizes, ranks and interprets a collection of combustion investigations in NASA's
 Physical Sciences Informatics (PSI) archive to show what that means for fire safety. It reads 24
-investigations and 986 flight test runs, ranks the investigations for the habitat you pick (station,
+investigation records and 1,156 distinct flight test records from nine of them, ranks the investigations for the habitat you pick (station,
 spacecraft, Moon base or rover, Mars base), shows what each one burned, varied and measured, and compares
 them side by side. It then interprets the evidence: 15 ranked findings sorted into prevention, detection
-and suppression, and a mission check that grades the flight evidence for any cabin and lists the tests
-still needed. The headline: PSI holds no solid-fuel flight test above 22.2 % oxygen. Every run can be
+and suppression, and a mission check that grades coverage by project rules for any cabin and lists the tests
+still needed. The headline: the selected run tables stop at 22.2% ambient oxygen for solids; NASA's Saffire-VI flight data in a separate report go higher. Every run can be
 downloaded as CSV for modelling, with a worked predictor and flame-spread numbers read from NASA's raw
-video. It matters because materials approved at 21 % oxygen are about to fly in much richer air.
+video. It matters because materials approved at 21 % oxygen may behave differently in an oxygen-enriched cabin.
 
 ## Link to Project Demo
 
@@ -55,50 +55,46 @@ If the live site is not up when you submit, give the code link here. The site is
    (computed from the PSI run table), what was recorded, the measurement types named in the record, and
    the hardware. Two or three investigations can be compared side by side, with matching rows marked, and
    six hardware families (for example BASS, BASS-II, SPICE and SLICE in the glovebox flow duct) show which
-   ones can be compared directly.
-2. *Extract data for predictive modelling.* The Evidence map places every run by oxygen and pressure,
+   studies share hardware; other test conditions still need to be compared.
+2. *Extract data for predictive modelling.* The Evidence map plots tests with both ambient oxygen and chamber pressure,
    with the cabin of interest and the Moon-base range drawn on it. The runs inside any cabin's window, or
-   all 986, download as CSV with one row per run. The Lab shows what the data can do: a model trained on
+   all 1,156, download as CSV with one row per run. The Lab shows what the data can do: a model trained on
    261 FLEX droplet runs predicts whether a flame goes out on its own (82 % correct on test days it never
-   saw, against 69 % for guessing; it warns when it extrapolates), and a tracker reads flame spread from
-   raw BASS-II video (five independent checks pass).
+   saw, against 69 % for the majority-class baseline; it warns when it extrapolates), and a tracker reads flame spread from
+   raw BASS-II video (five consistency checks after calibration on one run).
 3. *Highlight research that informs fire-safety controls and equipment.* Fifteen findings, each with its
    evidence, limits, an action and NASA sources, sorted into prevention, detection and suppression and
    ranked by weights the user sets. The Mission check turns them into a tool: set oxygen, pressure,
-   gravity, ventilation, cabin materials and extinguishing agent, and QUENCH grades the flight evidence
+   gravity, ventilation, cabin materials and extinguishing agent, and QUENCH grades coverage by project rules
    A to D for six fire-safety questions, shows the runs it used, lists the tests still needed and names
    the investigations that say most about that cabin.
 
 Two more sections give context: Lessons (Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir
-fire in NASA's words, plus NASA Spinoffs that made firefighting on Earth safer) and Ask (questions in
+fire in NASA's words, plus firefighting applications documented by NASA Spinoff) and Ask (questions in
 plain words, answered from the records only).
 
 **Key findings.**
 
-- PSI holds no solid-fuel flight test above 22.2 % oxygen. At 30 % oxygen or more it holds 0 solid-fuel
-  runs, 24 droplet runs (none at 10.2 psi or less) and 246 gas-flame runs. NASA reports that Saffire-VI
-  flew at higher oxygen and lower pressure, but Saffire-IV to -VI are not in PSI.
+- Applying both challenge conditions (ambient O₂ ≥30% and pressure ≤10.2 psia) gives 20 gas tests, no droplet tests and no solid tests with both coordinates in the selected tables. The narrower comparison window around 34% / 8.2 psia contains 15 gas tests. These are counts of test records, not of successful ignitions.
+- In separate [Saffire-VI results](https://ntrs.nasa.gov/citations/20240007488), NASA reports SIBAL fabric at 31.0% / 54.1 kPa and two-sided PMMA at 30.3% / 54.6 kPa. [SoFIE-GEL](https://doi.org/10.1016/j.combustflame.2025.114244) reports tests on solid PMMA spheres up to 34% oxygen.
 - In the Burning Rate Emulator, flames in elevated oxygen kept burning after the airflow stopped, although
   stopping ventilation is the first step of the station's fire response (NASA calls this preliminary).
 - In FLEX, 92 % of droplet flames below 18 % oxygen went out on their own; at 25 % and above, 8 %.
-- NASA's Researcher's Guide reports that the material approval test (NASA-STD-6001 Test 1) is not
-  conservative in microgravity, and that a local extinguisher jet can keep a flame alive.
-- Every flight test was in microgravity. PSI has no partial-gravity data yet; LUCI and FM2 are expected to
-  add it, and until then microgravity and normal-gravity results bound the answer.
+- NASA's Researcher's Guide reports that the material approval test (NASA-STD-6001 Test 1) can be nonconservative for some materials in microgravity, and that a local extinguisher jet can supply flow to a flame under some conditions.
+- The normalized run tables do not provide measurements at sustained lunar or Martian gravity. Microgravity and Earth-gravity tests cannot establish a numerical bound for a specific material at partial gravity.
 
 **How it works.** Python scripts read the raw PSI tables, clean them without guessing missing values,
-compute every number on the page, match every quote word for word against a saved copy of its source
-(including the challenge statement), and stop the build if anything does not match. 44 automated tests
+calculate run counts and measurement ranges, match every quote word for word against a saved copy of its source
+(including the challenge statement), and stop the build if anything does not match. Automated regression tests
 recount key facts from the raw CSV files with independent code. The site is static HTML and JavaScript:
 no server code, no API, no key, nothing to pay.
 
 **Benefits.** A mission designer gets an evidence check for their own cabin, with sources and a ranked
 test list, in seconds. A researcher or student sees which investigations to read first, how they differ
-and where the data is thin, and leaves with a clean table of runs. The same knowledge protects people on
-Earth in mines, submarines, aircraft and buildings.
+and where the data is thin, and leaves with a clean table of runs. The Lessons section separates documented uses on Earth from proposed applications.
 
 **What we hope to achieve.** That exploration fire-safety requirements name the oxygen gap explicitly,
-that the Saffire-IV to -VI and FLEX-2 run data reach PSI, and that the results still locked in BASS
+that more flight test results become available as run-level data, and that the results still locked in BASS
 video are extracted into a public table. QUENCH shows the method for each.
 
 **Tools.** Python (standard library, numpy; ffmpeg for video frames), HTML, CSS and JavaScript with no
@@ -119,13 +115,11 @@ Yes. We used Claude (Anthropic), a large language model, throughout the project:
 - Analysis and design: SI helped explore the PSI tables, proposed analyses and helped lay out the pages
   and the slides.
 
-How we kept it honest: no number on the page is written by SI. The build script computes every figure
-from NASA's tables, checks every number in the SI-drafted text against the record it cites (same value,
-same unit), matches every quote word for word against its saved source, and stops if anything fails. No
+The build script calculates the run statistics, checks the answer bank for source references and numeric tokens, and compares selected quotations with archived originals. These checks cannot certify an interpretation; the dashboard distinguishes observations, project-defined rules and open questions. No
 model runs when the site is used. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
-OpenAI Codex assisted with the interface redesign. OpenAI image generation was used for the QUENCH logo and an earlier orbital illustration.
+OpenAI Codex assisted with the interface redesign and the run-table and source audit. OpenAI image generation was used for the QUENCH logo and an earlier orbital illustration.
 The current website uses credited NASA photographs. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
 
 ## NASA Data
@@ -134,7 +128,7 @@ The current website uses credited NASA photographs. The Lab uses frames from NAS
   Records, experimental run tables and publication lists of 24 investigations: BASS, BASS-II, Saffire-I
   to -III, SAME, SAME-R, DAFT, FLEX, FLEX-2, CFI, the six ACME experiments (BRE, CFI-G, CLD Flame, E-FIELD
   Flames, Flame Design, s-Flame), SPICE, SLICE and five ground studies. This is the core of the project:
-  every number shown is computed from these tables.
+  the run export covers nine investigations; other cited quantities come from reports, the video analysis or the model.
 - BASS-II raw video, ReadMe and Summary Report (NASA/TM-20210011385), from PSI-25: used for the video lab.
 - NASA Combustion Science, Glenn Research Center: https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/
 - A Researcher's Guide to International Space Station Combustion Science: https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/

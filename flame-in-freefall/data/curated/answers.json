@@ -1,111 +1,111 @@
 {
-  "_about": "Analyst answers written ahead of time with an AI model (Claude) from the archive records, then checked by code. scripts/build_data.py checks every claim: each cited record must exist and each number must appear in it with the same unit, or the build stops. The page picks the answer that best matches the question; nothing is generated at run time.",
+  "_about": "Prepared answers retrieved locally. Each claim names its supporting records. The build checks references, numerical tokens and recognized units. Those checks cannot establish that a statement follows from the evidence. Paper-reported measurements are identified separately from imported PSI runs.",
   "answers": [
     {"id": "vent", "q": ["Does turning off ventilation put out a fire at 34 % oxygen?", "Does stopping the airflow extinguish a fire?", "Can we cut the fans to kill a fire in an oxygen-rich cabin?"],
-     "a": "Not reliably. At station air it helps: thin plastic films in BASS-II went out once the airflow fell to about 1 cm/s. In oxygen-rich air the one relevant experiment points the other way: Burning Rate Emulator flames kept burning with no airflow at all. No solid material has been tested at 34 % oxygen, so for the exploration atmosphere this step is unproven.",
+     "a": "Ventilation shutdown alone did not extinguish some elevated-oxygen BRE gas flames. Comparable flames in 21 % oxygen extinguished shortly after forced flow stopped. BASS-II found a low-flow extinction limit for thin PMMA films. Neither experiment establishes that shutting off ventilation will extinguish a fire involving arbitrary cabin materials.",
      "claims": [
-       {"text": "BASS-II thin films went out when the opposing flow fell to about 1 cm/s at 21 % oxygen.", "sources": ["F-vent-speed"]},
+       {"text": "BASS-II reported thin-film extinction at an opposing flow of about 1 cm/s in air.", "sources": ["F-vent-speed"]},
        {"text": "In the Burning Rate Emulator, flames at 21 % oxygen went out soon after the flow stopped, but flames in elevated oxygen kept burning with no airflow.", "sources": ["F-vent", "PSI-20"]},
-       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+       {"text": "BRE used a gas burner to emulate solid fuels. The daily table omits chamber pressure.", "sources": ["PSI-20"]}
      ]},
     {"id": "solid-ceiling", "q": ["What is the highest oxygen level at which solid materials were tested in flight?", "Were materials tested at 34 % oxygen?", "Has any material been burned in the exploration atmosphere?"],
-     "a": "22.2 %. Every solid-material flight test with a recorded oxygen level is between 13.6 and 22.2 %. The exploration atmosphere is 34 %, which is 11.8 points past the last data point.",
+     "a": "22.2 % is the highest recorded initial oxygen level for a solid-material test in the imported PSI tables. Published flight work goes higher. SoFIE-GEL tested solid PMMA spheres at up to 34 % oxygen. Saffire-VI recorded a SIBAL cloth burn at 31.0 % and 54.1 kPa. The SoFIE-GEL study’s reported ranges alone do not identify a test at the exact exploration pressure and oxygen pair.",
      "claims": [
-       {"text": "140 solid-fuel tests carry an oxygen value, all between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]},
-       {"text": "The exploration atmosphere is 34 %, 11.8 points beyond the last data point.", "sources": ["F-solid-gap"]}
+       {"text": "In the imported PSI tables, 140 solid-fuel test entries with oxygen values span 13.6 to 22.2 %.", "sources": ["F-solid-gap"]},
+       {"text": "SoFIE-GEL tested PMMA up to 34 % oxygen. Saffire-VI recorded a SIBAL burn at 31.0 % and 54.1 kPa.", "sources": ["N-sofie", "SAFFIRE6"]}
      ]},
     {"id": "atmospheres", "q": ["What is the exploration atmosphere?", "Which cabin atmospheres does NASA consider?", "What pressure and oxygen will a Moon base use?"],
-     "a": "NASA's Burning Rate Emulator record names three cabin atmospheres for human missions: 14.7 psia with 21 % oxygen (the space station), 10.2 psia with 26.5 %, and 8.2 psia with 34 %. The last is the exploration atmosphere.",
+     "a": "The BRE objective names three candidate cabin conditions. Station air is about 14.7 psia with 21 % oxygen. The two reduced-pressure conditions are 10.2 psia with 26.5 % oxygen and 8.2 psia with 34 %. QUENCH uses the last pair for its exploration scenario. The challenge gives a broader expected lunar range.",
      "claims": [
        {"text": "The three atmospheres are 14.7 psia at 21 % oxygen, 10.2 psia at 26.5 % and 8.2 psia at 34 %.", "sources": ["ATM", "PSI-20"]}
      ]},
     {"id": "why-o2", "q": ["Why does NASA want 34 % oxygen?", "Why raise the oxygen level?", "Why lower the cabin pressure?"],
-     "a": "The archive names the candidate atmospheres but does not give the reasons for choosing them. What it does show is the cost on the fire side: the higher the oxygen, the less the flight evidence.",
+     "a": "Lower cabin pressure can reduce the oxygen pre-breathe needed before a spacewalk. Increasing the oxygen fraction helps maintain oxygen partial pressure as total pressure falls. The challenge describes an anticipated range for lunar habitats, while QUENCH uses the specific 34 % and 8.2 psia case named in the BRE investigation.",
      "claims": [
        {"text": "The exploration atmosphere is 8.2 psia with 34 % oxygen.", "sources": ["ATM"]},
-       {"text": "No solid-fuel test with a recorded oxygen level is above 22.2 %.", "sources": ["F-solid-gap"]}
+       {"text": "The challenge links an intermediate cabin atmosphere to shorter pre-breathe time before lunar excursions.", "sources": ["CHALLENGE"]}
      ]},
     {"id": "selfext", "q": ["Will a fire go out on its own?", "Do flames self-extinguish in microgravity?", "How does oxygen change self-extinction?"],
-     "a": "Less and less as oxygen rises. In FLEX droplet runs with no suppressant, 92 % of those below 18 % oxygen ended in extinction, 56 % between 18 and 25 %, and 8 % at 25 % and above. None of the 9 runs at 34 % went out on their own.",
+     "a": "In FLEX droplet tests with neither added carbon dioxide nor helium, the fraction ending in the recorded category Extinction was 92 % below 18 % oxygen, 56 % from 18 % to below 25 %, and 8 % at 25 % or higher. None of the 9 runs at 34 % had that end state. The other labels are Completion and Disruption. These frequencies apply to the sampled droplets.",
      "claims": [
-       {"text": "Below 18 % oxygen, 92 % of FLEX runs with no suppressant ended in extinction; between 18 and 25 % it was 56 %; at 25 % and above it was 8 %.", "sources": ["F-selfext"]},
-       {"text": "None of the 9 runs at 34 % went out on their own.", "sources": ["F-selfext"]}
+       {"text": "Among FLEX runs without added carbon dioxide or helium, Extinction accounted for 92 % below 18 % oxygen, 56 % from 18 % to below 25 %, and 8 % at 25 % or higher.", "sources": ["F-selfext"]},
+       {"text": "None of the 9 FLEX droplets at 34 % oxygen ended in the recorded category Extinction.", "sources": ["F-selfext"]}
      ]},
     {"id": "liquids-exp", "q": ["Were liquid fuels tested in the exploration atmosphere?", "Were droplets burned at 34 % oxygen?", "What pressure were the high-oxygen droplet tests at?"],
-     "a": "Close, but not quite. FLEX burned 9 droplets at 34 % oxygen, all at about 0.70 atm, which is the 10.2 psia cabin. The exploration atmosphere is 0.56 atm. Below 0.65 atm the archive holds only 3 droplet runs, none above 21 % oxygen.",
+     "a": "FLEX tested 9 droplets at 34 % oxygen, all near 0.70 atm. The exploration target of 8.2 psia is about 0.56 atm. The imported droplet tables include only 3 runs below 0.65 atm, all at 21 % oxygen. Within the dashboard’s exploration window, 15 normal gas-flame attempts in CFI-G provide ambient oxygen and pressure. Those gas tests cannot fill the liquid-fuel gap.",
      "claims": [
        {"text": "FLEX burned 9 droplets at 34 % oxygen, all at about 0.70 atm.", "sources": ["F-corner"]},
        {"text": "The exploration atmosphere is 0.56 atm.", "sources": ["F-corner", "ATM"]},
-       {"text": "Below 0.65 atm the archive holds 3 droplet runs, none above 21 % oxygen.", "sources": ["F-corner"]}
+       {"text": "Below 0.65 atm the imported tables hold 3 droplet runs, none above 21 % oxygen. The exploration window contains 15 normal gas-flame attempts and no droplet runs.", "sources": ["F-corner"]}
      ]},
     {"id": "std6001", "q": ["Is NASA-STD-6001 conservative in microgravity?", "Is the ground flammability test the worst case?", "Can we trust the 1 g material approval test?"],
-     "a": "No. NASA's own Researcher's Guide reports that BASS results indicate the standard upward-burning test is not conservative: materials can burn at lower oxygen levels in microgravity than on Earth.",
+     "a": "The BASS results summarized in NASA’s 2015 guide show that some materials can burn at lower oxygen levels in microgravity than in the standard upward-flame test on Earth. A ground-test pass alone therefore cannot establish the limiting oxygen level in every low-gravity flow and material configuration.",
      "claims": [
        {"text": "The guide states that NASA-STD-6001 Test 1 is not conservative and that materials can burn at lower oxygen levels in microgravity than on Earth.", "sources": ["F-one-g", "GUIDE"]},
-       {"text": "BASS-II ran 129 tests and BASS 122.", "sources": ["F-one-g"]}
+       {"text": "The BASS and BASS-II tables describe material tests in a flow duct on the ISS.", "sources": ["PSI-25", "PSI-26"]}
      ]},
     {"id": "jet", "q": ["Do fire extinguishers work in microgravity?", "Can a suppressant jet put out a flame in space?", "How should an extinguisher be used in weightlessness?"],
-     "a": "A directed jet can make things worse. NASA's guide reports that local application of suppressant was not adequate: the jet pulled in air and kept the flame alive even with the cabin airflow off. Flooding a volume is the safer design assumption.",
+     "a": "In the BASS setup described by NASA, a local jet of suppressant drew in surrounding air and sustained the flame after ambient airflow stopped. That experiment illustrates why delivery geometry and mixing matter. It does not establish an operating procedure for a crew or the performance of other extinguishers.",
      "claims": [
        {"text": "NASA's guide reports that local application of suppressant is not adequate and that the local jet entrains air and sustains the flame even when the ambient airflow is turned off.", "sources": ["F-local-jet", "GUIDE"]}
      ]},
     {"id": "co2", "q": ["Does carbon dioxide put out fires at high oxygen?", "Was CO2 tested as a suppressant?", "Do helium or carbon dioxide work at 34 % oxygen?"],
-     "a": "Unknown at high oxygen. FLEX burned droplets in air diluted with carbon dioxide (123 runs) and helium (50 runs), but never above 25 % oxygen for carbon dioxide or 24 % for helium. Agent quantities for 34 % have to be measured, not scaled from station values.",
+     "a": "In the FLEX table, 123 droplet runs used carbon dioxide and 50 used helium as diluents. The highest oxygen values in those subsets were 25 % and 24 %, respectively. The table cannot establish a suppressant dose or performance for a crewed cabin at 34 % oxygen.",
      "claims": [
        {"text": "FLEX ran 123 runs with carbon dioxide and 50 runs with helium.", "sources": ["F-suppress"]},
        {"text": "None of the carbon dioxide runs went above 25 % oxygen and none of the helium runs above 24 %.", "sources": ["F-suppress"]}
      ]},
     {"id": "flow", "q": ["What airflow speed is most dangerous?", "How does ventilation speed affect flame spread?", "At what flow do flames go out?"],
-     "a": "Ordinary ventilation speed. NASA's guide puts the most flammable condition at about 10 cm/s, typical of spacecraft ventilation. At the low end, BASS-II thin films went out at about 1 cm/s in 21 % oxygen and already at 2.6 to 4 cm/s in 16 %.",
+     "a": "NASA’s guide describes a minimum in the limiting oxygen concentration near 10 cm/s for the solid-fuel spread curve it discusses. BASS-II reports extinction near 1 cm/s for certain thin PMMA films in air, and about 2.6 to 4 cm/s for the two films tested near 16 % oxygen. The authors note substantial uncertainty in low-speed calibration. A universal worst-case airflow cannot be inferred.",
      "claims": [
-       {"text": "The most flammable condition is at about 10 cm/s, the speed typical of spacecraft ventilation.", "sources": ["F-vent-speed", "GUIDE"]},
-       {"text": "BASS-II thin films went out at about 1 cm/s at 21 % oxygen and at about 2.6 to 4 cm/s at 16 %.", "sources": ["F-vent-speed"]}
+       {"text": "The guide places the minimum in the oxygen-limit curve for the solids it discusses on the order of 10 cm/s.", "sources": ["GUIDE", "F-vent-speed"]},
+       {"text": "BASS-II reported extinction near 1 cm/s for thin films in air, and at about 2.6 to 4 cm/s for the two films tested near 16 % oxygen.", "sources": ["F-vent-speed"]}
      ]},
     {"id": "depends", "q": ["Is fire always worse in microgravity?", "Do all materials burn better in space?", "What happened to silicone in Saffire?"],
-     "a": "No, it depends on the material. In Saffire-II, 4 of 4 silicone samples did not spread flame in microgravity although 3 of them burned in the 1 g test, while cotton-fiberglass fabric spread steadily at 2.1 mm/s and 2.6 mm/s.",
+     "a": "The outcome depends on the material and test conditions. All 4 Saffire-II silicone entries show approximately zero orbital burn length. In the corresponding ground tests, 3 show measurable or complete burning. In contrast, two cotton–fiberglass samples in orbit spread flame at 2.1 and 2.6 mm/s.",
      "claims": [
-       {"text": "In Saffire-II, 4 of 4 silicone samples did not spread flame in microgravity, although 3 of them burned in the 1 g test.", "sources": ["F-depends", "PSI-99"]},
+       {"text": "All 4 Saffire-II silicone entries report approximately zero orbital burn length. The 1 g comparison entries show measurable or complete burning in 3 cases.", "sources": ["F-depends", "PSI-99"]},
        {"text": "Cotton-fiberglass fabric spread at 2.1 mm/s and 2.6 mm/s.", "sources": ["F-depends"]}
      ]},
     {"id": "gravity", "q": ["Has anything been burned at lunar gravity?", "Which materials were tested on the Moon?", "Is there fire data for Mars gravity?"],
-     "a": "Not in this archive. Every combustion flight experiment here flew in orbit, on the space station or a Cygnus cargo ship. NASA's FM2 experiment is the first to burn materials on the Moon, at one sixth gravity.",
+     "a": "The retrieved PSI investigations supply orbital microgravity tests and ground comparisons. They contain no lunar-surface or Martian-surface material burns. NASA describes FM2 as a planned experiment to measure flame spread on the Moon. E-FIELD modifies a flame electrically and supplies an analogue of partial gravity.",
      "claims": [
-       {"text": "Every combustion flight experiment in the archive flew on the space station or on a Cygnus cargo ship in orbit.", "sources": ["F-gravity"]},
-       {"text": "FM2 is the first combustion experiment on another planetary body and burns materials on the Moon at one sixth gravity.", "sources": ["N-fm2"]}
+       {"text": "The flight records in this PSI selection describe orbital microgravity experiments.", "sources": ["F-gravity"]},
+       {"text": "NASA describes FM2 as a planned lunar-surface experiment at one sixth Earth gravity.", "sources": ["N-fm2"]}
      ]},
     {"id": "smoke", "q": ["Do smoke detectors work the same in microgravity?", "How does smoke behave without gravity?", "Will a fire be detected?"],
-     "a": "Not necessarily. SAME tested the hypothesis that smoke particles grow larger in microgravity because nothing carries the smoke away from its source, so detectors tuned on Earth smoke may respond differently. SAME and SAME-R cover 117 table rows, all at station air.",
+     "a": "SAME studied particle sizes produced by overheated spacecraft materials. Ventilation, material and aging can influence the smoke that reaches a detector. SAME and SAME-R include 117 rows of conditions in their tables, which omit ambient pressure and oxygen. These rows alone cannot establish detector performance in exploration air.",
      "claims": [
        {"text": "SAME tested the hypothesis that smoke from overheated materials forms larger particles in microgravity.", "sources": ["F-smoke", "PSI-102"]},
-       {"text": "SAME and SAME-R cover 117 table rows for Teflon, Kapton, silicone rubber, lamp wick and dibutyl phthalate.", "sources": ["F-smoke"]}
+       {"text": "Across 117 rows, the SAME and SAME-R tables list test conditions, including material and aging. They do not supply per-row oxygen or pressure.", "sources": ["F-smoke", "PSI-101", "PSI-102"]}
      ]},
     {"id": "cool", "q": ["Can a fire keep burning after the flame disappears?", "What are cool flames?", "Is a fire out when the flame is no longer visible?"],
-     "a": "It can. FLEX found droplets that kept burning as low-temperature cool flames after the visible flame was gone. Two follow-on investigations studied it: CFI with 87 droplet tests and ACME CFI-G with 154 gas-flame tests.",
+     "a": "Some fuel droplets continued reacting as cool flames after a visible hot flame extinguished. CFI followed up using droplets. CFI-G studied normal and inverse gas diffusion flames. Loss of visible light is therefore an incomplete indicator of reaction in these experiments.",
      "claims": [
        {"text": "FLEX found that some droplets keep burning as low-temperature cool flames after the visible flame disappears.", "sources": ["F-cool"]},
-       {"text": "CFI ran 87 droplet tests from 0.5 to 5 atm and ACME CFI-G ran 154 gas-flame tests.", "sources": ["F-cool"]}
+       {"text": "CFI lists 79 distinct droplet tests and CFI-G lists 333 normal and inverse gas-flame tests.", "sources": ["F-cool"]}
      ]},
     {"id": "raw", "q": ["Where is the raw data for solid materials?", "Where are the BASS results?", "Why are there no results in the tables?"],
-     "a": "In video. Only 439 of 986 listed runs have a result in a table. For BASS and BASS-II, 251 tests of real materials, the outcome exists only as 438 GB of raw video. The Video lab shows the results can be extracted automatically.",
+     "a": "BASS and BASS-II record samples and test conditions in PSI. The reports and video give additional results, including measured flame-spread and extinction behavior. The projects together account for about 438 GB of raw data. QUENCH also derives a spread estimate from selected BASS-II videos.",
      "claims": [
-       {"text": "Only 439 of 986 listed test runs have a result in a table.", "sources": ["F-video", "STATS"]},
-       {"text": "For BASS and BASS-II, 251 tests, the outcome exists only as 438 GB of raw video.", "sources": ["F-video"]}
+       {"text": "BASS and BASS-II have no standardized flame outcome column in their run tables.", "sources": ["PSI-25", "PSI-26", "F-video"]},
+       {"text": "The two BASS investigations account for about 438 GB of raw data.", "sources": ["F-video"]}
      ]},
     {"id": "video-acc", "q": ["How accurate is the video measurement?", "Can flame spread be measured from video?", "How was the video lab validated?"],
-     "a": "Two identical tests of a 200 µm film gave 1.26 and 1.28 mm/s, and the flame went out 1.9 s after the fan was cut, matching the NASA report. 5 of 5 independent checks pass. The scale comes from one value in that report, so absolute rates share its uncertainty.",
+     "a": "The tracker estimated 1.26 and 1.28 mm/s for repeat 200 µm PMMA films. In one clip the visible signal disappeared 1.9 s after the fan setting changed. Five consistency checks passed. Some use the same clips, and the scale is calibrated to a reported spread rate, so the checks do not establish an independent absolute accuracy.",
      "claims": [
-       {"text": "A 200 µm film spread at 1.26 and 1.28 mm/s in two identical tests.", "sources": ["F-video-lab"]},
-       {"text": "The flame went out 1.9 s after the fan was cut, and 5 of 5 independent checks pass.", "sources": ["F-video-lab"]}
+       {"text": "The video tracker estimated 1.26 and 1.28 mm/s for repeat tests using 200 µm films.", "sources": ["VIDEO", "F-video-lab"]},
+       {"text": "In one clip the last visible flame followed the change in fan setting by 1.9 s. Five consistency checks passed.", "sources": ["VIDEO", "F-video-lab"]}
      ]},
     {"id": "model-acc", "q": ["How good is the predictor?", "How accurate is the model?", "Can the model predict the exploration atmosphere?"],
-     "a": "Inside the tested range it is useful: trained on 261 FLEX runs, it is right 82 % of the time on test days it never saw, against 69 % for always guessing the most common outcome. For the exploration atmosphere it has to extrapolate, and it says so.",
+     "a": "The classifier scored 82 % mean accuracy across date-grouped cross-validation on 261 FLEX droplets. The majority-class baseline scored 69 %. It predicts the PSI end-state label Extinction. Exploration cabin pressure is below the training range. This evaluation does not establish prediction accuracy there or for solid cabin materials.",
      "claims": [
-       {"text": "A model of 261 FLEX runs predicts self-extinction with 82 % accuracy on unseen test days, against 69 % for always guessing the most common outcome.", "sources": ["F-model", "MODEL"]}
+       {"text": "Across date-grouped cross-validation on 261 FLEX droplet runs, the model averaged 82 % accuracy and the majority baseline 69 %.", "sources": ["MODEL"]}
      ]},
     {"id": "size", "q": ["How many experiments are in the archive?", "How much data is there?", "How many test runs?"],
-     "a": "The search returns 26 records, 24 of them about combustion. Their tables list 986 test runs, 439 with a result in a table, plus 352 publications and 6.3 TB of raw data.",
+     "a": "The PSI search returned 26 investigations, of which 24 concern combustion. QUENCH normalized 1156 distinct test records from selected run tables. The catalogue lists 352 publication entries across the combustion investigations and about 6.3 TB of raw files. Some papers are listed under more than one investigation.",
      "claims": [
-       {"text": "26 records, 24 about combustion, 986 test runs, 439 with a result in a table, 352 publications and 6.3 TB of raw data.", "sources": ["STATS"]}
+       {"text": "The search returned 26 records, including 24 combustion investigations. The compilation includes 1156 test records, 352 publication entries and 6.3 TB of raw files.", "sources": ["STATS"]}
      ]},
     {"id": "apollo1", "q": ["What happened in the Apollo 1 fire?", "Why was Apollo 1 so deadly?", "What did Apollo 1 teach about oxygen?"],
      "a": "During a launch-pad test in January 1967 the cabin was filled with pure oxygen, and a fire swept through it before the hatch could be opened. The crew died of carbon monoxide and toxic gases. Afterwards NASA restricted combustible materials and redesigned the hatch.",
@@ -129,77 +129,77 @@
        {"text": "The heaters reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation.", "sources": ["H-apollo13"]}
      ]},
     {"id": "earth", "q": ["How does this research help on Earth?", "What are the benefits for firefighters?", "Are there spinoffs from space fire research?"],
-     "a": "NASA Spinoff lists three: firefighter air tanks that weigh 20 pounds for a 30 minute supply, a fire detector first used on the Space Shuttle that tells combustion particles from dust, and firefighter clothing made with fire-resistant spacesuit materials.",
+     "a": "NASA Spinoff describes lighter firefighter breathing equipment, a Shuttle-derived detector that distinguishes combustion particles from dust, and firefighter gear using heat-protective materials developed for spaceflight. NASA presents mines as a potential application of linked detectors.",
      "claims": [
        {"text": "The new air tank system weighs 20 pounds for a 30 minute air supply, 13 pounds less than conventional tanks.", "sources": ["S-airtanks"]},
        {"text": "The detector can discriminate between combustion particles and dust, so it is less susceptible to false alarms.", "sources": ["S-detector"]},
        {"text": "Project FIRES applied fire-resistant spacesuit materials to firefighter gear.", "sources": ["S-attire"]}
      ]},
     {"id": "top-risk", "q": ["What is the biggest fire risk for a Moon base?", "What matters most for lunar fire safety?", "Summarize the main findings"],
-     "a": "Three things stack up. No solid material has been flight-tested above 22.2 % oxygen while the cabin will be at 34 %. The one experiment at elevated oxygen saw flames keep burning without airflow. And every test was in orbit, none at lunar gravity.",
+     "a": "The main evidence gap is material-specific. The imported PSI solid tests with reported oxygen stop at 22.2 %, but separate Saffire-VI and SoFIE-GEL publications document solid burns at higher oxygen in orbit. Lunar gravity adds a further uncertainty. BRE’s elevated-oxygen results concern a gas burner emulating solids.",
      "claims": [
-       {"text": "Solid-fuel tests with a recorded oxygen level stop at 22.2 %; the exploration atmosphere is 34 %.", "sources": ["F-solid-gap"]},
+       {"text": "The imported PSI solids stop at 22.2 % oxygen, while SoFIE-GEL flew PMMA sphere tests up to 34 %.", "sources": ["F-solid-gap", "N-sofie"]},
        {"text": "In the Burning Rate Emulator, flames in elevated oxygen kept burning with no airflow.", "sources": ["F-vent"]},
-       {"text": "Every combustion flight experiment in the archive flew in orbit.", "sources": ["F-gravity"]}
+       {"text": "The imported flight-run tables describe orbital microgravity experiments.", "sources": ["F-gravity"]}
      ]},
     {"id": "next", "q": ["What should NASA test next?", "Which experiments would close the gaps?", "What are the research priorities?"],
-     "a": "Burn real cabin materials at 34 % oxygen and 8.2 psia, including with the ventilation off; repeat at lunar gravity; and measure extinguisher agent quantities at high oxygen. NASA's SoFIE, FM2 and FLARE experiments work on the first two.",
+     "a": "Priorities include extending measurements to more cabin materials and geometries at the target oxygen and pressure, evaluating suppression under the same conditions, and obtaining partial-gravity data. SoFIE-GEL already supplies orbital PMMA results. FM2 aims to measure flame spread on the Moon, while FLARE investigates how ground tests can inform reduced-gravity predictions.",
      "claims": [
        {"text": "SoFIE studies how solid materials ignite and go out on the space station.", "sources": ["N-sofie"]},
-       {"text": "FM2 burns materials on the Moon at one sixth gravity.", "sources": ["N-fm2"]},
+       {"text": "FM2 aims to measure flame spread on the lunar surface at one sixth of Earth gravity.", "sources": ["N-fm2"]},
        {"text": "FLARE aims to predict a material's flammability limit in microgravity from tests on the ground.", "sources": ["N-flare"]},
        {"text": "The exploration atmosphere is 8.2 psia with 34 % oxygen.", "sources": ["ATM"]}
      ]},
     {"id": "bre", "q": ["What is the Burning Rate Emulator?", "What is ACME BRE?"],
-     "a": "A porous gas burner on the space station that imitates a burning solid, run in NASA's three candidate cabin atmospheres. It ignited 194 flames over 18 test days. It is the only investigation in the archive designed around the exploration atmosphere.",
+     "a": "The Burning Rate Emulator used porous gas burners to emulate condensed-fuel burning in microgravity. Its investigators named three candidate cabin atmospheres. The table totals 194 ignited flames across 18 test days and lists oxygen settings by day. It does not pair individual flames with pressure and oxygen.",
      "claims": [
        {"text": "ACME BRE ignited 194 flames over 18 test days at oxygen levels of 21, 25, 26.5, 34 and 40 %.", "sources": ["F-vent"]}
      ]},
     {"id": "saffire", "q": ["What is Saffire?", "What did the Saffire experiments do?"],
-     "a": "Large fires lit on purpose inside uncrewed Cygnus cargo ships after they left the station, where a big flame endangers no one. Saffire-II burned nine smaller samples and recorded each one beside its normal-gravity result.",
+     "a": "NASA used uncrewed Cygnus cargo vehicles to study large fires in orbit after they left the ISS. Saffire-II lists nine material entries and compares orbital and ground behavior. Later Saffire-VI publications report reduced-pressure flight burns of SIBAL fabric and PMMA.",
      "claims": [
        {"text": "Saffire burned samples inside an uncrewed Cygnus cargo ship.", "sources": ["PSI-98", "PSI-99"]},
-       {"text": "Saffire burned its samples at 20 and 30 cm/s airflow.", "sources": ["F-vent-speed"]}
+       {"text": "Across the Saffire experiments, the reported flow settings include 20 and 30 cm/s.", "sources": ["F-vent-speed"]}
      ]},
     {"id": "shape", "q": ["Why do flames look different in microgravity?", "What does a flame look like in space?", "Why are flames round in space?"],
-     "a": "On Earth hot gas rises and pulls a flame into a pointed cone. Without gravity nothing rises, so fuels burn as rounded balls and the flame is fed only by slow diffusion and whatever airflow the fans provide.",
+     "a": "Without ordinary buoyant convection, a candle flame in weak flow can become rounded as oxygen reaches it by diffusion. A forced flow or a burner jet can stretch or distort the flame. The shape depends on the fuel geometry and the surrounding motion.",
      "claims": [
-       {"text": "In space, fuels burn as oval balls rather than with an upward pointed cone flame as they do on Earth.", "sources": ["PSI-25"]}
+       {"text": "A candle in microgravity can form a rounded flame when oxygen transport depends mainly on diffusion.", "sources": ["CHALLENGE", "PSI-25"]}
      ]},
     {"id": "upstream", "q": ["Which way does a flame spread in space?", "Can a flame spread against the airflow?"],
-     "a": "Toward the fresh air. NASA's guide notes that at low flow speeds a flame in space spreads upstream, into the oncoming airflow, which is the opposite of what happens on Earth.",
+     "a": "NASA’s guide describes a thin sample ignited at its center in a weak imposed flow. In microgravity the flame propagated upstream into incoming air. The comparison in the guide is with a buoyancy-driven ground configuration. Changing flow or geometry can change spread direction.",
      "claims": [
        {"text": "The flame spreads upstream, into the oncoming airflow, in space when the forced-flow velocities are low.", "sources": ["GUIDE"]}
      ]},
     {"id": "pressure", "q": ["Does pressure matter for fire in space?", "What pressures were tested?"],
-     "a": "The data cannot say much, because pressure was barely varied where it matters. FLEX ran 103 tests near 0.70 atm and 161 near 1 atm; the exploration atmosphere is 0.56 atm. Solid-material tables do not record pressure at all.",
+     "a": "Pressure matters when comparing oxygen environments. The FLEX dataset concentrates near 0.70 atm and 1 atm, with 103 and 161 tests in those bands. The exploration target is about 0.56 atm. The imported solid-material tables omit per-run pressure, while a separate Saffire-VI flight paper gives measured pressures for individual burns.",
      "claims": [
        {"text": "FLEX ran 103 tests near 0.70 atm and 161 near 1 atm.", "sources": ["F-corner"]},
        {"text": "The exploration atmosphere is 0.56 atm.", "sources": ["F-corner"]}
      ]},
     {"id": "moon-air", "q": ["What air will a Moon base have?", "What oxygen level does NASA expect on the Moon?", "What is the cabin atmosphere of a lunar base or pressurized rover?"],
-     "a": "NASA's challenge statement expects the Moon base and its pressurized rovers to sit between a spacesuit and Earth air: 30 % oxygen or more at 10.2 psi or less. Spacesuits hold pure oxygen at 4.3 psi, and the in-between air shortens the oxygen pre-breathe before a moonwalk. At 30 % oxygen or more the archive holds no solid-fuel run at all.",
+     "a": "The challenge describes an expected lunar habitat and rover range of at least 30 % oxygen and at most 10.2 psi total pressure to shorten pre-breathe time. The imported tables contain 20 normal CFI-G gas-flame attempts meeting both limits, and no such solid or droplet entries. The separate Saffire-VI papers report SIBAL and PMMA burns in the range.",
      "claims": [
        {"text": "The oxygen concentration used on the Moon will likely be 30 % or greater, with a pressure of 10.2 psi or less.", "sources": ["CHALLENGE"]},
-       {"text": "Spacesuits are filled with 100 % oxygen to only 4.3 psi.", "sources": ["CHALLENGE"]},
-       {"text": "At 30 % oxygen or more the run tables list 0 solid-fuel runs, 24 droplet runs and 246 gas-flame runs.", "sources": ["MOON"]}
+       {"text": "The challenge uses a suit atmosphere of 100 % oxygen at 4.3 psi as its reference.", "sources": ["CHALLENGE"]},
+       {"text": "At 30 % ambient oxygen or higher, the compiled run tables list 0 solid runs, 24 droplet runs and 246 gas runs. Applying the additional ceiling of 10.2 psi leaves 20 normal CFI-G gas-flame attempts.", "sources": ["MOON"]}
      ]},
     {"id": "saffire-later", "q": ["Were solid materials ever flight-tested at higher oxygen?", "What about the later flights IV, V and VI?", "Is flight VI of the spacecraft fire experiment missing from PSI?"],
-     "a": "Yes, but not in this archive. NASA reports that Saffire-VI, the last flight of the series, ran at higher oxygen concentration and lower pressure to simulate crewed spacecraft, burning plexiglass, cotton, Nomex and SIBAL fabric. Saffire-IV, -V and -VI are not in PSI, so QUENCH cannot count their runs. Inside PSI, solid-fuel tests stop at 22.2 % oxygen.",
+     "a": "Yes. In Saffire-VI, SIBAL cloth burned at 31.0 % oxygen and 54.1 kPa, and two-sided PMMA burned at 30.3 % and 54.6 kPa. Nomex did not ignite at 31.9 %. The later Saffire flights are absent from this PSI search snapshot. QUENCH shows published flight events separately from the PSI counts.",
      "claims": [
-       {"text": "Saffire-VI was unique because of the higher oxygen concentration and lower pressure generated in the test unit.", "sources": ["SAFFIRE6"]},
-       {"text": "Saffire-IV, Saffire-V and Saffire-VI are not in the PSI archive.", "sources": ["SAFFIRE6"]},
-       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+       {"text": "Saffire-VI recorded a SIBAL cloth burn at 31.0 % and 54.1 kPa, and a two-sided PMMA burn at 30.3 % and 54.6 kPa.", "sources": ["SAFFIRE6"]},
+       {"text": "Saffire-IV through Saffire-VI are absent from the imported PSI search snapshot.", "sources": ["SAFFIRE6", "STATS"]},
+       {"text": "Nomex did not ignite in the reported Saffire-VI event at 31.9 % oxygen.", "sources": ["SAFFIRE6"]}
      ]},
     {"id": "partial-g", "q": ["Is there any partial-gravity combustion data?", "Which experiment mimicked partial gravity?", "How can I bound fire behaviour at lunar gravity?"],
-     "a": "There is no flight data. The challenge statement says PSI holds no partial-gravity combustion data yet and expects it from LUCI and FM2. Two things help meanwhile: ACME E-FIELD Flames mimicked partial gravity with an electric field, and microgravity and normal-gravity results can bound what happens in between. Saffire-II lists a normal-gravity result beside each microgravity one.",
+     "a": "The challenge reports no partial-gravity combustion data in this PSI collection. Electrically forced E-FIELD flames provide an analogue. Saffire-II also pairs microgravity and normal-gravity observations. The two gravity endpoints offer comparisons, but they do not establish a numerical limit at lunar or Martian gravity.",
      "claims": [
        {"text": "There is currently no partial-gravity combustion data available in PSI.", "sources": ["CHALLENGE"]},
        {"text": "Partial gravity was mimicked in the ACME E-FIELD Flames experiment through the effect of an electric field on the ions in flames.", "sources": ["CHALLENGE", "PSI-22"]},
        {"text": "Microgravity and normal-gravity results could bound what occurs at intermediate gravity levels.", "sources": ["CHALLENGE"]}
      ]},
     {"id": "hardware", "q": ["Which investigations used the same hardware?", "Which experiments shared the glovebox flow duct?", "Which experiments can be compared directly?"],
-     "a": "Three hardware families cover most of the archive. BASS, BASS-II, SPICE and SLICE ran in the Microgravity Science Glovebox with the fan-driven flow duct built for SPICE. FLEX, FLEX-2 and CFI burned droplets in the Multi-user Droplet Combustion Apparatus. The ACME experiments shared one set of gas-flame hardware in the Combustion Integrated Rack. In the Archive, tick two or three investigations to compare them side by side.",
+     "a": "BASS, BASS-II, SPICE and SLICE shared a modular glovebox flow duct. FLEX, FLEX-2 and CFI used the Multi-user Droplet Combustion Apparatus. ACME projects shared modular hardware for gaseous flames. Shared hardware helps interpretation, but comparison still requires compatible fuel, geometry, flow and atmospheric conditions.",
      "claims": [
        {"text": "BASS, BASS-II, SPICE and SLICE were conducted within the Microgravity Science Glovebox using the fan-driven flow duct built for SPICE.", "sources": ["HW-msg"]},
        {"text": "FLEX, FLEX-2 and CFI burned droplets of liquid fuel with the Multi-user Droplet Combustion Apparatus.", "sources": ["HW-mdca"]},
@@ -214,24 +214,24 @@
        {"text": "The archive search returns 24 records about combustion.", "sources": ["STATS"]}
      ]},
     {"id": "export", "q": ["Can I download the data?", "How do I get the runs for my own model?", "Is there a CSV file of the tests?"],
-     "a": "Yes. Evidence has two buttons: the runs inside the selected cabin's window, and all 986 runs, as CSV with one row per run. The Lab gives the 274 FLEX runs behind the predictor, which trains on the 261 that record a droplet size and pressure, and the model's coefficients. The Archive downloads the investigation table. The values are NASA's; a blank cell means PSI does not record the value.",
+     "a": "QUENCH exports all 1156 normalized test records and a subset within the selected atmosphere window. The investigation table and the FLEX model inputs and coefficients are also available. The model uses 261 of the 274 FLEX rows with valid input data. The CSV distinguishes chamber oxygen from burner-feed oxygen.",
      "claims": [
-       {"text": "The run tables list 986 test runs that could be placed or counted.", "sources": ["STATS"]},
+       {"text": "The downloadable compilation contains 1156 individual test records.", "sources": ["STATS"]},
        {"text": "FLEX lists 274 runs in its PSI table.", "sources": ["PSI-69"]},
        {"text": "The outcome model was trained on 261 FLEX droplet runs.", "sources": ["MODEL"]}
      ]},
     {"id": "highest-o2", "q": ["What is the highest oxygen level ever tested in the whole archive?", "Which experiment used the most oxygen?", "Which flames burned in 85 % oxygen?"],
-     "a": "ACME CFI-G. Its inside-out flames fed an oxygen-nitrogen mixture of up to 85 % oxygen through the burner into a fuel atmosphere, so that figure is not cabin air. For materials the picture is different: solid-fuel tests in the archive stop at 22.2 % oxygen.",
+     "a": "The largest reported oxygen fraction is 85 % in the CFI-G inverse burner feed, which entered a chamber containing fuel and nitrogen. The highest per-run ambient oxygen in the imported tables is 40 % in Flame Design. PSI solids with measured oxygen reach 22.2 %, while SoFIE-GEL separately reported orbital PMMA tests up to 34 %.",
      "claims": [
        {"text": "An oxygen-nitrogen mixture of up to 85 % oxygen flowed from the spherical burner, creating an inside-out flame.", "sources": ["CHALLENGE"]},
-       {"text": "The ACME CFI-G table lists oxygen from 12 to 85 %.", "sources": ["PSI-159"]},
-       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+       {"text": "CFI-G’s inverse burner feed ranged from 12 to 85 % oxygen. In the Flame Design normal table, initial ambient oxygen reached 40 %.", "sources": ["PSI-159", "PSI-10", "CHALLENGE"]},
+       {"text": "In the imported PSI tables, recorded oxygen for solid-fuel tests spans 13.6 to 22.2 %.", "sources": ["F-solid-gap"]}
      ]},
     {"id": "si", "q": ["How is SI used in QUENCH?", "Is this generated by AI?", "Does QUENCH use artificial intelligence or super intelligence?"],
-     "a": "SI, the term NASA Space Apps uses for AI, wrote first drafts and code. It does not answer you live. The investigation summaries, the wording of the findings and these analyst answers were drafted with Claude and then checked by code: every number must appear in a cited NASA record with the same unit, and every quote must match its saved source. The predictor is a machine-learning model trained on FLEX runs and the video lab is computer vision.",
+     "a": "QUENCH retrieves prepared answers in the browser. Claude assisted with initial code and text and Codex assisted with subsequent revisions. The build checks source IDs, numerical tokens and quotations. The FLEX classifier and BASS-II image tracker produce model and video estimates, respectively.",
      "claims": [
        {"text": "Claude was used to write code, normalise tables and draft the investigation summaries, the wording of the findings and the analyst answers.", "sources": ["SI"]},
-       {"text": "No model is called while the site is used.", "sources": ["SI"]},
+       {"text": "The browser retrieves prepared prose without calling a generative model.", "sources": ["SI"]},
        {"text": "The outcome model was trained on 261 FLEX droplet runs.", "sources": ["MODEL"]}
      ]}
   ]

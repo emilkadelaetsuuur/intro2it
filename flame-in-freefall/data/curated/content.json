@@ -1,5 +1,5 @@
 {
-  "_about": "Hand-curated content. Every 'quote' must appear word for word (ignoring line breaks and repeated spaces) in the file named by 'src' under data/sources; scripts/build_data.py fails if one does not. Summaries were drafted with Claude from the NASA PSI records; every number in a summary must appear in the record or its table.",
+  "_about": "Editorial summaries of PSI records and project analyses. The build checks cited source IDs and numerical tokens and matches direct quotes to saved texts. The checks do not establish causal relationships or the validity of extrapolation.",
   "sources": {
     "apollo1": {
       "file": "apollo-1_sma.txt",
@@ -14,7 +14,7 @@
     "apollotests": {
       "file": "apollo-flammability-tests_nasa.txt",
       "title": "50 Years Ago: Apollo Flammability Tests, NASA",
-      "url": "https://www.nasa.gov/feature/50-years-ago-apollo-flammability-tests"
+      "url": "https://www.nasa.gov/history/50-years-ago-apollo-flammability-tests/"
     },
     "mir": {
       "file": "mir-fire-1997_nasa.txt",
@@ -44,7 +44,7 @@
     "bass2report": {
       "file": "bass2-summary-report_excerpts.txt",
       "title": "BASS-II Summary Report, NASA/TM-20210011385",
-      "url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-25"
+      "url": "https://ntrs.nasa.gov/citations/20210011385"
     },
     "video": {
       "title": "NASA ScienceCasts: The Power of Studying Combustion on the ISS (2018)",
@@ -59,6 +59,29 @@
       "file": "saffire-vi-final_nasa.txt",
       "title": "Flame Burns Out on NASA's Long-Running Spacecraft Fire Experiment, NASA Glenn (2024)",
       "url": "https://www.nasa.gov/centers-and-facilities/glenn/flame-burns-out-on-nasas-long-running-spacecraft-fire-experiment/"
+    },
+    "saffire6tests": {
+      "file": "saffire-vi-flight-conditions.txt",
+      "title": "Urban et al., Preliminary Results from the Saffire VI Experiment, Table 1 (2024)",
+      "url": "https://ntrs.nasa.gov/citations/20240002981"
+    },
+    "saffire6events": {
+      "file": "saffire-vi-flight-events.txt",
+      "title": "Vehicle Modeling During the Burn Events in the Saffire VI Experiments, flight events in Table 1 (2025)",
+      "url": "https://ntrs.nasa.gov/citations/20250002675"
+    },
+    "sofiegel": {
+      "file": "sofie-gel-flight-summary.txt",
+      "title": "T’ien et al., ISS flight measurements of PMMA sphere extinction, Combustion and Flame (2025)",
+      "url": "https://doi.org/10.1016/j.combustflame.2025.114244"
+    },
+    "psi": {
+      "title": "NASA Physical Sciences Informatics, combustion investigation search",
+      "url": "https://psi.nasa.gov/physci/repo/search?q=combustion&data_source=psi&data_type=investigation"
+    },
+    "glenn": {
+      "title": "Combustion Science, NASA Glenn Research Center",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/"
     }
   },
   "history": [
@@ -92,7 +115,7 @@
         "src": "apollo1",
         "text": "NASA restricted and controlled the amount and location of combustible material within the spacecraft."
       },
-      "today": "Oxygen-enriched air and the materials inside the cabin were the core of the Apollo 1 failure. The exploration atmosphere raises oxygen to 34 %, above every solid-material flight test in this archive.",
+      "today": "The launch-pad fire shows why cabin pressure, oxygen fraction, material selection and escape provisions must be considered together. The later flight measurements shown here cover different materials and test conditions.",
       "findings": [
         "solid-gap",
         "one-g"
@@ -108,7 +131,7 @@
         "psi": 6.2,
         "label": "100 % oxygen, 6.2 psi (flight)"
       },
-      "what": "After the fire, NASA burned full-scale mock-ups on purpose to choose a safe cabin atmosphere: 102 deliberate ignitions in a command-module boilerplate, at three oxygen and pressure combinations.",
+      "what": "NASA made 102 deliberate ignitions in a command-module mock-up at three combinations of oxygen and pressure. The tests examined the modified cabin after the Apollo 1 fire.",
       "quotes": [
         {
           "src": "apollotests",
@@ -124,7 +147,7 @@
         "src": "apollotests",
         "text": "The series of tests led to a determination of ideal cabin atmospheres during ground testing, prelaunch operations and flight."
       },
-      "today": "NASA chose the Apollo atmosphere only after testing materials in it. For the exploration atmosphere the equivalent flight data for solid materials does not exist yet in this archive.",
+      "today": "The distinction between a tested material and an entire cabin also matters for exploration. Saffire-VI provides flight measurements on particular materials at reduced pressure and elevated oxygen.",
       "findings": [
         "solid-gap",
         "gravity"
@@ -136,15 +159,11 @@
       "date": "April 1970",
       "name": "Apollo 13",
       "atmosphere": null,
-      "what": "Heaters inside an oxygen tank had been left on during a ground test and overheated, damaging the wire insulation. In flight the tank blew up, the mission was aborted and the crew survived in the lunar module.",
+      "what": "An oxygen-tank heater and its thermostat were incompatible with the voltage used during a ground test. The heater overheated and damaged wire insulation. The tank exploded during the flight. The crew used the lunar module as a lifeboat and returned to Earth.",
       "quotes": [
         {
           "src": "apollo13",
           "text": "During the final test on the launch pad, the heaters were left on for an extended period and reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation."
-        },
-        {
-          "src": "apollo13",
-          "text": "a lesson learned from the Apollo I fire prevented arcing from happening, as a major redesign added increased insulation to better protect the wiring."
         }
       ],
       "changed": "The oxygen tank system was redesigned: a third tank in another bay, better thermostats, no stirring fans, and all wiring sheathed in stainless steel.",
@@ -152,7 +171,7 @@
         "src": "apollo13",
         "text": "redesigned the oxygen tank system by adding a third tank in a different bay, upgrading thermostats, removing stirring fans and sheathing all electrical wiring in stainless steel."
       },
-      "today": "Insulation and wiring in contact with oxygen are fuel and ignition source at once. Pure-oxygen hardware is outside every test in this archive.",
+      "today": "The damaged insulation was inside an oxygen tank. Cabin flame-spread experiments address a different environment and cannot quantify the risk of a fault in oxygen-system wiring.",
       "findings": [
         "one-g"
       ]
@@ -183,7 +202,7 @@
         "src": "mir",
         "text": "They identified the most likely culprit as latex working glove material inadvertently introduced into the canister."
       },
-      "today": "Smoke, not flame, filled the station for hours. Detecting and clearing smoke in microgravity is its own problem, and the smoke experiments in this archive ran only at station air.",
+      "today": "The fire blocked an escape route for minutes, and clearing the smoke took hours. SAME and SAME-R measured smoke from overheated materials aboard the ISS. Their published condition tables omit ambient oxygen and pressure.",
       "findings": [
         "smoke",
         "suppress"
@@ -195,21 +214,21 @@
       "name": "Lighter firefighter air tanks",
       "year": 1976,
       "src": "airtanks",
-      "what": "Composite air tanks from spacesuit work: a 30-minute supply that weighs 20 pounds, 13 pounds less than the tanks firefighters used before.",
+      "what": "Scott Aviation and NASA Johnson developed a composite air-tank backpack weighing 20 pounds for a 30-minute air supply. It was 13 pounds lighter than the conventional equipment described in 1976.",
       "quote": "New backpack system weighs only 20 pounds for 30 minute air supply, 13 pounds less than conventional firefighting tanks."
     },
     {
       "name": "Fewer false fire alarms",
       "year": 1978,
       "src": "detector",
-      "what": "A fire detector first used on the Space Shuttle tells combustion particles from dust, so it raises fewer false alarms. It was used in mines.",
+      "what": "The Shuttle detector distinguished combustion particles from dust, reducing susceptibility to false alarms. NASA described networks of these sensors as a possible way to monitor large spaces such as mines.",
       "quote": "can discriminate between combustion particles and extraneous matters such as dust. This gives an important advantage; it is less susceptible to false alarms."
     },
     {
       "name": "Fire-resistant gear",
       "year": 1982,
       "src": "attire",
-      "what": "Project FIRES, with the U.S. Fire Administration, brought fire-resistant spacesuit materials into firefighter clothing, tested by fourteen city fire departments.",
+      "what": "NASA and the U.S. Fire Administration evaluated heat-protective materials derived from spacesuits and spacecraft components for firefighter clothing. Fourteen municipal fire departments participated in the field evaluation.",
       "quote": "A major focus of the effort involves application to the FIRES ensemble of lightweight, fire-resistant, heat-protective materials originally developed for use in astronauts' space suits or in spacecraft components which require thermal protection."
     }
   ],
@@ -246,11 +265,11 @@
   "summaries": {
     "PSI-10": {
       "rel": "indirect",
-      "text": "Spherical ethylene and propane flames, burning outward and inward, used to find when flames start making soot. Oxygen ran from about 20 to 40 %. Aimed at cleaner engines and power plants, but 131 of its runs are at 30 % oxygen or more, the most of any investigation in the archive."
+      "text": "Flame Design studied soot formation in spherical diffusion flames. Its normal-flame table lists ethylene and propane in oxygen-containing chamber atmospheres. Initial chamber oxygen reached 40 %, including 131 normal-flame runs at 30 % or higher."
     },
     "PSI-20": {
       "rel": "direct",
-      "text": "A porous gas burner that imitates burning solids, run in NASA's three candidate cabin atmospheres. Flames in elevated oxygen kept burning after the airflow stopped, while flames at 21 % went out. NASA calls the results preliminary."
+      "text": "A porous gas burner emulated a burning solid. The investigators proposed three cabin atmospheres and reported that some flames persisted without forced airflow at elevated oxygen. At 21 % oxygen comparable flames extinguished shortly after the flow stopped. The results are preliminary. The day summaries omit pressure."
     },
     "PSI-21": {
       "rel": "indirect",
@@ -262,11 +281,11 @@
     },
     "PSI-23": {
       "rel": "indirect",
-      "text": "Spherical diffusion flames of hydrogen, methane and ethylene mixtures, in air-like atmospheres with nitrogen or helium, studied as they grow and go out."
+      "text": "Gas diffusion flames produced with hydrogen, methane and ethylene fuels supplied data on growth and extinction. The daily conditions include different oxygen levels and diluents."
     },
     "PSI-25": {
       "rel": "direct",
-      "text": "Real spacecraft-type materials (PMMA films, rods and slabs, cotton-fiberglass fabric) burned in a slow airflow at 13.6 to 22.2 % oxygen. It tests whether NASA's normal-gravity screening test is the worst case. Results are in video, still photographs and papers, not in the table."
+      "text": "BASS-II tested PMMA and other solid materials in a flow duct aboard the ISS. Initial oxygen in the imported table ranged from 13.6 to 22.2 %. The table records conditions and gas readings. Images, video and the investigators’ report document how individual samples burned."
     },
     "PSI-26": {
       "rel": "direct",
@@ -274,7 +293,7 @@
     },
     "PSI-39": {
       "rel": "indirect",
-      "text": "Dodecane droplets burning as low-temperature cool flames at 0.5 to 5 atm. Explains flames that keep reacting after the visible flame is gone."
+      "text": "CFI examined cool-flame chemistry in dodecane droplets and fuel mixtures. Its table reports pressures from 0.5 to 5 atm. A droplet can continue reacting after its visible hot flame disappears."
     },
     "PSI-47": {
       "rel": "direct",
@@ -290,7 +309,7 @@
     },
     "PSI-68": {
       "rel": "indirect",
-      "text": "Droplets of practical fuels and fuel mixtures, planned at 17 to 30 % oxygen and 0.5 to 3 atm. PSI holds the planned conditions, not the run results."
+      "text": "FLEX-2 studied combustion of droplets of single fuels and mixtures. Its summary lists a test matrix spanning 17 to 30 % oxygen and 0.5 to 3 atm. Per-run oxygen, pressure and outcomes cannot be recovered by crossing the listed settings."
     },
     "PSI-69": {
       "rel": "direct",
@@ -298,11 +317,11 @@
     },
     "PSI-98": {
       "rel": "direct",
-      "text": "The first large spacecraft fire experiment: a fabric sheet of 94 by 40.6 cm burned inside an uncrewed Cygnus cargo ship after it left the station, measuring flame growth, oxygen and carbon dioxide."
+      "text": "A large cotton–fiberglass sheet burned inside an uncrewed Cygnus after it left the ISS. The table gives dimensions of 94 by 40.6 cm and lists ignition power, airflow and burn duration."
     },
     "PSI-99": {
       "rel": "direct",
-      "text": "Nine smaller samples (silicone, cotton-fiberglass, PMMA, Nomex) burned on Cygnus, each beside its normal-gravity result. Silicone spread little or no flame in weightlessness."
+      "text": "Nine sample entries compare orbital and normal-gravity results for silicone, cotton–fiberglass fabric, PMMA and Nomex. All four silicone entries record approximately zero orbital burn length. The entry combining PMMA and Nomex specifies that only the PMMA burned."
     },
     "PSI-100": {
       "rel": "direct",
@@ -322,7 +341,7 @@
     },
     "PSI-107": {
       "rel": "indirect",
-      "text": "How much fuel a jet flame can burn before it starts to smoke, for ethylene, propane and propylene, over 469 runs. Soot data for models."
+      "text": "SPICE varied jet fuel flow and measured smoke-point behavior in coflowing air. The imported table contains 469 entries, including measurements at different fuel flow settings within a single flame-on interval."
     },
     "PSI-115": {
       "rel": "direct",
@@ -338,11 +357,11 @@
     },
     "PSI-159": {
       "rel": "indirect",
-      "text": "Cool flames of ethane, propane and butane on a spherical burner, with oxygen from 12 to 85 %. Most of the 154 runs in the table recorded whether the flame went out on its own."
+      "text": "CFI-G studied ethane, propane and butane in normal and inverse spherical flames. The normal-flame table records oxygen in the ambient chamber. In the inverse-flame table, 12 to 85 % oxygen refers to the mixture delivered by the burner into a fuel-containing chamber."
     }
   },
   "data_notes": [
-    "SAFFIRE-I (PSI-98): the record lists the space station as platform and 2001 to 2008 as dates, the same dates as SAME (PSI-102). Its own text describes an uncrewed cargo vessel. The dates and platform look copied; we use the record text."
+    "The PSI catalogue lists the ISS for Saffire-I and Saffire-III. NASA describes both flight experiments aboard uncrewed Cygnus spacecraft after departure from the station. Saffire-I’s catalogue dates also match those of SAME. Use the mission history for flight chronology."
   ],
   "challenge_quotes": {
     "task": {
@@ -595,5 +614,62 @@
         ]
       }
     ]
+  },
+  "external_saffire6": {
+    "text": "Saffire-VI flight events outside the imported PSI tables. Nomex did not ignite at 31.9 % oxygen. SIBAL cloth burned at 31.0 % and 54.1 kPa. Two-sided PMMA burned at 30.3 % and 54.6 kPa. One-sided PMMA burned at 28.8 % and 55.2 kPa. These pressures and oxygen fractions were recorded during the flight. The SIBAL and two-sided PMMA burns fall inside the dashboard exploration window. Table 1 gives no corresponding pressure for the Nomex event.",
+    "sources": [
+      "saffire6tests",
+      "saffire6events"
+    ],
+    "runs": [
+      {
+        "id": "VI-1",
+        "event": 4,
+        "material": "Nomex",
+        "material_id": "nomex",
+        "oxygen_percent": 31.9,
+        "pressure_kpa": null,
+        "outcome": "noign"
+      },
+      {
+        "id": "VI-2",
+        "event": 5,
+        "material": "SIBAL cotton–fiberglass cloth",
+        "material_id": "sibal",
+        "oxygen_percent": 31.0,
+        "pressure_kpa": 54.1,
+        "outcome": "burn"
+      },
+      {
+        "id": "VI-3",
+        "event": 6,
+        "material": "Two-sided PMMA",
+        "material_id": "pmma",
+        "oxygen_percent": 30.3,
+        "pressure_kpa": 54.6,
+        "outcome": "burn"
+      },
+      {
+        "id": "VI-4",
+        "event": 8,
+        "material": "One-sided PMMA",
+        "material_id": "pmma",
+        "oxygen_percent": 28.8,
+        "pressure_kpa": 55.2,
+        "outcome": "burn"
+      }
+    ]
+  },
+  "external_sofie": {
+    "text": "SoFIE-GEL flight tests on the ISS measured extinction of solid PMMA spheres in 13 to 34 % oxygen, at pressures from 0.15 to 1.1 atm and forced flows from 0.2 to 80 cm/s. The published ranges do not pair an oxygen concentration with a particular pressure. They cannot establish a run at the exact exploration atmosphere.",
+    "source": "sofiegel",
+    "material_id": "pmma",
+    "sphere_diameter_cm": 4,
+    "oxygen_min_percent": 13,
+    "oxygen_max_percent": 34,
+    "pressure_min_atm": 0.15,
+    "pressure_max_atm": 1.1,
+    "flow_min_cm_s": 0.2,
+    "flow_max_cm_s": 80
   }
 }

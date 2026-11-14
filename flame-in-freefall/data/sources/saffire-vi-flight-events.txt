@@ -1,0 +1,10 @@
+Vehicle Modeling During the Burn Events in the Saffire VI Experiments (2025), Table 1 (page 4), corroborated by the description preceding it.
+NASA Technical Reports Server: https://ntrs.nasa.gov/citations/20250002675
+These are experimental events described in the paper. Values are transcribed from its flight-event table, not the numerical simulations.
+Blank pressure denotes an event for which the table supplies no pressure.
+
+event,material_id,oxygen_percent,pressure_kpa,outcome
+4,nomex,31.9,,noign
+5,sibal,31.0,54.1,burn
+6,pmma,30.3,54.6,burn
+8,pmma,28.8,55.2,burn

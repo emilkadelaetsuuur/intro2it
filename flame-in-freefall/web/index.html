@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
 <meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
-<meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Every number is recomputed from NASA PSI tables and every quote is matched to its saved source at build time. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
+<meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
@@ -326,8 +326,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
           <p class="cabin-reading"><span>Oxygen <strong id="cabin-o2"></strong></span><span>Pressure <strong id="cabin-pressure"></strong></span></p>
         </div>
         <div class="cabin-runs" role="status" aria-live="polite" aria-atomic="true">
-          <h3 class="cabin-label">Matching flight runs</h3>
+          <h3 class="cabin-label">Runs matching oxygen and pressure</h3>
           <div id="cabin-chart"></div>
+          <p class="fine" id="cabin-partial"></p>
         </div>
       </div>
       <details class="cabin-method">
@@ -395,7 +396,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 03 evidence -->
 <div class="page wrap view" id="v-evidence" hidden>
-  <div class="sec"><h2>Evidence map</h2><p class="sub">Each circle groups runs at the same oxygen concentration and pressure. The solid rectangle marks the range used to match the selected cabin. Runs with no recorded pressure appear below the plot.</p></div>
+  <div class="sec"><h2>Evidence map</h2><p class="sub">Circles group runs by fuel type and nearby ambient oxygen and pressure. Select a circle for the measured range. The solid rectangle marks the cabin window. Counts use each run’s recorded conditions.</p></div>
   <div class="controls">
     <div class="group" id="atmchips" role="group" aria-label="Cabin atmosphere"><span class="lab">Atmosphere</span></div>
     <div class="group" id="kindchips" role="group" aria-label="What burned"><span class="lab">Show</span></div>
@@ -406,7 +407,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   <div class="block"><h3 class="lab">Matching runs by fuel type</h3><div class="matrix" id="matrix2"></div></div>
   <div class="block"><h3 class="lab">Flight test data</h3>
     <div class="group"><button class="chip" type="button" id="dlwin">Runs inside the window (CSV)</button><button class="chip" type="button" id="dlall">All runs (CSV)</button><a class="chip" href="downloads/README.txt" target="_blank" rel="noopener">Column notes</a></div>
-    <p class="fine">Each row describes one run. Fields include fuel, oxygen, pressure, diluents, droplet size, airflow and outcome. Blank cells mark values missing from NASA’s tables. The column notes document unit conversions.</p></div>
+    <p class="fine">Each row describes one run. Separate columns give ambient oxygen and burner oxidizer oxygen. Other fields include pressure, fuel, diluents, droplet size, airflow and outcome. The column notes document units and missing values.</p></div>
 </div>
 
 <!-- 04 findings -->
@@ -491,10 +492,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <footer class="wrap" id="foot"></footer>
 <div class="tip" id="tip" hidden></div>
 
-<script src="data.js?v=dc8d00f044"></script>
+<script src="data.js?v=ed50961940"></script>
 <script src="model.js?v=96b86849b6"></script>
-<script src="core.js?v=8361d4291e"></script>
-<script src="archive.js?v=ddcd373693"></script>
-<script src="tools.js?v=af7c0954de"></script>
+<script src="core.js?v=79cd651932"></script>
+<script src="archive.js?v=ece7677c29"></script>
+<script src="tools.js?v=e0f14ede78"></script>
 </body>
 </html>

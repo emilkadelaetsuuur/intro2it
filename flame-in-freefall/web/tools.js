@@ -327,8 +327,7 @@ $("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D
 $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
 $("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only. The QUENCH logo and the Cosmo companion are SI-generated images.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>
-  <div class="sky-credit"><span>Milky Way photograph by <a href="https://www.eso.org/public/images/eso0932a/">ESO/S. Brunier</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), cropped, rotated and toned.</span>
-  <button type="button" class="sky-motion" id="sky-motion">Pause sky motion</button></div>`;
+  <button type="button" class="sky-motion" id="sky-motion">Pause sky motion</button>`;
 
 const skyMotion = $("#sky-motion");
 function setSkyPaused(paused) {

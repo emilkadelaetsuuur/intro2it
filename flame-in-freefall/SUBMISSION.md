@@ -116,7 +116,7 @@ Yes. We used Claude (Anthropic), a large language model, throughout the project:
 The build script calculates the run statistics, checks the answer bank for source references and numeric tokens, and compares selected quotations with archived originals. These checks cannot certify an interpretation; the dashboard distinguishes observations, project-defined rules and open questions. Ask sends a submitted question and evidence excerpts to the configured Claude provider when available. Its output mode is labeled; the static dashboard calculations do not use the API. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
-OpenAI Codex assisted with the interface redesign and the run-table and source audit. OpenAI image generation was used for the QUENCH logo and an earlier orbital illustration.
+OpenAI Codex assisted with the interface redesign and the run-table and source audit. OpenAI image generation was used for the QUENCH logo, the Cosmo companion and an earlier orbital illustration.
 The current website uses credited NASA photographs. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
 
 ## NASA Data

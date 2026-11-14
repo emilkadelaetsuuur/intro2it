@@ -90,31 +90,39 @@
       {answer: "", sources: [], mode: "archive", supported: false};
   }
 
-  function showResult(data, local, question) {
+  function evidence(data, local) {
     if (!data || !["claude", "archive"].includes(data.mode) || !Array.isArray(data.sources)) throw new Error("Invalid reply");
-    sourceList.replaceChildren();
-    sources.hidden = true;
     if (data.supported === false || !data.sources.length) {
-      resultLabel.textContent = "No supporting passage found";
-      resultText.textContent = "The available organizer resources do not establish an answer. Try naming a specific experiment, material or mission.";
-    } else {
-      if (typeof data.answer !== "string" || !data.answer.trim() || !data.sources.every(safeSource)) throw new Error("Invalid evidence");
-      resultLabel.textContent = data.mode === "claude" ? "Claude-selected evidence" : "Matching archive excerpt";
-      resultText.textContent = data.answer;
-      for (const source of data.sources) {
-        const item = document.createElement("li");
-        const link = document.createElement("a");
-        link.href = source.url;
-        link.textContent = source.title;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        item.append(link);
-        sourceList.append(item);
-      }
-      sources.hidden = false;
+      return {label: "No supporting passage found",
+        answer: "The available organizer resources do not establish an answer. Try naming a specific experiment, material or mission.",
+        sources: [], local};
     }
+    if (typeof data.answer !== "string" || !data.answer.trim() || !data.sources.every(safeSource)) throw new Error("Invalid evidence");
+    return {label: data.mode === "claude" ? "Claude-selected evidence" : "Matching archive excerpt",
+      answer: data.answer, sources: data.sources, local};
+  }
+
+  function appendSources(list, references) {
+    for (const source of references) {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.textContent = source.title;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      item.append(link);
+      list.append(item);
+    }
+  }
+
+  function showResult(reply, question) {
+    resultLabel.textContent = reply.label;
+    resultText.textContent = reply.answer;
+    sourceList.replaceChildren();
+    appendSources(sourceList, reply.sources);
+    sources.hidden = !reply.sources.length;
     result.hidden = false;
-    status.textContent = local ? "Live Ask is unavailable. Showing results from the local organizer archive." : "";
+    status.textContent = reply.local ? "Live Ask is unavailable. Showing results from the local organizer archive." : "";
     const edited = question !== input.value.trim().replace(/\s+/gu, " ");
     const questionLabel = document.getElementById("ask-result-question");
     questionLabel.hidden = !edited;
@@ -122,7 +130,7 @@
     if (!edited && !document.getElementById("v-ask").hidden && (form.contains(document.activeElement) || examples.contains(document.activeElement))) {
       resultLabel.focus({preventScroll: true});
       result.scrollIntoView({block: "nearest"});
-    } else if (!local) {
+    } else if (!reply.local) {
       status.textContent = resultLabel.textContent + ".";
     }
   }
@@ -140,21 +148,19 @@
         signal: AbortSignal.timeout(38000)
       });
       if (response.ok && response.headers.get("Content-Type")?.includes("application/json")) {
-        showResult(await response.json(), false, question);
-        return;
+        return evidence(await response.json(), false);
       }
     } catch {
       // A static mirror can still serve its verified snapshot when live search is unreachable.
     }
     if (response && [400, 413, 422].includes(response.status)) {
-      status.textContent = "Ask accepts up to 600 printable characters. Check your question and try again.";
-      return;
+      throw new Error("Ask accepts up to 600 printable characters. Check your question and try again.");
     }
     try {
-      showResult(await localPassage(question), true, question);
+      return evidence(await localPassage(question), true);
     } catch {
-      status.textContent = response?.status === 429 ? "Ask is busy. Try your question again in a minute." :
-        "Ask could not reach the organizer archive. Check your connection and try again.";
+      throw new Error(response?.status === 429 ? "Ask is busy. Try your question again in a minute." :
+        "Ask could not reach the organizer archive. Check your connection and try again.");
     }
   }
 
@@ -172,7 +178,9 @@
     result.hidden = true;
     status.textContent = "Searching the organizer sources…";
     try {
-      await search(question);
+      showResult(await search(question), question);
+    } catch (error) {
+      status.textContent = error.message;
     } finally {
       busy = false;
       submitButton.removeAttribute("aria-disabled");
@@ -192,6 +200,154 @@
     input.setCustomValidity("");
     form.requestSubmit();
   });
+
+  function setupCosmo() {
+    const toggle = document.getElementById("cosmo-toggle");
+    const panel = document.getElementById("cosmo-panel");
+    if (!toggle || !panel) return;
+    const close = document.getElementById("cosmo-close");
+    const log = document.getElementById("cosmo-log");
+    const intro = document.getElementById("cosmo-intro");
+    const composer = document.getElementById("cosmo-form");
+    const field = document.getElementById("cosmo-input");
+    const send = document.getElementById("cosmo-send");
+    const feedback = document.getElementById("cosmo-status");
+    const viewport = window.visualViewport;
+    const exchanges = [];
+    let pending = false;
+    let unread = null;
+    let draftVersion = 0;
+
+    function adjustViewport() {
+      if (!viewport || panel.hidden) return;
+      panel.style.setProperty("--cosmo-viewport-height", viewport.height + "px");
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      panel.style.setProperty("--cosmo-keyboard-inset", inset + "px");
+    }
+
+    function scrollToMessage(message) {
+      // Keep the beginning of a long excerpt in view, with its sources below.
+      const offset = message.getBoundingClientRect().top - log.getBoundingClientRect().top;
+      log.scrollTop += offset;
+    }
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      if (open) {
+        adjustViewport();
+        (composer.hidden ? close : field).focus({preventScroll: true});
+        if (unread) scrollToMessage(unread);
+        unread = null;
+      } else {
+        toggle.focus({preventScroll: true});
+      }
+    }
+
+    function addMessage(kind, label, content, references = []) {
+      const message = document.createElement("div");
+      message.className = "cosmo-message cosmo-message--" + kind;
+      const byline = document.createElement("strong");
+      byline.className = "cosmo-message-label";
+      byline.textContent = label;
+      const body = document.createElement("p");
+      body.className = "cosmo-message-text";
+      body.dir = "auto";
+      body.textContent = content;
+      message.append(byline, body);
+      if (references.length) {
+        const list = document.createElement("ol");
+        list.className = "cosmo-sources";
+        list.setAttribute("aria-label", "Sources");
+        appendSources(list, references);
+        message.append(list);
+      }
+      const atEnd = log.scrollHeight - log.clientHeight - log.scrollTop < 8;
+      log.append(message);
+      if (panel.hidden) unread = message;
+      else if (kind === "user" || atEnd) scrollToMessage(message);
+      return message;
+    }
+
+    toggle.addEventListener("click", () => setOpen(panel.hidden));
+    close.addEventListener("click", () => setOpen(false));
+    function onEscape(event) {
+      if (event.key === "Escape" && !event.isComposing && !panel.hidden) {
+        event.preventDefault();
+        setOpen(false);
+      }
+    }
+    panel.addEventListener("keydown", onEscape);
+    toggle.addEventListener("keydown", onEscape);
+    viewport?.addEventListener("resize", adjustViewport);
+    viewport?.addEventListener("scroll", adjustViewport);
+
+    if (location.protocol === "file:") {
+      if (intro) intro.hidden = true;
+      composer.hidden = true;
+      const message = addMessage("assistant", "Cosmo", "Ask is available on the live QUENCH site.");
+      const link = document.createElement("a");
+      link.href = liveSite + "/#ask";
+      link.textContent = "Open Ask on QUENCH";
+      message.append(link);
+      return;
+    }
+
+    intro?.addEventListener("click", event => {
+      const prompt = event.target.closest("[data-cosmo-question]");
+      if (!prompt || pending) return;
+      field.value = prompt.dataset.cosmoQuestion || prompt.textContent.trim();
+      field.setCustomValidity("");
+      composer.requestSubmit();
+    });
+    field.addEventListener("input", () => {
+      draftVersion++;
+      field.setCustomValidity("");
+    });
+    field.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing && event.keyCode !== 229) {
+        event.preventDefault();
+        composer.requestSubmit();
+      }
+    });
+    composer.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (pending) return;
+      const draft = field.value;
+      const submittedVersion = draftVersion;
+      const question = draft.trim().replace(/\s+/gu, " ");
+      if (!question) {
+        field.setCustomValidity("Enter a question first.");
+        field.reportValidity();
+        return;
+      }
+      pending = true;
+      send.setAttribute("aria-disabled", "true");
+      if (intro) intro.hidden = true;
+      if (exchanges.length >= 8) {
+        for (const message of exchanges.shift()) message.remove();
+      }
+      const exchange = [addMessage("user", "You", question)];
+      exchanges.push(exchange);
+      field.value = "";
+      field.focus({preventScroll: true});
+      feedback.textContent = "Searching the organizer sources…";
+      try {
+        const reply = await search(question);
+        const mode = reply.local ? "Local archive · " + reply.label : reply.label;
+        exchange.push(addMessage("assistant", "Cosmo · " + mode, reply.answer, reply.sources));
+      } catch (error) {
+        exchange.push(addMessage("error", "Cosmo", error.message));
+        if (draftVersion === submittedVersion) field.value = draft;
+      } finally {
+        pending = false;
+        send.removeAttribute("aria-disabled");
+        feedback.textContent = "";
+      }
+    });
+  }
+  setupCosmo();
+
   if (location.protocol === "file:") {
     document.getElementById("ask-workspace").hidden = true;
     const link = document.createElement("a");

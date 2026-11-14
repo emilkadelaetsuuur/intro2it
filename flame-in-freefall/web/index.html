@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
 <meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
-<meta name="si-disclosure" content="Claude assisted with code, data normalisation, draft summaries, findings and analyst answers. Ask uses Claude or archive excerpts from challenge organizer resources and labels each result. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
+<meta name="si-disclosure" content="Claude assisted with code, data normalisation, draft summaries, findings and analyst answers. Ask uses Claude or archive excerpts from challenge organizer resources and labels each result. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo and Cosmo, the archive companion. The photographs are credited to their sources. Experimental imagery comes from NASA.">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
@@ -271,6 +271,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
 <link rel="stylesheet" href="console.css?v=b79e7c4c19">
+<link rel="stylesheet" href="cosmo.css?v=6efa25f858">
 <link rel="stylesheet" href="flight.css?v=4c1625670b">
 </head>
 <body>
@@ -508,12 +509,45 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 </main>
 <footer class="wrap" id="foot"></footer>
 <div class="tip" id="tip" hidden></div>
+<aside class="cosmo-dock" aria-label="Cosmo, your archive companion">
+  <button class="cosmo-toggle" id="cosmo-toggle" type="button" aria-label="Chat with Cosmo" aria-controls="cosmo-panel" aria-expanded="false">
+    <span class="cosmo-pet"><img src="img/cosmo.webp" alt="" width="86" height="78"></span>
+    <span class="cosmo-name">Cosmo<span class="cosmo-bubble" aria-hidden="true"></span></span>
+  </button>
+  <section id="cosmo-panel" class="cosmo-panel" role="dialog" aria-labelledby="cosmo-title" hidden>
+    <header class="cosmo-head">
+      <div class="cosmo-portrait"><img src="img/cosmo.webp" alt="" width="45" height="45"></div>
+      <div><h2 id="cosmo-title">Cosmo</h2><p>NASA archive companion</p></div>
+      <button type="button" id="cosmo-close" class="cosmo-close" aria-label="Close chat"><span aria-hidden="true">×</span></button>
+    </header>
+    <div class="cosmo-log" id="cosmo-log" role="log" aria-live="polite" aria-label="Conversation with Cosmo" tabindex="0">
+      <div id="cosmo-intro" class="cosmo-intro">
+        <div class="cosmo-stage" aria-hidden="true"><span></span><img src="img/cosmo.webp" alt="" width="112" height="98"></div>
+        <h3>What are you curious about?</h3>
+        <p>Ask me about fire in space. I’ll look through the archive and show you the sources.</p>
+        <div class="cosmo-prompts">
+          <button type="button" data-cosmo-question="How does gravity affect flame shape?">How does gravity affect flame shape?<span aria-hidden="true">↗</span></button>
+          <button type="button" data-cosmo-question="What caused the 1997 fire aboard Mir?">What caused the 1997 fire aboard Mir?<span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </div>
+    <p class="cosmo-status" id="cosmo-status" role="status" aria-atomic="true"></p>
+    <form class="cosmo-compose" id="cosmo-form">
+      <label for="cosmo-input" class="cosmo-sr">Your question for Cosmo</label>
+      <div class="cosmo-entry">
+        <textarea id="cosmo-input" rows="1" maxlength="600" placeholder="Ask Cosmo a question…" dir="auto" required></textarea>
+        <button id="cosmo-send" type="submit" aria-label="Send question"><span aria-hidden="true">↑</span></button>
+      </div>
+      <p>English or Russian</p>
+    </form>
+  </section>
+</aside>
 
 <script src="data.js?v=ed50961940"></script>
 <script src="model.js?v=96b86849b6"></script>
 <script src="core.js?v=79cd651932"></script>
 <script src="archive.js?v=ece7677c29"></script>
-<script src="tools.js?v=2e1922d122"></script>
-<script src="ask.js?v=e2d1ff7263"></script>
+<script src="tools.js?v=fc2140a885"></script>
+<script src="ask.js?v=5335100ac9"></script>
 </body>
 </html>

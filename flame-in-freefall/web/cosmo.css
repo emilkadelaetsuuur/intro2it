@@ -1,0 +1,144 @@
+/* The archive companion stays mounted as the dashboard switches sections. */
+.cosmo-dock {
+  --pet-border: #435365;
+  --pet-text: #edf0f4;
+  --pet-muted: #bdc8d4;
+  --pet-accent: #ffc299;
+  --pet-x: max(16px, env(safe-area-inset-right, 0px));
+  --pet-y: max(16px, env(safe-area-inset-bottom, 0px));
+  position: fixed; z-index: 44; right: var(--pet-x); bottom: var(--pet-y);
+  font-family: var(--sans); color: var(--pet-text); color-scheme: dark;
+}
+.cosmo-dock *, .cosmo-dock *::before, .cosmo-dock *::after { box-sizing: border-box; }
+.cosmo-dock [hidden] { display: none !important; }
+.cosmo-dock :focus-visible { outline: 2px solid #a8d9ff; outline-offset: 3px; }
+.cosmo-dock button { cursor: pointer; font-family: inherit; }
+.cosmo-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; white-space: nowrap; clip-path: inset(50%); border: 0;
+}
+.cosmo-toggle {
+  display: grid; justify-items: center; gap: 0; padding: 0 3px 2px; border: 0;
+  background: transparent; color: var(--pet-text); border-radius: 16px;
+}
+.cosmo-pet { display: block; position: relative; width: 86px; height: 78px; }
+.cosmo-pet::before {
+  content: ""; position: absolute; inset: auto 13px 1px; height: 9px;
+  background: #020811a8; filter: blur(4px); border-radius: 50%;
+}
+.cosmo-dock img { display: block; object-fit: contain; pointer-events: none; }
+.cosmo-pet img { width: 100%; height: 100%; position: relative; filter: drop-shadow(0 2px 3px #0009); }
+.cosmo-name {
+  display: inline-flex; gap: 7px; align-items: center; padding: 3px 10px 4px;
+  border: 1px solid var(--pet-border); background: #111c2b; color: #ecf2f8;
+  border-radius: 12px; font: 600 14px/1 var(--sans); box-shadow: 0 2px 10px #0005;
+}
+.cosmo-bubble { position: relative; width: 11px; height: 8px; border-radius: 3px; border: 1.4px solid var(--pet-accent); }
+.cosmo-bubble::after {
+  content: ""; position: absolute; bottom: -3px; left: 2px; height: 3px; width: 3px;
+  border: solid var(--pet-accent); border-width: 0 0 1px 1px; background: #111c2b; transform: skewY(-35deg);
+}
+.cosmo-toggle:hover .cosmo-name { border-color: #cc9c7e; }
+.cosmo-panel {
+  position: fixed; right: var(--pet-x); bottom: calc(var(--pet-y) + var(--cosmo-keyboard-inset, 0px));
+  width: min(372px, calc(100vw - 2 * var(--pet-x)));
+  height: min(502px, calc(var(--cosmo-viewport-height, 100dvh) - var(--pet-y) - max(12px, env(safe-area-inset-top, 0px))));
+  display: flex; flex-direction: column; overflow: hidden;
+  color: var(--pet-text); background: #101925; border: 1px solid var(--pet-border);
+  border-radius: 17px; box-shadow: 0 14px 45px #02081180;
+}
+.cosmo-toggle[aria-expanded="true"] { visibility: hidden; }
+.cosmo-head {
+  flex: none; padding: 11px 12px 11px 16px; display: flex; gap: 11px; align-items: center;
+  background: #172332; border-bottom: 1px solid #344354;
+}
+.cosmo-portrait {
+  flex: none; width: 43px; height: 43px; display: grid; place-items: center;
+  border-radius: 50%; background: #0d1722; border: 1px solid #435366;
+}
+.cosmo-portrait img { width: 38px; height: 38px; }
+#cosmo-title { color: #f2f5f8; margin: 0; font: 600 26px/1 var(--display); letter-spacing: .01em; }
+.cosmo-head p { font: 500 13px/1.3 var(--sans); color: var(--pet-muted); margin: 3px 0 0; }
+.cosmo-close {
+  flex: none; align-self: flex-start; margin-left: auto; width: 44px; height: 44px; border: 0;
+  border-radius: 9px; display: grid; place-items: center; background: transparent; color: #d4dfe8;
+}
+.cosmo-close span { font: 400 27px/1 var(--sans); }
+.cosmo-close:hover { background: #263447; color: white; }
+.cosmo-log {
+  min-height: 0; flex: 1; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  scrollbar-color: #46586c #101925; padding: 18px; overflow-wrap: anywhere;
+}
+.cosmo-intro { padding: 0 1px; }
+.cosmo-stage {
+  position: relative; height: 83px; display: grid; place-items: center; margin: -1px 0 11px;
+  background: url(img/star-field.svg) center 43% / 580px auto;
+}
+.cosmo-stage span {
+  position: absolute; bottom: 8px; width: 135px; height: 24px; border: 1px solid #586c815e; border-radius: 50%;
+}
+.cosmo-stage img { position: relative; align-self: end; height: 83px; width: 106px; }
+.cosmo-intro h3 { font: 600 24px/1.15 var(--display); color: var(--pet-text); margin: 0 0 5px; }
+.cosmo-intro p { font: 400 15px/1.4 var(--sans); color: var(--pet-muted); margin: 0; max-width: 34ch; }
+.cosmo-prompts { display: grid; gap: 5px; margin: 13px 0 0; }
+.cosmo-prompts button {
+  display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 39px;
+  background: #172333; color: #e0eaf3; border: 1px solid #334557; border-radius: 7px;
+  padding: 7px 10px; font: 500 14px/1.25 var(--sans); text-align: left;
+}
+.cosmo-prompts button span { color: #a5bdcf; }
+.cosmo-prompts button:hover { border-color: #849cb0; background: #1d2c3c; }
+.cosmo-message { width: fit-content; max-width: 100%; margin: 0 0 17px; }
+.cosmo-message-label { display: block; font: 600 13px/1.3 var(--sans); color: #b6c6d6; margin: 0 0 5px; }
+.cosmo-message-text { white-space: pre-line; font: 400 16px/1.45 var(--sans); color: var(--pet-text); margin: 0; }
+.cosmo-message--user {
+  margin-left: auto; padding: 9px 12px; border-radius: 10px 10px 3px 10px;
+  max-width: 89%; background: #243449; border: 1px solid #3a4b60;
+}
+.cosmo-message--user .cosmo-message-label { color: #b7cbe0; }
+.cosmo-message--assistant .cosmo-message-label { color: var(--pet-accent); }
+.cosmo-message--error .cosmo-message-label { color: #ffae97; }
+.cosmo-sources { margin: 9px 0 0; padding-left: 19px; font: 500 14px/1.4 var(--sans); color: #acbdcf; }
+.cosmo-sources li { margin: 2px 0; }
+.cosmo-sources a { color: #addbff; text-underline-offset: 3px; text-decoration: underline; }
+.cosmo-status { flex: none; margin: 0; padding: 0 18px 9px; color: var(--pet-muted); font: 500 13px/1.35 var(--sans); }
+.cosmo-status:empty { display:none; }
+.cosmo-compose { flex: none; border-top: 1px solid #344354; background: #141f2d; padding: 11px 13px 9px; margin: 0; }
+.cosmo-entry {
+  display: flex; gap: 6px; align-items: center; background: #0c1521; border: 1px solid #586a7c; border-radius: 10px; padding: 3px;
+}
+.cosmo-entry:focus-within { border-color:#a8d9ff; }
+#cosmo-input {
+  resize: none; min-width: 0; min-height: 42px; max-height: 80px; flex: 1;
+  box-shadow: none; background: transparent; border: 0; outline: none; color: #edf2f7;
+  font: 400 16px/1.4 var(--sans); padding: 10px 6px 7px 9px;
+}
+#cosmo-input::placeholder { color: #a5b6c7; opacity: 1; }
+#cosmo-send {
+  flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 1px solid #ffb88e; border-radius: 7px; color: #201811; background: #ffad7f;
+}
+#cosmo-send span { font: 600 25px/1 var(--sans); }
+#cosmo-send:hover { background: #ffc7a6; }
+#cosmo-send[aria-disabled="true"],#cosmo-send:disabled { opacity: .6; cursor: progress; }
+.cosmo-compose p { margin: 5px 3px 0; color: #acbdcf; font: 400 12px/1.3 var(--sans); }
+@media (min-width: 700px) { .cosmo-dock { --pet-x: max(22px, env(safe-area-inset-right,0px)); --pet-y: max(20px,env(safe-area-inset-bottom,0px)); } }
+@media (max-width: 520px) {
+  .cosmo-dock { --pet-x: max(9px,env(safe-area-inset-right,0px)); --pet-y: max(9px,env(safe-area-inset-bottom,0px)); }
+  .cosmo-pet { width: 64px; height: 58px; }
+  .cosmo-name { font-size: 13px; }
+  #foot { padding-bottom: calc(82px + env(safe-area-inset-bottom,0px)); }
+}
+@media (max-height: 530px) {
+  .cosmo-head { padding-block: 5px; }
+  .cosmo-log { padding-block: 11px; }
+  .cosmo-stage { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cosmo-pet img { animation: cosmo-hover 4s ease-in-out 1; }
+  .cosmo-toggle:hover .cosmo-pet img { transform: translateY(-2px) rotate(-3deg); transition: transform .2s ease; }
+  .cosmo-panel:not([hidden]) { animation: cosmo-open .18s ease-out; transform-origin: bottom right; }
+  @keyframes cosmo-hover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px) rotate(-2deg); } }
+  @keyframes cosmo-open { from { opacity:.3; transform: translateY(5px); } }
+}
+@media print { .cosmo-dock { display:none; } }

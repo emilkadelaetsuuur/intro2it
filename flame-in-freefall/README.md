@@ -17,12 +17,14 @@ Research prototype. Not validated for spacecraft design or fire-safety decisions
 |---|---|
 | Briefing | The bottom line on one screen: the oxygen gap against the Moon-base air NASA expects, three ways in that follow the challenge statement, the top findings, evidence counts for NASA's three cabin atmospheres, what to do next |
 | Mission check | Describe a cabin (oxygen, pressure, gravity, ventilation, materials, extinguishing agent). QUENCH grades the flight evidence behind each fire-safety question A to D by written rules, shows the runs it used, ranks the tests the mission still needs and names the investigations that say most about that cabin. One click copies the report |
-| Evidence | Tests with both ambient readings are plotted by oxygen and pressure. Incomplete records remain identifiable in the export. Download matching tests or all 1,156 as CSV |
+| Evidence | Tests with both ambient readings are plotted by oxygen and pressure. Incomplete records remain identifiable in the export. Saffire-VI and SoFIE-GEL results published outside PSI are drawn as their own layer and never counted. A second chart sets each Saffire-II sample in microgravity beside its normal-gravity result. Download matching tests or all 1,156 as CSV |
 | Findings | 15 findings with evidence, limits, an action and sources, sorted into prevention, detection and suppression and ranked by weights you set |
 | Lab | A predictor for droplet fires trained on 261 FLEX runs (82 % correct on unseen test days against 69 % for the majority-class baseline, and it flags extrapolation), and flame spread measured from NASA's raw BASS-II video (five consistency checks after a one-run calibration). Training runs and model coefficients download |
 | Archive | The 24 investigations ranked for the habitat you pick (station, spacecraft, Moon base or rover, Mars base). Each row shows what it burned, what changed between runs, what stayed the same, what was measured and on which hardware. Compare two or three side by side |
 | Lessons | Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir fire in NASA's words, and three NASA Spinoffs for firefighters |
-| Ask | Free-form questions answered with linked excerpts from the organizers’ source list |
+| Ask | Common questions get one of 38 checked analyst answers at once, with the statements the build verified and their records. Other questions are answered with linked excerpts from the organizers’ source list |
+| Tour | Seven stops through the dashboard in about a minute, started from the briefing or from Cosmo |
+| Method | How every number is produced, plus nine notes for the PSI archive team drawn from the cleaning decisions |
 
 ## How it answers the challenge
 
@@ -33,15 +35,16 @@ dashboard that "summarizes, ranks, and interprets combustion science investigati
 | The statement asks users to be able to | Where |
 |---|---|
 | Identify investigations most relevant to crew habitats: spacecraft, stations, Moon and Mars bases, rovers | Archive ranking, Mission check |
-| Extract data that supports predictive modelling | Evidence and Lab downloads, `web/downloads/*.csv`, the predictor, the video lab |
+| Extract data that supports predictive modelling | Evidence and Lab downloads, `web/downloads/*.csv`, the predictor, the video lab, and `notebooks/quench_runs_model.ipynb`, which rebuilds the cabin coverage and a model from the CSV |
 | Highlight research that informs fire-safety controls and equipment | Findings by prevention, detection and suppression; Mission check |
 | Show objectives, fuels with shape and size, test conditions, variables, measurements | Archive row detail, computed from each PSI run table |
 | Show similarities and differences between investigations | Archive compare, hardware families |
 | Address fire safety on Earth | Lessons |
+| Note that microgravity and normal-gravity results could bound partial gravity | Evidence: Saffire-II pairs chart |
 
 ## Ask and the offline dashboard
 
-Counts, plots and the fitted FLEX model run locally in the browser. Ask accepts free-form questions. The production server retrieves passages only from the organizers’ NASA resource list, including combustion investigations returned by their PSI search. Claude selects passages to cite; the site displays sourced excerpts and never accepts URLs invented by a model. If the provider is unavailable, Ask labels its answer as archive search. A question unsupported by the approved sources can receive no answer.
+Counts, plots and the fitted FLEX model run locally in the browser. Ask first looks for a checked analyst answer shipped with the page: these were drafted with SI ahead of time, the build verifies every statement against the records it cites, and matching happens in the browser, so they appear at once and need no service. Any other question, or the “search the organizer sources” button, goes to the service. The production server retrieves passages only from the organizers’ NASA resource list, including combustion investigations returned by their PSI search. Claude selects passages to cite; the site displays sourced excerpts and never accepts URLs invented by a model. If the provider is unavailable, Ask labels its answer as archive search. A question unsupported by the approved sources can receive no answer.
 
 Only the server holds the two API credentials. For installation, renewal and fallback behavior see [Ask service](deploy/ASK.md).
 
@@ -76,7 +79,9 @@ pip install -r requirements-dev.txt
   downloads in `web/downloads`.
 - `scripts/train_model.py` trains and cross-validates the predictor, grouped by test date.
 - `video/` holds the video pipeline; `video/METHOD.md` explains it.
-- `tests/test_project.py` recounts key facts straight from the CSVs with independent code.
+- `tests/test_project.py` recounts key facts straight from the CSVs with independent code. `tests/test_additions.py` covers the gravity pairs, the published layer, the instant answers, the notebook and the tour.
+- `scripts/stamp_assets.py` refreshes the `?v=` cache tags in `web/index.html` after any change under `web/`; the build runs it and a test fails if a tag is stale.
+- `notebooks/build_notebook.py` runs the notebook's cells and writes `notebooks/quench_runs_model.ipynb`.
 
 ## Data
 

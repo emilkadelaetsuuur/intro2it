@@ -61,7 +61,10 @@ If the live site is not up when you submit, give the code link here. The site is
    all 1,156, download as CSV with one row per run. The Lab shows what the data can do: a model trained on
    261 FLEX droplet runs predicts whether a flame goes out on its own (82 % correct on test days it never
    saw, against 69 % for the majority-class baseline; it warns when it extrapolates), and a tracker reads flame spread from
-   raw BASS-II video (five consistency checks after calibration on one run).
+   raw BASS-II video (five consistency checks after calibration on one run). Flight results published outside
+   PSI (Saffire-VI, SoFIE-GEL) are drawn on the map as a separate layer that is never counted: two Saffire-VI
+   burns are the only solid-material points inside the Moon-base range. A notebook rebuilds the cabin coverage
+   and a model from the CSV.
 3. *Highlight research that informs fire-safety controls and equipment.* Fifteen findings, each with its
    evidence, limits, an action and NASA sources, sorted into prevention, detection and suppression and
    ranked by weights the user sets. The Mission check turns them into a tool: set oxygen, pressure,
@@ -71,7 +74,10 @@ If the live site is not up when you submit, give the code link here. The site is
 
 Two more sections give context: Lessons (Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir
 fire in NASA's words, plus firefighting applications documented by NASA Spinoff) and Ask (questions in
-plain words, answered from the records only).
+plain words: common ones get a checked analyst answer at once, others get linked excerpts from the organizers'
+sources). A chart of Saffire-II samples sets microgravity beside normal gravity, the pairs the challenge
+statement says could bound partial gravity. The Method page ends with nine notes for the PSI archive team,
+and a seven-stop tour shows the whole dashboard in a minute.
 
 **Key findings.**
 
@@ -109,7 +115,7 @@ Yes. We used Claude (Anthropic), a large language model, throughout the project:
   pages and the tests were written with SI assistance. Source files and the page metadata say so.
 - Data: SI-written code renames columns and converts units. The values are NASA's. The download files
   carry a notice in their README.
-- Text: the one-line investigation summaries, the wording of the 15 findings and the original answer bank were drafted with SI. The live Ask feature now selects evidence from organizer-provided sources.
+- Text: the one-line investigation summaries, the wording of the 15 findings and the 38 analyst answers were drafted with SI. Ask shows a stored answer when the question is close to one, and otherwise selects evidence from organizer-provided sources.
 - Analysis and design: SI helped explore the PSI tables, proposed analyses and helped lay out the pages
   and the slides.
 

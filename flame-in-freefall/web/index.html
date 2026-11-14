@@ -281,8 +281,8 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=362aa91675">
-<link rel="stylesheet" href="cosmo.css?v=14edff7cd6">
+<link rel="stylesheet" href="console.css?v=2708f5c708">
+<link rel="stylesheet" href="cosmo.css?v=a50ddd571b">
 <link rel="stylesheet" href="flight.css?v=4c1625670b">
 </head>
 <body>
@@ -304,6 +304,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
       <h1 id="hero-title">Flame in freefall</h1>
       <p class="cover-deck">Fuel, airflow and cabin pressure shape how fire spreads in a spacecraft. Explore what NASA measured on orbit.</p>
       <div class="collection-index" id="overview-metrics" aria-label="Collection index"></div>
+      <p class="cover-tour"><button type="button" class="tour-link" data-tour-start>Take the 60-second tour <span aria-hidden="true">→</span></button></p>
     </div>
     <figure class="lead-photo">
       <picture>
@@ -546,7 +547,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   <button class="cosmo-toggle" id="cosmo-toggle" type="button" aria-label="Chat with Cosmo" aria-controls="cosmo-panel" aria-expanded="false">
     <span class="cosmo-pet"><span class="cosmo-float" data-cosmo-figure="launcher" aria-hidden="true"><img src="img/cosmo.webp" alt="" width="86" height="78"></span></span>
     <span class="cosmo-name">Cosmo<span class="cosmo-bubble" aria-hidden="true"></span></span>
-    <span class="cosmo-si">SI-generated image</span>
+    <span class="cosmo-si">SI-generated</span>
   </button>
   <section id="cosmo-panel" class="cosmo-panel" role="dialog" aria-labelledby="cosmo-title" hidden>
     <header class="cosmo-head">
@@ -562,6 +563,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
         <div class="cosmo-prompts">
           <button type="button" data-cosmo-question="How does gravity affect flame shape?">How does gravity affect flame shape?<span aria-hidden="true">↗</span></button>
           <button type="button" data-cosmo-question="What caused the 1997 fire aboard Mir?">What caused the 1997 fire aboard Mir?<span aria-hidden="true">↗</span></button>
+          <button type="button" data-tour-start>Show me around in 60 seconds<span aria-hidden="true">→</span></button>
         </div>
       </div>
     </div>
@@ -581,7 +583,8 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <script src="model.js?v=96b86849b6"></script>
 <script src="core.js?v=763d5271e0"></script>
 <script src="archive.js?v=ece7677c29"></script>
-<script src="tools.js?v=09cf5d830a"></script>
+<script src="tools.js?v=f453a66f79"></script>
+<script src="tour.js?v=e2d58c53a7"></script>
 <script src="ask.js?v=6c405b6b3f"></script>
 </body>
 </html>

@@ -87,6 +87,10 @@ $V6
     location / { try_files \$uri \$uri/ =404; }
     location ~* \.(js|jpg|png|svg|css)\$ { expires 1h; }
     add_header X-Content-Type-Options nosniff;
+    gzip on;
+    gzip_types application/javascript text/css application/json image/svg+xml text/csv text/plain;
+    gzip_min_length 1024;
+    gzip_vary on;
 }
 EOF
   else cat > "$CONF" <<EOF

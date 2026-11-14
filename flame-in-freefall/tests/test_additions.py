@@ -108,7 +108,7 @@ class InstantAnswers(unittest.TestCase):
 
 class SiMarksAndCacheTags(unittest.TestCase):
     def test_generated_artwork_is_marked_where_it_appears(self):
-        self.assertIn("SI-generated image", PAGE)          # under the Cosmo figure
+        self.assertIn('<span class="cosmo-si">SI-generated</span>', PAGE)   # under the Cosmo figure
         self.assertIn("SI-generated character", PAGE)      # in the chat header
         with open(os.path.join(ROOT, "web", "tools.js"), encoding="utf-8") as fh:
             self.assertIn("are SI-generated images", fh.read())   # footer, covers the logo
@@ -117,6 +117,52 @@ class SiMarksAndCacheTags(unittest.TestCase):
         import stamp_assets
         _, stale = stamp_assets.stamp(PAGE)
         self.assertEqual(stale, [], "run python3 scripts/stamp_assets.py")
+
+
+class Notebook(unittest.TestCase):
+    """The modelling notebook is generated from a script; its cells must run and agree with the site."""
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, os.path.join(ROOT, "notebooks"))
+        try:
+            import pandas  # noqa: F401
+        except ImportError:
+            raise unittest.SkipTest("pandas is not installed")
+        import build_notebook
+        cls.nb = build_notebook
+        cls.text, cls.env = build_notebook.run()
+
+    def test_cells_reproduce_the_cabin_coverage(self):
+        cov = self.env["coverage"]
+        self.assertEqual(list(cov["all"]), [sum(D["stats"]["coverage"][k].values()) for k in ("iss", "eva", "exp")])
+        self.assertEqual(int(cov.loc["Exploration", "solid"]), 0)
+        self.assertEqual(len(self.env["moon"]), sum(D["stats"]["moon_range"].values()))
+
+    def test_model_beats_guessing_on_unseen_runs(self):
+        self.assertEqual(len(self.env["flex"]), D["model_card"]["n"])
+        import numpy as np
+        self.assertGreater(float(np.mean(self.env["scores"])), self.env["baseline"] + 0.08)
+        self.assertEqual(int(self.env["inside"]), 0)          # no FLEX run near the exploration atmosphere
+
+    def test_saved_notebook_matches_the_script(self):
+        with open(os.path.join(ROOT, "notebooks", "quench_runs_model.ipynb"), encoding="utf-8") as fh:
+            saved = json.load(fh)
+        cells = ["".join(c["source"]) for c in saved["cells"]]
+        self.assertEqual(cells, [src for _, src in self.nb.CELLS], "run python3 notebooks/build_notebook.py")
+        self.assertIn("SI", saved["metadata"]["si_notice"])
+
+
+class Tour(unittest.TestCase):
+    def test_every_stop_points_at_something_on_the_page(self):
+        with open(os.path.join(ROOT, "web", "tour.js"), encoding="utf-8") as fh:
+            stops = re.findall(r'\["(\w+)", "([#.][\w-]+)", "', fh.read())
+        self.assertEqual(len(stops), 7)
+        for view, selector in stops:
+            self.assertIn(f'id="v-{view}"', PAGE, view)
+            needle = f'id="{selector[1:]}"' if selector[0] == "#" else f'class="{selector[1:]}"'
+            self.assertIn(needle, PAGE, selector)
+        self.assertGreaterEqual(PAGE.count("data-tour-start"), 2)
 
 
 if __name__ == "__main__":

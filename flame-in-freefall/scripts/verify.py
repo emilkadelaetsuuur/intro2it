@@ -4,13 +4,18 @@ import csv
 import re
 from pathlib import Path
 
-NUM = re.compile(r"(?<![\w.])-?\d+(?:[.,]\d+)?(?![\w])")
+NUM = re.compile(r"(?<![\w.])-?(?:\d{1,3}(?:,\d{3})+|\d+(?:[.,]\d+)?)(?!\w)")
 
 
 def _numeric_value(raw):
     if re.fullmatch(r"-?\d{1,3}(,\d{3})+", raw):
         return float(raw.replace(",", ""))
     return float(raw.replace(",", "."))
+
+
+def numbers(text):
+    """Return the numerical tokens in their order of appearance."""
+    return [_numeric_value(m.group()) for m in NUM.finditer(text or "")]
 
 
 UNITS = [("%", r"%|percent\b|per cent\b"), ("atm", r"atm\b"), ("psi", r"psia\b|psi\b"), ("mm/s", r"mm/s\b"), ("cm/s", r"cm/s\b"),
@@ -54,6 +59,7 @@ def check_claim(claim, corpus):
     claim_text = claim.get("text", "")
     if not isinstance(claim_text, str) or not claim_text.strip():
         issues.append("claim is empty")
+        claim_text = ""
     cited = [s for s in claim.get("sources", []) if isinstance(s, str)]
     unknown = [s for s in cited if s not in corpus]
     known = [s for s in cited if s in corpus]

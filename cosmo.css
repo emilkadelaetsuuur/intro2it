@@ -3,7 +3,7 @@
   --pet-border: #435365;
   --pet-text: #edf0f4;
   --pet-muted: #bdc8d4;
-  --pet-accent: #ffc299;
+  --pet-accent: var(--accent, #ff8066);
   --pet-x: max(16px, env(safe-area-inset-right, 0px));
   --pet-y: max(16px, env(safe-area-inset-bottom, 0px));
   position: fixed; z-index: 44; right: var(--pet-x); bottom: var(--pet-y);
@@ -51,13 +51,13 @@
   width: min(372px, calc(100vw - 2 * var(--pet-x)));
   height: min(502px, calc(var(--cosmo-viewport-height, 100dvh) - var(--pet-y) - max(12px, env(safe-area-inset-top, 0px))));
   display: flex; flex-direction: column; overflow: hidden;
-  color: var(--pet-text); background: #101925; border: 1px solid var(--pet-border);
+  color: var(--pet-text); background: #0c1627; border: 1px solid var(--pet-border);
   border-radius: 17px; box-shadow: 0 14px 45px #02081180;
 }
 .cosmo-toggle[aria-expanded="true"] { visibility: hidden; }
 .cosmo-head {
   flex: none; padding: 11px 12px 11px 16px; display: flex; gap: 11px; align-items: center;
-  background: #172332; border-bottom: 1px solid #344354;
+  background: #142641; border-bottom: 1px solid #34465f;
 }
 .cosmo-portrait {
   flex: none; width: 43px; height: 43px; display: grid; place-items: center;
@@ -123,10 +123,10 @@
 #cosmo-input::placeholder { color: #a5b6c7; opacity: 1; }
 #cosmo-send {
   flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
-  border: 1px solid #ffb88e; border-radius: 7px; color: #201811; background: #ffad7f;
+  border: 1px solid var(--pet-accent); border-radius: 7px; color: #201411; background: var(--pet-accent);
 }
 #cosmo-send span { font: 600 25px/1 var(--sans); }
-#cosmo-send:hover { background: #ffc7a6; }
+#cosmo-send:hover { background: #ffad95; }
 #cosmo-send[aria-disabled="true"],#cosmo-send:disabled { opacity: .6; cursor: progress; }
 .cosmo-compose p { margin: 5px 3px 0; color: #acbdcf; font: 400 12px/1.3 var(--sans); }
 @media (min-width: 700px) { .cosmo-dock { --pet-x: max(22px, env(safe-area-inset-right,0px)); --pet-y: max(20px,env(safe-area-inset-bottom,0px)); } }

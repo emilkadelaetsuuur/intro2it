@@ -1,0 +1,987 @@
+accession,investigation,fuel_type,test_id,fuel_or_material,o2_percent,pressure_atm,pressure_source,outcome,outcome_in_source,co2_mole_fraction,he_mole_fraction,droplet_diameter_mm,extinction_diameter_mm,burning_rate,burn_time_s,airflow_cm_s,flow_direction,normal_gravity_result,materials,psi_url
+PSI-69,FLEX,droplet,20CAL08,Methanol,21.0,0.997,recorded,other,Disruption,0.0,0.0,1.69,0.89,0.52,4.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,20CAL10,Methanol,21.0,1.003,recorded,self-extinguished,Extinction,0.0,0.0,1.86,0.94,0.6,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,20CAL12,Methanol,21.0,1.006,recorded,self-extinguished,Extinction,0.0,0.0,1.61,0.92,0.58,3.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,30CAL02,Methanol,21.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,2.06,,0.6,7.64,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,30CAL03,Methanol,21.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,1.92,0.81,0.48,6.34,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,40CAL01,Methanol,21.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,2.54,1.53,0.51,9.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,20CAL13,Heptane,21.0,1.002,recorded,other,Disruption,0.0,0.0,1.87,,0.67,5.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,30CAL06,Heptane,21.0,1.003,recorded,other,Disruption,0.0,0.0,2.95,,0.79,14.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,30CAL07,Heptane,21.0,1.0,recorded,other,Disruption,0.0,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256F002,Methanol,21.0,3.052,recorded,self-extinguished,Extinction,0.7,0.0,3.86,,0.37,13.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256R001,Methanol,21.0,3.051,recorded,self-extinguished,Extinction,0.7,0.0,3.03,,0.4,16.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,264F003,Heptane,21.0,3.053,recorded,other,Disruption,0.7,0.0,2.74,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256R002,Methanol,21.0,2.729,recorded,self-extinguished,Extinction,0.7,0.0,2.59,,0.49,10.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256F007,Methanol,21.0,2.705,recorded,self-extinguished,Extinction,0.7,0.0,3.7,,,11.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256F008,Methanol,21.0,2.719,recorded,self-extinguished,Extinction,0.7,0.0,4.42,,,23.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,256F009,Methanol,21.0,2.726,recorded,self-extinguished,Extinction,0.7,0.0,1.66,1.0,0.53,3.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,240R003,Methanol,21.0,2.034,recorded,other,Disruption,0.7,0.0,2.67,,,2.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,248F001,Heptane,21.0,2.044,recorded,self-extinguished,Extinction,0.7,0.0,2.74,1.77,0.61,8.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,196F001,Heptane,34.0,0.709,recorded,other,Disruption,0.0,0.0,3.39,,0.9,4.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,192F001,Methanol,34.0,0.71,recorded,burned,Completion,0.0,0.0,3.4,1.56,0.53,17.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,192F002,Methanol,34.0,0.711,recorded,other,Disruption,0.0,0.0,3.49,0.95,0.66,17.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,192F003,Methanol,34.0,0.711,recorded,other,Disruption,0.0,0.0,3.5,,0.65,18.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,196F002,Heptane,34.0,0.713,recorded,other,Disruption,0.0,0.0,3.01,,0.73,13.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,196F003,Heptane,34.0,0.714,recorded,other,Disruption,0.0,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,191R001,Methanol,30.0,0.707,recorded,burned,Completion,0.0,0.0,2.6,0.59,0.65,10.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,191F001,Methanol,30.0,0.708,recorded,other,Disruption,0.0,0.0,3.63,0.4,0.62,22.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,195F001,Heptane,30.0,0.711,recorded,other,Disruption,0.0,0.0,3.87,,0.64,23.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,195F002,Heptane,30.0,0.71,recorded,other,Disruption,0.0,0.0,3.36,,0.64,17.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,178R001,Methanol,30.0,1.009,recorded,burned,Completion,0.0,0.0,2.57,,0.74,10.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,178F001,Methanol,30.0,1.012,recorded,self-extinguished,Extinction,0.0,0.0,3.26,1.32,0.59,15.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,182F001,Heptane,30.0,1.014,recorded,other,Disruption,0.0,0.0,3.39,,0.85,18.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,182F002,Heptane,30.0,1.014,recorded,burned,Completion,0.0,0.0,3.07,,0.68,14.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,177R002,Methanol,21.0,1.006,recorded,self-extinguished,Extinction,0.0,0.0,2.62,1.25,0.48,11.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,177F001,Methanol,21.0,1.01,recorded,self-extinguished,Extinction,0.0,0.0,3.89,2.0,0.44,27.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,181F001,Heptane,21.0,1.011,recorded,self-extinguished,Extinction,0.0,0.0,3.85,3.34,0.43,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,190R002,Methanol,20.0,0.709,recorded,self-extinguished,Extinction,0.0,0.0,2.4,1.67,0.45,7.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,220R001,Methanol,34.0,0.703,recorded,other,Disruption,0.0,0.0,3.31,,0.72,10.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,220R002,Methanol,34.0,0.703,recorded,other,Disruption,0.0,0.0,3.59,,0.71,15.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,224F001,Heptane,34.0,0.704,recorded,other,Disruption,0.0,0.0,2.91,0.0,0.8,9.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,219R001,Methanol,30.0,0.704,recorded,other,Disruption,0.0,0.0,3.77,,0.62,19.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,219F001,Methanol,30.0,0.703,recorded,other,Disruption,0.0,0.0,3.35,,0.65,14.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,223F001,Heptane,30.0,0.704,recorded,other,Disruption,0.0,0.0,2.92,,0.58,11.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,223F002,Heptane,30.0,0.704,recorded,other,Disruption,0.0,0.0,2.97,0.0,0.78,11.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,206F001,Methanol,30.0,1.009,recorded,other,Disruption,0.0,0.0,3.49,,0.63,16.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,206R001,Methanol,30.0,1.011,recorded,self-extinguished,Extinction,0.0,0.0,2.42,1.01,0.73,6.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,205R001,Methanol,21.0,1.012,recorded,other,Disruption,0.0,0.0,2.78,1.08,0.54,13.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,209F001,Heptane,21.0,1.013,recorded,burned,Completion,0.0,0.0,3.36,,0.5,17.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,205F001,Methanol,21.0,1.011,recorded,other,Disruption,0.0,0.0,3.66,,0.27,23.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,209F003,Heptane,21.0,1.006,recorded,self-extinguished,Extinction,0.0,0.0,3.46,2.78,0.59,8.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,209F004,Heptane,21.0,1.013,recorded,self-extinguished,Extinction,0.0,0.0,3.57,2.98,0.52,8.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,209F005,Heptane,21.0,1.015,recorded,burned,Completion,0.0,0.0,2.41,0.0,0.65,8.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,210F002,Heptane,30.0,1.015,recorded,other,Disruption,0.0,0.0,3.53,0.0,0.7,18.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,209F002,Heptane,21.0,1.013,recorded,other,Disruption,0.0,0.0,,,,18.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,190F003,Methanol,20.0,0.712,recorded,self-extinguished,Extinction,0.0,0.0,3.56,,0.41,29.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,218F001,Methanol,20.0,0.714,recorded,other,Disruption,0.0,0.0,3.37,2.39,0.46,20.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,194F001,Heptane,20.0,0.716,recorded,burned,Completion,0.0,0.0,3.56,3.04,0.44,7.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,303F001,Heptane,20.0,0.716,recorded,self-extinguished,Extinction,0.0,0.0,3.1,2.49,0.54,6.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,176F001,Methanol,18.0,1.017,recorded,self-extinguished,Extinction,0.0,0.0,3.69,,0.42,29.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,176R001,Methanol,18.0,1.012,recorded,self-extinguished,Extinction,0.0,0.0,2.93,1.39,0.43,17.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,204F001,Methanol,18.0,1.018,recorded,self-extinguished,Extinction,0.0,0.0,3.43,,0.45,23.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,204R001,Methanol,18.0,1.019,recorded,self-extinguished,Extinction,0.0,0.0,3.68,2.0,0.41,25.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,301F001,Heptane,18.0,1.002,recorded,self-extinguished,Extinction,0.0,0.0,3.43,3.17,0.39,4.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,301F002,Heptane,18.0,1.01,recorded,burned,Completion,0.0,0.0,2.15,0.0,0.51,9.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,302F001,Heptane,18.0,1.006,recorded,self-extinguished,Extinction,0.0,0.0,2.69,2.07,0.6,5.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,189R001,Methanol,15.0,1.008,recorded,self-extinguished,Extinction,0.0,0.0,3.37,,0.4,24.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,189F001,Methanol,15.0,1.009,recorded,self-extinguished,Extinction,0.0,0.0,2.52,1.32,0.38,12.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,189F002,Methanol,15.0,1.01,recorded,self-extinguished,Extinction,0.0,0.0,3.97,3.3,0.36,14.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,189R003,Methanol,15.0,1.012,recorded,self-extinguished,Extinction,0.0,0.0,2.38,1.29,0.39,10.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,193R002,Heptane,14.0,1.009,recorded,burned,Completion,0.0,0.0,1.1,0.0,0.94,1.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,193F001,Heptane,15.0,1.001,recorded,self-extinguished,Extinction,0.0,0.0,4.67,4.6,0.41,1.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,189R002,Methanol,15.0,1.011,recorded,self-extinguished,Extinction,0.0,0.0,2.25,,0.4,8.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,193R001,Heptane,15.0,1.007,recorded,burned,Completion,0.0,0.0,1.13,,0.52,2.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,193F001,Heptane,15.0,1.001,recorded,self-extinguished,Extinction,0.0,0.0,4.64,4.58,0.56,1.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,221F001,Heptane,15.0,1.008,recorded,burned,Completion,0.0,0.0,1.33,,0.77,2.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,203R002,Methanol,13.0,1.014,recorded,self-extinguished,Extinction,0.0,0.0,2.54,1.78,0.37,9.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,203F001,Methanol,13.0,1.012,recorded,self-extinguished,Extinction,0.0,0.0,3.21,2.78,0.37,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,175R001,Methanol,14.0,1.011,recorded,self-extinguished,Extinction,0.0,0.0,3.33,2.91,0.34,8.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,175F001,Methanol,14.0,1.008,recorded,self-extinguished,Extinction,0.0,0.0,2.66,1.66,0.35,12.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,179F001,Heptane,13.0,1.011,recorded,self-extinguished,Extinction,0.0,0.0,2.92,2.86,0.25,1.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,207F001,Heptane,13.0,1.013,recorded,self-extinguished,Extinction,0.0,0.0,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,207F002,Heptane,13.0,1.013,recorded,self-extinguished,Extinction,0.0,0.0,,,,1.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,304F001,Methanol,13.0,1.006,recorded,self-extinguished,Extinction,0.0,0.0,2.84,2.39,0.35,7.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,304F002,Methanol,12.0,1.016,recorded,self-extinguished,Extinction,0.0,0.0,,,,5.45,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,304R001,Methanol,12.0,1.009,recorded,self-extinguished,Extinction,0.0,0.0,2.35,1.42,0.35,10.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,304R002,Methanol,12.0,1.015,recorded,self-extinguished,Extinction,0.0,0.0,2.4,1.77,0.35,9.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,305F002,Methanol,12.0,1.013,recorded,self-extinguished,Extinction,0.0,0.0,3.07,2.56,0.35,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,305F003,Methanol,12.0,1.015,recorded,self-extinguished,Extinction,0.0,0.0,2.64,1.92,0.38,9.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,053R001,Methanol,25.0,0.707,recorded,other,Disruption,0.15,0.0,3.01,,0.53,14.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,053F001,Methanol,25.0,0.707,recorded,other,Disruption,0.15,0.0,3.7,,0.51,24.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,141R001,Methanol,25.0,0.709,recorded,other,Disruption,0.15,0.0,3.62,,0.53,20.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,141F001,Methanol,25.0,0.708,recorded,other,Disruption,0.15,0.0,3.51,,0.51,18.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,061F002,Heptane,25.0,0.706,recorded,other,Disruption,0.15,0.0,3.41,,0.55,21.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,149F001,Heptane,25.0,0.707,recorded,other,Disruption,0.15,0.0,2.48,0.0,0.71,8.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08H101,Heptane,24.0,0.702,recorded,self-extinguished,Extinction,0.2,0.0,3.53,2.76,0.51,10.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08H201,Heptane,24.0,0.703,recorded,self-extinguished,Extinction,0.2,0.0,3.6,3.04,0.58,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08H301,Heptane,24.0,0.703,recorded,other,Disruption,0.2,0.0,,,,5.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M101,Methanol,23.0,0.703,recorded,burned,Completion,0.2,0.0,4.25,2.6,0.45,26.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M201,Methanol,23.0,0.707,recorded,self-extinguished,Extinction,0.25,0.0,3.64,1.74,0.47,22.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M101,Methanol,23.0,0.704,recorded,self-extinguished,Extinction,0.25,0.0,4.28,2.32,0.42,33.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09H101,Heptane,23.0,0.706,recorded,self-extinguished,Extinction,0.25,0.0,4.14,3.98,0.34,6.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09H201,Heptane,23.0,0.709,recorded,self-extinguished,Extinction,0.25,0.0,3.88,3.45,0.5,6.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10H101,Heptane,21.0,0.703,recorded,self-extinguished,Extinction,0.3,0.0,3.57,3.43,0.33,4.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10H201,Heptane,21.0,0.703,recorded,self-extinguished,Extinction,0.3,0.0,4.0,3.88,0.35,3.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M201,Methanol,23.0,0.703,recorded,self-extinguished,Extinction,0.2,0.0,3.6,1.58,0.49,23.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M301,Methanol,23.0,0.703,recorded,other,Disruption,0.2,0.0,4.17,2.0,0.47,30.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M401,Methanol,23.0,0.708,recorded,other,Disruption,0.25,0.0,3.08,1.75,0.51,14.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M401,Methanol,23.0,0.704,recorded,other,Disruption,0.2,0.0,3.18,,0.52,15.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M301,Methanol,23.0,0.708,recorded,burned,Completion,0.25,0.0,3.75,,0.47,24.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10M102,Methanol,21.0,0.706,recorded,self-extinguished,Extinction,0.3,0.0,3.56,1.92,0.42,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10M201,Methanol,21.0,0.707,recorded,self-extinguished,Extinction,0.3,0.0,2.83,1.57,0.45,13.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10M303,Methanol,21.0,0.706,recorded,burned,Completion,0.3,0.0,3.37,2.1,0.45,16.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C10M401,Methanol,21.0,0.698,recorded,burned,Completion,0.3,0.0,3.99,2.35,0.43,25.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11M101,Methanol,20.0,0.703,recorded,self-extinguished,Extinction,0.35,0.0,4.2,2.85,0.49,18.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11M201,Methanol,20.0,,,self-extinguished,Extinction,0.35,0.0,3.23,1.68,0.42,18.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11M301,Methanol,20.0,0.705,recorded,self-extinguished,Extinction,0.35,0.0,3.97,2.61,0.41,22.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11M401,Methanol,20.0,0.706,recorded,self-extinguished,Extinction,0.35,0.0,3.16,1.57,0.46,16.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11H101,Heptane,20.0,0.699,recorded,self-extinguished,Extinction,0.35,0.0,3.84,3.77,0.25,2.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C11H201,Heptane,20.0,0.701,recorded,self-extinguished,Extinction,0.35,0.0,3.03,2.93,0.38,2.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12H103,Heptane,18.0,0.701,recorded,self-extinguished,Extinction,0.4,0.0,2.6,2.48,0.37,1.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12H201,Heptane,18.0,0.701,recorded,self-extinguished,Extinction,0.4,0.0,2.45,2.39,0.38,1.43,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12M101,Methanol,18.0,0.692,recorded,self-extinguished,Extinction,0.4,0.0,4.25,3.92,0.34,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12M201,Methanol,18.0,0.699,recorded,self-extinguished,Extinction,0.4,0.0,3.46,2.58,0.41,13.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12M301,Methanol,18.0,0.7,recorded,self-extinguished,Extinction,0.4,0.0,4.13,3.79,0.35,8.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C12M401,Methanol,18.0,0.701,recorded,self-extinguished,Extinction,0.4,0.0,2.87,2.74,0.3,2.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13M103,Methanol,17.0,0.707,recorded,self-extinguished,Extinction,0.45,0.0,3.63,3.37,0.35,5.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13M201,Methanol,17.0,0.705,recorded,self-extinguished,Extinction,0.45,0.0,2.8,1.84,0.4,11.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13M301,Methanol,17.0,0.706,recorded,self-extinguished,Extinction,0.45,0.0,3.22,2.53,0.38,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13M401,Methanol,17.0,0.707,recorded,self-extinguished,Extinction,0.45,0.0,2.91,,0.39,11.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13H102,Heptane,17.0,0.706,recorded,self-extinguished,Extinction,0.45,0.0,3.33,3.34,0.33,0.55,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13H201,Heptane,17.0,0.707,recorded,self-extinguished,Extinction,0.45,0.0,2.91,2.89,0.05,0.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H101,Heptane,24.0,1.005,recorded,other,Disruption,0.2,0.0,1.72,0.52,0.61,4.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H201,Heptane,24.0,1.007,recorded,other,Disruption,0.2,0.0,2.63,0.53,0.6,12.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H301,Heptane,24.0,1.009,recorded,other,Disruption,0.2,0.0,3.25,0.55,0.56,19.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H401,Heptane,24.0,1.009,recorded,self-extinguished,Extinction,0.2,0.0,3.66,2.88,0.56,9.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H501,Heptane,24.0,1.011,recorded,burned,Completion,0.2,0.0,2.78,0.0,0.59,10.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H302,Heptane,24.0,1.011,recorded,burned,Completion,0.2,0.0,3.08,,0.51,17.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H303,Heptane,24.0,1.011,recorded,other,Disruption,0.2,0.0,3.13,,0.55,17.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H304,Heptane,24.0,1.011,recorded,other,Disruption,0.2,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C21H305,Heptane,24.0,1.011,recorded,other,Disruption,0.2,0.0,1.75,,0.63,5.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C14M101,Methanol,15.0,0.702,recorded,self-extinguished,Extinction,0.5,0.0,3.98,3.95,0.2,1.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C14M201,Methanol,15.0,0.703,recorded,self-extinguished,Extinction,0.5,0.0,2.86,2.73,0.3,2.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C14M301,Methanol,15.0,0.703,recorded,self-extinguished,Extinction,0.5,0.0,1.86,1.48,0.39,3.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C14M302,Methanol,15.0,0.704,recorded,self-extinguished,Extinction,0.5,0.0,2.25,2.06,0.36,2.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M101,Methanol,20.0,1.002,recorded,self-extinguished,Extinction,0.05,0.0,3.53,1.53,0.45,23.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M201,Methanol,20.0,1.005,recorded,self-extinguished,Extinction,0.05,0.0,3.33,1.61,0.45,20.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M301,Methanol,20.0,1.007,recorded,self-extinguished,Extinction,0.05,0.0,4.35,1.95,0.41,39.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C13M102,Methanol,17.0,0.705,recorded,self-extinguished,Extinction,0.45,0.0,3.02,2.49,0.4,7.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H101,Heptane,20.0,1.006,recorded,other,Disruption,0.05,0.0,2.58,1.15,0.54,11.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H201,Heptane,20.0,1.008,recorded,other,Disruption,0.05,0.0,2.21,0.82,0.53,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H302,Heptane,20.0,1.01,recorded,self-extinguished,Extinction,0.05,0.0,3.18,2.54,0.46,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M101,Methanol,18.0,1.003,recorded,burned,Completion,0.15,0.0,3.86,,0.36,31.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M201,Methanol,18.0,1.007,recorded,self-extinguished,Extinction,0.15,0.0,3.33,1.23,0.43,23.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M301,Methanol,18.0,1.007,recorded,self-extinguished,Extinction,0.15,0.0,2.78,1.19,0.42,15.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H101,Heptane,18.0,1.003,recorded,self-extinguished,Extinction,0.15,0.0,3.7,3.6,0.34,2.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H201,Heptane,18.0,1.006,recorded,self-extinguished,Extinction,0.15,0.0,2.73,2.52,0.39,2.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H401,Heptane,18.0,1.008,recorded,burned,Completion,0.15,0.0,1.34,0.45,0.48,3.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C05M101,Methanol,16.0,1.003,recorded,self-extinguished,Extinction,0.25,0.0,4.24,3.96,0.3,7.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C05M201,Methanol,16.0,1.006,recorded,self-extinguished,Extinction,0.25,0.0,3.7,3.22,0.37,10.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C05M301,Methanol,16.0,1.007,recorded,self-extinguished,Extinction,0.25,0.0,2.71,1.34,0.38,14.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C05M401,Methanol,16.0,1.01,recorded,self-extinguished,Extinction,0.25,0.0,2.77,1.52,0.38,14.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C06M101,Methanol,15.0,1.004,recorded,self-extinguished,Extinction,0.32,0.0,3.72,3.5,0.28,6.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C06M201,Methanol,15.0,1.006,recorded,self-extinguished,Extinction,0.32,0.0,3.05,2.54,0.37,8.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C06M301,Methanol,15.0,1.008,recorded,self-extinguished,Extinction,0.32,0.0,2.59,1.63,0.37,11.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C06M401,Methanol,15.0,1.008,recorded,self-extinguished,Extinction,0.32,0.0,2.59,1.79,0.42,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H302,Heptane,18.0,1.007,recorded,self-extinguished,Extinction,0.15,0.0,1.96,1.39,0.54,3.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C07M101,Methanol,14.0,1.001,recorded,self-extinguished,Extinction,0.36,0.0,3.22,3.08,0.28,3.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C07M201,Methanol,14.0,1.002,recorded,self-extinguished,Extinction,0.36,0.0,2.32,1.84,0.37,5.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C15M101,Methanol,21.0,1.004,recorded,other,Disruption,0.15,0.0,3.03,1.57,0.48,15.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C15M201,Methanol,21.0,1.008,recorded,self-extinguished,Extinction,0.15,0.0,3.05,1.28,0.51,16.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C15M301,Methanol,21.0,1.009,recorded,self-extinguished,Extinction,0.15,0.0,3.53,1.59,0.46,23.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H501,Heptane,18.0,1.0,recorded,self-extinguished,Extinction,0.15,0.0,3.74,3.68,0.35,2.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H601,Heptane,18.0,1.003,recorded,self-extinguished,Extinction,0.15,0.0,2.4,1.96,0.46,4.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03H701,Heptane,18.0,1.003,recorded,other,Disruption,0.15,0.0,1.35,0.47,0.5,3.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08H502,Heptane,24.0,0.7,recorded,other,Disruption,0.2,0.0,2.5,0.21,0.56,11.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08H601,Heptane,24.0,0.7,recorded,other,Disruption,0.2,0.0,2.88,,0.55,15.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M501,Methanol,24.0,0.706,recorded,self-extinguished,Extinction,0.2,0.0,4.53,,0.46,38.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C08M601,Methanol,24.0,0.707,recorded,self-extinguished,Extinction,0.2,0.0,3.02,1.35,0.52,14.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09H501,Heptane,23.0,0.702,recorded,self-extinguished,Extinction,0.25,0.0,3.32,2.61,0.5,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09H601,Heptane,23.0,0.703,recorded,other,Disruption,0.25,0.0,2.07,0.48,0.57,7.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C02H101,Heptane,19.0,0.998,recorded,self-extinguished,Extinction,0.1,0.0,3.4,3.13,0.41,4.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C02H201,Heptane,19.0,0.999,recorded,self-extinguished,Extinction,0.1,0.0,2.48,1.68,0.49,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C02H202,Heptane,19.0,0.999,recorded,other,Disruption,0.1,0.0,1.64,0.49,0.54,5.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M501,Methanol,23.0,0.703,recorded,self-extinguished,Extinction,0.25,0.0,3.72,,0.53,26.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M502,Methanol,23.0,0.704,recorded,self-extinguished,Extinction,0.25,0.0,3.42,,0.51,15.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M601,Methanol,23.0,0.704,recorded,self-extinguished,Extinction,0.25,0.0,2.8,1.33,0.51,12.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C09M701,Methanol,23.0,0.706,recorded,self-extinguished,Extinction,0.25,0.0,2.47,1.21,0.52,9.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C02M101,Methanol,19.0,0.997,recorded,self-extinguished,Extinction,0.1,0.0,3.38,1.29,0.47,21.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C02M201,Methanol,19.0,0.998,recorded,self-extinguished,Extinction,0.1,0.0,2.47,1.08,0.46,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M501,Methanol,18.0,1.002,recorded,self-extinguished,Extinction,0.15,0.0,3.77,1.78,0.42,30.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M601,Methanol,18.0,1.006,recorded,self-extinguished,Extinction,0.15,0.0,2.74,0.95,0.5,14.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C03M701,Methanol,18.0,1.007,recorded,self-extinguished,Extinction,0.15,0.0,1.76,0.81,0.46,5.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C04M101,Methanol,17.0,0.999,recorded,self-extinguished,Extinction,0.2,0.0,3.46,,0.39,21.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C04M201,Methanol,17.0,0.999,recorded,self-extinguished,Extinction,0.2,0.0,2.77,1.27,0.4,15.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C04H101,Heptane,17.0,0.989,recorded,self-extinguished,Extinction,0.2,0.0,3.76,3.71,0.29,1.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C04H201,Heptane,17.0,0.99,recorded,self-extinguished,Extinction,0.2,0.0,2.9,2.79,0.36,1.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H501,Heptane,20.0,0.998,recorded,self-extinguished,Extinction,0.05,0.0,3.06,2.28,0.52,8.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H601,Heptane,20.0,1.0,recorded,self-extinguished,Extinction,0.05,0.0,3.04,2.33,0.49,8.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01H701,Heptane,20.0,1.0,recorded,other,Disruption,0.05,0.0,2.12,0.13,0.53,8.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M501,Methanol,20.0,0.992,recorded,self-extinguished,Extinction,0.05,0.0,3.37,0.98,0.49,21.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M602,Methanol,20.0,0.995,recorded,self-extinguished,Extinction,0.05,0.0,2.57,1.13,0.47,11.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,C01M603,Methanol,20.0,0.996,recorded,self-extinguished,Extinction,0.05,0.0,2.4,1.05,0.48,10.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01M101,Methanol,21.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,3.3,1.42,0.47,19.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01M201,Methanol,21.0,1.002,recorded,self-extinguished,Extinction,0.0,0.0,2.75,1.11,0.52,12.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H101,Heptane,21.0,0.995,recorded,other,Disruption,0.0,0.0,3.56,,0.43,23.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H102,Heptane,21.0,0.996,recorded,other,Disruption,0.0,0.0,3.58,,0.42,24.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H201,Heptane,21.0,1.0,recorded,other,Disruption,0.0,0.0,2.96,0.47,0.5,17.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H202,Heptane,21.0,1.004,recorded,burned,Completion,0.0,0.0,2.72,1.13,0.54,11.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H301,Heptane,21.0,1.004,recorded,burned,Completion,0.0,0.0,2.92,,0.69,12.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N02H101,Heptane,16.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,3.34,3.18,0.34,3.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N02H201,Heptane,16.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N02H203,Heptane,16.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,2.52,2.13,0.42,4.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N03H101,Heptane,15.0,1.005,recorded,self-extinguished,Extinction,0.0,0.0,2.55,2.31,0.37,3.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N04H101,Heptane,14.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,4.16,4.15,0.24,1.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N04H201,Heptane,14.0,1.0,recorded,self-extinguished,Extinction,0.0,0.0,1.83,,0.39,3.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N04M101,Methanol,14.0,0.997,recorded,self-extinguished,Extinction,0.0,0.0,3.5,,0.3,26.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N04M201,Methanol,14.0,0.998,recorded,self-extinguished,Extinction,0.0,0.0,2.67,1.27,0.38,15.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N05M101,Methanol,13.0,0.999,recorded,self-extinguished,Extinction,0.0,0.0,3.46,2.96,0.36,9.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N05M201,Methanol,13.0,1.001,recorded,self-extinguished,Extinction,0.0,0.0,2.75,1.46,0.35,16.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N06M101,Methanol,12.0,1.002,recorded,self-extinguished,Extinction,0.0,0.0,2.6,2.09,0.36,6.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N06M201,Methanol,12.0,1.002,recorded,self-extinguished,Extinction,0.0,0.0,1.94,1.05,0.35,7.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N06M202,Methanol,12.0,1.005,recorded,self-extinguished,Extinction,0.0,0.0,1.84,1.04,0.38,6.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H01M102,Methanol,20.0,0.999,recorded,self-extinguished,Extinction,0.0,0.05,2.91,1.12,0.51,14.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H01M104,Methanol,20.0,0.999,recorded,self-extinguished,Extinction,0.0,0.05,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H01H102,Heptane,20.0,0.994,recorded,burned,Completion,0.0,0.05,2.25,,0.57,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H02M101,Methanol,19.0,0.991,recorded,self-extinguished,Extinction,0.0,0.1,2.78,,0.57,12.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H03M101,Methanol,18.0,0.999,recorded,self-extinguished,Extinction,0.0,0.15,2.79,1.3,0.51,12.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H03M201,Methanol,18.0,1.0,recorded,self-extinguished,Extinction,0.0,0.15,2.95,1.67,0.53,11.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H401,Heptane,21.0,1.01,recorded,self-extinguished,Extinction,0.0,0.0,3.32,1.37,0.52,17.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H502,Heptane,21.0,1.011,recorded,other,Disruption,0.0,0.0,2.39,,0.57,10.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,N01H601,Heptane,21.0,1.012,recorded,self-extinguished,Extinction,0.0,0.0,3.65,2.85,0.57,9.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H02H101,Heptane,19.0,0.998,recorded,other,Disruption,0.0,0.1,2.59,,0.54,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H03H101,Heptane,18.0,1.005,recorded,self-extinguished,Extinction,0.0,0.15,3.52,3.28,0.41,4.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H03H201,Heptane,18.0,1.008,recorded,burned,Completion,0.0,0.15,2.3,,0.49,9.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H03H202,Heptane,18.0,1.009,recorded,burned,Completion,0.0,0.15,2.27,,0.51,8.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04H101,Heptane,17.0,0.999,recorded,self-extinguished,Extinction,0.0,0.2,2.85,2.6,0.46,3.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04H201,Heptane,17.0,0.999,recorded,self-extinguished,Extinction,0.0,0.2,2.12,1.39,0.59,4.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04H302,Heptane,17.0,0.999,recorded,other,Disruption,0.0,0.2,,,,1.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04H303,Heptane,17.0,1.0,recorded,burned,Completion,0.0,0.2,1.61,,0.91,2.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04M101,Methanol,17.0,0.992,recorded,self-extinguished,Extinction,0.0,0.2,2.99,,0.49,9.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H04M202,Methanol,17.0,0.996,recorded,self-extinguished,Extinction,0.0,0.2,2.9,1.42,0.51,13.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H05M102,Methanol,16.0,1.0,recorded,self-extinguished,Extinction,0.0,0.25,3.4,2.79,0.51,7.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H05M202,Methanol,16.0,1.001,recorded,self-extinguished,Extinction,0.0,0.25,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H05H103,Heptane,16.0,0.997,recorded,self-extinguished,Extinction,0.0,0.25,1.49,0.69,0.6,2.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H06M102,Methanol,15.0,0.994,recorded,self-extinguished,Extinction,0.0,0.3,3.67,3.47,0.43,3.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H06M201,Methanol,15.0,0.996,recorded,self-extinguished,Extinction,0.0,0.3,2.52,2.06,0.56,4.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H07M101,Methanol,14.0,0.999,recorded,self-extinguished,Extinction,0.0,0.35,2.44,2.26,0.56,1.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H07M202,Methanol,14.0,1.0,recorded,self-extinguished,Extinction,0.0,0.35,1.88,1.73,0.58,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H08M101,Methanol,13.0,1.005,recorded,self-extinguished,Extinction,0.0,0.4,3.56,3.54,0.51,0.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H10H101,Heptane,24.0,0.703,recorded,self-extinguished,Extinction,0.0,0.2,3.78,2.52,0.72,12.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H11H101,Heptane,23.0,0.7,recorded,burned,Completion,0.0,0.25,2.8,0.12,0.71,11.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H10M101,Methanol,24.0,0.703,recorded,self-extinguished,Extinction,0.0,0.2,2.82,1.03,0.62,11.2,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H10M102,Methanol,24.0,0.703,recorded,other,Disruption,0.0,0.2,2.79,1.53,0.7,8.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H11M101,Methanol,23.0,0.7,recorded,self-extinguished,Extinction,0.0,0.25,2.45,0.86,0.6,8.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H11M102,Methanol,23.0,0.7,recorded,other,Disruption,0.0,0.25,2.61,,0.73,6.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H12M101,Methanol,21.0,0.7,recorded,self-extinguished,Extinction,0.0,0.3,3.22,,0.56,10.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H12M102,Methanol,21.0,0.699,recorded,self-extinguished,Extinction,0.0,0.3,3.25,1.78,0.65,12.1,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H12M201,Methanol,21.0,0.699,recorded,self-extinguished,Extinction,0.0,0.3,2.67,1.42,0.7,7.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H12H101,Heptane,21.0,0.697,recorded,self-extinguished,Extinction,0.0,0.3,3.23,2.33,0.67,7.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H12H201,Heptane,21.0,0.696,recorded,self-extinguished,Extinction,0.0,0.3,2.86,0.71,0.7,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H13H101,Heptane,20.0,0.701,recorded,self-extinguished,Extinction,0.0,0.35,3.69,3.32,0.61,4.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H13H201,Heptane,20.0,0.7,recorded,self-extinguished,Extinction,0.0,0.35,3.08,1.69,0.67,5.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H13M102,Methanol,20.0,0.694,recorded,self-extinguished,Extinction,0.0,0.35,3.87,2.24,0.6,17.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H13M201,Methanol,20.0,0.695,recorded,self-extinguished,Extinction,0.0,0.35,2.95,1.5,0.63,10.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H14M101,Methanol,18.0,0.701,recorded,self-extinguished,Extinction,0.0,0.4,3.5,2.67,0.59,7.8,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H14M201,Methanol,18.0,0.701,recorded,self-extinguished,Extinction,0.0,0.4,2.7,1.92,0.63,5.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H14M202,Methanol,18.0,0.702,recorded,self-extinguished,Extinction,0.0,0.4,1.84,1.3,0.62,2.3,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H14H101,Heptane,18.0,0.695,recorded,self-extinguished,Extinction,0.0,0.4,2.27,1.64,0.71,3.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H14H201,Heptane,18.0,0.698,recorded,self-extinguished,Extinction,0.0,0.4,1.86,0.84,0.77,3.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H15H101,Heptane,17.0,0.7,recorded,self-extinguished,Extinction,0.0,0.45,2.22,1.86,0.76,1.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H15H201,Heptane,17.0,0.701,recorded,burned,Completion,0.0,0.45,1.61,0.91,1.06,1.4,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H15M102,Methanol,17.0,0.698,recorded,self-extinguished,Extinction,0.0,0.45,2.79,2.3,0.63,4.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H15M201,Methanol,17.0,0.699,recorded,self-extinguished,Extinction,0.0,0.45,2.68,2.31,0.66,2.9,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H19H101,Heptane,21.0,1.006,recorded,self-extinguished,Extinction,0.0,0.15,3.54,2.91,0.55,7.6,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-69,FLEX,droplet,H19H201,Heptane,21.0,1.008,recorded,self-extinguished,Extinction,0.0,0.15,2.82,0.73,0.65,11.7,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-69
+PSI-39,CFI,droplet,1206,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1207,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1208,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1209,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1210,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1211,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1213,C12H26,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1215,C12H26,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1216,C12H26,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1217,C12H26,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1218,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1219,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1220,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1221,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1222,C12H26,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1223,C12H26,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1224,C12H26,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1225,C12H26,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1226,C12H26,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1227,C12H26,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1228,C12H26,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1229,C12H26,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1285,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1286,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1287,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1288,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1289,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1295,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1296,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1297,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1290,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1291,[.60]/[.40] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1292,[.60]/[.40] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1293,[.60]/[.40] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1294,[.60]/[.40] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1300,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1301,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1310,[.60]/[.40] C12H26/iso-dodecane,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1311,[.60]/[.40] C12H26/iso-dodecane,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1312,[.60]/[.40] C12H26/iso-dodecane,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1313,[.60]/[.40] C12H26/iso-dodecane,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1314,[.60]/[.40] C12H26/iso-dodecane,21.0,1.25,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1320,[.60]/[.40] C12H26/iso-dodecane,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1321,[.60]/[.40] C12H26/iso-dodecane,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1322,[.60]/[.40] C12H26/iso-dodecane,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1323,[.60]/[.40] C12H26/iso-dodecane,21.0,2.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1328,[.60]/[.40] C12H26/iso-dodecane,17.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1329,[.60]/[.40] C12H26/iso-dodecane,17.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1330,[.60]/[.40] C12H26/iso-dodecane,17.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1331,[.60]/[.40] C12H26/iso-dodecane,17.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1332,[.60]/[.40] C12H26/iso-dodecane,17.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1335,[.60]/[.40] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1336,[.60]/[.40] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1337,[.60]/[.40] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1338,[.60]/[.40] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1340,[.75]/[.25] C12H26/iso-dodecane,21.0,5.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1341,[.60]/[.40] C12H26/iso-dodecane,21.0,5.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1342,[.60]/[.40] C12H26/iso-dodecane,21.0,5.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1346,[.60]/[.40] C12H26/iso-dodecane,21.0,0.75,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1347,[.60]/[.40] C12H26/iso-dodecane,21.0,0.75,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1348,[.60]/[.40] C12H26/iso-dodecane,21.0,0.75,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1349,[.60]/[.40] C12H26/iso-dodecane,21.0,0.75,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1356,[.60]/[.40] C12H26/iso-dodecane,21.0,0.5,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1357,[.60]/[.40] C12H26/iso-dodecane,21.0,0.5,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1358,[.60]/[.40] C12H26/iso-dodecane,21.0,0.5,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1362,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1363,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1364,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1365,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1366,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1367,[.75]/[.25] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1368,[.75]/[.25] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1369,[.75]/[.25] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.29,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1373,[.75]/[.25] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1374,[.75]/[.25] C12H26/iso-dodecane,21.0,3.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1383,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1384,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1386,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1387,[.60]/[.40] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.59,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1285,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1286,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1287,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1288,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1289,[.75]/[.25] C12H26/iso-dodecane,17.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1295,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1296,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-39,CFI,droplet,1297,[.75]/[.25] C12H26/iso-dodecane,21.0,1.0,recorded,,,,0.0,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-39
+PSI-159,ACME CFI-G,gas,21196 A1,ethane,21.0,1.086,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 A2,ethane,21.0,1.086,recorded,burned,Burned until flow was stopped,,,,,,35.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F1,ethane,15.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,36.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 H1,ethane,12.0,1.089,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 J1,ethane,13.5,1.089,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F2,ethane,15.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F3,ethane,15.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F4,ethane,15.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F5,ethane,15.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 F6,ethane,15.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 K1,ethane,15.0,0.489,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 L1,ethane,21.0,0.489,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 L2,ethane,21.0,0.489,recorded,burned,Burned until flow was stopped,,,,,,63.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 M1,ethane,30.0,0.489,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 M2,ethane,30.0,0.489,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21196 M2_1,ethane,30.0,0.489,recorded,burned,Burned until flow was stopped,,,,,,64.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 A1,ethane,85.0,2.178,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 A2,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,2.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 A3,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,3.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 A4,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 H1,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,28.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 H2,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,16.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 H3,ethane,85.0,2.178,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 H4,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,41.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 J1,ethane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,53.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 K1,ethane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,55.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 K2,ethane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,21.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21202 L1,ethane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,50.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 A1,ethane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,26.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 A2,ethane,85.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 A3,ethane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,67.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 B1,ethane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,136.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 A4,ethane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 H1,ethane,50.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 J1,ethane,30.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 F1,ethane,21.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 F2,ethane,21.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 F3,ethane,21.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 B2,ethane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,48.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21209 K1,ethane,18.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,26.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A1,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,17.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A2,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,15.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A3,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,15.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A4,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,36.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A5,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 A6,ethane,85.0,3.267,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 B1,ethane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,25.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 C1,ethane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 F1,ethane,21.0,3.267,recorded,burned,Burned until flow was stopped,,,,,,68.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 H1,ethane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,20.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 H2,ethane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,18.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 J1,ethane,50.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,19.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21216 K1,ethane,21.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 A1,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,10.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 A2,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,16.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 A3,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,18.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 A4,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,13.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 A5,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,3.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 B1,propane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,17.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 C1,propane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,6.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 C2,propane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 F1,propane,21.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21222 F2,propane,21.0,3.267,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 A1,propane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 A2,propane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 A3,propane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 A4,propane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 B1,propane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,16.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 C1,propane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 C2,propane,50.0,2.178,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 C3,propane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 C4,propane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 F1,propane,21.0,2.178,recorded,burned,Burned until flow was stopped,,,,,,65.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 H1,propane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 H2,propane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,15.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 J1,propane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,18.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 K1,propane,50.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 K2,propane,50.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 L1,propane,21.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,3.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21228 L2,propane,21.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,16.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 A1,propane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 A2,propane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 C1,propane,50.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 F1,propane,21.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 F2,propane,21.0,1.089,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 H1,propane,18.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,4.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 J1,propane,19.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 B1,propane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,152.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 K1,propane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21235 L1,propane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,127.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 A1,propane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 P1,propane,30.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,21.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 F2,propane,21.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 F3,propane,21.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 F4,propane,21.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21242 P2,propane,30.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 A1,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 A2,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 A3,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,11.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 A4,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 A5,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 C1,butane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 F1,butane,21.0,2.178,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 B1,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,13.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 C2,butane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,9.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 H1,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 H2,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 H3,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 H4,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,3.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 H5,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 K1,butane,50.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,4.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 M1,butane,21.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21256 J1,butane,85.0,2.178,recorded,self-extinguished,Self-extinguished,,,,,,7.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 A1,butane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,6.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 A2,butane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 A3,butane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 A4,butane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 A5,butane,85.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,8.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 C1,butane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,3.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 C2,butane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 C3,butane,50.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,2.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 F1,butane,21.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,0.5,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 F2,butane,21.0,3.267,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 F3,butane,21.0,3.267,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 F4,butane,21.0,3.267,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 H1,butane,40.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,1.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 H2,butane,40.0,3.267,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 J1,butane,70.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,6.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 K1,butane,45.0,3.267,recorded,self-extinguished,Self-extinguished,,,,,,5.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21265 H3,butane,40.0,3.267,recorded,burned,Burned until flow was stopped,,,,,,107.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 A1,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,60.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 A2,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,90.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 A3,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,35.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 A4,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,90.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 C1,butane,50.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,70.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 H1,butane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,51.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 H2,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,43.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 H3,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,43.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 H4,butane,85.0,1.089,recorded,burned,Burned until flow was stopped,,,,,,83.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21270 H5,butane,85.0,1.089,recorded,self-extinguished,Self-extinguished,,,,,,46.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 A1,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,12.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 H1,butane,50.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,17.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 J1,butane,21.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 K1,butane,30.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 K2,butane,30.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,20.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 J2,butane,21.0,0.544,recorded,did not ignite,Did not ignite,,,,,,0.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 C1,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,20.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 C2,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,36.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 L1,butane,50.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 F1,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 F2,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 M1,butane,85.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,66.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 N1,butane,50.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,55.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-159,ACME CFI-G,gas,21277 P1,butane,30.0,0.544,recorded,burned,Burned until flow was stopped,,,,,,40.0,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-159
+PSI-10,ACME Flame Design,gas,19115A1,C2H4,20.713,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115D2,C2H4,20.617,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115B1,C2H4,20.566,1.014,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115B2,C2H4,20.494,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115F1,C2H4,20.432,1.014,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115G1,C2H4,20.386,1.014,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115K1,C2H4,20.346,1.015,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115L1,C2H4,20.282,1.016,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115N1,C2H4,20.188,1.015,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115M4,C2H4,20.136,1.016,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19115Q1,C2H4,20.087,1.017,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123A1,C2H4,20.983,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123A2,C2H4,20.919,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123A3,C2H4,20.858,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123A4,C2H4,20.797,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123C1,C2H4,20.738,1.009,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123F1,C2H4,20.667,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123F2,C2H4,20.608,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123F3,C2H4,20.549,1.014,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123K1,C2H4,20.491,1.015,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123B1,C2H4,20.443,1.016,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123D1,C2H4,20.381,1.017,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123J1,C2H4,20.323,1.017,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L1,C2H4,20.255,1.019,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L2,C2H4,20.183,1.019,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L3,C2H4,20.112,1.019,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L4,C2H4,20.054,1.02,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L5,C2H4,20.011,1.02,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L6,C2H4,19.98,1.02,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19123L7,C2H4,19.942,1.019,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137A1,C2H4,21.019,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137B1,C2H4,20.952,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137C1,C2H4,20.872,1.005,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137D1,C2H4,20.802,1.006,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137F1,C2H4,20.727,1.007,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137F2,C2H4,20.658,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137F3,C2H4,20.594,1.009,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137G1,C2H4,20.536,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137H1,C2H4,20.489,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137J1,C2H4,20.444,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137K1,C2H4,20.402,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137K2,C2H4,20.363,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L1,C2H4,20.323,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L2,C2H4,20.284,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L3,C2H4,20.239,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L4,C2H4,20.2,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L5,C2H4,20.164,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L6,C2H4,20.133,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L7,C2H4,20.088,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19137L8,C2H4,20.046,1.014,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142G1,C2H4,39.695,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142G2,C2H4,38.999,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142G3,C2H4,38.38,1.017,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142F1,C2H4,37.876,1.02,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142J2,C2H4,37.317,1.025,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142G4,C2H4,37.872,0.989,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142G5,C2H4,37.559,0.991,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19142J3,C2H4,37.343,0.991,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150A1,C2H4,39.824,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150A3,C2H4,39.705,1.007,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150A4,C2H4,39.546,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150A5,C2H4,39.264,1.015,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150B2,C2H4,38.895,1.021,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150C1,C2H4,38.628,1.025,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150B3,C2H4,38.282,1.03,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150D2,C2H4,38.006,1.033,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150F1,C2H4,37.107,1.042,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150G2,C2H4,37.041,1.042,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150H1,C2H4,36.561,1.042,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150J1,C2H4,36.175,1.047,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150G3,C2H4,35.834,1.047,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150N1,C2H4,30.028,1.002,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19150S1,C2H4,29.402,1.009,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156B2,C2H4,38.897,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156B4,C2H4,38.786,1.015,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156K1,C2H4,37.97,1.029,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156C1,C2H4,37.692,1.032,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156C2,C2H4,37.496,1.031,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156C3,C2H4,37.068,1.031,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J1,C2H4,37.345,1.026,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J2,C2H4,37.04,1.026,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J3,C2H4,36.853,1.026,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J4,C2H4,36.593,1.026,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J5,C2H4,36.446,1.025,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J6,C2H4,36.274,1.025,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19156J7,C2H4,36.092,1.025,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171D1,C2H4,39.435,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171D2,C2H4,38.657,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171D3,C2H4,38.134,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171D4,C2H4,37.855,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171D5,C2H4,37.391,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171S1,C2H4,36.954,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171B1,C2H4,37.887,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171B3,C2H4,37.214,1.018,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171J1,C2H4,36.535,1.029,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171J2,C2H4,36.258,1.031,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171J3,C2H4,36.143,1.031,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19171J4,C2H4,35.96,1.032,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175A2,C2H4,39.839,1.258,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175A3,C2H4,39.725,1.26,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175A4,C2H4,39.098,1.26,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B1,C2H4,38.873,1.261,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B4,C2H4,38.759,1.262,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B5,C2H4,38.489,1.264,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B6,C2H4,38.944,1.249,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B7,C2H4,38.785,1.257,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B8,C2H4,38.596,1.253,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175B9,C2H4,38.399,1.256,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175N1,C2H4,38.255,1.257,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175N2,C2H4,37.94,1.26,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19175N3,C2H4,37.744,1.26,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G1,C2H4,39.854,1.257,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G2,C2H4,39.683,1.26,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G3,C2H4,39.522,1.263,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G6,C2H4,39.361,1.266,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G7,C2H4,39.227,1.269,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G8,C2H4,39.019,1.272,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182G9,C2H4,38.815,1.275,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182N1,C2H4,38.628,1.277,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182N2,C2H4,38.902,1.273,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182N3,C2H4,38.758,1.275,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182A1,C2H4,38.57,1.277,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182C1,C2H4,38.481,1.279,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182C2,C2H4,38.259,1.284,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182N4,C2H4,38.027,1.289,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19182F1,C2H4,37.843,1.29,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189A1,C2H4,39.86,1.255,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189A2,C2H4,39.584,1.272,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189A3,C2H4,39.493,1.268,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189D1,C2H4,39.401,1.272,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189A4,C2H4,39.151,1.28,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189D2,C2H4,39.087,1.282,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189D3,C2H4,39.008,1.284,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189H1,C2H4,38.771,1.29,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189J1,C2H4,38.716,1.291,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189J2,C2H4,38.324,1.293,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189J3,C2H4,37.965,1.294,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189K1,C2H4,37.598,1.295,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189K2,C2H4,37.252,1.296,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189K3,C2H4,36.93,1.296,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19189P1,C2H4,36.55,1.297,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196A1,C2H4,39.557,1.255,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196A2,C2H4,39.445,1.256,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196A3,C2H4,39.22,1.259,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196B1,C2H4,39.075,1.261,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196B2,C2H4,38.978,1.262,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196B3,C2H4,38.826,1.262,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196B4,C2H4,38.659,1.263,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196C1,C2H4,38.464,1.264,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196C2,C2H4,38.309,1.265,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196D1,C2H4,38.612,1.263,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196D2,C2H4,38.427,1.263,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196F1,C2H4,38.221,1.262,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19196N1,C2H4,38.165,1.264,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A1,C2H4,39.471,1.002,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A2,C2H4,39.255,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A3,C2H4,39.198,1.004,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A4,C2H4,39.057,1.006,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A5,C2H4,38.897,1.006,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A6,C2H4,38.695,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A7,C2H4,38.45,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200A8,C2H4,38.257,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200K1,C2H4,29.943,1.002,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200H1,C2H4,29.743,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200H2,C2H4,29.395,1.005,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19200H3,C2H4,28.942,1.013,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206A1,C2H4,20.991,1.003,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206A5,C2H4,20.898,1.006,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G1,C2H4,20.821,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G2,C2H4,20.738,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G3,C2H4,20.677,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G4,C2H4,20.618,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G5,C2H4,20.546,1.008,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206L2,C2H4,20.452,1.009,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206L3,C2H4,20.393,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206L4,C2H4,20.343,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206L6,C2H4,20.288,1.01,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G7,C2H4,20.225,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206K1,C2H4,20.152,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206K2,C2H4,20.105,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G8,C2H4,20.058,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206G9,C2H4,20.049,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206N1,C2H4,19.986,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206H1,C2H4,19.969,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206H2,C2H4,19.916,1.011,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206H3,C2H4,19.86,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,19206H4,C2H4,19.805,1.012,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A1,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A2,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A3,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A4,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A5,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A6,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301C1,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301C2,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301D1,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301D2,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A7,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A8,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301A9,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301H1,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301H2,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301H3,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301J1,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301J2,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301J3,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-10,ACME Flame Design,gas,21301J4,C3H8,40.0,0.932,recorded,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-10
+PSI-25,BASS-II,solid,B1,100 micron PMMA film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B2,200 micron PMMA film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B3,100 micron film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B4,300 micron PMMA film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B5,200 micron 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B6,2 cm 0.1 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B7,400 micron film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B8,2 cm 0.2 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B9,2 cm 0.1 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B10,1 cm 0.2 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B11,2 cm 0.2 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B12,300 micron film 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B13,2 cm 0.4 mm thick film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B14,1 cm wide 200 micron thick PMMA,15.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B15,2 cm 0.1 mm PMMA film,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B16,2 cm 100 micron thick PMMA,17.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B17,1 cm wide 200 micron thick PMMA,17.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B18,1 cm wide 200 micron thick PMMA,17.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B19,2 cm 100 micron thick PMMA,17.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B20,2 cm 100 micron thick PMMA,17.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B21,1 cm wide 200 micron thick PMMA,20.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,B22,1 cm wide 200 micron thick PMMA,20.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,F1,Nomex natural (nomex III),22.2,,not recorded (cabin pressure),,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,F2,Nomex natural (nomex III),21.0,,not recorded (cabin pressure),,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,F3,Nomex natural (nomex III),21.7,,not recorded (cabin pressure),,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,F4,Japan Wax candle,17.4,,not recorded (cabin pressure),,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M1,1 mm thick PMMA 1 sided 2 cm,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M2,3 mm thick PMMA 1 sided 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M3,2 cm wide 5 mm thick 1 sided PMMA,20.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M4,5 mm thick PMMA 2 cm wide,21.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M5,3 mm thick PMMA 2 sided 2 cm thick,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M6,1 mm thick PMMA 2 cm wide,21.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M7,1 cm wide PMMA 1 mm thick,18.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M8,1 cm wide PMMA 2 mm thick,19.1,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M9,1 cm wide PMMA 3 mm thick,18.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M10,4 mm thick 1 cm wide PMMA slab,20.1,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M11,1 cm wide PMMA 5 mm thick,20.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M12,2 mm thick PMMA 2 cm wide,21.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M13,4 mm thick PMMA 2 cm wide,20.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M14,2mm thick PMMA 1 sided 2 cm wide,22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M15,2 cm 4 mm 1 sided PMMA slab,21.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M16,1 mm thick PMMA 2 cm wide,19.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M17,2 cm wide PMMA 2 mm thick,18.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M18,2 cm wide PMMA 3 mm thick,17.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M19,4 mm thick 2 cm 2ide PMMA slab,19.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,M20,5 mm thick PMMA 2 cm wide,18.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O1,"1/4"" clear rod",22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O2,"1/4"" clear rod",22.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O3a,"1/4"" clear rod",18.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O3b,"1/4"" clear rod",18.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O4,"3/8""clear rod",14.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O5a,"1/2"" clear PMMA rod",15.1,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O5b,"1/2"" clear PMMA rod",14.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O6,"1/4"" clear rod",16.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O7,"1/4"" clear rod",16.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O8a,"1/4"" clear rod",15.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O8b,"1/4"" clear rod",15.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O9,"1/4"" clear rod",15.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O10,"1/4"" clear rod",16.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O11,"1/4"" black rod",15.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O12,"3/8"" clear rod",13.6,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O13a,"1/2"" clear PMMA rod",15.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O13b,"1/2"" clear PMMA rod",14.6,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O14,"1/4"" black rod",16.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O15a,"3/8"" clear rod",17.1,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O15b,"3/8"" clear rod",16.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O16,"3/8""clear rod",14.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O17,"1/4"" clear rod",15.1,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O18,"1/4"" clear rod",15.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O19,"1/4"" clear rod",15.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O20,"1/4"" clear rod",16.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O21,"3/8"" clear rod",15.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,O22,"1/2"" clear rod",15.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P1,"1/4"" black rod",17.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P2,"1/4"" black rod",17.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P3a,"1/4"" clear rod",17.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P3b,1/4 clear rod,17.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P4,"3/8"" black rod",18.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P5,"0.5"" black rod",19.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P6,"1/4"" black rod",18.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P8,"3/8"" black rod",16.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P9,"0.5"" black rod",17.6,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P10,"1/4"" black rod",17.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P12,"3/8"" black rod",17.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P13a,"0.5"" black rod",20.7,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P13b,"0.5"" black rod",20.6,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P14,1/4 blac rod,18.4,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P15,1/4 black rod,18.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P16,"1/4"" black rod",18.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P17,"1/4"" black rod",16.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P18,"1/4"" black rod",20.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P19,"1/4"" black rod",17.5,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P20,"1/4"" black rod",19.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P21a,1/4 black rod,16.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P21b,"1/4"" black rod",16.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P22a,"3/8"" black rod",20.8,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P22b,"3/8"" black rod",20.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P23,"3/8"" black rod",18.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P24,"3/8"" black rod",19.0,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,P25,"3/8"" clear rod",20.9,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T1,2 cm SIBAL,18.5,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T2,2 cm SIBAL,18.5,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T3,4 cm spherical section,17.2,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T4,2 cm SIBAL,18.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T5,2 cm SIBAL,18.8,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T6,2 cm SIBAL,18.8,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T7,4 cm spherical section,17.3,,not recorded (cabin pressure),,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T9,2 cm SIBAL,16.4,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T10,2 cm SIBAL,16.4,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T11,2 cm SIBAL,17.1,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T12,2 cm SIBAL,16.8,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T13,2 cm SIBAL,17.5,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T14,2 cm SIBAL,16.9,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T15,2 cm SIBAL,18.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T16,2 cm SIBAL,17.6,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T17,2 cm SIBAL,16.9,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T18,2 cm SIBAL,17.4,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T19,1 cm SIBAL,17.2,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T20,1 cm SIBAL,17.2,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T21,1 cm SIBAL,17.2,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T22,1 cm SIBAL,17.1,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T23,2 cm Sibal moved igniter,17.2,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T24,1 cm SIBAL top side ign,18.2,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T25,2 cm SIBAL,20.8,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T26,2 cm SIBAL,20.8,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T27,1 cm SIBAL,20.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T28a,1 cm SIBAL,20.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T28b,1 cm SIBAL,20.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-25,BASS-II,solid,T29,1 cm SIBAL,20.7,,not recorded (cabin pressure),,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-25
+PSI-26,BASS,solid,1,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,2,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,3,PMMA sphere 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,4,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,5,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,6,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,7,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,8,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,9,PMMA sphere 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,10,PMMA sphere 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,11,PMMA sphere 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,12,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,13,SIBAL 1 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,14,Nomex blend 2 cm,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,15,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,16,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,17,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,18,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,19,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,20,PMMA 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,21,PMMA 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,22,PMMA 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,23,PMMA 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,24,Nomex blend 2 cm,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,24,Nomex blend 2 cm,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,25,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,26,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,27,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,28,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,29,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,30,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,31,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,32,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,33,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,34,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,35,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,36,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,37,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,38,Nomex III Natural,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,39,PMMA slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,40,PMMA slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,41,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,42,1 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,43,ultem sheet,,,,,,,,,,,,,,,ultem,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,44,SIBAL 2 cm opposed flow,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,45,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,46,candle,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,47,candle,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,48,candle,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,49,pmma slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,50,pmma slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,51,2 cm sphere wake ign,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,52,2 cm sphere wake ign,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,53,2 cm sphere wake ign,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,54,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,55,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,56,nomex natural III,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,57,Nomex blend 2 cm,,,,,,,,,,,,,,,nomex,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,58,ultem sheet,,,,,,,,,,,,,,,ultem,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,59,pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,60,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,61,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,62,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,63,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,64,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,,SOOT Cleaning,,,,,,,,,,,,,,,,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,65,SIBAL 1 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,66,SIBAL 2 cm,,,,,,,,,,,,,,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,67,PMMA sphere 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,68,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,69,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,70,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,71,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,72,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,73,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,74,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,75,Japan Wax Candle wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,76,PMMA slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,77,PMMA slab,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,78,paraffin wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,79,parrafin wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,80,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,81,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,82,PMMA 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,83,pmma 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,84,pmma 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,85,pmma 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,85,pmma 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,86,pmma 2 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,87,candle paraffin wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,88,candle paraffin wake,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,89,pmma 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,90,pmma 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,91,pmma 1 cm,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,89,candle Japan wax,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,90,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,91,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,92,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,93,1 cm sphere wake,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,94,1 cm wake sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,95,1 cm wake sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,96,pmma slab opposed,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,97,pmma slab oppsed,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,98,2 cm pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,99,2 cm pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,100,parrafin wax candle,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,101,paraffin wax candle,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,102,candle Japan wax,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,103,paraffin wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,104,2 cm pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,105,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,106,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,107,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,108,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,109,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,110,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,111,2 cm sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,112,flat wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,113,flat wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,114,flat wax slab,,,,,,,,,,,,,,,wax,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,115,pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-26,BASS,solid,116,pmma sphere,,,,,,,,,,,,,,,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-26
+PSI-98,SAFFIRE-I,solid,S1,SIBAL Fabric,21.5,,not recorded (cabin pressure),burned,Burned for 420 s,,,,,,,20.0,Concurrent,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-98
+PSI-98,SAFFIRE-I,solid,S2,SIBAL Fabric,21.5,,not recorded (cabin pressure),burned,Burned for 70 s,,,,,,,20.0,Opposed,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-98
+PSI-99,SAFFIRE-II,solid,2-1,"Silicone, 0.27 mm",21.5,,not recorded (cabin pressure),self-extinguished,Did not spread in microgravity,,,,,,,20.0,Concurrent,Complete,silicone,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-2,"Silicone, 0.61 mm",22.1,,not recorded (cabin pressure),self-extinguished,Did not spread in microgravity,,,,,,,20.0,Concurrent,7.6 cm,silicone,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-3,"Silicone, 1.03 mm",22.1,,not recorded (cabin pressure),self-extinguished,Did not spread in microgravity,,,,,,,20.0,Concurrent,~ 0,silicone,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-4,"Silicone, 037 mm",22.1,,not recorded (cabin pressure),self-extinguished,Did not spread in microgravity,,,,,,,20.0,Opposed,Complete,silicone,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-5,"Cotton-Fiberglass (SIBAL), 037 mm",22.1,,not recorded (cabin pressure),burned,Burned 29 cm in microgravity,,,,,,,20.0,Concurrent,Complete,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-6,"Cotton-Fiberglass (SIBAL), 037 mm",22.1,,not recorded (cabin pressure),burned,Burned 29 cm in microgravity,,,,,,,20.0,Concurrent,Complete,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-7,"PMMA & Nomex, 0.85 and 0.37 mm",22.1,,not recorded (cabin pressure),burned,Burned 5 cm & 0 (note 2) in microgravity,,,,,,,20.0,Concurrent,~ 0 (Nomex),nomex pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-8,"PMMA, See Fig. 5",22.1,,not recorded (cabin pressure),burned,Burned ~ 10 cm (note 3) in microgravity,,,,,,,20.0,Concurrent,Complete,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-99,SAFFIRE-II,solid,2-9,"PMMA, 1 cm",22.0,,not recorded (cabin pressure),burned,Burned ~ 10 cm (note 4) in microgravity,,,,,,,20.0,Concurrent,Complete,pmma,https://psi.nasa.gov/physci/repo/data/investigations/PSI-99
+PSI-100,SAFFIRE-III,solid,S1,SIBAL Fabric,,,,,,,,,,,,30.0,Concurrent,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-100
+PSI-100,SAFFIRE-III,solid,S2,SIBAL Fabric,,,,,,,,,,,,30.0,Opposed,,sibal,https://psi.nasa.gov/physci/repo/data/investigations/PSI-100

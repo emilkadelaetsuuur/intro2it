@@ -1,4 +1,6 @@
-/* QUENCH Ask uses the organizer corpus served by /api/ask and its public snapshot. */
+/* QUENCH Ask answers in two steps. First it looks for a checked analyst answer shipped with the
+   page (no network, instant). Otherwise it searches the organizer corpus served by /api/ask, or
+   its public snapshot when the service cannot be reached. */
 (() => {
   const pagesOrigin = "https://emilkadelaetsuuur.github.io";
   const liveSite = "https://nasa.cartify.ink";
@@ -102,25 +104,163 @@
       answer: data.answer, sources: data.sources, local};
   }
 
+  function sourceLink(source) {
+    const link = document.createElement("a");
+    link.href = source.url;
+    link.textContent = source.title;
+    if (source.go) {
+      // A section of this site: the page's own navigation handles it.
+      link.dataset.go = source.go;
+      if (source.finding) link.dataset.f = source.finding;
+    } else {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    return link;
+  }
+
   function appendSources(list, references) {
     for (const source of references) {
       const item = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = source.url;
-      link.textContent = source.title;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      item.append(link);
+      item.append(sourceLink(source));
       list.append(item);
     }
   }
 
+  /* Checked analyst answers. They were drafted with SI ahead of time, and the build checks every
+     statement against the records it cites: the records must exist and each number must appear
+     in them with the same unit. Matching runs in the browser, so nothing is generated on the spot. */
+  const bank = (() => {
+    const data = window.FLAME;
+    if (!data || !Array.isArray(data.answers)) return {match: () => null};
+    const stopWords = new Set(("a an and are as at be but by can did do does for from has have how if in into is it its of on or " +
+      "that the their there these this to was we what when where which who why will with would you your any about been were " +
+      "than then so not no out up down").split(" "));
+    const stem = word => word.replace(/(ing|ed|es|s)$/, "");
+    const tokens = text => text.toLowerCase().replace(/percent/g, "%").replace(/[^a-z0-9.% ]+/g, " ").split(/\s+/)
+      .filter(word => word.length > 1 && !stopWords.has(word)).map(stem);
+    const synonyms = Object.create(null);   // no inherited keys: a visitor may type "constructor"
+    Object.entries({moon: ["lunar", "exploration", "gravity"], lunar: ["moon", "exploration", "gravity"],
+      mars: ["martian", "exploration", "gravity"], o2: ["oxygen"], oxygen: ["o2"],
+      extinguish: ["extinction", "suppression", "suppressant", "extinguisher"], extinguisher: ["suppressant", "suppression", "jet"],
+      ventilation: ["airflow", "flow", "fan"], fan: ["ventilation", "airflow"], airflow: ["ventilation", "flow"],
+      smoke: ["detector", "detection"], detector: ["smoke", "detection"], material: ["solid", "fabric", "pmma"],
+      plastic: ["pmma", "solid", "material"], liquid: ["droplet", "fuel"], droplet: ["liquid"], data: ["video", "table", "raw"],
+      pressure: ["psia", "atm"], standard: ["6001", "approval", "ground"], habitat: ["cabin", "base"], base: ["moon", "habitat"],
+      co2: ["carbon", "dioxide"], investigation: ["experiment"], study: ["experiment"], burn: ["fire", "flame"],
+      safe: ["safety", "risk"], gap: ["missing", "untested"], accurate: ["accuracy", "good"],
+      earth: ["firefighter", "spinoff", "benefit"]}).forEach(([word, list]) => { synonyms[stem(word)] = list.map(stem); });
+    const entries = data.answers.map(answer => ({answer, phrasings: answer.q.map(q => new Set(tokens(q)))}));
+    const frequency = Object.create(null);
+    for (const entry of entries) {
+      const seen = new Set();
+      entry.phrasings.forEach(set => set.forEach(word => seen.add(word)));
+      seen.forEach(word => { frequency[word] = (frequency[word] || 0) + 1; });
+    }
+    const weight = word => frequency[word] ? Math.log(1 + entries.length / frequency[word]) : 0;
+
+    // Summed weight of the question's words found in an answer's stored phrasings. Rare words weigh
+    // more, a synonym counts for 60 %, and words the bank never uses add nothing.
+    function best(base) {
+      let top = {score: 0, rank: -1, entry: null, phrasing: ""};
+      for (const entry of entries) {
+        const all = new Set();
+        entry.phrasings.forEach(set => set.forEach(word => all.add(word)));
+        const hit = (set, word) => {
+          if (set.has(word)) return weight(word);
+          const alias = (synonyms[word] || []).find(other => set.has(other));
+          return alias ? .6 * weight(alias) : 0;
+        };
+        const score = base.reduce((sum, word) => sum + hit(all, word), 0);
+        const matched = base.filter(word => hit(all, word) > 0).length;
+        let closest = 0, extra = 0, index = 0;
+        entry.phrasings.forEach((set, i) => {
+          const value = base.reduce((sum, word) => sum + hit(set, word), 0);
+          if (value > closest) { closest = value; extra = [...set].filter(word => !base.includes(word)).length; index = i; }
+        });
+        const rank = score + .3 * closest - .05 * extra;
+        if (score > 0 && rank > top.rank) top = {score, rank, entry, matched, phrasing: entry.answer.q[index]};
+      }
+      return top;
+    }
+
+    function references(id) {
+      const section = (title, go, finding) => [{title, url: "#" + go, go, finding}];
+      const record = /^PSI-\d+$/.test(id) && data.investigations.find(item => item.acc === id);
+      if (record) return [{title: (record.acr || id) + " (" + id + ") on NASA PSI", url: record.url}];
+      if (id.startsWith("F-")) {
+        const finding = data.findings.find(item => item.id === id.slice(2));
+        return finding ? section("Finding: " + finding.title, "findings", finding.id) : [];
+      }
+      if (id.startsWith("H-") || id.startsWith("S-")) return section("Lessons from real fires", "lessons");
+      if (id.startsWith("N-")) {
+        const next = data.next.find(item => item.id === id.slice(2));
+        return next ? [{title: next.name + ": " + next.full, url: next.url}] : [];
+      }
+      if (id.startsWith("M-")) return section("Mission check: materials", "mission");
+      if (id === "VIDEO" || id === "MODEL") return section("Lab: predictor and video measurements", "lab");
+      if (id === "GUIDE") return [{title: data.quotes.not_conservative.src, url: data.quotes.not_conservative.url}];
+      if (id === "CHALLENGE") return [{title: "Flame in Freefall challenge statement", url: data.meta.challenge_url}];
+      if (id === "SAFFIRE6") return [{title: "Saffire-VI flight events (NASA report)", url: saffireReport},
+        {title: "Saffire-VI results (NASA report)", url: saffireResults}];
+      if (id === "SOFIEGEL") return [{title: "SoFIE-GEL flight study", url: sofieReport}];
+      return section("Method and limits", "method");
+    }
+
+    function match(question) {
+      const base = tokens(question);
+      if (!base.length) return null;
+      // A request for a count at given conditions needs a much closer match than a general question.
+      const counting = /\b(how many|number of|count)\b/i.test(question) && /\d/.test(question);
+      const top = best(base);
+      if (!top.entry || top.score < (counting ? 4.8 : 2.7)) return null;
+      // One shared word out of several is not enough ("weather on Mars" is not about gravity data):
+      // more than half of the question's words must match, unless the match is strong on its own.
+      if (base.length > 1 && top.matched / base.length <= .5 && top.score < 5) return null;
+      const seen = new Set();
+      const sources = [];
+      const claims = top.entry.answer.claims.map(claim => {
+        const refs = claim.sources.flatMap(references);
+        for (const ref of refs) {
+          const key = ref.title + "|" + ref.url;
+          if (!seen.has(key)) { seen.add(key); sources.push(ref); }
+        }
+        return {text: claim.text, refs};
+      });
+      return {label: "Checked analyst answer", answer: top.entry.answer.a, claims, sources,
+        matched: top.phrasing, checked: true, local: false, id: top.entry.answer.id,
+        coverage: [top.matched, base.length], score: top.score};
+    }
+    return {match, size: entries.length};
+  })();
+  // Read-only hook for the interface tests.
+  window.QUENCH_ASK = Object.freeze({checkedAnswer: bank.match, checkedAnswers: bank.size});
+
+  const checkedNote = "Drafted with SI ahead of time. The build checked each statement below against the NASA records it cites.";
+  const resultNote = document.getElementById("ask-result-note");
+  const claimBox = document.getElementById("ask-claims");
+  const moreButton = document.getElementById("ask-more");
+  let lastQuestion = "";
+
   function showResult(reply, question) {
+    lastQuestion = question;
     resultLabel.textContent = reply.label;
     resultText.textContent = reply.answer;
+    resultNote.hidden = !reply.checked;
+    resultNote.textContent = reply.checked ? "Closest stored question: “" + reply.matched + "” " + checkedNote : "";
+    const claimList = claimBox.querySelector("ul");
+    claimList.replaceChildren();
+    for (const claim of reply.claims || []) {
+      const item = document.createElement("li");
+      item.append(claim.text + " ");
+      claim.refs.forEach((ref, index) => { if (index) item.append(" · "); item.append(sourceLink(ref)); });
+      claimList.append(item);
+    }
+    claimBox.hidden = !reply.checked;
+    moreButton.hidden = !reply.checked;
     sourceList.replaceChildren();
-    appendSources(sourceList, reply.sources);
-    sources.hidden = !reply.sources.length;
+    appendSources(sourceList, reply.checked ? [] : reply.sources);
+    sources.hidden = reply.checked || !reply.sources.length;
     result.hidden = false;
     status.textContent = reply.local ? "Live Ask is unavailable. Showing results from the local organizer archive." : "";
     const edited = question !== input.value.trim().replace(/\s+/gu, " ");
@@ -135,7 +275,11 @@
     }
   }
 
-  async function search(question) {
+  async function search(question, sourcesOnly = false) {
+    if (!sourcesOnly) {
+      const checked = bank.match(question);
+      if (checked) return checked;
+    }
     const endpoint = location.origin === pagesOrigin ? liveSite + "/api/ask" : "/api/ask";
     let response;
     try {
@@ -179,6 +323,21 @@
     status.textContent = "Searching the organizer sources…";
     try {
       showResult(await search(question), question);
+    } catch (error) {
+      status.textContent = error.message;
+    } finally {
+      busy = false;
+      submitButton.removeAttribute("aria-disabled");
+    }
+  });
+  moreButton.addEventListener("click", async () => {
+    if (busy || !lastQuestion) return;
+    busy = true;
+    submitButton.setAttribute("aria-disabled", "true");
+    moreButton.hidden = true;
+    status.textContent = "Searching the organizer sources…";
+    try {
+      showResult(await search(lastQuestion, true), lastQuestion);
     } catch (error) {
       status.textContent = error.message;
     } finally {
@@ -369,7 +528,33 @@
       try {
         const reply = await search(question);
         const mode = reply.local ? "Local archive · " + reply.label : reply.label;
-        exchange.push(addMessage("assistant", "Cosmo · " + mode, reply.answer, reply.sources));
+        const message = addMessage("assistant", "Cosmo · " + mode, reply.answer, reply.sources);
+        exchange.push(message);
+        if (reply.checked) {
+          // The stored answer may not be the angle the visitor wanted: offer the source search too.
+          const more = document.createElement("button");
+          more.type = "button";
+          more.className = "cosmo-more";
+          more.textContent = "Search the organizer sources";
+          more.addEventListener("click", async () => {
+            if (pending) return;
+            pending = true;
+            syncAttention();
+            more.remove();
+            feedback.textContent = "Searching the organizer sources…";
+            try {
+              const extra = await search(question, true);
+              exchange.push(addMessage("assistant", "Cosmo · " + (extra.local ? "Local archive · " : "") + extra.label, extra.answer, extra.sources));
+            } catch (error) {
+              exchange.push(addMessage("error", "Cosmo", error.message));
+            } finally {
+              pending = false;
+              syncAttention();
+              feedback.textContent = "";
+            }
+          });
+          message.append(more);
+        }
       } catch (error) {
         exchange.push(addMessage("error", "Cosmo", error.message));
         if (draftVersion === submittedVersion) field.value = draft;

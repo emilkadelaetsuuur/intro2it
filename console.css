@@ -364,3 +364,12 @@ footer.wrap { padding-block: 24px 38px; line-height: 1.7; letter-spacing: .01em;
 @media (prefers-reduced-motion: reduce) {
   .view table tr.row td { transition: none; }
 }
+/* Checked analyst answers on the Ask page. */
+.answer #ask-result-note { font-size: 13.5px; line-height: 1.5; color: var(--ink3); white-space: normal; max-width: none; }
+#ask-claims ul { margin: 0; padding-left: 1.2em; color: var(--ink2); }
+#ask-claims li { padding: 4px 0 4px .2em; line-height: 1.55; overflow-wrap: anywhere; }
+#ask-more { margin-top: 14px; }
+/* Feedback for the archive maintainers, on the Method page. */
+.view .method ol.psi { margin: 8px 0 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 9px; }
+.view .method ol.psi b { color: var(--ink); }
+.view .method ol.psi .fix { display: block; color: var(--ink); margin-top: 2px; }

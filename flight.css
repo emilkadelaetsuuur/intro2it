@@ -43,18 +43,30 @@
 .event-link:hover, .event-link:focus-visible { color:#fff; text-decoration-color:currentColor; }
 
 #main-content { position:relative; isolation:isolate; }
-#main-content::before { content:""; position:absolute; inset:0 0 auto; height:min(54vw,790px); max-height:100%; z-index:-2; pointer-events:none; background:radial-gradient(ellipse at 70% 4%,#172e45 0%,#0e1c2e 36%,transparent 78%); }
+/* One viewport-sized sky behind the entire dashboard. Opaque plot surfaces sit above it. */
 .star-field {
-  position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none;
-  background: url("img/star-field.svg") repeat 29px 13px / 940px 704px;
-  mask-image:linear-gradient(to bottom, #000 0 500px, rgb(0 0 0 / .7) 880px, rgb(0 0 0 / .4) 1450px);
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  background: #070e18; contain: strict; --sky-play: running;
+}
+.star-field::before, .star-field::after {
+  content: ""; position: absolute; inset: -24px; pointer-events: none;
+}
+.star-field::before {
+  opacity: .78;
+  background: url("img/deep-sky.webp") center 48% / cover no-repeat;
 }
 .star-field::after {
-  content:""; position:absolute; inset:-18px -40px auto; height: min(calc(100% + 36px), 1140px);
-  background: url("img/star-field.svg") repeat -203px 117px / 701px 525px;
-  opacity:.46;
-  mask-image:linear-gradient(to bottom, #000 60%, transparent);
+  background: url("img/star-field.svg") repeat 29px 13px / 1040px 778px;
+  opacity: .61;
 }
+.sky-transit {
+  position: absolute; left: 5%; top: 36%; width: 2px; height: 2px;
+  opacity: 0; border-radius: 50%; background: #d7e2ed;
+}
+:root[data-theme="light"] .star-field { display: none; }
+:root[data-sky-paused] .star-field,
+body:has(main :is(.frame, #cabin-chart):is(:hover, :focus-within)) .star-field,
+body:has(#cosmo-panel:not([hidden])) .star-field { --sky-play: paused; }
 .report-cover {
   padding-block:clamp(24px,2.8vw,44px) clamp(22px,2.4vw,40px);
   display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
@@ -158,6 +170,18 @@
 footer.wrap { display:flex; flex-wrap:wrap; align-items:baseline; gap:7px 20px; font:400 13px/1.5 var(--sans); color:var(--ink2); }
 footer strong { color:var(--ink); letter-spacing:.07em; }
 footer a { margin-left:auto; }
+footer .sky-credit {
+  flex-basis: 100%; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 20px;
+  color: var(--ink3); font: 400 13px/1.5 var(--sans);
+}
+.sky-credit a { margin: 0; color: inherit; text-underline-offset: .2em; }
+.sky-motion {
+  background: none; border: 0; padding: 4px 0; color: var(--ink2); font: inherit;
+  cursor: pointer; text-decoration: underline; text-underline-offset: .2em;
+}
+:root[data-theme="light"] .sky-motion { display: none; }
+@media (prefers-reduced-motion: reduce) { .sky-motion { display: none; } }
+@media print { .star-field, .sky-motion { display: none; } }
 @media (max-width:1130px) {
   .tabs { justify-content:flex-start; gap:17px; }
   .event-link { font-size:12px; }
@@ -177,7 +201,8 @@ footer a { margin-left:auto; }
   .oxygen-story { gap:26px; }
 }
 @media (max-width:680px) {
-  #main-content::before { height:730px; }
+  .star-field::before { background-image: url("img/deep-sky-mobile.webp"); background-position: 55% center; opacity: .66; }
+  .star-field::after { background-size: 800px 599px; opacity: .50; }
   .report-cover, .oxygen-story, .cabin-body { grid-template-columns:minmax(0,1fr); }
   .report-cover { padding-top:23px; gap:18px; }
   .report-cover h1 { font-size:clamp(55px,12vw,80px); max-width:none; margin-bottom:10px; }
@@ -197,8 +222,25 @@ footer a { margin-left:auto; }
   footer a { margin-left:0; }
 }
 @media (prefers-reduced-motion:no-preference) {
-  .star-field::after { animation:star-drift 88s ease-in-out infinite alternate; }
-  @keyframes star-drift { from { transform:translate(-17px, -6px); } to { transform:translate(17px, 6px); } }
+  .star-field::before { animation: galactic-drift 60s ease-in-out -19s infinite alternate; }
+  .star-field::after { animation: star-drift 32s ease-in-out -11s infinite alternate; }
+  .sky-transit { animation: satellite-pass 44s linear -4s infinite; }
+  .star-field::before, .star-field::after, .sky-transit { animation-play-state: var(--sky-play); }
+  @keyframes galactic-drift {
+    from { transform: translate(-13px, 7px); }
+    to { transform: translate(13px, -7px); }
+  }
+  @keyframes star-drift {
+    from { transform: translate(-19px, 9px); }
+    to { transform: translate(19px, -9px); }
+  }
+  /* A steady point of reflected light crosses the sky once each cycle. */
+  @keyframes satellite-pass {
+    0%, 64% { opacity: 0; transform: translate(0,0); }
+    67% { opacity: .58; }
+    87% { opacity: .58; }
+    90%, 100% { opacity: 0; transform: translate(42vw, -22vh); }
+  }
   .tabs a::after, .collection-index a::before { transition:transform .2s ease-out; }
   .page:not([hidden]) { animation:open-page .2s ease-out; }
   .lead-photo picture img { animation:photo-settle .9s cubic-bezier(.21,.65,.2,1) both; }

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Only this site's own scripts, styles, images and fonts may load, and the page may talk only to its own
+     origin and the QUENCH question service. Nothing inline runs as script. The server repeats this as a header. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://nasa.cartify.ink; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>QUENCH</title>
 <meta name="theme-color" content="#080f1a">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -583,8 +587,8 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <script src="model.js?v=96b86849b6"></script>
 <script src="core.js?v=763d5271e0"></script>
 <script src="archive.js?v=5e28c151e7"></script>
-<script src="tools.js?v=d6a20aee97"></script>
+<script src="tools.js?v=5c09722d0f"></script>
 <script src="tour.js?v=e2d58c53a7"></script>
-<script src="ask.js?v=6c405b6b3f"></script>
+<script src="ask.js?v=ca83013fa1"></script>
 </body>
 </html>

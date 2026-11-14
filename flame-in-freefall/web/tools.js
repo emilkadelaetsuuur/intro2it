@@ -102,17 +102,17 @@ function drawVideo() {
   const ends = [];
   rated.forEach((t, i) => { const t0 = t.series[0][0], x0 = t.series[0][1];
     s += `<polyline fill="none" stroke="${cols[i]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="${t.series.map(p => X(p[0] - t0).toFixed(1) + "," + Y(p[1] - x0).toFixed(1)).join(" ")}"/>`;
-    const l = t.series[t.series.length - 1]; ends.push({ y: Y(l[1] - x0), x: X(l[0] - t0), lab: `${t.test} · ${t.thickness_um} µm` }); });
+    const l = t.series[t.series.length - 1]; ends.push({ y: Y(l[1] - x0), x: X(l[0] - t0), lab: `${t.test} · ${t.thickness_um} µm` }); });   // escaped where it is drawn
   ends.sort((a, b) => a.y - b.y); for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
   if (wide) ends.forEach(e => { s += `<text x="${Math.min(e.x + 6, W - m.r + 6)}" y="${e.y + 4}" font-size="11.5" font-weight="700" fill="var(--ink)">${esc(e.lab)}</text>`; });
   box.innerHTML = s + "</svg>";
-  $("#vlegend").innerHTML = rated.map((t, i) => `<span><i style="background:${cols[i]}"></i>${t.test}: ${t.thickness_um} µm film, ${t.spread_mm_s} mm/s</span>`).join("");
-  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${t.test} with the detected flame front marked by a blue line" width="480" height="220"><figcaption><b>${t.test}</b> ${t.thickness_um} µm film</figcaption></figure>`).join("");
+  $("#vlegend").innerHTML = rated.map((t, i) => `<span><i style="background:${cols[i]}"></i>${esc(t.test)}: ${esc(t.thickness_um)} µm film, ${esc(t.spread_mm_s)} mm/s</span>`).join("");
+  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${esc(t.test)} with the detected flame front marked by a blue line" width="480" height="220"><figcaption><b>${esc(t.test)}</b> ${esc(t.thickness_um)} µm film</figcaption></figure>`).join("");
   $("#vtable").innerHTML = `<table><thead><tr><th>Test</th><th>Film</th><th class="n">O₂ %</th><th class="n">Airflow (cm/s)</th><th class="n">Spread (mm/s)</th><th class="n">Threshold range (mm/s)</th><th class="n">Fit R²</th><th class="n">Out after fan cut</th><th>Confidence</th></tr></thead><tbody>` +
-    V.tests.map(t => `<tr><td><b>${t.test}</b></td><td>${esc(t.material)}</td><td class="n">${t.o2 == null ? "–" : t.o2}</td><td class="n">${esc(t.air_cm_s)}</td><td class="n">${t.spread_mm_s == null ? "–" : t.spread_mm_s}</td><td class="n">${t.spread_mm_s_range ? t.spread_mm_s_range.join(" – ") : "–"}</td><td class="n">${t.fit_r2 == null ? "–" : t.fit_r2}</td><td class="n">${t.flame_out_after_fan_s != null ? t.flame_out_after_fan_s + " s" : "–"}</td><td>${t.confidence}${t.notes ? `<br><span class="fine">${esc(t.notes)}</span>` : ""}</td></tr>`).join("") + "</tbody></table>";
+    V.tests.map(t => `<tr><td><b>${esc(t.test)}</b></td><td>${esc(t.material)}</td><td class="n">${t.o2 == null ? "–" : esc(t.o2)}</td><td class="n">${esc(t.air_cm_s)}</td><td class="n">${t.spread_mm_s == null ? "–" : esc(t.spread_mm_s)}</td><td class="n">${t.spread_mm_s_range ? esc(t.spread_mm_s_range.join(" – ")) : "–"}</td><td class="n">${t.fit_r2 == null ? "–" : esc(t.fit_r2)}</td><td class="n">${t.flame_out_after_fan_s != null ? esc(t.flame_out_after_fan_s) + " s" : "–"}</td><td>${esc(t.confidence)}${t.notes ? `<br><span class="fine">${esc(t.notes)}</span>` : ""}</td></tr>`).join("") + "</tbody></table>";
   $("#vchecks").innerHTML = `<table><thead><tr><th>Check</th><th>What</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody>` +
     V.validation.checks.map(c => `<tr><td><b>${esc(c.check)}</b></td><td>${esc(c.what)}</td><td>${esc(c.expected)}</td><td>${esc(c.measured)}</td><td>${c.independent ? (c.pass ? '<span class="ok">✓ pass</span>' : '<span class="no">✕ fail</span>') : "used for scale"}</td></tr>`).join("") + "</tbody></table>";
-  $("#vnote").innerHTML = `Scale ${V.scale_mm_per_px} mm per pixel, set from the 2.2 mm/s that the BASS-II Summary Report (NASA/TM-20210011385) gives for test B1. Ratios between tests do not depend on it. Code and method: <span class="mono">video/</span> in the repository.`;
+  $("#vnote").innerHTML = `Scale ${esc(V.scale_mm_per_px)} mm per pixel, set from the 2.2 mm/s that the BASS-II Summary Report (NASA/TM-20210011385) gives for test B1. Ratios between tests do not depend on it. Code and method: <span class="mono">video/</span> in the repository.`;
 }
 
 /* ---------- mission check ---------- */
@@ -289,7 +289,7 @@ $(".skip-link").addEventListener("click", e => {
 const VIEWS = [["brief", "Briefing"], ["mission", "Mission check"], ["evidence", "Evidence"], ["findings", "Findings"], ["lab", "Lab"], ["archive", "Archive"], ["lessons", "Lessons"], ["ask", "Ask"], ["method", "Method"]];
 const DRAW = { brief: drawBrief, mission: drawMission, evidence: drawEvidence, findings: drawFindings, lab: () => { syncPred(); drawVideo(); }, archive: drawInv, lessons: drawHistory, ask: () => {}, method: drawMethod };
 function show(name, f) {
-  if (!DRAW[name]) name = "brief";
+  if (!Object.prototype.hasOwnProperty.call(DRAW, name)) name = "brief";   // "#constructor" and the like are not views
   state.view = name;
   VIEWS.forEach(([id]) => { $("#v-" + id).hidden = id !== name; });
   document.querySelectorAll("#tabs a").forEach(a => { if (a.dataset.go === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });

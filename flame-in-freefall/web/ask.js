@@ -139,7 +139,7 @@
     const stem = word => word.replace(/(ing|ed|es|s)$/, "");
     const tokens = text => text.toLowerCase().replace(/percent/g, "%").replace(/[^a-z0-9.% ]+/g, " ").split(/\s+/)
       .filter(word => word.length > 1 && !stopWords.has(word)).map(stem);
-    const synonyms = {};
+    const synonyms = Object.create(null);   // no inherited keys: a visitor may type "constructor"
     Object.entries({moon: ["lunar", "exploration", "gravity"], lunar: ["moon", "exploration", "gravity"],
       mars: ["martian", "exploration", "gravity"], o2: ["oxygen"], oxygen: ["o2"],
       extinguish: ["extinction", "suppression", "suppressant", "extinguisher"], extinguisher: ["suppressant", "suppression", "jet"],
@@ -151,13 +151,13 @@
       safe: ["safety", "risk"], gap: ["missing", "untested"], accurate: ["accuracy", "good"],
       earth: ["firefighter", "spinoff", "benefit"]}).forEach(([word, list]) => { synonyms[stem(word)] = list.map(stem); });
     const entries = data.answers.map(answer => ({answer, phrasings: answer.q.map(q => new Set(tokens(q)))}));
-    const frequency = {};
+    const frequency = Object.create(null);
     for (const entry of entries) {
       const seen = new Set();
       entry.phrasings.forEach(set => set.forEach(word => seen.add(word)));
       seen.forEach(word => { frequency[word] = (frequency[word] || 0) + 1; });
     }
-    const weight = word => Math.log(1 + entries.length / frequency[word]);
+    const weight = word => frequency[word] ? Math.log(1 + entries.length / frequency[word]) : 0;
 
     // Summed weight of the question's words found in an answer's stored phrasings. Rare words weigh
     // more, a synonym counts for 60 %, and words the bank never uses add nothing.

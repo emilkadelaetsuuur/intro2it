@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
 <meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
-<meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
+<meta name="si-disclosure" content="Claude assisted with code, data normalisation, draft summaries, findings and analyst answers. Ask uses Claude or archive excerpts from challenge organizer resources and labels each result. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
@@ -223,13 +223,6 @@ blockquote cite { display: block; font: 400 11.5px var(--mono); font-style: norm
 .detail .dcols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px 24px; font-size: 13.5px; color: var(--ink2); }
 .detail h4 { margin: 0 0 4px; font: 500 11px var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--ink3); }
 .detail ol { margin: 0; padding-left: 18px; max-height: 220px; overflow: auto; }
-.askbox { display: flex; gap: 8px; flex-wrap: wrap; }
-.answer { border-top: 1px solid var(--strong); display: flex; flex-direction: column; }
-.answer .a { padding: 14px 0; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px; }
-.answer .a > p { color: var(--ink2); font-size: 14.5px; max-width: 86ch; }
-.answer .a > p.lead { color: var(--ink); font-size: 17px; line-height: 1.5; }
-.claim { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 1px 8px; font-size: 13.5px; color: var(--ink2); }
-.claim .src { grid-column: 2; font: 400 11.5px var(--mono); color: var(--ink3); }
 .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px 36px; font-size: 14px; color: var(--ink2); }
 .method > div { border-top: 1px solid var(--strong); padding-top: 10px; }
 .method ul { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
@@ -277,7 +270,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=03379c73f5">
+<link rel="stylesheet" href="console.css?v=b79e7c4c19">
 <link rel="stylesheet" href="flight.css?v=4c1625670b">
 </head>
 <body>
@@ -477,10 +470,34 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 08 ask -->
 <div class="page wrap view" id="v-ask" hidden>
-  <div class="sec"><h2>Archive questions</h2><p class="sub" id="asksub"></p></div>
-  <form class="askbox" id="askform"><input class="search" id="askq" type="search" placeholder="e.g. Does turning off ventilation put out a fire at 34 % oxygen?" aria-label="Your question"><button class="btn" type="submit">Ask</button></form>
-  <div class="group" id="askchips"></div>
-  <div class="answer" id="answer" hidden></div>
+  <div class="sec"><h2>Ask the archive</h2><p class="sub">Explore spacecraft fires, combustion experiments and the equipment they inspired. Answers cite resources selected by the Flame in Freefall challenge organizers.</p></div>
+  <div class="ask-layout" id="ask-workspace">
+    <div class="ask-main">
+      <form class="askbox" id="askform">
+        <label for="askq">Your question</label>
+        <textarea id="askq" rows="3" maxlength="600" required placeholder="What would you like to know?" aria-describedby="ask-hint"></textarea>
+        <div class="ask-actions">
+          <p id="ask-hint" class="fine">English or Russian · Up to 600 characters</p>
+          <button class="btn" type="submit">Ask question <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <p id="ask-status" class="ask-status" role="status" aria-atomic="true"></p>
+      <section class="answer" id="answer" aria-labelledby="ask-result-label" hidden>
+        <h3 id="ask-result-label" tabindex="-1"></h3>
+        <p id="ask-result-question" dir="auto" hidden></p>
+        <p id="ask-result-text" dir="auto"></p>
+        <div id="ask-sources" hidden><h4>Sources</h4><ol></ol></div>
+      </section>
+    </div>
+    <aside class="ask-examples" aria-labelledby="ask-examples-heading">
+      <h3 id="ask-examples-heading">Try a question</h3>
+      <div id="askchips">
+        <button type="button">How does gravity affect flame shape?</button>
+        <button type="button">What caused the 1997 fire aboard Mir?</button>
+        <button type="button">How did spacesuit technology change firefighters’ air tanks?</button>
+      </div>
+    </aside>
+  </div>
 </div>
 
 <!-- 09 method -->
@@ -496,6 +513,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <script src="model.js?v=96b86849b6"></script>
 <script src="core.js?v=79cd651932"></script>
 <script src="archive.js?v=ece7677c29"></script>
-<script src="tools.js?v=e0f14ede78"></script>
+<script src="tools.js?v=2e1922d122"></script>
+<script src="ask.js?v=e2d1ff7263"></script>
 </body>
 </html>

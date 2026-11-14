@@ -1,0 +1,9 @@
+Sample ID,Composition,Sample Type,Sample Method
+Test 2 Sample 4 (T2S4),40Pb-60Sn,ISSI Microgravity,Wire Wrap Solder (Parallel Cu wire)
+Test 2 Sample 5 (T2S5),40Pb-60Sn,ISSI Microgravity,Wire Wrap Solder (Parallel Cu wire)
+Test 2 Sample 10 (T2S10),40Pb-60Sn,ISSI Microgravity,Small Loop Wire Wrap Solder (Small Loop Cu wire)
+Test 4 Sample 16 (T4S16),40Pb-60Sn,ISSI Microgravity,Wire Feed Solder (Small Loop Cu wire)
+,,,
+Sample 2 (S2),40Pb-60Sn,ISSI Terrestrial,Wire Feed Solder (Small Loop Cu wire)
+Sample 8 (RSS-S8),95.5Sn-3.8Ag-0.7Cu,Iowa State Terrestrial,Reflow Spreading Solder (Cu Foil)
+Sample 10 (RSS-S10),40Pb-60Sn,Iowa State Terrestrial,Reflow Spreading Solder (Cu Foil)

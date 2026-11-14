@@ -49,6 +49,16 @@
     "video": {
       "title": "NASA ScienceCasts: The Power of Studying Combustion on the ISS (2018)",
       "url": "https://www.youtube.com/watch?v=W1oXykoz9zg"
+    },
+    "challenge": {
+      "file": "space-apps-challenge_flame-in-freefall.txt",
+      "title": "Flame in Freefall challenge statement, NASA Space Apps Challenge 2026",
+      "url": "https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/"
+    },
+    "saffire6": {
+      "file": "saffire-vi-final_nasa.txt",
+      "title": "Flame Burns Out on NASA's Long-Running Spacecraft Fire Experiment, NASA Glenn (2024)",
+      "url": "https://www.nasa.gov/centers-and-facilities/glenn/flame-burns-out-on-nasas-long-running-spacecraft-fire-experiment/"
     }
   },
   "history": [
@@ -333,5 +343,257 @@
   },
   "data_notes": [
     "SAFFIRE-I (PSI-98): the record lists the space station as platform and 2001 to 2008 as dates, the same dates as SAME (PSI-102). Its own text describes an uncrewed cargo vessel. The dates and platform look copied; we use the record text."
-  ]
+  ],
+  "challenge_quotes": {
+    "task": {
+      "src": "challenge",
+      "text": "Your challenge is to build an SI-powered, web-based dashboard that summarizes, ranks, and interprets combustion science investigations to deliver critical foundational insights for fire safety."
+    },
+    "obj_relevant": {
+      "src": "challenge",
+      "text": "Identify investigations most relevant to the fire safety needs of habitable crew environments, including spacecraft, space stations, bases on the lunar and Martian surfaces, and pressurized rovers."
+    },
+    "obj_data": {
+      "src": "challenge",
+      "text": "Extract data that supports predictive modeling of flammability and fire scenarios in space exploration."
+    },
+    "obj_controls": {
+      "src": "challenge",
+      "text": "Highlight research that informs the development of next-generation fire safety controls and equipment."
+    },
+    "pillars": {
+      "src": "challenge",
+      "text": "NASA’s spacecraft fire safety work is focused on prevention, detection, and suppression."
+    },
+    "prevention": {
+      "src": "challenge",
+      "text": "Flammability studies focus on solid materials such as fabrics and plastics, as studied in the Burning and Suppression of Solids (BASS and BASS-II) and Spacecraft Fire Safety Demonstration (Saffire-I, -II, and -III) investigations."
+    },
+    "detection": {
+      "src": "challenge",
+      "text": "Fire detection was tested in microgravity through the Smoke and Aerosol Measurement Experiment studies (SAME and SAME-R)."
+    },
+    "suppression": {
+      "src": "challenge",
+      "text": "Suppression was studied in the Flame Extinguishment Experiment (FLEX) through dilution of the chamber atmosphere with carbon dioxide and helium, both of which suppress fire."
+    },
+    "moon_air": {
+      "src": "challenge",
+      "text": "The intermediate oxygen concentration used on the Moon will likely be 30% or greater, with a corresponding pressure of 10.2 psi or less."
+    },
+    "more_flammable": {
+      "src": "challenge",
+      "text": "Compared to Earth’s atmosphere, that’s more than a 40% increase in the oxygen concentration making materials much more flammable."
+    },
+    "suit": {
+      "src": "challenge",
+      "text": "To enable flexibility, spacesuits are filled with 100% oxygen to only 4.3 psi (pounds per square inch), where the Earth’s pressure at sea level is 14.7 psi."
+    },
+    "prebreathe": {
+      "src": "challenge",
+      "text": "To reduce the pre-breathing duration and thus facilitate lunar excursions, it is expected that the Moon Base and pressurized rover(s) will be at a pressure and oxygen concentration between those in a spacesuit and the Earth’s atmosphere."
+    },
+    "cfig": {
+      "src": "challenge",
+      "text": "Microgravity tests with the highest oxygen concentrations were conducted as part of the ACME’s Cool Flames Investigation with Gases (CFI-G)."
+    },
+    "cfig_85": {
+      "src": "challenge",
+      "text": "an oxygen-nitrogen mixture of up to 85% oxygen flowed from the spherical burner creating an inside-out flame."
+    },
+    "no_partial_g": {
+      "src": "challenge",
+      "text": "there is currently no partial-gravity combustion data available in PSI."
+    },
+    "future_g": {
+      "src": "challenge",
+      "text": "We expect such data will be added in the future, for example from the Lunar-g Combustion Investigation (LUCI) and the Flammability of Materials on the Moon (FM2) experiment."
+    },
+    "efield": {
+      "src": "challenge",
+      "text": "Partial gravity was mimicked in ACME’s Electric-Field Effects on Laminar Diffusion Flames (E-FIELD Flames) experiment through the effect of the electric field on the ions that naturally occur in flames."
+    },
+    "bound": {
+      "src": "challenge",
+      "text": "Microgravity and normal-gravity results could bound what occurs at intermediate gravity levels."
+    },
+    "bre": {
+      "src": "challenge",
+      "text": "While it burned gaseous fuels, the Burning Rate Emulator (BRE) experiment of the Advanced Combustion via Microgravity Experiments (ACME) project was a study of materials flammability in still atmospheres as a function of material properties."
+    },
+    "daft": {
+      "src": "challenge",
+      "text": "One of the instruments used for smoke detection in the SAME and SAME-R studies was instead used to detect dust in the Dust and Aerosol Measurement Feasibility Test (DAFT and DAFT-2) studies."
+    },
+    "others": {
+      "src": "challenge",
+      "text": "Other combustion investigations within the PSI database (but not explicitly referenced above) are still relevant to fire safety, just not as strongly or directly."
+    },
+    "hw_acme": {
+      "src": "challenge",
+      "text": "The six experiments in the ACME project featured flames of gaseous fuels and were all conducted with the same modular set of ACME hardware in the Combustion Integrated Rack (CIR)."
+    },
+    "hw_mdca": {
+      "src": "challenge",
+      "text": "FLEX, FLEX-2, and the Cool Flames Investigation (CFI) each featured burning droplets of liquid fuel and were conducted with the Multi-user Droplet Combustion Apparatus (MDCA) in the CIR."
+    },
+    "hw_msg": {
+      "src": "challenge",
+      "text": "Each of these investigations was conducted within the Microgravity Science Glovebox (MSG) using the modular fan-driven flow duct built for SPICE."
+    },
+    "earth": {
+      "src": "challenge",
+      "text": "Fine-water-mist extinguishers developed for use on the ISS have practical applications here on Earth, and NASA technology has similarly led to improvements in terrestrial smoke detection and firefighter gear, including protective clothing and air tanks."
+    },
+    "scope": {
+      "src": "challenge",
+      "text": "Fire safety involving rockets and propellants is generally beyond the scope of the research available in the PSI database."
+    },
+    "audience": {
+      "src": "challenge",
+      "text": "Your target audience can include professors, graduate students, undergraduate students, aerospace researchers, and aerospace engineers."
+    },
+    "saffire6": {
+      "src": "saffire6",
+      "text": "this final iteration of the experiment was unique because of the higher oxygen concentration and lower pressure generated in the test unit to simulate the conditions within crewed spacecraft."
+    },
+    "saffire6_materials": {
+      "src": "saffire6",
+      "text": "They then ignited a flame on materials such as plexiglass, cotton, Nomex, and Solid Inflammability Boundary at Low-Speed fabrics."
+    }
+  },
+  "profiles": {
+    "_about": "How each investigation is tied to fire safety. 'named' and 'related' follow the challenge statement word for word (see challenge_quotes); 'families' follow its Hardware section and the PSI hardware field; 'based_on' and 'fuel_class' follow each record's own title, objective and table. Scores built from these are judgements and are documented in the app.",
+    "named": {
+      "PSI-26": [
+        "prevention"
+      ],
+      "PSI-25": [
+        "prevention"
+      ],
+      "PSI-98": [
+        "prevention"
+      ],
+      "PSI-99": [
+        "prevention"
+      ],
+      "PSI-100": [
+        "prevention"
+      ],
+      "PSI-102": [
+        "detection"
+      ],
+      "PSI-101": [
+        "detection"
+      ],
+      "PSI-69": [
+        "suppression"
+      ]
+    },
+    "related": {
+      "PSI-20": [
+        "prevention"
+      ],
+      "PSI-47": [
+        "detection"
+      ]
+    },
+    "partial_gravity": [
+      "PSI-22"
+    ],
+    "based_on": {
+      "PSI-60": "PSI-107",
+      "PSI-62": "PSI-26",
+      "PSI-115": "PSI-102",
+      "PSI-117": "PSI-69",
+      "PSI-142": "PSI-69"
+    },
+    "fuel_class": {
+      "PSI-25": "solid",
+      "PSI-26": "solid",
+      "PSI-98": "solid",
+      "PSI-99": "solid",
+      "PSI-100": "solid",
+      "PSI-102": "smoke",
+      "PSI-101": "smoke",
+      "PSI-47": "instrument",
+      "PSI-20": "emulated",
+      "PSI-69": "droplet",
+      "PSI-68": "droplet",
+      "PSI-39": "droplet",
+      "PSI-10": "gas",
+      "PSI-21": "gas",
+      "PSI-22": "gas",
+      "PSI-23": "gas",
+      "PSI-159": "gas",
+      "PSI-106": "gas",
+      "PSI-107": "gas"
+    },
+    "families": [
+      {
+        "id": "msg",
+        "name": "Microgravity Science Glovebox, SPICE flow duct",
+        "members": [
+          "PSI-26",
+          "PSI-25",
+          "PSI-107",
+          "PSI-106"
+        ],
+        "quote": "hw_msg"
+      },
+      {
+        "id": "mdca",
+        "name": "Droplet apparatus (MDCA) in the Combustion Integrated Rack",
+        "members": [
+          "PSI-69",
+          "PSI-68",
+          "PSI-39"
+        ],
+        "quote": "hw_mdca"
+      },
+      {
+        "id": "acme",
+        "name": "ACME gas-flame hardware in the Combustion Integrated Rack",
+        "members": [
+          "PSI-10",
+          "PSI-20",
+          "PSI-21",
+          "PSI-22",
+          "PSI-23",
+          "PSI-159"
+        ],
+        "quote": "hw_acme"
+      },
+      {
+        "id": "saffire",
+        "name": "Saffire flow unit inside a Cygnus cargo ship",
+        "members": [
+          "PSI-98",
+          "PSI-99",
+          "PSI-100"
+        ]
+      },
+      {
+        "id": "smoke",
+        "name": "Smoke and aerosol instruments",
+        "members": [
+          "PSI-102",
+          "PSI-101",
+          "PSI-47"
+        ],
+        "quote": "daft"
+      },
+      {
+        "id": "ground",
+        "name": "Ground study or computer model",
+        "members": [
+          "PSI-60",
+          "PSI-62",
+          "PSI-115",
+          "PSI-117",
+          "PSI-142"
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
 # QUENCH site installer. Run as root on the server:
 #
 #     bash install.sh nasa.cartify.ink            # install or update

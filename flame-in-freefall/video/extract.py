@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
 """Measure flame spread from a BASS-II side-view video.
 
 The BASS-II video camera (Panasonic WV-CP654, 720x480, 29.97 fps) looks at the

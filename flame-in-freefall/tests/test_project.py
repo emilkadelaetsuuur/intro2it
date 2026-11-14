@@ -1,3 +1,4 @@
+# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
 """Checks that every number QUENCH shows is right.
 
     python3 -m unittest discover -s tests -v
@@ -272,6 +273,130 @@ class Materials(unittest.TestCase):
             m = next(x for x in D["materials"] if x["id"] == mid)
             self.assertEqual(m["flame"], 0)
             self.assertGreater(m["smoke"], 0)
+
+
+
+class Challenge(unittest.TestCase):
+    """The official challenge statement, and what QUENCH derives from it."""
+
+    def setUp(self):
+        self.inv = {i["acc"]: i for i in D["investigations"] if i["combustion"]}
+
+    @staticmethod
+    def squash(t):
+        return re.sub(r"\s+", " ", t.replace("\u2019", "'").replace("\u2018", "'")).strip()
+
+    def test_quotes_are_in_the_saved_sources(self):
+        src = os.path.join(ROOT, "data", "sources")
+        with open(os.path.join(src, "space-apps-challenge_flame-in-freefall.txt"), encoding="utf-8") as fh:
+            statement = self.squash(fh.read())
+        with open(os.path.join(src, "saffire-vi-final_nasa.txt"), encoding="utf-8") as fh:
+            saffire = self.squash(fh.read())
+        self.assertGreaterEqual(len(D["challenge"]), 25)
+        for key, q in D["challenge"].items():
+            self.assertIn(self.squash(q["text"]), saffire if key.startswith("saffire6") else statement, key)
+
+    def test_no_solid_run_at_moon_oxygen_recounted(self):
+        moon = D["stats"]["moon_o2_min"]
+        self.assertEqual(moon, 30)
+        self.assertEqual(D["stats"]["moon_psia_max"], 10.2)
+        vals = []
+        h, b = rows("PSI-25_Experimental table_BASS-II.csv")
+        i = next(k for k, x in enumerate(h) if "initial O2" in x)
+        vals += [float(r[i]) for r in b if re.fullmatch(r"\d+(\.\d+)?", r[i].strip())]
+        for name in ("PSI-98_Experimental table_SAFFIRE-1.csv", "PSI-99_Experimental table_SAFFIRE-2.csv"):
+            h, b = rows(name)
+            i = next(k for k, x in enumerate(h) if "Percent O2" in x)
+            vals += [float(m.group()) for r in b for m in [re.search(r"\d+(\.\d+)?", r[i])] if m]
+        self.assertEqual(sum(1 for v in vals if v >= moon), 0)
+        self.assertEqual(D["stats"]["hi_o2"]["solid"], 0)
+
+    def test_flex_runs_at_moon_oxygen_recounted(self):
+        h, b = rows("PSI-69_Experimental table_FLEX.csv")
+        io2 = next(k for k, x in enumerate(h) if x.startswith("O initial"))
+        ip = next(k for k, x in enumerate(h) if "pressure" in x.lower())
+        hi = [(float(r[io2]), float(r[ip]) / 760 * 14.696) for r in b if float(r[io2]) >= 0.30 - 1e-9]
+        self.assertEqual(len(hi), D["stats"]["hi_o2"]["droplet"])
+        self.assertEqual(sum(1 for o, p in hi if p <= 10.2), D["stats"]["moon_range"]["droplet"])
+        near = [p for o, p in hi if 10.2 < p <= 10.2 * 1.05]
+        self.assertEqual(len(near), D["stats"]["moon_near"]["droplet"])
+        self.assertEqual([round(min(near), 1), round(max(near), 1)], D["stats"]["moon_near_psia"])
+
+    def test_highest_oxygen_is_cfig_as_the_statement_says(self):
+        h, b = rows("PSI-159_Experimental table_CFI-G_Inverse Flames.csv")
+        i = next(k for k, x in enumerate(h) if x.strip() == "XO2")
+        top = max(float(r[i]) for r in b if re.fullmatch(r"\d+(\.\d+)?", r[i].strip()))
+        self.assertEqual(round(top * 100), 85)
+        self.assertEqual(D["stats"]["o2_max_all"], 85)
+        self.assertIn("85%", D["challenge"]["cfig_85"]["text"])
+
+    def test_named_investigations_are_tier_one(self):
+        named = {"PSI-26", "PSI-25", "PSI-98", "PSI-99", "PSI-100", "PSI-102", "PSI-101", "PSI-69"}
+        self.assertEqual({a for a, i in self.inv.items() if i["tier"] == 1}, named)
+        statement = D["challenge"]["prevention"]["text"] + D["challenge"]["detection"]["text"] + D["challenge"]["suppression"]["text"]
+        for word in ("BASS", "BASS-II", "Saffire", "SAME", "SAME-R", "FLEX"):
+            self.assertIn(word, statement)
+        self.assertEqual(self.inv["PSI-69"]["pillars"], ["suppression"])
+        self.assertEqual(self.inv["PSI-102"]["pillars"], ["detection"])
+        self.assertIn("suppression", self.inv["PSI-26"]["pillars"])
+        self.assertEqual(sum(D["stats"]["tiers"].values()), len(self.inv))
+
+    def test_hardware_families_cover_every_investigation_once(self):
+        members = [a for f in D["families"] for a in f["members"]]
+        self.assertEqual(sorted(members), sorted(self.inv))
+        for f in D["families"]:
+            for a in f["members"]:
+                self.assertEqual(self.inv[a]["family"], f["id"])
+        fam = {f["id"]: f for f in D["families"]}
+        self.assertEqual(len(fam["acme"]["members"]), 6)      # "The six experiments in the ACME project"
+        self.assertIn("six experiments", fam["acme"]["quote"]["text"])
+        self.assertEqual(set(fam["mdca"]["members"]), {"PSI-69", "PSI-68", "PSI-39"})
+
+    def test_what_varied_is_recounted_from_the_table(self):
+        h, b = rows("PSI-69_Experimental table_FLEX.csv")
+        cols = {c["h"]: c for c in self.inv["PSI-69"]["vars"]}
+        fuel = cols["Fuel"]
+        self.assertEqual(fuel["d"], len({r[h.index("Fuel")].strip() for r in b}))
+        d0 = cols["Droplet initial diameter; mm"]
+        vals = [float(r[h.index("Droplet initial diameter; mm")]) for r in b if re.fullmatch(r"\d+(\.\d+)?", r[h.index("Droplet initial diameter; mm")].strip())]
+        self.assertEqual(d0["num"], [min(vals), max(vals)])
+        self.assertEqual(d0["role"], "geometry")
+        self.assertEqual(cols["Test end"]["role"], "result")
+        self.assertNotIn("FLEX Identifier", cols)
+        s2 = {c["h"]: c for c in self.inv["PSI-99"]["vars"]}
+        self.assertEqual(s2["Air Flow (cm/s)"]["d"], 1)        # held constant in Saffire-II
+        for i in self.inv.values():
+            for c in i["vars"]:
+                self.assertLessEqual(c["d"], c["n"])
+                self.assertIn(c["role"], ("fuel", "geometry", "condition", "result"))
+
+    def test_rank_parts_are_in_range(self):
+        for a, i in self.inv.items():
+            for k in ("named", "fuel", "data"):
+                self.assertTrue(0 < i["rank"][k] <= 1, (a, k))
+            self.assertIn(i["rank"]["g"], (0, 1))
+        self.assertEqual({a for a, i in self.inv.items() if i["rank"]["g"]}, {"PSI-22", "PSI-99"})
+
+    def test_findings_have_a_pillar_and_the_gap_names_saffire_vi(self):
+        for f in D["findings"]:
+            self.assertIn(f["pillar"], ("prevention", "detection", "suppression"), f["id"])
+        gap = next(f for f in D["findings"] if f["id"] == "solid-gap")
+        self.assertIn("Saffire-VI", gap["limits"])
+        self.assertIn("higher oxygen concentration and lower pressure", gap["limits"])
+        self.assertIn("archive", gap["title"].lower())
+
+    def test_downloads_match_the_data(self):
+        dl = os.path.join(ROOT, "web", "downloads")
+        with open(os.path.join(dl, "quench-runs.csv"), encoding="utf-8", newline="") as fh:
+            runs = list(csv.DictReader(fh))
+        self.assertEqual(len(runs), len(D["tests"]))
+        self.assertEqual(sum(1 for r in runs if r["fuel_type"] == "solid" and r["o2_percent"] and float(r["o2_percent"]) > 22.2), 0)
+        self.assertEqual(sum(1 for r in runs if r["outcome"]), D["stats"]["with_outcome"])
+        with open(os.path.join(dl, "quench-investigations.csv"), encoding="utf-8", newline="") as fh:
+            invs = list(csv.DictReader(fh))
+        self.assertEqual(len(invs), len(self.inv))
+        with open(os.path.join(dl, "README.txt"), encoding="utf-8") as fh:
+            self.assertIn("SI notice", fh.read())
 
 
 if __name__ == "__main__":

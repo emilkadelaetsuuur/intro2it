@@ -1,5 +1,6 @@
-/* QUENCH core: data helpers, briefing, evidence map, findings, archive, lessons, method, navigation.
-   Everything is computed in the browser from data.js. No network calls. */
+/* QUENCH core: data helpers, briefing, evidence map, findings, lessons.
+   Everything is computed in the browser from data.js. No network calls.
+   SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team. */
 const D = window.FLAME, S = D.stats;
 const $ = (s, r) => (r || document).querySelector(s);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -16,7 +17,7 @@ const KIND = {
 const KINDS = ["solid", "droplet", "gas"];
 const DIM = { safety: "Safety impact", evidence: "Strength of evidence", mission: "Fit to Moon and Mars missions", action: "Can be acted on now" };
 const state = { atm: "exp", custom: { o2: 30, p: 0.6 }, kinds: { solid: true, droplet: true, gas: true }, table: false,
-  weights: { safety: 30, evidence: 25, mission: 25, action: 20 }, tag: null, invq: "", invkind: "all", open: null, openF: null, view: "brief" };
+  weights: { safety: 30, evidence: 25, mission: 25, action: 20 }, tag: null, fpillar: "all", invq: "", invkind: "all", open: null, openF: null, view: "brief" };
 const EXP = D.atmospheres[2];
 const inv = acc => D.investigations.find(i => i.acc === acc);
 function target() {
@@ -82,7 +83,7 @@ function matrixHtml(atms) {
 
 /* ---------- briefing ---------- */
 function score(f) { const w = state.weights, tot = Object.keys(w).reduce((a, k) => a + w[k], 0) || 1; return Object.keys(w).reduce((a, k) => a + w[k] * f.scores[k], 0) / tot / 5 * 100; }
-const ranked = () => D.findings.filter(f => !state.tag || f.tags.includes(state.tag)).map(f => ({ f, s: score(f) })).sort((a, b) => b.s - a.s);
+const ranked = () => D.findings.filter(f => (!state.tag || f.tags.includes(state.tag)) && (state.fpillar === "all" || f.pillar === state.fpillar)).map(f => ({ f, s: score(f) })).sort((a, b) => b.s - a.s);
 function drawGap(box) {
   const W = Math.max(300, box.clientWidth - 28), H = 96, l = 8, r = 8;
   const x = o => l + (o - 10) / 30 * (W - l - r);
@@ -90,34 +91,45 @@ function drawGap(box) {
   s += `<line x1="${x(10)}" x2="${x(40)}" y1="52" y2="52" stroke="var(--strong)" stroke-width="1"/>`;
   for (let o = 10; o <= 40; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="52" y2="57" stroke="var(--strong)"/><text x="${x(o)}" y="70" text-anchor="middle" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${o}</text>`;
   s += `<text x="${x(40)}" y="86" text-anchor="end" font-size="11" fill="var(--ink3)" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
+  s += `<rect x="${x(S.moon_o2_min)}" y="24" width="${x(40) - x(S.moon_o2_min)}" height="28" fill="var(--red)" fill-opacity=".09"/><line x1="${x(S.moon_o2_min)}" x2="${x(S.moon_o2_min)}" y1="24" y2="52" stroke="var(--red)" stroke-dasharray="3 3"/>`;
+  if (W > 520) s += `<text x="${x(40) - 6}" y="38" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${W > 760 ? "MOON BASE: " : ""}${f1(S.moon_o2_min)} % OR MORE</text>`;
   s += `<rect x="${x(S.solid_o2_min)}" y="42" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" fill="var(--s1)"/>`;
-  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="700" fill="var(--ink)">Solid materials tested in flight: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
+  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="700" fill="var(--ink)">Solid materials in the archive: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
   D.atmospheres.forEach((a, i) => {
     const hot = a.id === "exp";
     s += `<line x1="${x(a.o2)}" x2="${x(a.o2)}" y1="${hot ? 10 : 40}" y2="52" stroke="${hot ? "var(--red)" : "var(--ink3)"}" stroke-width="${hot ? 2 : 1.2}"/>`;
     s += `<rect x="${x(a.o2) - 4}" y="48" width="8" height="8" fill="${hot ? "var(--red)" : "var(--bg)"}" stroke="${hot ? "var(--red)" : "var(--ink3)"}" stroke-width="1.5"/>`;
     if (hot) s += `<text x="${x(a.o2) - 8}" y="19" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--red)">Exploration atmosphere: ${f1(a.o2)} %</text>`;
-    else if (W > 520 || i === 0) s += `<text x="${x(a.o2) + 6}" y="${i === 0 ? 86 : 44}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${esc(a.short).toUpperCase()} ${f1(a.o2)} %</text>`;
+    else if (W > 900 || i === 0) s += `<text x="${x(a.o2) + 6}" y="${i === 0 ? 86 : 44}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${esc(a.short).toUpperCase()} ${f1(a.o2)} %</text>`;
   });
   box.innerHTML = s + "</svg>";
 }
 function drawBrief() {
   const cov = coverage(EXP);
-  $("#thesis").innerHTML = `NASA plans to send crews to the Moon in cabin air with <b>${f1(EXP.o2)} % oxygen</b>. No solid material has ever been flight-tested above <b>${f1(S.solid_o2_max)} %</b>.`;
+  $("#thesis").innerHTML = `NASA expects Moon-base air with <b>${f1(S.moon_o2_min)} % oxygen or more</b>. NASA's open combustion archive holds no solid-fuel flight test above <b>${f1(S.solid_o2_max)} %</b>.`;
   $("#facts").innerHTML = [
-    [f1(S.solid_o2_max) + " %", "highest oxygen level at which any solid material was flight-tested", 1],
-    [f1(EXP.o2) + " %", `oxygen in the exploration atmosphere, at ${f1(EXP.psia)} psia`, 0],
-    [cov.solid.n + cov.droplet.n, "solid or liquid test runs inside that atmosphere", 1],
+    [f1(S.solid_o2_max) + " %", "highest oxygen level of any solid-fuel flight test in the archive", 1],
+    [f1(S.moon_o2_min) + " %+", `oxygen NASA expects on the Moon, at ${f1(S.moon_psia_max)} psi or less`, 0],
+    [S.hi_o2.solid, `solid-fuel runs at ${f1(S.moon_o2_min)} % oxygen or more`, 1],
     [S.tests, `flight test runs read from ${S.combustion} NASA investigations`, 0]
   ].map(a => `<div><b class="${a[2] ? "hot" : ""}">${esc(a[0])}</b><span>${esc(a[1])}</span></div>`).join("");
-  $("#briefsub").textContent = `QUENCH reads every combustion investigation in NASA's Physical Sciences Informatics archive, ${S.tests} test runs in all, and answers one question for mission designers: does flight evidence cover the air your crew will breathe? It summarises the archive, ranks what matters, and turns it into a check you can run on any cabin.`;
+  $("#briefsub").textContent = `QUENCH reads every combustion investigation in NASA's Physical Sciences Informatics archive, ${S.tests} test runs in all, and answers one question for mission designers, researchers and students: does flight evidence cover the air your crew will breathe? It summarises the archive, ranks what matters, and turns it into a check you can run on any cabin.`;
   drawGap($("#gapfig"));
+  const C = D.challenge, hiP = S.moon_range, nearP = S.moon_near;
+  $("#o2ctx").innerHTML = `<p>Spacesuits hold pure oxygen at ${f1(S.suit_psia)} psi. To shorten the oxygen pre-breathe before a moonwalk, NASA expects the Moon base and its rovers to run in between: <b>${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less</b>. That makes materials much more flammable.</p>
+    <p>At ${f1(S.moon_o2_min)} % oxygen or more the archive holds <b>${S.hi_o2.solid} solid-fuel runs</b>, ${S.hi_o2.droplet} droplet runs (${hiP.droplet} at ${f1(S.moon_psia_max)} psi or less, ${nearP.droplet} just above it at ${f1(S.moon_near_psia[0])} to ${f1(S.moon_near_psia[1])} psia) and ${S.hi_o2.gas} gas-flame runs (${hiP.gas} at ${f1(S.moon_psia_max)} psi or less, all from ${esc(Object.keys(S.moon_range_by).join(", "))}).</p>
+    <blockquote>“${esc(C.moon_air.text)}”<cite><a href="${esc(C.moon_air.url)}" target="_blank" rel="noopener">Flame in Freefall challenge statement</a></cite></blockquote>`;
+  $("#tasks").innerHTML = [
+    ["archive", "Find the investigations that matter for a habitat", `${S.combustion} investigations ranked for a station, a spacecraft, a Moon base or rover, or a Mars base, with what each one burned, varied and measured.`, C.obj_relevant.text, "Open the ranked archive"],
+    ["evidence", "Pull data for your own model", `${S.tests} flight test runs on one oxygen and pressure map, downloadable as CSV, plus a worked predictor and flame-spread numbers read from NASA video.`, C.obj_data.text, "Open the evidence and downloads"],
+    ["findings", "See what should change in controls and equipment", `${D.findings.length} ranked findings sorted into prevention, detection and suppression, each with its evidence, its limits and an action.`, C.obj_controls.text, "Open the findings"]
+  ].map((t, n) => `<a class="task" href="#${t[0]}" data-go="${t[0]}"><span class="r">${pad2(n + 1)}</span><h3>${esc(t[1])}</h3><p>${esc(t[2])}</p><p class="ask">The challenge asks: “${esc(t[3])}”</p><span class="go">${esc(t[4])}</span></a>`).join("");
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");
   $("#matrix1").innerHTML = matrixHtml(D.atmospheres);
   $("#matrixnote").textContent = `A run counts when its oxygen is within ${S.o2_window} points and its pressure within ${Math.round(S.p_window * 100)} % of the cabin. Solid-material tables record no pressure, so they count only for a cabin at station pressure.`;
   $("#todo").innerHTML = top.map(x => `<li>${esc(x.f.action)}<span>${esc(x.f.title)}</span></li>`).join("");
-  $("#nextgrid").innerHTML = D.next.map(n => `<div class="hcard"><span class="lab">${esc(n.full)}</span><h3>${esc(n.name)}</h3><p>${esc(n.what)}</p><a href="${esc(n.url)}" target="_blank" rel="noopener">NASA Glenn page</a></div>`).join("");
+  $("#nextgrid").innerHTML = D.next.map(n => `<div class="hcard"><span class="lab">${esc(n.full)}</span><h3>${esc(n.name)}</h3><p>${esc(n.what)}</p><a href="${esc(n.url)}" target="_blank" rel="noopener">${/nasa\.gov/.test(n.url) ? "NASA Glenn page" : "Challenge statement"}</a></div>`).join("");
 }
 
 /* ---------- evidence map ---------- */
@@ -147,6 +159,9 @@ function drawMap() {
   for (let o = X0; o <= X1; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="${m.t}" y2="${m.t + mainH}" stroke="var(--rule)"/><text x="${x(o)}" y="${m.t + mainH + 16}" text-anchor="middle" font-size="11" font-family="var(--mono)">${o}</text>`;
   [0.5, 0.7, 1, 2, 3, 5].forEach(p => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" stroke="var(--rule)"/><text x="${m.l - 7}" y="${y(p) + 4}" text-anchor="end" font-size="11" font-family="var(--mono)">${p}</text>`; });
   s += `<text x="${m.l}" y="14" font-size="11" fill="var(--ink3)" font-family="var(--mono)">PRESSURE, ATM (LOG SCALE)</text><text x="${W - m.r}" y="${m.t + mainH + 32}" text-anchor="end" font-size="11" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
+  const mp = S.moon_psia_max / PSIA;
+  s += `<rect x="${x(S.moon_o2_min)}" y="${y(mp)}" width="${x(X1) - x(S.moon_o2_min)}" height="${y(Y0) - y(mp)}" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-opacity=".7" stroke-dasharray="4 4"/>`;
+  s += `<text x="${x(X1) - 6}" y="${y(Y0) - 7}" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${small ? "MOON RANGE" : `MOON BASE RANGE: ${f1(S.moon_o2_min)} % OR MORE, ${f1(S.moon_psia_max)} PSI OR LESS`}</text>`;
   const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = T.p * (1 + S.p_window), wy1 = T.p * (1 - S.p_window);
   s += `<rect x="${x(wx0)}" y="${y(wy0)}" width="${x(wx1) - x(wx0)}" height="${y(wy1) - y(wy0)}" fill="var(--red)" fill-opacity=".08" stroke="var(--red)" stroke-width="1.5"/>`;
   s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${stripY + rowH * 2}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
@@ -176,7 +191,8 @@ function drawMap() {
   $("#legend").innerHTML = KINDS.map(k => `<span><i style="background:${KIND[k].color}"></i>${KIND[k].label}</span>`).join("") +
     `<span><svg width="46" height="18" aria-hidden="true"><circle cx="7" cy="9" r="4.5" fill="var(--ink3)"/><circle cx="30" cy="9" r="8.6" fill="var(--ink3)"/></svg>1 run and 10 runs</span>` +
     `<span><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="var(--ink3)" fill-opacity=".28" stroke="var(--ink3)" stroke-width="1.5"/></svg>oxygen only</span>` +
-    `<span><svg width="20" height="18" aria-hidden="true"><rect x="6" y="5" width="8" height="8" fill="none" stroke="var(--red)" stroke-width="1.5"/><line x1="0" x2="20" y1="9" y2="9" stroke="var(--red)"/><line x1="10" x2="10" y1="0" y2="18" stroke="var(--red)"/></svg>selected cabin and its window</span>`;
+    `<span><svg width="20" height="18" aria-hidden="true"><rect x="6" y="5" width="8" height="8" fill="none" stroke="var(--red)" stroke-width="1.5"/><line x1="0" x2="20" y1="9" y2="9" stroke="var(--red)"/><line x1="10" x2="10" y1="0" y2="18" stroke="var(--red)"/></svg>selected cabin and its window</span>` +
+    `<span><svg width="20" height="18" aria-hidden="true"><rect x="2" y="3" width="16" height="12" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-dasharray="3 3"/></svg>Moon base range in the challenge statement</span>`;
   const off = {}; offscale.forEach(t => off[t.k] = (off[t.k] || 0) + 1);
   $("#mapnote").textContent = `Not drawn: ${Object.keys(off).map(k => `${off[k]} ${KIND[k].one} runs above ${X1} % oxygen`).join(", ")}; ${S.solid_no_conditions} solid-material runs whose table lists no oxygen level; and the gas-jet and smoke investigations, whose tables hold no oxygen column. ACME BRE bubbles count test days, not runs.`;
   drawMapTable();
@@ -212,45 +228,37 @@ function drawWindow() {
   $("#matrix2").innerHTML = KINDS.map(k => `<div class="h"><i class="kdot" style="background:${KIND[k].color}"></i>${KIND[k].label}</div>`).join("") +
     KINDS.map(k => { const c = C[k]; return `<div class="c ${c.status}"><b>${c.n}</b><span>${STATUS[c.status][1]}. ${esc(c.status === "ok" ? "" : nearText(c))}</span></div>`; }).join("");
 }
-function drawEvidence() { chips(); drawMap(); drawWindow(); }
+function drawEvidence() {
+  chips(); drawMap(); drawWindow();
+  const T = target(), C = coverage(T), inside = KINDS.flatMap(k => state.kinds[k] ? (k === "solid" && C[k].cabin ? C[k].o2only : C[k].win) : []);
+  $("#dlwin").textContent = `Runs inside the window (${inside.length}), CSV`; $("#dlwin").disabled = !inside.length;
+  $("#dlwin").onclick = () => download("quench-runs-window.csv", runsCsv(inside));
+}
 
 /* ---------- findings ---------- */
 function drawWeights() {
   $("#weights").innerHTML = Object.keys(DIM).map(k => `<label class="field" for="w_${k}"><span>${DIM[k]} <output id="wv_${k}">${state.weights[k]}</output></span><input id="w_${k}" type="range" min="0" max="50" step="5" value="${state.weights[k]}"></label>`).join("");
   Object.keys(DIM).forEach(k => { $("#w_" + k).oninput = e => { state.weights[k] = +e.target.value; $("#wv_" + k).textContent = e.target.value; drawFindings(); }; });
+  const pc = $("#pillarchips");
+  [["all", "All"], ["prevention", "Prevention"], ["detection", "Detection"], ["suppression", "Suppression"]].forEach(([id, label]) => { const b = document.createElement("button"); b.className = "chip"; b.textContent = label; b.dataset.p = id; b.onclick = () => { state.fpillar = id; state.openF = null; drawFindings(); }; pc.appendChild(b); });
   const tags = [...new Set(D.findings.flatMap(f => f.tags))].sort(), tc = $("#tagchips");
   ["all", ...tags].forEach(t => { const b = document.createElement("button"); b.className = "chip"; b.textContent = t; b.dataset.t = t; b.onclick = () => { state.tag = t === "all" ? null : t; drawFindings(); }; tc.appendChild(b); });
 }
 function drawFindings() {
   document.querySelectorAll("#tagchips .chip").forEach(b => b.setAttribute("aria-pressed", (state.tag || "all") === b.dataset.t));
+  document.querySelectorAll("#pillarchips .chip").forEach(b => b.setAttribute("aria-pressed", state.fpillar === b.dataset.p));
   const list = ranked();
-  if (!state.openF && list.length) state.openF = list[0].f.id;
+  if ((!state.openF || !list.some(x => x.f.id === state.openF)) && list.length) state.openF = list[0].f.id;
+  $("#fcount").textContent = list.length === D.findings.length ? "" : `${list.length} of ${D.findings.length} findings shown.`;
   $("#flist").innerHTML = list.map((x, i) => {
     const f = x.f;
-    return `<details class="f" id="f-${f.id}" ${state.openF === f.id ? "open" : ""}><summary><span class="r">${pad2(i + 1)}</span><h3>${esc(f.title)}</h3><span class="tagk k">${esc(f.kind)}</span><span class="sc">${Math.round(x.s)}</span></summary>
+    return `<details class="f" id="f-${f.id}" ${state.openF === f.id ? "open" : ""}><summary><span class="r">${pad2(i + 1)}</span><h3>${esc(f.title)}</h3><span class="tagk k">${esc(f.pillar)} · ${esc(f.kind)}</span><span class="sc">${Math.round(x.s)}</span></summary>
       <div class="body"><div><p>${esc(f.claim)}</p>${f.quote ? `<blockquote>“${esc(f.quote)}”<cite>${f.quote_url ? `<a href="${esc(f.quote_url)}" target="_blank" rel="noopener">${esc(f.quote_src)}</a>` : "NASA, " + esc(f.quote_src)}</cite></blockquote>` : ""}
       <dl><dt>Evidence</dt><dd>${esc(f.evidence)}</dd><dt>Limits</dt><dd>${esc(f.limits)}</dd><dt>What to do</dt><dd class="act">${esc(f.action)}</dd>
       <dt>Sources</dt><dd>${f.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} (${esc(s.acc)})</a>`).join(", ")}${f.next.length ? ` · open question for ${f.next.map(n => esc(D.next.find(z => z.id === n).name)).join(", ")}` : ""}</dd>
       <dt>Topics</dt><dd>${f.tags.map(t => `<span class="tagk">${esc(t)}</span>`).join(" ")}</dd></dl></div>
       <div class="scores">${Object.keys(DIM).map(k => `<div><span>${DIM[k]}</span><b>${f.scores[k]}</b><span class="track"><i style="width:${f.scores[k] * 20}%"></i></span></div>`).join("")}</div></div></details>`;
   }).join("");
-}
-
-/* ---------- archive ---------- */
-function drawInv() {
-  const kc = $("#invkind");
-  if (!kc.children.length) [["all", "All"], ["solid", "Solids"], ["droplet", "Liquids"], ["gas", "Gases"], ["outcome", "Has results in table"]].forEach(a => { const b = document.createElement("button"); b.className = "chip"; b.textContent = a[1]; b.dataset.k = a[0]; b.onclick = () => { state.invkind = a[0]; drawInv(); }; kc.appendChild(b); });
-  kc.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === state.invkind));
-  const q = state.invq.toLowerCase();
-  const rows = D.investigations.filter(i => i.combustion).filter(i => state.invkind === "all" || (state.invkind === "outcome" ? i.outcome : i.kind === state.invkind))
-    .filter(i => !q || (i.acr + " " + i.title + " " + i.keywords + " " + i.area + " " + i.objective + " " + (i.summary || "")).toLowerCase().includes(q)).sort((a, b) => b.rows - a.rows);
-  const rng = (r, d) => r ? (r[0] === r[1] ? d(r[0]) : d(r[0]) + " – " + d(r[1])) : "–";
-  const REL = { direct: "fire safety", indirect: "related", background: "background" };
-  $("#invtable").innerHTML = `<thead><tr><th>Investigation</th><th>Burned</th><th>Platform</th><th class="n">Runs listed</th><th class="n">Oxygen %</th><th class="n">Pressure atm</th><th>Results in table</th><th class="n">Raw data</th><th class="n">Papers</th></tr></thead><tbody>` +
-    rows.map(i => `<tr class="row" data-acc="${i.acc}" tabindex="0" aria-expanded="${state.open === i.acc}"><td><b>${esc(i.acr || i.acc)}</b>${i.relevance ? `<span class="rel ${i.relevance}">${REL[i.relevance]}</span>` : ""}<br><span class="fine">${esc(i.summary || i.title)}</span></td><td>${i.kind ? `<i class="kdot" style="background:${KIND[i.kind].color}"></i>${KIND[i.kind].label}` : esc(i.area || "–")}</td><td>${esc(i.platform.replace("International Space Station (ISS)", "Space station").replace("Not Applicable", "Ground analysis") || "–")}</td><td class="n">${i.rows || "–"}</td><td class="n">${rng(i.o2, f1)}</td><td class="n">${rng(i.p, f2)}</td><td>${esc(i.outcome || "no")}</td><td class="n">${i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "–"}</td><td class="n">${i.npub}</td></tr>` +
-      (state.open === i.acc ? `<tr class="detail"><td colspan="9"><div class="dcols"><div><h4>Full title</h4><p>${esc(i.title)}</p><p class="fine" style="margin-top:6px">The one-line summary above was drafted with AI from this record; every number in it is checked against the record or its table at build time.</p></div><div><h4>Objective</h4><p>${esc(i.objective || "Not given in the record.")}</p></div><div><h4>Hypothesis</h4><p>${esc(i.hypothesis || "Not given in the record.")}</p></div><div><h4>Approach</h4><p>${esc(i.approach || "Not given in the record.")}</p></div><div><h4>Why it matters</h4><p>${esc(i.impacts || "Not given in the record.")}</p></div><div><h4>Publications (${i.pubs.length})</h4><ol>${i.pubs.map(p => `<li>${p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.t)}</a>` : esc(p.t)}</li>`).join("") || "<li>None listed</li>"}</ol></div><div><h4>Record</h4><p><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.acc)} on NASA PSI</a>${i.doi ? `<br>DOI ${esc(i.doi)}` : ""}<br>${esc(i.start || "?")} to ${esc(i.end || "?")}<br>Licence ${esc(i.lic || "not stated")}</p></div></div></td></tr>` : "")).join("") + "</tbody>";
-  const skipped = D.investigations.filter(i => !i.combustion);
-  $("#invnote").textContent = `${rows.length} of ${S.combustion} investigations shown. The archive search for "combustion" also returns ${skipped.map(i => i.acc).join(" and ")}, which are about solders and fluid physics and are left out.`;
 }
 
 /* ---------- lessons ---------- */
@@ -270,6 +278,7 @@ function drawHistory() {
   $("#hcards").innerHTML = D.history.map(h => `<article class="hcard"><span class="lab">${esc(h.date)}</span><h3>${esc(h.name)}</h3>${h.atmosphere ? `<span class="atm">${esc(h.atmosphere.label)}</span>` : ""}<p>${esc(h.what)}</p>
     ${h.quotes.slice(0, 1).map(q => `<blockquote>“${esc(q.text)}”<cite><a href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.src)}</a></cite></blockquote>`).join("")}
     <p><b>What changed:</b> ${esc(h.changed)}</p><p class="today">${esc(h.today)}</p><p class="fine">Related: ${h.findings.map(fl).filter(Boolean).join("; ")}</p></article>`).join("");
+  $("#earthq").innerHTML = `<blockquote>“${esc(D.challenge.earth.text)}”<cite><a href="${esc(D.challenge.earth.url)}" target="_blank" rel="noopener">Flame in Freefall challenge statement</a></cite></blockquote><p class="fine">In this archive the link to Earth runs through the same three questions: which materials burn (BASS, BASS-II, Saffire), how smoke is detected (SAME, SAME-R) and what puts a flame out (FLEX).</p>`;
   $("#spin").innerHTML = D.spinoffs.map(sp => `<div class="hcard"><span class="lab">${sp.year}</span><h3>${esc(sp.name)}</h3><p>${esc(sp.what)}</p><blockquote>“${esc(sp.quote)}”<cite><a href="${esc(sp.url)}" target="_blank" rel="noopener">${esc(sp.src_title)}</a></cite></blockquote></div>`).join("");
 }
 

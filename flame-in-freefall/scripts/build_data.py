@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
 """Build web/data.js from the raw NASA PSI tables in data/raw.
 
 Every number the dashboard shows is computed here from the CSV files exactly as
@@ -467,6 +468,155 @@ for inv in investigations:
         assert any(abs(v - q) < 0.051 or abs(v - q * 100) < 0.051 for q in pool), f"{inv['acc']} summary number {n} not in its record or table"
 notes += CUR["data_notes"]
 
+# ------------------------------------- challenge statement and investigation profiles
+# The official challenge statement is saved in data/sources and quoted word for word. It names which
+# investigations serve prevention, detection and suppression, which hardware they share, and what air
+# NASA expects on the Moon. Those statements, not our opinion, drive the labels below.
+CQ = {k: check_quote(v["src"], v["text"]) for k, v in CUR["challenge_quotes"].items()}
+PROF = CUR["profiles"]
+family_of = {acc: fam for fam in PROF["families"] for acc in fam["members"]}
+BASS_AGENT = "Assess the effectiveness of an inert, gaseous extinguishing agent"
+assert BASS_AGENT in inv_by["PSI-26"]["objective"], "BASS objective no longer names an extinguishing agent"
+
+ADMIN_COL = re.compile(r"^(pi|cir|year|month|date|day|gmt|notes|comments|test|description)$|test ?#|test day|test date|test gmt|"
+                       r"gmt (date|ignition|flame off)|local time|camera \d|session name|actual day|data id|data description|"
+                       r"publication link|figure id|sample ?#|sample number|sample id|flex identifier|flex number|run#", re.I)
+RESULT_COL = re.compile(r"extinction diameter|^burning rate|^burn time|^test end$|after test|self ?-?ext|hot ignition|peak burner|"
+                        r"^color$|hc burnrate|pfinal|pmean|burn length|spread (rate|length)|total frames|\bfinal\b|flames ignited|weight loss", re.I)
+GEOM_COL = re.compile(r"diameter|thickness|length|width|nozzle|burner size|fiber", re.I)
+FUEL_COL = re.compile(r"^fuel$|^fuel type$|fuel sample material|^material$|sample material|^sample type$|^sample \(fuel type\)$|^fuel bottle$", re.I)
+HEADER_FIX = {"O initial ambient composition; mole fraction": "O2 in the atmosphere; mole fraction",
+              "N initial ambient composition; mole fraction": "N2 in the atmosphere; mole fraction",
+              "CO initial ambient composition; mole fraction": "CO2 in the atmosphere; mole fraction",
+              "He initial ambient composition; mole fraction": "He in the atmosphere; mole fraction",
+              "Samle Thickness": "Sample Thickness", "?-g Burn Length": "µg Burn Length", "?-g Spread Length": "µg Spread Length"}
+BLANK = {"", "n/a", "na", "-", "--", "tbd", "none"}
+
+
+def table_columns(acc):
+    """What varied, what stayed the same and what was recorded, straight from the PSI run table."""
+    cols = []
+    for name in sorted(os.listdir(TAB)):
+        if not name.startswith(acc + "_"):
+            continue
+        header, rows = read_table(name)
+        for j, hname in enumerate(header):
+            if not hname or (ADMIN_COL.search(hname) and not RESULT_COL.search(hname)):
+                continue
+            vals = [r[j] for r in rows if r[j].lower() not in BLANK]
+            if not vals:
+                continue
+            role = ("result" if RESULT_COL.search(hname) else "fuel" if FUEL_COL.search(hname)
+                    else "geometry" if GEOM_COL.search(hname) else "condition")
+            nums = [num(v) for v in vals]
+            numeric = sum(1 for v in nums if v is not None) >= 0.9 * len(vals)
+            good = [v for v in nums if v is not None]
+            cnt = collections.Counter(vals)
+            cols.append({"h": HEADER_FIX.get(hname, hname), "role": role, "n": len(vals), "d": len(cnt),
+                         "num": [min(good), max(good)] if numeric and good else None,
+                         "top": [[v[:60], c] for v, c in cnt.most_common(4)]})
+    return cols
+
+
+MEASURE_RULES = [
+    ("Flame video and still images", r"video|camera|imag(?:e|es|ing)\b|photograph"),
+    ("Radiant emission (radiometers)", r"radiomet|heat radiation|flame radiation|radiative flux"),
+    ("Temperature (thermocouples, pyrometry)", r"thermocouple|pyromet|thin[- ]filament|(?:flame|burner|plume|surface) temperatures?|temperature (?:profile|field|data)"),
+    ("Surface heat flux", r"heat flux sensor"),
+    ("Gas composition (O2, CO2, CO)", r"gas analy|gas sensor|co2 sensor|oxygen sensor|carbon monoxide|\bco \(ppm\)|final co2|acid gas"),
+    ("Soot and smoke point", r"soot volume|soot temperature|smoke point|soot levels|soot distribution|soot measurement|soot formation|sooting"),
+    ("Smoke particle size", r"particle size|particle diameter|aerosol|particulate"),
+    ("Droplet diameter and burning rate", r"burning rate|burn rate|droplet size measure|initial droplet diameter|droplet initial diameter"),
+    ("Flame spread rate and burn length", r"spread rate|burn length|flame spread"),
+    ("Ion current and electric field", r"ion current|electric field"),
+    ("Chemiluminescence (OH*, CH*)", r"chemiluminesc|oh\*|ch\*"),
+]
+SIMULATION = r"simulation|cfd\b|numerical model|modeling"   # counted for ground studies only: flight records use the words loosely
+FUEL_CLASS = {"solid": ("Solid materials", 1.0), "smoke": ("Smoke from overheated materials", 0.9),
+              "emulated": ("Gas burner emulating solids", 0.8), "droplet": ("Liquid droplets", 0.6),
+              "instrument": ("Aerosol instrument check", 0.5), "gas": ("Gas flames", 0.3)}
+TIER = {1: ("Named in the challenge statement as a fire-safety study", 1.0),
+        2: ("Named there as related, filed by PSI under fire safety, or built on a named study", 0.7),
+        3: ("Other combustion investigation", 0.4)}
+headers_of = collections.defaultdict(str)
+for name in os.listdir(TAB):
+    headers_of[name.split("_")[0]] += " " + " ".join(read_table(name)[0])
+by_area = {r["accession"]: r["sub_area"] for r in inv_rows}
+is_ground = {r["accession"]: r["project_type"] == "Ground Investigation" for r in inv_rows}
+day_level = {c2["i"] for c2 in conditions}
+
+for inv in investigations:
+    acc = inv["acc"]
+    if not inv["combustion"]:
+        continue
+    parent = PROF["based_on"].get(acc)
+    pillars = list(PROF["named"].get(acc, [])) + list(PROF["related"].get(acc, []))
+    if acc == "PSI-26":
+        pillars.append("suppression")       # BASS objective 2, asserted above
+    if parent:
+        pillars += [p for p in PROF["named"].get(parent, []) if p not in pillars]
+    tier = 1 if acc in PROF["named"] else 2 if (acc in PROF["related"] or re.search(r"fire", by_area[acc], re.I)
+                                                 or parent in PROF["named"]) else 3
+    fclass = PROF["fuel_class"].get(acc) or PROF["fuel_class"][parent]
+    fuel_score = FUEL_CLASS[fclass][1] * (0.9 if parent else 1.0)
+    if inv["outcome"]:
+        data_score, data_why = 1.0, "Results in the run table"
+    elif inv["mapped"]:
+        data_score, data_why = 0.7, "Run table with conditions, results in video or papers"
+    elif acc in day_level:
+        data_score, data_why = 0.6, "Table of test days with conditions"
+    elif inv["rows"]:
+        data_score, data_why = 0.5, "Run table without oxygen or pressure"
+    elif inv["raw_gb"] > 0:
+        data_score, data_why = 0.3, "Raw data only"
+    else:
+        data_score, data_why = 0.15, "Papers and report only"
+    text = " ".join([inv["objective"], inv["approach"], inv["hardware"], headers_of[acc]])
+    fam = family_of.get(acc)
+    inv.update({
+        "pillars": pillars, "tier": tier, "tier_why": TIER[tier][0], "family": fam["id"] if fam else None,
+        "based_on": parent, "ground": is_ground[acc], "fuel_class": fclass,
+        "fuel_label": ("Model or ground study of " + (inv_by[parent]["acr"] or parent) + " (" + FUEL_CLASS[fclass][0].lower() + ")") if parent else FUEL_CLASS[fclass][0],
+        "rank": {"named": TIER[tier][1], "fuel": round(fuel_score, 2), "data": data_score,
+                 "g": 1 if (acc in PROF["partial_gravity"] or re.search(r"1-g ", headers_of[acc])) else 0},
+        "data_why": data_why,
+        "measures": [name for name, rule in MEASURE_RULES if re.search(rule, text, re.I)]
+                    + (["Numerical simulation"] if is_ground[acc] and re.search(SIMULATION, text, re.I) else []),
+        "vars": table_columns(acc),
+    })
+families = [{"id": f["id"], "name": f["name"], "members": f["members"], "quote": CQ[f["quote"]] if f.get("quote") else None}
+            for f in PROF["families"]]
+notes.append("Saffire-II: the column headers '?-g Burn Length' and '?-g Spread Length' lost their first character in PSI. "
+             "They are read as microgravity (µg), which the neighbouring '1-g' columns confirm.")
+notes.append("What varied and what stayed the same in each investigation is computed from its PSI run table: a column with one "
+             "distinct value counts as held constant. Identifier, date and note columns are left out.")
+notes.append("Measurement types are found by keyword in each PSI record (objective, approach, hardware) and table header. "
+             "A type that the record does not name is not listed, even if the experiment recorded it.")
+
+# What the challenge statement says about Moon-base air, read from the quote itself.
+MOON_O2 = float(re.search(r"(\d+)%", CQ["moon_air"]["text"]).group(1))
+MOON_PSI = float(re.search(r"([\d.]+) psi", CQ["moon_air"]["text"]).group(1))
+SUIT_PSI = float(re.search(r"only ([\d.]+) psi", CQ["suit"]["text"]).group(1))
+CFIG_MAX = float(re.search(r"up to (\d+)% oxygen", CQ["cfig_85"]["text"]).group(1))
+hi = [t for t in tests if t["o"] is not None and t["o"] >= MOON_O2]
+hi_p = [t for t in hi if t["p"] is not None and t["ps"] == "recorded" and t["p"] <= MOON_PSI / PSIA + 1e-9]
+NEAR = 1.05   # runs set to the 10.2 psia cabin were logged at 10.3 to 10.5 psia; 5 % above the bound counts as "close to it"
+hi_near = [t for t in hi if t["p"] is not None and t["ps"] == "recorded" and MOON_PSI / PSIA < t["p"] <= MOON_PSI / PSIA * NEAR]
+stats.update({
+    "moon_o2_min": MOON_O2, "moon_psia_max": MOON_PSI, "suit_psia": SUIT_PSI,
+    "hi_o2": {k: sum(1 for t in hi if t["k"] == k) for k in ("solid", "droplet", "gas")},
+    "moon_range": {k: sum(1 for t in hi_p if t["k"] == k) for k in ("solid", "droplet", "gas")},
+    "moon_range_by": dict(collections.Counter(t["a"] for t in hi_p)),
+    "moon_near": {k: sum(1 for t in hi_near if t["k"] == k) for k in ("solid", "droplet", "gas")},
+    "moon_near_psia": [round(min(t["p"] for t in hi_near) * PSIA, 1), round(max(t["p"] for t in hi_near) * PSIA, 1)] if hi_near else None,
+    "moon_low_psia": [round(min(t["p"] for t in hi_p) * PSIA, 1), round(max(t["p"] for t in hi_p) * PSIA, 1)] if hi_p else None,
+    "o2_max_all": max(t["o"] for t in tests if t["o"] is not None),
+    "o2_max_by": max((t for t in tests if t["o"] is not None), key=lambda t: t["o"])["a"],
+    "tiers": {str(k): sum(1 for i in comb if i.get("tier") == k) for k in (1, 2, 3)},
+})
+assert stats["o2_max_all"] == CFIG_MAX and stats["o2_max_by"] == "ACME CFI-G", "highest-oxygen runs no longer match the challenge statement"
+assert stats["hi_o2"]["solid"] == 0, "a solid-fuel run at Moon-base oxygen has appeared; rewrite the headline finding"
+
 # ---------------------------------------------------------------------- findings
 # Scores are judgements (1-5) and are editable in the app. Numbers in the text are computed above.
 def src(*accs):
@@ -500,13 +650,17 @@ findings = [
      "action": "Treat ventilation shutdown as unproven for the exploration atmosphere until solid materials are tested at 34 % oxygen.",
      "scores": {"safety": 5, "evidence": 3, "mission": 5, "action": 5}, "next": ["sofie", "fm2"], "sources": src("PSI-20")},
     {"id": "solid-gap", "kind": "Computed from run tables", "tags": ["materials", "oxygen", "exploration", "gap"],
-     "title": f"No solid material has been flight-tested above {S['solid_o2_max']:g} % oxygen",
+     "title": f"The archive holds no solid-fuel flight test above {S['solid_o2_max']:g} % oxygen",
      "claim": f"Every solid-fuel test with a recorded oxygen level sits between {S['solid_o2_min']:g} and {S['solid_o2_max']:g} %. "
-              f"The exploration atmosphere is {exp['o2']:g} %, which is {gap:.1f} points beyond the last data point.",
+              f"NASA expects Moon-base air of {S['moon_o2_min']:g} % oxygen or more. The exploration atmosphere of {exp['o2']:g} % is "
+              f"{gap:.1f} points beyond the last data point.",
      "evidence": f"{S['solid_with_o2']} solid-fuel tests carry an oxygen value (BASS-II and Saffire I and II). "
                  f"A further {S['solid_no_conditions']} (BASS and Saffire-III) list no oxygen level at all.",
-     "limits": "This describes the PSI archive. Tests run after these investigations, or not yet released, are not counted.",
-     "action": "Do not extrapolate material flammability limits from this archive to 34 % oxygen. Flag every material cleared only at 21 %.",
+     "quote": CQ["moon_air"]["text"], "quote_src": "Flame in Freefall challenge statement, NASA Space Apps 2026", "quote_url": CQ["moon_air"]["url"],
+     "limits": "This describes what is published in PSI, not everything NASA has flown. NASA reports that Saffire-VI, flown in 2023 and 2024, "
+               "burned solid samples at \"higher oxygen concentration and lower pressure\". Saffire-IV, -V and -VI are not in PSI, so their runs are not counted here.",
+     "action": "Do not extrapolate material flammability limits from this archive to 34 % oxygen. Flag every material cleared only at 21 %, "
+               "and ask for the Saffire-IV to -VI data to be added to PSI.",
      "scores": {"safety": 5, "evidence": 5, "mission": 5, "action": 4}, "next": ["sofie", "fm2", "flare"],
      "sources": src("PSI-25", "PSI-98", "PSI-99")},
     {"id": "selfext", "kind": "Computed from run tables", "tags": ["oxygen", "extinction", "liquids"],
@@ -572,12 +726,16 @@ findings = [
     {"id": "gravity", "kind": "Archive audit", "tags": ["gravity", "exploration", "gap"],
      "title": "Every flight test here was in microgravity. None was at lunar or Martian gravity",
      "claim": "Every combustion flight experiment in the archive flew on the space station or on a Cygnus cargo ship in orbit. "
-              "A Moon base sits at one sixth of Earth gravity, where there is no flight data at all.",
+              "A Moon base sits at one sixth of Earth gravity and a Mars base at three eighths, where the archive has no data at all. "
+              "NASA's challenge statement says the same and names the experiments expected to fill the gap: LUCI and FM2.",
      "evidence": f"Platforms across {S['combustion']} combustion investigations: {', '.join(S['platforms'])}.",
-     "quote": SAFFIRE_QUOTE, "quote_src": "PSI-99, Hypothesis",
-     "limits": "Ground facilities such as drop towers and centrifuges can simulate partial gravity for a few seconds. Those tests are not in this archive.",
-     "action": "Carry partial gravity as an open risk in Moon base fire-safety requirements.",
-     "scores": {"safety": 4, "evidence": 5, "mission": 5, "action": 3}, "next": ["fm2"], "sources": src("PSI-99", "PSI-25")},
+     "quote": "Although NASA is heavily focused on the return of astronauts to the Moon’s surface and the establishment of a Moon Base in preparation for the future human exploration of Mars, " + CQ["no_partial_g"]["text"],
+     "quote_src": "Flame in Freefall challenge statement, NASA Space Apps 2026", "quote_url": CQ["no_partial_g"]["url"],
+     "limits": "Two partial substitutes exist. ACME E-FIELD Flames used an electric field to mimic partial gravity, and Saffire-II lists a "
+               "normal-gravity result beside each microgravity one. The challenge statement notes that microgravity and normal-gravity results could bound what happens in between.",
+     "action": "Carry partial gravity as an open risk in Moon and Mars base fire-safety requirements. Until LUCI and FM2 report, "
+               "bound each case with its microgravity and its normal-gravity result.",
+     "scores": {"safety": 4, "evidence": 5, "mission": 5, "action": 3}, "next": ["fm2", "luci"], "sources": src("PSI-99", "PSI-22", "PSI-25")},
     {"id": "suppress", "kind": "Computed from run tables", "tags": ["suppression", "oxygen", "liquids"],
      "title": "Suppressant data stops well short of exploration oxygen levels",
      "claim": f"FLEX burned droplets in atmospheres diluted with carbon dioxide ({S['flex_co2']} runs) and helium ({S['flex_he']} runs). "
@@ -615,6 +773,8 @@ findings = [
      "scores": {"safety": 3, "evidence": 3, "mission": 3, "action": 4}, "next": [], "sources": src("PSI-69", "PSI-39", "PSI-159")},
 ]
 assert "cool flame" in (inv_by["PSI-69"]["impacts"] + inv_by["PSI-69"]["approach"]).lower()
+check_quote("challenge", "Although NASA is heavily focused on the return of astronauts to the Moon’s surface and the establishment of a Moon Base in preparation for the future human exploration of Mars, " + CQ["no_partial_g"]["text"])
+check_quote("saffire6", "higher oxygen concentration and lower pressure")
 
 VIDEO_PATH = os.path.join(ROOT, "data", "derived", "video_results.json")
 video = None
@@ -671,7 +831,18 @@ NEXT = [
     {"id": "flare", "name": "FLARE", "full": "Flammability Limits at Reduced-g Experiment",
      "what": "An international project to predict a material's flammability limit in microgravity from tests done on the ground.",
      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/"},
+    {"id": "luci", "name": "LUCI", "full": "Lunar-g Combustion Investigation",
+     "what": "Named in the challenge statement, with FM2, as an expected future source of partial-gravity combustion data for PSI.",
+     "url": CQ["future_g"]["url"]},
 ]
+
+# Each finding serves one of the three parts of NASA's fire-safety work named in the challenge statement.
+PILLAR_OF = {"vent": "suppression", "solid-gap": "prevention", "selfext": "suppression", "corner": "prevention", "one-g": "prevention",
+             "local-jet": "suppression", "vent-speed": "prevention", "depends": "prevention", "gravity": "prevention",
+             "suppress": "suppression", "video": "prevention", "smoke": "detection", "cool": "detection",
+             "video-lab": "prevention", "model": "suppression"}
+for f in findings:
+    f["pillar"] = PILLAR_OF[f["id"]]
 
 # ---------------------------------------------- record corpus and answer bank
 # The corpus is every record an answer may cite. The answer bank (data/curated/answers.json) was written
@@ -707,6 +878,25 @@ for n in NEXT:
 corpus["ATM"] = "Cabin atmospheres NASA names in the ACME BRE record: " + "; ".join(f"{a['name']}: {a['psia']:g} psia ({a['p']:.2f} atm), {a['o2']:g} % oxygen" for a in ATMOSPHERES) + "."
 corpus["STATS"] = (f"The archive search returns {S['investigations']} records, {S['combustion']} about combustion. Their tables list {S['tests']} test runs that could be placed "
                    f"or counted, {S['with_outcome']} with a result in a table, {S['pubs']} publications and {S['raw_tb']:g} TB of raw data.")
+corpus["CHALLENGE"] = ("Flame in Freefall challenge statement, NASA Space Apps Challenge 2026. "
+                       + " ".join(q["text"] for k, q in CQ.items() if not k.startswith("saffire6")))
+corpus["SAFFIRE6"] = ("NASA article on the end of the Saffire series (2024): " + CQ["saffire6"]["text"] + " " + CQ["saffire6_materials"]["text"]
+                      + " Saffire-IV, Saffire-V and Saffire-VI are not in the PSI archive.")
+for fam in families:
+    corpus["HW-" + fam["id"]] = (fam["name"] + ": " + ", ".join(inv_by[a]["acr"] or a for a in fam["members"]) + "."
+                                 + (" " + fam["quote"]["text"] if fam["quote"] else ""))
+corpus["MOON"] = (f"Runs at Moon-base oxygen. The challenge statement expects {S['moon_o2_min']:g} % oxygen or more at {S['moon_psia_max']:g} psi or less. "
+                  f"At {S['moon_o2_min']:g} % oxygen or more the run tables list {S['hi_o2']['solid']} solid-fuel runs, {S['hi_o2']['droplet']} droplet runs and "
+                  f"{S['hi_o2']['gas']} gas-flame runs. Of these, {S['moon_range']['gas']} gas-flame runs are also at {S['moon_psia_max']:g} psi or less, all from "
+                  f"{', '.join(S['moon_range_by'])}, and {S['moon_near']['droplet']} droplet runs sit just above it, at {S['moon_near_psia'][0]:g} to {S['moon_near_psia'][1]:g} psia.")
+corpus["SI"] = ("Use of SI (Super Intelligence, the term NASA Space Apps 2026 uses for AI) in QUENCH. Claude (Anthropic) was used to write code, normalise tables "
+                "and draft the investigation summaries, the wording of the findings and the analyst answers; the team reviewed them. Code checks the drafts: "
+                "every number in a claim must appear in a cited NASA record with the same unit, and every quote must match its saved source word for word. "
+                "The predictor is a machine-learning model and the video lab is computer vision. No model is called while the site is used.")
+corpus["RANK"] = ("How QUENCH ranks investigations. Tier 1, named in the challenge statement as a fire-safety study: "
+                  + ", ".join(i["acr"] or i["acc"] for i in comb if i["tier"] == 1) + ". Tier 2, named as related, filed by PSI under fire safety, or built on a named study: "
+                  + ", ".join(i["acr"] or i["acc"] for i in comb if i["tier"] == 2) + ". Tier 3, other combustion investigations: "
+                  + ", ".join(i["acr"] or i["acc"] for i in comb if i["tier"] == 3) + ".")
 corpus["GUIDE"] = "NASA Researcher's Guide to ISS Combustion Science (2015). " + " ".join(q["text"] for q in GQ.values())
 if video:
     corpus["VIDEO"] = ("Flame spread measured from BASS-II videos. " + video["method"] + " " + " ".join(
@@ -733,19 +923,68 @@ data = {
              "source": "NASA Physical Sciences Informatics (PSI), search term 'combustion'",
              "source_url": "https://psi.nasa.gov/physci/repo/search?q=combustion&data_source=psi&data_type=investigation",
              "glenn_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
-             "license": "CC0-1.0"},
+             "license": "CC0-1.0",
+             "challenge_url": CQ["task"]["url"],
+             "si": "Code, data normalisation and draft text were produced with SI (Super Intelligence / AI) assistance: Claude, Anthropic. "
+                   "Every number is recomputed from NASA PSI tables and every quote is matched to its saved source at build time."},
     "atmospheres": ATMOSPHERES, "stats": stats, "flex2": flex2, "next": NEXT, "findings": findings,
     "history": history, "spinoffs": spinoffs, "sources": sources_list, "video": video, "model_card": model_card,
     "apollo_atm": [{"name": "Apollo 1 test (pad)", "o2": 100.0, "psia": 16.2}, {"name": "Apollo flight", "o2": 100.0, "psia": 6.2}, {"name": "Apollo prelaunch, after the fire", "o2": 60.0, "psia": 16.2}],
-    "materials": materials, "smoke_only": smoke_only, "quotes": GQ, "answers": answers, "record_ids": list(corpus.keys()),
+    "materials": materials, "smoke_only": smoke_only, "quotes": GQ, "challenge": CQ, "families": families,
+    "answers": answers, "record_ids": list(corpus.keys()),
     "investigations": investigations, "tests": tests, "conditions": conditions, "notes": notes,
 }
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, "w", encoding="utf-8") as fh:
     fh.write("// Generated by scripts/build_data.py from NASA PSI tables. Do not edit by hand.\n")
+    fh.write("// SI notice: the build script and the draft text in this file were produced with SI (AI) assistance and checked by code against NASA records.\n")
     fh.write("window.FLAME = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
 
+# ------------------------------------------------------------------ downloads
+# The same runs as plain CSV, for anyone who wants to build their own model.
+DL = os.path.join(ROOT, "web", "downloads")
+os.makedirs(DL, exist_ok=True)
+OUTCOME = {"ext": "self-extinguished", "burn": "burned", "noign": "did not ignite", "other": "other", "na": ""}
+RUN_COLS = ["accession", "investigation", "fuel_type", "test_id", "fuel_or_material", "o2_percent", "pressure_atm", "pressure_source",
+            "outcome", "outcome_in_source", "co2_mole_fraction", "he_mole_fraction", "droplet_diameter_mm", "extinction_diameter_mm",
+            "burning_rate", "burn_time_s", "airflow_cm_s", "flow_direction", "normal_gravity_result", "materials", "psi_url"]
+with open(os.path.join(DL, "quench-runs.csv"), "w", encoding="utf-8", newline="") as fh:
+    w = csv.writer(fh)
+    w.writerow(RUN_COLS)
+    for t in tests:
+        w.writerow([t["i"], t["a"], t["k"], t["id"], t["f"], "" if t["o"] is None else t["o"], "" if t["p"] is None else t["p"],
+                    {"recorded": "recorded", "assumed": "not recorded (cabin pressure)"}.get(t["ps"], ""), OUTCOME[t["r"]], t["rr"],
+                    t.get("co2", ""), t.get("he", ""), t.get("d0", ""), t.get("dx", ""), t.get("kb", ""), t.get("t", ""),
+                    t.get("flow", ""), t.get("dir", ""), t.get("g1", ""), " ".join(t.get("m", [])), PSI_URL + t["i"]])
+INV_COLS = ["accession", "acronym", "title", "platform", "hardware_family", "fuel", "fire_safety_role", "tier", "runs_listed",
+            "runs_with_oxygen", "o2_min_percent", "o2_max_percent", "pressure_min_atm", "pressure_max_atm", "results_in_table",
+            "raw_data_gb", "publications", "doi", "psi_url"]
+fam_name = {f["id"]: f["name"] for f in families}
+with open(os.path.join(DL, "quench-investigations.csv"), "w", encoding="utf-8", newline="") as fh:
+    w = csv.writer(fh)
+    w.writerow(INV_COLS)
+    for i in comb:
+        w.writerow([i["acc"], i["acr"], i["title"], i["platform"], fam_name.get(i["family"], ""), i["fuel_label"],
+                    " ".join(i["pillars"]) or "fundamentals", i["tier"], i["rows"], i["mapped"],
+                    i["o2"][0] if i["o2"] else "", i["o2"][1] if i["o2"] else "", i["p"][0] if i["p"] else "", i["p"][1] if i["p"] else "",
+                    i["outcome"] or "", i["raw_gb"], i["npub"], i["doi"], i["url"]])
+with open(os.path.join(DL, "README.txt"), "w", encoding="utf-8") as fh:
+    fh.write("QUENCH data downloads\n=====================\n\n"
+             f"quench-runs.csv            {len(tests)} flight test runs from the run tables of NASA PSI combustion investigations, one row per run.\n"
+             f"quench-investigations.csv  {len(comb)} combustion investigations with their coverage and role in fire safety.\n\n"
+             "Source: NASA Physical Sciences Informatics (PSI), https://psi.nasa.gov, public domain (CC0-1.0).\n"
+             "Blank cells mean PSI does not record the value. Pressure of solid-fuel runs is not in PSI; they ran at cabin pressure.\n"
+             "outcome: self-extinguished, burned, did not ignite, other, or blank when the table has no result column.\n"
+             "burning_rate is the FLEX column 'Burning rate; mm' as given (the unit superscript is lost in PSI).\n"
+             "tier: 1 named in the Space Apps challenge statement as a fire-safety study, 2 related, 3 other combustion investigation.\n\n"
+             "SI notice: these files were produced by scripts/build_data.py, written with SI (AI) assistance (Claude, Anthropic).\n"
+             "The values are NASA's; the script only renames columns and converts units (mmHg and bar to atm, mole fraction to percent).\n"
+             f"Built {datetime.date.today().isoformat()}.\n")
+
 print(f"wrote {os.path.relpath(OUT, ROOT)}  ({os.path.getsize(OUT) / 1024:.0f} KB)")
+print("downloads:", sorted(os.listdir(DL)))
+print("tiers", S["tiers"], "| O2 >= Moon minimum", S["hi_o2"], "| also at Moon pressure", S["moon_range"], S["moon_range_by"], S["moon_low_psia"],
+      "| just above it", S["moon_near"], S["moon_near_psia"])
 print("materials:", [(m["id"], m["flame"], m["with_o2"], m["o2"], m["smoke"]) for m in materials])
 print(f"answer bank: {len(answers)} answers, {sum(len(a['claims']) for a in answers)} claims verified against {len(corpus)} records")
 print(f"investigations {S['investigations']} ({S['combustion']} combustion) | tests {S['tests']} | mapped {S['mapped']} "

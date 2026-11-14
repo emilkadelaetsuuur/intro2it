@@ -1,6 +1,7 @@
 /* QUENCH tools: outcome predictor, video lab, mission check, question engine, method notes, navigation.
    No model is called at run time. The predictor is a small logistic model shipped in model.js; analyst
-   answers were written ahead of time and verified at build time. */
+   answers were written ahead of time and verified at build time.
+   SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team. */
 const M = window.FLAME_MODEL;
 
 /* ---------- outcome predictor (FLEX model) ---------- */
@@ -117,13 +118,7 @@ function drawVideo() {
 
 /* ---------- mission check ---------- */
 const MC = { o2: 34, psia: 8.2, g: "moon", flow: 10, mats: ["pmma", "sibal", "nomex"], liquids: true, agent: "co2", ventOff: true };
-const MC_PRESETS = [
-  ["Space station", { o2: 21, psia: 14.7, g: "0" }],
-  ["10.2 psia cabin", { o2: 26.5, psia: 10.2, g: "0" }],
-  ["Exploration, in orbit", { o2: 34, psia: 8.2, g: "0" }],
-  ["Exploration, on the Moon", { o2: 34, psia: 8.2, g: "moon" }],
-  ["Exploration, on Mars", { o2: 34, psia: 8.2, g: "mars" }]
-];
+const MC_PRESETS = HABITATS.map(h => [h.name, { o2: h.o2, psia: h.psia, g: h.g }]);
 const GRAV = { "0": ["0 g", "microgravity"], moon: ["1/6 g", "lunar gravity"], mars: ["3/8 g", "Martian gravity"] };
 const GRADE = { A: "Flight-tested", B: "Partly tested", C: "Indirect evidence", D: "No flight evidence" };
 const AGENT = { co2: "carbon dioxide", n2: "nitrogen", he: "helium" };
@@ -186,9 +181,10 @@ function mcEval(c) {
   // 6. gravity
   rows.push(c.g === "0" ? { key: "grav", q: "Does the evidence hold at this gravity?", g: "A", text: `Yes. All ${S.tests} runs in the archive were in microgravity.`, refs: ["F-gravity"], prio: 4, action: null }
     : { key: "grav", q: `Does the evidence hold at ${GRAV[c.g][1]}?`, g: "D",
-      text: c.g === "moon" ? "No. Every run was in orbit. NASA's FM2 experiment is the first to burn materials on the Moon." : "No. Every run was in orbit, and no experiment in these sources addresses Martian gravity.",
-      refs: c.g === "moon" ? ["F-gravity", "N-fm2"] : ["F-gravity"], prio: 4,
-      action: c.g === "moon" ? "Fly partial-gravity flammability tests. FM2 does this on the Moon at one sixth gravity." : "Plan flammability tests at Martian gravity. None is named in these sources." });
+      text: (c.g === "moon" ? "No. Every run was in orbit, and NASA's challenge statement confirms that PSI holds no partial-gravity combustion data. LUCI and FM2 are expected to add it." : "No. Every run was in orbit, PSI holds no partial-gravity data, and no experiment in these sources addresses Martian gravity.")
+        + " Until then the microgravity result and the normal-gravity result bound what happens in between; ACME E-FIELD Flames mimicked partial gravity with an electric field.",
+      refs: c.g === "moon" ? ["F-gravity", "N-fm2", "N-luci", "PSI-22"] : ["F-gravity", "PSI-22"], prio: 4,
+      action: c.g === "moon" ? "Fly partial-gravity flammability tests (LUCI, FM2), and meanwhile bound each case between its microgravity and normal-gravity results." : "Plan flammability tests at Martian gravity. None is named in these sources. Meanwhile bound each case between its microgravity and normal-gravity results." });
   return rows;
 }
 function mcSetup() {
@@ -226,6 +222,9 @@ function drawMission() {
     rows.map(r => `[${r.g}] ${r.q} ${GRADE[r.g]}.\n    ${r.text}` + (r.list ? "\n" + r.list.map(l => `    - ${l[0]} [${l[2]}]: ${l[1]}`).join("\n") : "")).join("\n") +
     "\n\nTESTS STILL NEEDED\n" + (open.length ? open.map((r, i) => `${i + 1}. ${r.action}`).join("\n") : "None in the archive's terms.") + "\n\nResearch aid, not a design basis. Not an official NASA product.\n";
   $("#mccopied").textContent = "";
+  const topInv = rankInv({ o2: MC.o2, psia: MC.psia, p: MC.psia / PSIA, g: MC.g }).slice(0, 5);
+  $("#mcinv").innerHTML = topInv.map((x, n) => `<li><div><b>${esc(nameOf(x.i))}</b>${roleTags(x.i)}</div><span>${esc(x.parts[2][3])}. ${esc(x.i.summary || "")}</span></li>`).join("");
+  MC.report += "\nMOST RELEVANT INVESTIGATIONS FOR THIS CABIN\n" + topInv.map((x, n) => `${n + 1}. ${nameOf(x.i)} (${x.i.acc}), score ${Math.round(x.s)}: ${x.parts[2][3]}.`).join("\n") + "\n";
 }
 
 /* ---------- ask the archive (no model at run time) ---------- */
@@ -303,7 +302,7 @@ function ask(q) {
 }
 function askSetup() {
   const nClaims = D.answers.reduce((n, a) => n + a.claims.length, 0);
-  $("#asksub").textContent = `Ask in plain words. QUENCH answers from the records only: it counts runs in the tables, looks up materials and experiments, and picks from ${D.answers.length} analyst answers that were written with AI ahead of time and checked claim by claim (${nClaims} claims against ${D.record_ids.length} records). It runs in your browser: no account, no key, no cost, and nothing is made up on the spot.`;
+  $("#asksub").textContent = `Ask in plain words. QUENCH answers from the records only: it counts runs in the tables, looks up materials and experiments, and picks from ${D.answers.length} analyst answers that were written with SI (AI) ahead of time and checked claim by claim (${nClaims} claims against ${D.record_ids.length} records). It runs in your browser: no account, no key, no cost, and nothing is made up on the spot.`;
   ["Does turning off ventilation put out a fire at 34 % oxygen?", "Has Nomex been tested?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "What is the biggest fire risk for a Moon base?", "What did FLEX do?", "Is the ground flammability test the worst case?"]
     .forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
   $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
@@ -313,12 +312,14 @@ function askSetup() {
 function drawMethod() {
   const R = M.cv.results;
   $("#methodbody").innerHTML = `
-  <div><h3>Data</h3><ul><li>Source: <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>, every investigation returned for “combustion”. Public domain (CC0-1.0).</li><li>${S.investigations} records, ${S.combustion} of them about combustion; ${S.table_rows} table rows; ${S.pubs} linked publications; ${S.raw_tb} TB of raw data.</li><li>Cabin atmospheres are the three NASA names in the ACME BRE record: 14.7 psia at 21 %, 10.2 psia at 26.5 % and 8.2 psia at 34 % oxygen.</li><li>Current experiments are from the <a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science page</a>.</li><li>Built ${esc(D.meta.built)}. One script rebuilds every number from the CSV files.</li></ul></div>
+  <div><h3>Data</h3><ul><li>Source: <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>, every investigation returned for “combustion”. Public domain (CC0-1.0).</li><li>${S.investigations} records, ${S.combustion} of them about combustion; ${S.table_rows} table rows; ${S.pubs} linked publications; ${S.raw_tb} TB of raw data.</li><li>Cabin atmospheres are the three NASA names in the ACME BRE record: 14.7 psia at 21 %, 10.2 psia at 26.5 % and 8.2 psia at 34 % oxygen. The Moon-base range, ${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less, is from the <a href="${esc(D.meta.challenge_url)}" target="_blank" rel="noopener">challenge statement</a>.</li><li>PSI does not hold everything NASA has flown. Saffire-IV, -V and -VI are not in it; NASA reports that Saffire-VI burned solid samples at “${esc(D.challenge.saffire6.text.split("because of the ")[1].split(" generated")[0])}”.</li><li>Current experiments are from the <a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science page</a>.</li><li>Built ${esc(D.meta.built)}. One script rebuilds every number from the CSV files.</li></ul></div>
   <div><h3>Rules we held to</h3><ul><li>A missing value stays missing. Nothing is estimated or filled in.</li><li>Runs without a recorded pressure are drawn apart and never counted as a pressure match.</li><li>Every quote is matched word for word against a saved copy of its NASA source; the build stops if one is not found.</li><li>Finding scores are judgements. They are shown in full and you can reweight them.</li><li>Research prototype. Not validated for spacecraft design or fire-safety decisions.</li></ul></div>
   <div><h3>Mission check</h3><ul><li>Grades are set by fixed rules, printed under the scorecard, from counts of flight runs near the cabin's oxygen level and pressure.</li><li>Materials are matched by name in the BASS, BASS-II and Saffire tables; smoke-only materials come from SAME.</li><li>The ventilation, agent and smoke rows rest on the findings they link to, including their limits.</li></ul></div>
   <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>${esc(M.cv.method)}: accuracy ${Math.round(R["Full model"].accuracy.mean * 100)} %, AUC ${f2(R["Full model"].auc.mean)}.</li><li>A query farther than ${f2(M.domain.nn95)} standard deviations from every real run, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
   <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li></ul></div>
-  <div><h3>Use of AI</h3><ul><li>No model runs when you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it.</li><li>AI (Claude, Anthropic) was used while building: to write code, normalise tables, and draft the investigation summaries, the wording of findings and the ${D.answers.length} analyst answers. A person reviewed them.</li><li>Code then checks the AI text: each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table. The build stops otherwise. This catches invented numbers; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>The predictor is a machine-learning model trained here on NASA data. The video lab is computer vision. No AI-generated images or video.</li></ul></div>
+  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers. The team reviewed them.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. No SI-generated images, video or audio; the cover drawing and the charts are drawn by code.</li></ul></div>
+  <div><h3>What the challenge asks</h3><ul><li>“${esc(D.challenge.task.text)}”</li><li>Summarise: Briefing, Archive rows, Lessons. Rank: Archive (investigations for a habitat) and Findings (by weights you set). Interpret: Mission check, Findings, Ask.</li><li>${esc(D.challenge.obj_relevant.text)} See <a href="#archive" data-go="archive">Archive</a> and <a href="#mission" data-go="mission">Mission check</a>.</li><li>${esc(D.challenge.obj_data.text)} See the downloads in <a href="#evidence" data-go="evidence">Evidence</a> and the <a href="#lab" data-go="lab">Lab</a>.</li><li>${esc(D.challenge.obj_controls.text)} See <a href="#findings" data-go="findings">Findings</a>, sorted into prevention, detection and suppression.</li><li>${esc(D.challenge.scope.text)} QUENCH leaves rockets and propellants out as well.</li></ul></div>
+  <div><h3>Ranking of investigations</h3><ul><li>Four parts, each from 0 to 100, combined with weights you can change: how the challenge statement and PSI tie the investigation to fire safety, how close its fuel is to cabin materials, how close its runs come to the chosen cabin's oxygen and pressure, and how ready its data is to use.</li><li>Tier 1 (${S.tiers["1"]} investigations) is named in the challenge statement as a prevention, detection or suppression study. Tier 2 (${S.tiers["2"]}) is named there as related, filed by PSI under fire safety, or built on a tier 1 study. Tier 3 (${S.tiers["3"]}) is every other combustion investigation, which the statement calls “still relevant to fire safety, just not as strongly or directly”.</li><li>What varied, what stayed the same and what was recorded are computed from each PSI run table. Measurement types are found by keyword in the record, so a type the record does not name is not listed.</li><li>The parts follow NASA's records. The numbers given to them are our judgement and are printed in full under the weights.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
   <div><h3>Resources from the organizers</h3><ul>${D.sources.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join("")}<li><a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI combustion investigations</a></li><li><a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science</a></li></ul></div>`;
 }
@@ -349,11 +350,11 @@ $("#chart").addEventListener("focusin", e => { const el = e.target.closest(".bub
 $("#chart").addEventListener("focusout", () => { $("#tip").hidden = true; });
 $("#chart").addEventListener("click", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); });
 $("#viewbtn").onclick = () => { state.table = !state.table; drawMapTable(); };
-$("#invq").oninput = e => { state.invq = e.target.value; drawInv(); };
-$("#invtable").addEventListener("click", e => { if (e.target.closest("a")) return; const tr = e.target.closest("tr.row"); if (tr) { state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
-$("#invtable").addEventListener("keydown", e => { if (e.key !== "Enter" && e.key !== " ") return; const tr = e.target.closest("tr.row"); if (tr) { e.preventDefault(); state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
+$("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
+$("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69")));
+$("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
-$("#foot").textContent = "QUENCH · NASA Space Apps Challenge 2026 · Flame in Freefall · Data: NASA Physical Sciences Informatics, CC0-1.0 · Research prototype, not a design basis · Not an official NASA product";
+$("#foot").textContent = "QUENCH · NASA Space Apps Challenge 2026 · Flame in Freefall · Data: NASA Physical Sciences Informatics, CC0-1.0 · Code and draft text made with SI (AI) assistance and checked against NASA records · Research prototype, not a design basis · Not an official NASA product";
 
-drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); askSetup();
+drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); askSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

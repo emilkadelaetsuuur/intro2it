@@ -176,6 +176,63 @@
      "claims": [
        {"text": "FLEX ran 103 tests near 0.70 atm and 161 near 1 atm.", "sources": ["F-corner"]},
        {"text": "The exploration atmosphere is 0.56 atm.", "sources": ["F-corner"]}
+     ]},
+    {"id": "moon-air", "q": ["What air will a Moon base have?", "What oxygen level does NASA expect on the Moon?", "What is the cabin atmosphere of a lunar base or pressurized rover?"],
+     "a": "NASA's challenge statement expects the Moon base and its pressurized rovers to sit between a spacesuit and Earth air: 30 % oxygen or more at 10.2 psi or less. Spacesuits hold pure oxygen at 4.3 psi, and the in-between air shortens the oxygen pre-breathe before a moonwalk. At 30 % oxygen or more the archive holds no solid-fuel run at all.",
+     "claims": [
+       {"text": "The oxygen concentration used on the Moon will likely be 30 % or greater, with a pressure of 10.2 psi or less.", "sources": ["CHALLENGE"]},
+       {"text": "Spacesuits are filled with 100 % oxygen to only 4.3 psi.", "sources": ["CHALLENGE"]},
+       {"text": "At 30 % oxygen or more the run tables list 0 solid-fuel runs, 24 droplet runs and 246 gas-flame runs.", "sources": ["MOON"]}
+     ]},
+    {"id": "saffire-later", "q": ["Were solid materials ever flight-tested at higher oxygen?", "What about the later flights IV, V and VI?", "Is flight VI of the spacecraft fire experiment missing from PSI?"],
+     "a": "Yes, but not in this archive. NASA reports that Saffire-VI, the last flight of the series, ran at higher oxygen concentration and lower pressure to simulate crewed spacecraft, burning plexiglass, cotton, Nomex and SIBAL fabric. Saffire-IV, -V and -VI are not in PSI, so QUENCH cannot count their runs. Inside PSI, solid-fuel tests stop at 22.2 % oxygen.",
+     "claims": [
+       {"text": "Saffire-VI was unique because of the higher oxygen concentration and lower pressure generated in the test unit.", "sources": ["SAFFIRE6"]},
+       {"text": "Saffire-IV, Saffire-V and Saffire-VI are not in the PSI archive.", "sources": ["SAFFIRE6"]},
+       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+     ]},
+    {"id": "partial-g", "q": ["Is there any partial-gravity combustion data?", "Which experiment mimicked partial gravity?", "How can I bound fire behaviour at lunar gravity?"],
+     "a": "There is no flight data. The challenge statement says PSI holds no partial-gravity combustion data yet and expects it from LUCI and FM2. Two things help meanwhile: ACME E-FIELD Flames mimicked partial gravity with an electric field, and microgravity and normal-gravity results can bound what happens in between. Saffire-II lists a normal-gravity result beside each microgravity one.",
+     "claims": [
+       {"text": "There is currently no partial-gravity combustion data available in PSI.", "sources": ["CHALLENGE"]},
+       {"text": "Partial gravity was mimicked in the ACME E-FIELD Flames experiment through the effect of an electric field on the ions in flames.", "sources": ["CHALLENGE", "PSI-22"]},
+       {"text": "Microgravity and normal-gravity results could bound what occurs at intermediate gravity levels.", "sources": ["CHALLENGE"]}
+     ]},
+    {"id": "hardware", "q": ["Which investigations used the same hardware?", "Which experiments shared the glovebox flow duct?", "Which experiments can be compared directly?"],
+     "a": "Three hardware families cover most of the archive. BASS, BASS-II, SPICE and SLICE ran in the Microgravity Science Glovebox with the fan-driven flow duct built for SPICE. FLEX, FLEX-2 and CFI burned droplets in the Multi-user Droplet Combustion Apparatus. The ACME experiments shared one set of gas-flame hardware in the Combustion Integrated Rack. In the Archive, tick two or three investigations to compare them side by side.",
+     "claims": [
+       {"text": "BASS, BASS-II, SPICE and SLICE were conducted within the Microgravity Science Glovebox using the fan-driven flow duct built for SPICE.", "sources": ["HW-msg"]},
+       {"text": "FLEX, FLEX-2 and CFI burned droplets of liquid fuel with the Multi-user Droplet Combustion Apparatus.", "sources": ["HW-mdca"]},
+       {"text": "The ACME experiments were all conducted with the same modular hardware in the Combustion Integrated Rack.", "sources": ["HW-acme"]}
+     ]},
+    {"id": "relevant", "q": ["Which investigations matter most for fire safety?", "Which experiments are most relevant to a crew habitat?", "Which investigations should I read first?"],
+     "a": "Start with the ones the challenge statement names as fire-safety studies: BASS, BASS-II and Saffire-I to -III for prevention, SAME and SAME-R for detection, and FLEX for suppression. ACME BRE and DAFT are named as related. The Archive ranks all 24 combustion investigations for the habitat you choose and shows the reasons.",
+     "claims": [
+       {"text": "Flammability studies focus on solid materials, as studied in BASS, BASS-II and the Saffire investigations.", "sources": ["CHALLENGE"]},
+       {"text": "Fire detection was tested through SAME and SAME-R, and suppression was studied in FLEX.", "sources": ["CHALLENGE"]},
+       {"text": "Tier 1 holds the investigations named in the challenge statement as fire-safety studies.", "sources": ["RANK"]},
+       {"text": "The archive search returns 24 records about combustion.", "sources": ["STATS"]}
+     ]},
+    {"id": "export", "q": ["Can I download the data?", "How do I get the runs for my own model?", "Is there a CSV file of the tests?"],
+     "a": "Yes. Evidence has two buttons: the runs inside the selected cabin's window, and all 986 runs, as CSV with one row per run. The Lab gives the 274 FLEX runs behind the predictor, which trains on the 261 that record a droplet size and pressure, and the model's coefficients. The Archive downloads the investigation table. The values are NASA's; a blank cell means PSI does not record the value.",
+     "claims": [
+       {"text": "The run tables list 986 test runs that could be placed or counted.", "sources": ["STATS"]},
+       {"text": "FLEX lists 274 runs in its PSI table.", "sources": ["PSI-69"]},
+       {"text": "The outcome model was trained on 261 FLEX droplet runs.", "sources": ["MODEL"]}
+     ]},
+    {"id": "highest-o2", "q": ["What is the highest oxygen level ever tested in the whole archive?", "Which experiment used the most oxygen?", "Which flames burned in 85 % oxygen?"],
+     "a": "ACME CFI-G. Its inside-out flames fed an oxygen-nitrogen mixture of up to 85 % oxygen through the burner into a fuel atmosphere, so that figure is not cabin air. For materials the picture is different: solid-fuel tests in the archive stop at 22.2 % oxygen.",
+     "claims": [
+       {"text": "An oxygen-nitrogen mixture of up to 85 % oxygen flowed from the spherical burner, creating an inside-out flame.", "sources": ["CHALLENGE"]},
+       {"text": "The ACME CFI-G table lists oxygen from 12 to 85 %.", "sources": ["PSI-159"]},
+       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+     ]},
+    {"id": "si", "q": ["How is SI used in QUENCH?", "Is this generated by AI?", "Does QUENCH use artificial intelligence or super intelligence?"],
+     "a": "SI, the term NASA Space Apps uses for AI, wrote first drafts and code. It does not answer you live. The investigation summaries, the wording of the findings and these analyst answers were drafted with Claude and then checked by code: every number must appear in a cited NASA record with the same unit, and every quote must match its saved source. The predictor is a machine-learning model trained on FLEX runs and the video lab is computer vision.",
+     "claims": [
+       {"text": "Claude was used to write code, normalise tables and draft the investigation summaries, the wording of the findings and the analyst answers.", "sources": ["SI"]},
+       {"text": "No model is called while the site is used.", "sources": ["SI"]},
+       {"text": "The outcome model was trained on 261 FLEX droplet runs.", "sources": ["MODEL"]}
      ]}
   ]
 }

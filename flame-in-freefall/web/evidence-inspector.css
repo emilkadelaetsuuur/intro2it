@@ -183,6 +183,8 @@
     border-width: 2px 0 0;
     padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
   }
+  /* The page gutter rule (.page.view > :not(.sec)) outranks .ei-dialog and pushed the sheet off the right edge. */
+  .page.view > dialog.ei-dialog { margin: 0; }
   .ei-dialog .ei-header { gap: 10px; padding-block: 12px 14px; }
   .ei-dialog .ei-close { min-height: 42px; }
   .ei-content { padding-bottom: max(var(--ei-pad), env(safe-area-inset-bottom)); }

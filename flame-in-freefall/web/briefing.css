@@ -1,0 +1,157 @@
+/* The instrument and its companion flight photograph share a baseline. */
+.cabin-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(18px, 2.1vw, 34px);
+  margin-block: clamp(26px, 3.2vw, 52px) clamp(44px, 5.9vw, 90px);
+}
+.cabin-workspace .cabin-panel {
+  min-width: 0;
+  padding: clamp(18px, 2.1vw, 34px);
+  background: color-mix(in srgb, var(--sunk) 61%, var(--bg));
+  border: 1px solid var(--rule);
+}
+.cabin-panel::before { content: none; }
+.cabin-panel .cabin-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: clamp(18px, 1.7vw, 26px);
+}
+.cabin-header h2, .oxygen-story h2 {
+  font-size: clamp(32px, 3.2vw, 50px);
+  line-height: 1;
+  letter-spacing: -.024em;
+}
+.cabin-panel .cabin-evidence {
+  color: var(--ink2);
+  font: 500 14px/1.4 var(--sans);
+  text-decoration-color: var(--ink3);
+  white-space: nowrap;
+}
+.cabin-panel .cabin-evidence:is(:hover, :focus-visible) { color: var(--ink); }
+.cabin-config {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 15px;
+  border-block: 1px solid var(--rule);
+  padding: 10px 0;
+}
+.cabin-panel .cabin-label, .cabin-readouts dt {
+  margin: 0;
+  color: var(--ink2);
+  font: 500 14px/1.4 var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.cabin-panel .cabin-switch { border: 0; gap: 2px; }
+.cabin-switch button, .cabin-switch button + button {
+  min-height: 38px;
+  padding-inline: clamp(8px, .9vw, 14px);
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink2);
+}
+.cabin-switch button[aria-pressed="true"] {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink3) 16%, var(--bg));
+  box-shadow: inset 0 -2px var(--accent);
+}
+.cabin-switch button:is(:hover, :focus-visible) {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink3) 22%, var(--bg));
+}
+.cabin-panel .cabin-body {
+  display: grid;
+  grid-template-columns: minmax(102px, .35fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(16px, 2vw, 32px);
+  padding-block: clamp(20px, 2.2vw, 34px);
+}
+.cabin-readouts { margin: 0; display: grid; gap: 16px; }
+.cabin-readouts dd {
+  margin: 3px 0 0;
+  font: 600 clamp(25px, 2.5vw, 37px)/1 var(--display);
+  letter-spacing: -.015em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.cabin-runs .cabin-label { margin-bottom: 7px; }
+.cabin-runs .cabin-row { grid-template-columns: 96px minmax(0, 1fr) 3ch; gap: 12px; min-height: 27px; }
+.cabin-fuel { white-space: nowrap; }
+.cabin-runs .cabin-track { background: color-mix(in srgb, var(--ink3) 21%, var(--bg)); }
+.cabin-runs .fine { margin-top: 9px; font-size: 13px; line-height: 1.4; }
+.cabin-panel .cabin-method { margin-top: 0; padding-bottom: 0; }
+.cabin-panel .cabin-method summary {
+  padding: 12px 0 0;
+  color: var(--ink2);
+  font-size: 14px;
+}
+.cabin-panel .cabin-method[open] summary { padding-bottom: 6px; }
+.station-photo {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.station-photo picture {
+  display: block;
+  aspect-ratio: 1.5;
+  overflow: hidden;
+  background: var(--sunk);
+}
+.station-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; }
+.station-photo figcaption {
+  padding: 13px 0 0;
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  color: var(--ink2);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.station-photo figcaption strong { font: 600 clamp(21px, 1.8vw, 28px)/1.15 var(--display); color: var(--ink); }
+.station-photo figcaption a, .candle-plate figcaption a {
+  margin-top: 3px;
+  color: var(--ink3);
+  font: 500 10px/1.55 var(--mono);
+  text-decoration-color: color-mix(in srgb, currentColor 65%, transparent);
+  text-underline-offset: 3px;
+}
+.field-report .oxygen-story { padding-top: clamp(24px, 3vw, 44px); border-top: 1px solid var(--rule); }
+.field-report .candle-plate { overflow: hidden; border: 0; background: transparent; }
+.field-report .candle-plate img { background: #020303; }
+.field-report .candle-plate figcaption { padding: 13px 0 0; border: 0; max-width: 58ch; }
+.field-report .candle-plate strong { font: 600 clamp(21px, 1.8vw, 28px)/1.15 var(--display); }
+.field-report #thesis { font-size: clamp(16px, 1.25vw, 20px); }
+.oxygen-copy .oxygen-table { background: transparent; }
+.oxygen-copy .oxygen-table caption { padding: 0 0 8px; text-transform: none; letter-spacing: 0; font: 500 14px/1.4 var(--sans); }
+.oxygen-copy .oxygen-table tr > * { padding-block: 11px; }
+.briefing-notes .block > h2 { font-size: clamp(28px, 2.5vw, 40px); }
+
+@media (max-width: 910px) {
+  .cabin-workspace { grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); }
+  .cabin-panel .cabin-body { grid-template-columns: minmax(0, 1fr); }
+  .cabin-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .station-photo picture { aspect-ratio: 1.16; }
+}
+@media (max-width: 700px) {
+  .cabin-workspace { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .cabin-panel .cabin-body { grid-template-columns: minmax(91px, .4fr) minmax(0, 1fr); }
+  .cabin-readouts { grid-template-columns: minmax(0, 1fr); }
+  .station-photo picture { aspect-ratio: 1.65; }
+}
+@media (max-width: 480px) {
+  .cabin-panel .cabin-header { align-items: start; gap: 10px; }
+  .cabin-header h2 { font-size: clamp(28px, 8vw, 32px); }
+  .cabin-panel .cabin-evidence { align-self: center; font-size: 13px; white-space: normal; text-align: right; }
+  .cabin-panel .cabin-body { grid-template-columns: minmax(0, 1fr); }
+  .cabin-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cabin-switch button, .cabin-switch button + button { min-height: 42px; }
+  .cabin-panel .cabin-switch { flex-wrap: wrap; }
+}

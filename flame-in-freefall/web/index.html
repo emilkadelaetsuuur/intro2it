@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="QUENCH briefing: flight test runs compared with the oxygen and pressure of crew cabins.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlow-600.woff2">
 <style>
 /* Shared structure and scientific chart primitives. */
 :root {
@@ -285,9 +285,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=6d63994c95">
-<link rel="stylesheet" href="cosmo.css?v=f6dd749ed9">
-<link rel="stylesheet" href="flight.css?v=56cd6438df">
+<link rel="stylesheet" href="console.css?v=42615fd4cc">
+<link rel="stylesheet" href="cosmo.css?v=8df6d73ce7">
+<link rel="stylesheet" href="flight.css?v=270c0e1022">
+<link rel="stylesheet" href="briefing.css?v=82ea3259dd">
 <link rel="stylesheet" href="evidence-inspector.css?v=f99b492421">
 </head>
 <body>
@@ -297,45 +298,55 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
     <img src="img/quench-logotype.svg" alt="QUENCH">
   </a>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-  <a class="event-link" href="https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/" target="_blank" rel="noopener">Space Apps 2026</a>
+  <a class="event-link" href="https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/" target="_blank" rel="noopener">Space Apps 2026 <span aria-hidden="true">↗</span></a>
 </div></header>
 
 <main id="main-content" tabindex="-1">
 <div class="star-field" aria-hidden="true"></div>
 <div class="page" id="v-brief">
-  <section class="wrap report-cover" aria-labelledby="hero-title">
-    <div class="cover-copy">
-      <p class="collection-name">Spaceflight combustion archive</p>
-      <h1 id="hero-title">Flame in freefall</h1>
-      <p class="cover-deck">Fuel, airflow and cabin pressure shape how fire spreads in a spacecraft. Explore what NASA measured on orbit.</p>
-      <div class="collection-index" id="overview-metrics" aria-label="Collection index"></div>
-      <p class="cover-tour"><button type="button" class="tour-link" data-tour-start>Take the 60-second tour <span aria-hidden="true">→</span></button></p>
+  <section class="report-cover" aria-labelledby="hero-title">
+    <div class="wrap lunar-stage">
+      <div class="cover-copy">
+        <p class="collection-name">Spaceflight combustion archive</p>
+        <h1 id="hero-title">Flame in <span>freefall</span></h1>
+        <p class="cover-deck">Explore NASA’s fire experiments in orbit. Compare the flight data with conditions inside a future lunar cabin.</p>
+        <div class="cover-tour">
+          <a class="explore-map" href="#evidence" data-go="evidence">Explore the evidence <span aria-hidden="true">↗</span></a>
+          <button type="button" class="tour-link" data-tour-start><span class="play-tour" aria-hidden="true"></span>60-second tour</button>
+        </div>
+      </div>
+      <figure class="lunar-plate">
+        <div class="lunar-sight">
+          <span class="lunar-ring" aria-hidden="true"></span>
+          <picture>
+            <source media="(max-width: 680px)" srcset="img/lunar-cover-mobile.webp">
+            <img src="img/lunar-cover.webp" width="1440" height="1440" fetchpriority="high" alt="The Moon seen by the Artemis II crew, with craters along the left edge of the sunlit surface.">
+          </picture>
+        </div>
+        <figcaption><a href="https://www.nasa.gov/image-detail/amf-art002e009582/" target="_blank" rel="noopener">Artemis II lunar flyby <span>NASA ↗</span></a></figcaption>
+      </figure>
     </div>
-    <figure class="lead-photo">
-      <picture>
-        <source media="(max-width: 620px)" srcset="img/flight-photo-mobile.webp">
-        <img src="img/flight-photo.webp" width="1440" height="960" fetchpriority="high" alt="Jessica Watkins reaches into the open combustion rack aboard the International Space Station.">
-      </picture>
-      <figcaption><span>Jessica Watkins services the SoFIE combustion experiment on the ISS, June 2022.</span>
-        <a href="https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/#:~:text=Igniting%20science" target="_blank" rel="noopener">NASA · Expedition 67 · ISS067-E-170237</a></figcaption>
-    </figure>
+    <div class="wrap"><nav class="collection-index" id="overview-metrics" aria-label="Explore the archive"></nav></div>
   </section>
-  <section class="wrap cabin-workspace" aria-labelledby="cabin-heading">
-    <div class="cabin-panel">
+  <div class="wrap cabin-workspace">
+    <section class="cabin-panel" aria-labelledby="cabin-heading">
       <header class="cabin-header">
         <h2 id="cabin-heading">Cabin coverage</h2>
-        <a class="cabin-evidence" id="cabin-evidence" href="?cabin=iss#evidence">Open evidence map <span aria-hidden="true">↗</span></a>
+        <a class="cabin-evidence" id="cabin-evidence" href="?cabin=iss#evidence">Evidence map <span aria-hidden="true">↗</span></a>
       </header>
-      <div class="cabin-body">
-        <div class="cabin-conditions">
-          <h3 class="cabin-label" id="cabin-selector-label">Cabin atmosphere</h3>
-          <div class="cabin-switch" role="group" aria-labelledby="cabin-selector-label">
-            <button type="button" data-cabin="iss" aria-pressed="true">ISS</button>
-            <button type="button" data-cabin="eva" aria-pressed="false">Reduced pressure</button>
-            <button type="button" data-cabin="exp" aria-pressed="false">Exploration</button>
-          </div>
-          <p class="cabin-reading"><span>Oxygen <strong id="cabin-o2"></strong></span><span>Pressure <strong id="cabin-pressure"></strong></span></p>
+      <div class="cabin-config">
+        <h3 class="cabin-label" id="cabin-selector-label">Cabin atmosphere</h3>
+        <div class="cabin-switch" role="group" aria-labelledby="cabin-selector-label">
+          <button type="button" data-cabin="iss" aria-pressed="true">ISS</button>
+          <button type="button" data-cabin="eva" aria-pressed="false">Reduced pressure</button>
+          <button type="button" data-cabin="exp" aria-pressed="false">Exploration</button>
         </div>
+      </div>
+      <div class="cabin-body">
+        <dl class="cabin-readouts">
+          <div><dt>Oxygen</dt><dd id="cabin-o2"></dd></div>
+          <div><dt>Pressure</dt><dd id="cabin-pressure"></dd></div>
+        </dl>
         <div class="cabin-runs" role="status" aria-live="polite" aria-atomic="true">
           <h3 class="cabin-label">Runs matching oxygen and pressure</h3>
           <div id="cabin-chart"></div>
@@ -347,8 +358,19 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
         <p class="fine" id="matrixnote"></p>
         <div class="tablewrap"><table class="cabin-comparison" id="matrix1" aria-label="Flight runs by fuel and cabin atmosphere"></table></div>
       </details>
-    </div>
-  </section>
+    </section>
+    <figure class="station-photo">
+      <picture>
+        <source media="(max-width: 620px)" srcset="img/flight-photo-mobile.webp">
+        <img src="img/flight-photo.webp" width="1440" height="960" loading="lazy" alt="Jessica Watkins reaches into the open combustion rack aboard the International Space Station.">
+      </picture>
+      <figcaption>
+        <strong>Inside the combustion rack</strong>
+        <span>Jessica Watkins services the SoFIE experiment aboard the ISS, June 2022.</span>
+        <a href="https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/#:~:text=Igniting%20science" target="_blank" rel="noopener">NASA · Expedition 67 · ISS067-E-170237</a>
+      </figcaption>
+    </figure>
+  </div>
   <div class="wrap field-report">
     <article class="oxygen-story" aria-labelledby="oxygen-heading">
       <div class="oxygen-copy">
@@ -381,7 +403,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 02 mission check -->
 <div class="page wrap view" id="v-mission" hidden>
-  <div class="sec"><h2>Mission check</h2><p class="sub">Choose a cabin atmosphere and materials to see which fire-safety questions the flight records cover. Each grade links to the tests behind it.</p></div>
+  <div class="sec"><h2>Mission check</h2><p class="sub">Choose a cabin atmosphere and materials to see which fire-safety questions the flight records cover. Each grade links to the tests behind it.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="cols side">
     <div class="block" id="mcform">
       <h3 class="lab">Cabin</h3>
@@ -407,7 +431,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 03 evidence -->
 <div class="page wrap view" id="v-evidence" hidden>
-  <div class="sec"><h2>Evidence map</h2><p class="sub">Each circle groups flight runs from the <a href="https://psi.nasa.gov/physci/repo/search?q=combustion&amp;data_source=psi&amp;data_type=investigation" target="_blank" rel="noopener">NASA PSI archive</a> by fuel, ambient oxygen and pressure. Larger circles contain more runs. Triangles show results published outside the archive.</p></div>
+  <div class="sec"><h2>Evidence map</h2><p class="sub">Each circle groups flight runs from the <a href="https://psi.nasa.gov/physci/repo/search?q=combustion&amp;data_source=psi&amp;data_type=investigation" target="_blank" rel="noopener">NASA PSI archive</a> by fuel, ambient oxygen and pressure. Larger circles contain more runs. Triangles show results published outside the archive.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="controls">
     <div class="group" id="atmchips" role="group" aria-label="Cabin atmosphere"><span class="lab">Atmosphere</span></div>
     <div class="group" id="kindchips" role="group" aria-label="What burned"><span class="lab">Show</span></div>
@@ -429,7 +455,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 04 findings -->
 <div class="page wrap view" id="v-findings" hidden>
-  <div class="sec"><h2>Ranked findings</h2><p class="sub">Filter by fire prevention, detection or suppression. Open a finding for its evidence, limitations, proposed action and sources. The ranking uses the project’s scores and the weights below.</p></div>
+  <div class="sec"><h2>Ranked findings</h2><p class="sub">Filter by fire prevention, detection or suppression. Open a finding for its evidence, limitations, proposed action and sources. The ranking uses the project’s scores and the weights below.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="block"><h3 class="lab">Ranking weights</h3><div class="weights" id="weights"></div></div>
   <div class="controls"><div class="group" id="pillarchips" role="group" aria-label="Filter by part of fire safety"><span class="lab">Fire safety</span></div><div class="group" id="tagchips" role="group" aria-label="Filter by topic"><span class="lab">Topic</span></div></div>
   <p class="fine" id="fcount" role="status"></p>
@@ -439,7 +467,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 05 lab -->
 <div class="page wrap view" id="v-lab" hidden>
-  <div class="sec"><h2>Experiment analysis</h2><p class="sub">Measurements from BASS-II flight video and a droplet-extinction model trained on FLEX test runs.</p></div>
+  <div class="sec"><h2>Experiment analysis</h2><p class="sub">Measurements from BASS-II flight video and a droplet-extinction model trained on FLEX test runs.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="block" id="videoblock"><h3 class="lab">Flame spread in BASS-II flight video</h3>
     <p class="sub" id="vsub"></p>
     <div class="thumbs" id="vthumbs"></div>
@@ -468,7 +498,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 06 archive -->
 <div class="page wrap view" id="v-archive" hidden>
-  <div class="sec"><h2>Investigation catalogue</h2><p class="sub" id="invsub"></p></div>
+  <div class="sec"><h2>Investigation catalogue</h2><p class="sub" id="invsub"></p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="controls"><div class="group" id="invhab" role="group" aria-label="Rank for a crew habitat"><span class="lab">Rank for</span></div></div>
   <p class="fine" id="invhabnote"></p>
   <div class="controls">
@@ -486,7 +518,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 07 lessons -->
 <div class="page wrap view" id="v-lessons" hidden>
-  <div class="sec"><h2>Spacecraft fire history</h2><p class="sub">NASA’s accounts of flight incidents and ground tests, with their effects on cabin design, material selection and fire response.</p></div>
+  <div class="sec"><h2>Spacecraft fire history</h2><p class="sub">NASA’s accounts of flight incidents and ground tests, with their effects on cabin design, material selection and fire response.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="frame figbox" id="o2hist" role="img" aria-label="Cabin oxygen levels in history compared with the oxygen range of solid-material flight tests"></div>
   <div class="hgrid" id="hcards"></div>
   <div class="block"><h3 class="lab">Equipment used by firefighters on Earth</h3><div class="o2ctx" id="earthq"></div><div class="hgrid" id="spin"></div></div>
@@ -494,7 +528,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 08 ask -->
 <div class="page wrap view" id="v-ask" hidden>
-  <div class="sec"><h2>Ask the archive</h2><p class="sub">Explore spacecraft fires, combustion experiments and the equipment they inspired. Common questions get a checked analyst answer at once. Other questions search the resources selected by the Flame in Freefall challenge organizers.</p></div>
+  <div class="sec"><h2>Ask the archive</h2><p class="sub">Explore spacecraft fires, combustion experiments and the equipment they inspired. Common questions get a checked analyst answer at once. Other questions search the resources selected by the Flame in Freefall challenge organizers.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="ask-layout" id="ask-workspace">
     <div class="ask-main">
       <form class="askbox" id="askform">
@@ -529,7 +565,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 09 method -->
 <div class="page wrap view" id="v-method" hidden>
-  <div class="sec"><h2>Method and limits</h2><p class="sub">Sources, units, scoring rules, validation and the limits of the flight records.</p></div>
+  <div class="sec"><h2>Method and limits</h2><p class="sub">Sources, units, scoring rules, validation and the limits of the flight records.</p>
+    <a class="artemis-credit" href="https://www.nasa.gov/image-article/earthset/" target="_blank" rel="noopener">Earthset, Artemis II<span> · NASA ↗</span></a>
+  </div>
   <div class="method" id="methodbody"></div>
 </div>
 </main>

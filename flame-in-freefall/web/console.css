@@ -9,27 +9,75 @@
   font-variant-numeric: tabular-nums;
 }
 .view > *, .view .cols > * { min-width: 0; }
-.view .sec {
-  display: block;
-  border: 0;
-  border-bottom: 1px solid var(--rule);
-  padding: 0 0 clamp(19px, 2.5vw, 36px);
+.page.view {
+  --selection: #c3cfff;
+  --instrument-line: color-mix(in srgb, var(--ink3) 38%, var(--bg));
+  --filter-surface: color-mix(in srgb, var(--bg) 52%, var(--sunk));
+  --console-gap: clamp(17px, 1.8vw, 27px);
+  gap: var(--console-gap);
+  padding-top: 0;
+}
+:root[data-theme="light"] .page.view { --selection: #414b88; }
+:root:not([data-theme="light"]) .page.view {
+  --panel-bg: #101e32;
+  --field-bg: #0a1425;
+  --filter-surface: #111e33;
+  --instrument-line: #3d506b;
+}
+.page.view .sec {
+  --header-edge: max(var(--gutter), env(safe-area-inset-right, 0px));
+  position: relative;
+  isolation: isolate;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 0;
+  min-height: clamp(185px, 16.5vw, 244px);
+  margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px))) calc(-1 * var(--header-edge));
+  padding: clamp(24px, 3vw, 45px) var(--header-edge) clamp(24px, 3vw, 45px) max(var(--gutter), env(safe-area-inset-left, 0px));
+  border: none; border-bottom: 1px solid #364560;
+  background: url("img/star-field.svg") repeat 25px -60px / 910px 681px,
+              linear-gradient(100deg, #060e20, #0d1b35 70%, #071327);
+}
+.page.view .sec::before {
+  content: "";
+  position: absolute;
+  bottom: -1px; left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  width: clamp(36px, 4vw, 63px); height: 2px;
+  background: #ff7858;
+}
+.page.view .sec::after {
+  content: "";
+  position: absolute; inset: 0 0 0 40%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, #050b19 0%, transparent 22%),
+              url("img/artemis-earth.webp") 50% 58% / cover no-repeat;
+  mask-image: linear-gradient(to right, transparent, #000 37%);
 }
 .view .sec h2 {
-  color: var(--ink);
-  font-size: clamp(32px, 3.3vw, 50px);
-  line-height: 1.08;
-  font-weight: 600;
-  letter-spacing: -.045em;
+  max-width: 54%;
+  color: #f1f3fa;
+  font: 600 clamp(44px, 4.55vw, 73px)/.98 var(--display);
+  letter-spacing: -.025em;
   text-wrap: balance;
 }
-.view .sec .sub {
-  max-width: 76ch;
-  margin: 12px 0 0;
-  color: var(--ink2);
-  font-size: clamp(15px, 1.18vw, 18px);
-  line-height: 1.55;
+.page.view .sec .sub {
+  max-width: min(62ch, 51%);
+  margin: 14px 0 0;
+  color: #c7d3e4;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.47;
 }
+.page.view .sec .sub a { color: #b9d6ff; }
+.artemis-credit {
+  position: absolute; right: var(--header-edge); bottom: 7px;
+  display: inline-flex; align-items: center;
+  min-height: 28px;
+  color: #f0f4fc; text-shadow: 0 1px 3px #050a14;
+  font: 500 12px/1.2 var(--sans);
+  text-decoration: none; white-space: nowrap;
+}
+.artemis-credit span { margin-left: .3em; }
+.artemis-credit:hover { text-decoration: underline; text-underline-offset: 3px; }
 .view .lab { color: var(--ink3); letter-spacing: .075em; }
 .view .block {
   gap: 15px;
@@ -38,8 +86,8 @@
 }
 .view .sec + .block { border-top:0; padding-top:0; }
 .view .block > .lab, .view .method h3 {
-  font: 600 clamp(17px, 1.48vw, 22px)/1.24 var(--sans);
-  letter-spacing: -.025em;
+  font: 600 clamp(23px, 1.85vw, 29px)/1.12 var(--display);
+  letter-spacing: -.01em;
   text-transform: none;
   color: var(--ink);
 }
@@ -82,6 +130,78 @@
 .view .seg { max-width: 100%; border-radius: 2px; }
 .view .seg button { border-radius: 0; }
 .view .seg:focus-within { overflow: visible; }
+.page.view .controls > .group > .lab {
+  flex: none;
+  margin: 0 4px 0 0;
+  font: 500 13px/1.2 var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink2);
+}
+.page.view :is(#atmchips, #invhab, #invpillar, #pillarchips) .chip,
+.page.view #invkind .chip[data-v],
+.page.view #tagchips .chip {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink2);
+  font: 500 clamp(13px, 1vw, 15px)/1.25 var(--sans);
+}
+.page.view :is(#atmchips, #invhab, #invpillar, #pillarchips, #tagchips) .chip[aria-pressed="true"],
+.page.view #invkind .chip[data-v][aria-pressed="true"] {
+  color: var(--selection);
+  border-color: color-mix(in srgb, var(--selection) 38%, var(--filter-surface));
+  background: color-mix(in srgb, var(--selection) 9%, var(--filter-surface));
+}
+.page.view :is(#atmchips, #invhab, #invpillar, #pillarchips, #tagchips) .chip:hover,
+.page.view #invkind .chip[data-v]:hover {
+  color: var(--ink);
+  border-color: var(--instrument-line);
+}
+#v-evidence .controls {
+  display: grid;
+  gap: 4px;
+  padding: 11px var(--panel-pad) 13px;
+  background: var(--filter-surface);
+  border: 1px solid var(--instrument-line);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+}
+#v-evidence .controls > .group {
+  gap: 2px 7px;
+}
+#v-evidence .controls > .group > .lab { width: 77px; }
+#v-evidence #kindchips .chip {
+  padding-inline: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font: 500 clamp(13px, 1vw, 15px)/1.2 var(--sans);
+}
+#v-evidence #kindchips .chip[aria-pressed="false"] { color: var(--ink3); text-decoration: line-through; }
+#v-evidence #kindchips .chip[aria-pressed="false"] .sw-tri { opacity: .4; }
+#v-evidence #kindchips .chip:hover { background: var(--panel-bg); border-color: var(--instrument-line); }
+#v-evidence .evidence-frame {
+  margin-top: calc(-1 * var(--console-gap));
+  border: 1px solid var(--instrument-line);
+  border-top-color: var(--rule);
+  border-radius: 0 0 8px 8px;
+  background: var(--field-bg);
+}
+.view .map-heading #viewbtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent; color: var(--ink2); border-color: var(--instrument-line);
+  border-radius: 4px;
+}
+.view .map-heading #viewbtn[aria-pressed="true"] { background: var(--tint-blue); color: var(--ink); }
+.view .map-heading #viewbtn::before {
+  content: "";
+  width: 12px; height: 10px;
+  border: 1px solid currentColor;
+  background: linear-gradient(to right, transparent 39%, currentColor 39% 46%, transparent 46%),
+              linear-gradient(to bottom, transparent 42%, currentColor 42% 53%, transparent 53%);
+}
 .view :is(.chip, .seg button):hover:not(:disabled) {
   color: var(--ink);
   border-color: var(--ink3);
@@ -173,9 +293,9 @@
 }
 .map-heading {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 1px 0 13px; margin-bottom: 12px; border-bottom: 1px solid var(--rule);
+  padding: 3px 0 13px; margin-bottom: 12px; border-bottom: 1px solid var(--rule);
 }
-.map-heading h3 { font: 600 clamp(24px, 2.2vw, 34px)/1.1 var(--display); color: var(--ink); margin: 0; }
+.map-heading h3 { font: 600 clamp(22px, 1.7vw, 27px)/1.16 var(--sans); letter-spacing:-.035em; color: var(--ink); margin: 0; }
 .map-heading p { color: var(--ink2); font-size: 14px; margin: 4px 0 0; }
 .view .map-heading button { flex: none; padding: 7px 14px; }
 #chart svg { overflow: visible; }
@@ -207,20 +327,34 @@
 .view .verdict {
   background: var(--sunk);
   border: 1px solid var(--rule);
-  border-left: 3px solid var(--blue);
-  border-radius: 0;
+  border-left: 3px solid var(--instrument-line, var(--rule));
+  border-radius: 5px;
   padding: var(--panel-pad);
 }
+.view .verdict:has(.meter .A) { border-left-color: var(--good); }
+.view .verdict:has(.meter .B) { border-left-color: var(--info); }
+.view .verdict:has(.meter .C) { border-left-color: var(--warn); }
+.view .verdict:has(.meter .D) { border-left-color: var(--crit); }
 .view .verdict h3 { font-size: clamp(22px, 1.9vw, 29px); font-weight:600; line-height:1.18; }
 .view .verdict .meter { gap:2px; }
 .view .verdict .meter i { width:7px; height:16px; }
 .view #mcform {
-  border: 1px solid var(--rule);
+  border: 1px solid var(--instrument-line, var(--rule));
+  border-radius: 7px;
   padding: var(--panel-pad);
   background: var(--panel-bg);
   gap: 17px;
 }
-.view #mcform > .lab { padding-bottom:12px; border-bottom:1px solid var(--rule); }
+.view #mcform > .lab { padding-bottom:10px; border-bottom:1px solid var(--rule); }
+#mcpresets .chip {
+  padding: 5px 9px; border-color: transparent; background: var(--field-bg);
+}
+#mcpresets .chip[aria-pressed="true"] {
+  color: var(--selection);
+  border-color: color-mix(in srgb, var(--selection) 45%, var(--rule));
+  background: color-mix(in srgb, var(--selection) 8%, var(--filter-surface));
+}
+#mcpresets .chip:hover { border-color: var(--ink3); }
 .view .score { padding-inline: var(--panel-pad); background: var(--panel-bg); }
 .view .score .q { padding-block: 17px; }
 .view .score .q h3 { font-size: 16px; }
@@ -356,27 +490,49 @@
 footer.wrap { padding-block: 24px 38px; line-height: 1.7; letter-spacing: .01em; }
 
 @media (min-width: 861px) {
-  .page.view .sec {
-    display: grid;
-    grid-template-columns: minmax(270px, .78fr) minmax(0, 1fr);
-    align-items: end;
-    gap: clamp(24px, 4vw, 80px);
-    padding-bottom: 22px;
-  }
-  .page.view .sec .sub { margin: 0; max-width: 65ch; font-size: 15px; }
   .view .cols.side { grid-template-columns: minmax(0, 330px) minmax(0, 1fr); }
   .view .score .q { grid-template-columns: minmax(0, 1fr) minmax(114px, auto); }
   .view .score .q .grade { max-width: 185px; white-space: normal; }
 }
 @media (max-width: 620px) {
   .view { --panel-pad: 15px; gap: 22px; }
-  .view .sec h2 { font-size:clamp(30px,8vw,39px); }
+  .page.view .sec {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, .95fr);
+    grid-template-rows: minmax(109px, auto) auto;
+    min-height: 0; gap: 0 8px; align-items: end;
+    padding-block: 12px 19px;
+  }
+  .page.view .sec::after {
+    inset: 0 0 auto 22%; height: 115px;
+    background: url("img/artemis-earth-mobile.webp") 56% 61% / cover no-repeat;
+    mask-image: linear-gradient(to right, transparent, #000 62%), linear-gradient(to bottom, #000 69%, transparent);
+    mask-composite: intersect;
+  }
+  .page.view .sec h2 {
+    grid-area: 1 / 1; align-self: center; max-width: none;
+    font-size: clamp(34px, 8.7vw, 49px);
+  }
+  .page.view .sec .sub { grid-area: 2 / 1 / 3 / -1; max-width: 65ch; margin-top: 8px; }
+  .artemis-credit {
+    grid-area: 1 / 2; position: relative; inset: auto; justify-self: end;
+    font-size: 11.5px; min-height: 25px;
+  }
   .view .controls { gap:12px; }
   .view .method > div { grid-template-columns:1fr; gap:10px; }
   .view #hcards { grid-template-columns:1fr; }
   .view .thumbs { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .view .controls > .group { flex: 1 1 100%; }
   .view .controls .search { flex: 1 1 100%; }
+  #v-evidence .controls { padding: 11px 12px 12px; gap: 11px; }
+  #v-evidence .controls > .group {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px 6px;
+  }
+  #v-evidence .controls > .group > .lab { grid-column: 1 / -1; color: var(--ink3); }
+  #v-evidence .controls .chip { min-height: 34px; justify-self: stretch; padding-inline: 6px; }
+  #v-evidence #kindchips .chip { padding-inline: 6px; }
+  .view .map-heading #viewbtn { padding-inline: 9px; }
   .view .weights { grid-template-columns: 1fr; }
   .view .frame { padding: 12px; }
   .view details.f summary, .view details.f .body { padding-inline: 10px; }

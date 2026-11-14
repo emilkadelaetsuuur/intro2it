@@ -157,5 +157,7 @@ Everything else used to make the project:
 - Website fonts: Barlow, Barlow Condensed and IBM Plex Mono, distributed locally under the SIL Open Font License.
 - Software: Python 3, numpy, ffmpeg, Playwright and Chromium (testing and slide rendering).
 - SI tools: Claude (Anthropic), Codex and image generation (OpenAI), as described above.
-- Cover photograph: NASA, Jessica Watkins servicing SoFIE aboard the ISS, Expedition 67, June 2022 (ISS067-E-170237). https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/
+- The lunar cover photograph was taken by the Artemis II crew on April 6, 2026 (NASA, ART002-E-009582). [NASA image record](https://www.nasa.gov/image-detail/amf-art002e009582/)
+- The section headers show Earth setting behind the Moon from Orion on April 6, 2026 (NASA, ART002-E-009288). [NASA Earthset photograph](https://www.nasa.gov/image-article/earthset/)
+- ISS photograph: NASA, Jessica Watkins servicing SoFIE aboard the ISS, Expedition 67, June 2022 (ISS067-E-170237). https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/
 - Candle photographs: NASA Glenn Research Center, GRC-1998-C-00485. https://science.nasa.gov/image-detail/amf-grc-1998-c-00485/

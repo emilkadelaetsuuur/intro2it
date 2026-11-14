@@ -86,7 +86,7 @@
        {"text": "CFI lists 79 distinct droplet tests and CFI-G lists 333 normal and inverse gas-flame tests.", "sources": ["F-cool"]}
      ]},
     {"id": "raw", "q": ["Where is the raw data for solid materials?", "Where are the BASS results?", "Why are there no results in the tables?"],
-     "a": "BASS and BASS-II record samples and test conditions in PSI. The reports and video give additional results, including measured flame-spread and extinction behavior. The projects together account for about 438 GB of raw data. QUENCH also derives a spread estimate from selected BASS-II videos.",
+     "a": "BASS and BASS-II record samples and test conditions in PSI. The reports and video give additional results, including measured flame-spread and extinction behavior. The projects together account for about 438 GB of data files. QUENCH also derives a spread estimate from selected BASS-II videos.",
      "claims": [
        {"text": "BASS and BASS-II have no standardized flame outcome column in their run tables.", "sources": ["PSI-25", "PSI-26", "F-video"]},
        {"text": "The two BASS investigations account for about 438 GB of raw data.", "sources": ["F-video"]}
@@ -103,9 +103,9 @@
        {"text": "Across date-grouped cross-validation on 261 FLEX droplet runs, the model averaged 82 % accuracy and the majority baseline 69 %.", "sources": ["MODEL"]}
      ]},
     {"id": "size", "q": ["How many experiments are in the archive?", "How much data is there?", "How many test runs?"],
-     "a": "The PSI search returned 26 investigations, of which 24 concern combustion. QUENCH normalized 1156 distinct test records from selected run tables. The catalogue lists 352 publication entries across the combustion investigations and about 6.3 TB of raw files. Some papers are listed under more than one investigation.",
+     "a": "The PSI search returned 26 investigations, of which 24 concern combustion. QUENCH normalized 1156 distinct test records from selected run tables. The catalogue lists 352 publication entries across the combustion investigations and about 13.5 TB of data files. Some papers are listed under more than one investigation.",
      "claims": [
-       {"text": "The search returned 26 records, including 24 combustion investigations. The compilation includes 1156 test records, 352 publication entries and 6.3 TB of raw files.", "sources": ["STATS"]}
+       {"text": "The search returned 26 records, including 24 combustion investigations. The compilation includes 1156 test records, 352 publication entries and 13.5 TB of data files.", "sources": ["STATS"]}
      ]},
     {"id": "apollo1", "q": ["What happened in the Apollo 1 fire?", "Why was Apollo 1 so deadly?", "What did Apollo 1 teach about oxygen?"],
      "a": "During a launch-pad test in January 1967 the cabin was filled with pure oxygen, and a fire swept through it before the hatch could be opened. The crew died of carbon monoxide and toxic gases. Afterwards NASA restricted combustible materials and redesigned the hatch.",

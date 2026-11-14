@@ -105,7 +105,7 @@ function compareHtml() {
     ["Measurements named in the record", i => i.measures.join("; ") || "–"],
     ["Source table rows", i => String(i.rows || "–")],
     ["Individual flight runs included", i => String(D.tests.filter(t => t.i === i.acc).length)],
-    ["Raw data and papers", i => (i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "no raw data") + ", " + plural(i.npub, "paper")]
+    ["Data files and papers", i => (i.raw_gb >= 0.5 ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "under 1 GB of files") + ", " + plural(i.npub, "paper")]
   ];
   const body = ROWS.map(([label, fn]) => { const vals = sel.map(fn), same = vals.every(v => v === vals[0]) && vals[0] !== "–"; return { label, vals, same }; });
   const common = body.filter(r => r.same).map(r => r.label.toLowerCase());

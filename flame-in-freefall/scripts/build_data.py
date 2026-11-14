@@ -314,7 +314,10 @@ for r in inv_rows:
     investigations.append({
         "acc": acc, "acr": r["acronym"], "title": r["title"], "platform": r["platform"], "area": r["sub_area"],
         "type": r["project_type"], "start": r["start"], "end": r["end"], "doi": r["doi"], "lic": r["license"],
-        "npub": int(r["publications"]), "files": int(r["files"]), "raw_gb": float(r["raw_data_gb"]),
+        "npub": int(r["publications"]), "files": int(r["files"]),
+        # Volume PSI declares for the record (totalFileSize). The record's own file list holds only what its
+        # latest version changed, so summing that list misses whole archives (FLEX, FLEX-2, BRE and others).
+        "raw_gb": float(r["psi_total_gb"]),
         "rows": table_rows.get(acc, 0), "mapped": len([x for x in mine if x["o"] is not None]),
         "o2": [min(o2), max(o2)] if o2 else None, "p": [min(pr), max(pr)] if pr else None,
         "burner_o2": [min(burner_o2), max(burner_o2)] if burner_o2 else None, "runs": len(mine),
@@ -635,7 +638,7 @@ for inv in investigations:
     elif inv["rows"]:
         data_score, data_why = 0.5, "Run table without oxygen or pressure"
     elif inv["raw_gb"] > 0:
-        data_score, data_why = 0.3, "Raw data only"
+        data_score, data_why = 0.3, "Data files only"
     else:
         data_score, data_why = 0.15, "Papers and report only"
     text = " ".join([inv["objective"], inv["approach"], inv["hardware"], headers_of[acc]])
@@ -815,7 +818,7 @@ findings = [
      "title": "BASS and BASS-II run tables omit combustion outcomes",
      "claim": f"Only {S['with_outcome']} of {S['tests']} listed test runs have a result in a table. For BASS and BASS-II, "
               f"the tables describe {S['bass_n'] + S['bass2_n']} material test entries. The two archives list "
-              f"{S['bass2_raw'][0] + S['bass2_raw'][1]:.0f} GB of raw files. Videos, reports and publications contain results.",
+              f"{S['bass2_raw'][0] + S['bass2_raw'][1]:.0f} GB of data files. Videos, reports and publications contain results.",
      "evidence": "Result columns exist for FLEX, ACME CFI-G and Saffire I and II. The BASS table lists the sample material only; BASS-II adds conditions but no outcome.",
      "limits": "Many results are reported in the linked publications, but not in a form that can be queried across tests.",
      "action": "Extract spread rate and extinction from the BASS videos into a public table. The Video lab below shows it can be done automatically.",
@@ -950,7 +953,7 @@ for n in NEXT:
 corpus["N-sofie"] += " " + CUR["external_sofie"]["text"]
 corpus["ATM"] = "Cabin atmospheres NASA names in the ACME BRE record: " + "; ".join(f"{a['name']}: {a['psia']:g} psia ({a['p']:.2f} atm), {a['o2']:g} % oxygen" for a in ATMOSPHERES) + "."
 corpus["STATS"] = (f"The archive search returns {S['investigations']} records, {S['combustion']} about combustion. Their tables list {S['tests']} test runs that could be placed "
-                   f"or counted, {S['with_outcome']} with a result in a table, {S['pubs']} publication entries and {S['raw_tb']:g} TB of raw data.")
+                   f"or counted, {S['with_outcome']} with a result in a table, {S['pubs']} publication entries and {S['raw_tb']:g} TB of data files (the total size PSI declares for the {S['combustion']} combustion records).")
 corpus["CHALLENGE"] = ("Flame in Freefall challenge statement, NASA Space Apps Challenge 2026. "
                        + " ".join(q["text"] for k, q in CQ.items() if not k.startswith("saffire6")))
 corpus["SAFFIRE6"] = ("NASA article on the end of the Saffire series (2024): " + CQ["saffire6"]["text"] + " " + CQ["saffire6_materials"]["text"]
@@ -1037,7 +1040,7 @@ with open(os.path.join(DL, "quench-runs.csv"), "w", encoding="utf-8", newline=""
                     t.get("ambient_o2_reported")])
 INV_COLS = ["accession", "acronym", "title", "platform", "hardware_family", "fuel", "fire_safety_role", "tier", "runs_listed",
             "runs_with_oxygen", "o2_min_percent", "o2_max_percent", "pressure_min_atm", "pressure_max_atm", "results_in_table",
-            "raw_data_gb", "publications", "doi", "psi_url", "source_table_rows", "burner_oxidizer_o2_min_percent", "burner_oxidizer_o2_max_percent"]
+            "psi_data_files_gb", "publications", "doi", "psi_url", "source_table_rows", "burner_oxidizer_o2_min_percent", "burner_oxidizer_o2_max_percent"]
 fam_name = {f["id"]: f["name"] for f in families}
 with open(os.path.join(DL, "quench-investigations.csv"), "w", encoding="utf-8", newline="") as fh:
     w = csv.writer(fh)

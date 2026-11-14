@@ -119,6 +119,29 @@ class SiMarksAndCacheTags(unittest.TestCase):
         self.assertEqual(stale, [], "run python3 scripts/stamp_assets.py")
 
 
+class DataVolume(unittest.TestCase):
+    """The archive's size comes from the total PSI declares per record, not from a partial file list."""
+
+    def setUp(self):
+        with open(os.path.join(ROOT, "data", "raw", "investigations.csv"), encoding="utf-8", newline="") as fh:
+            self.rows = {r["accession"]: r for r in csv.DictReader(fh)}
+
+    def test_total_is_the_sum_of_psi_totals_for_combustion_records(self):
+        combustion = {i["acc"] for i in D["investigations"] if i["combustion"]}
+        total = sum(float(self.rows[a]["psi_total_gb"]) for a in combustion)
+        self.assertEqual(D["stats"]["raw_tb"], round(total / 1000, 1))
+        self.assertEqual(D["stats"]["raw_tb"], 13.5)
+
+    def test_no_record_is_smaller_than_its_listed_files(self):
+        for acc, r in self.rows.items():
+            self.assertGreaterEqual(float(r["psi_total_gb"]) + 0.01, float(r["all_files_gb"]), acc)
+
+    def test_flex_archive_is_not_reported_as_empty(self):
+        flex = next(i for i in D["investigations"] if i["acc"] == "PSI-69")
+        self.assertGreater(flex["raw_gb"], 900)      # PSI shows 860.39 GiB of data files for FLEX
+        self.assertEqual(float(self.rows["PSI-69"]["all_files_gb"]), 0.0)   # the partial list that misled the first build
+
+
 class Notebook(unittest.TestCase):
     """The modelling notebook is generated from a script; its cells must run and agree with the site."""
 

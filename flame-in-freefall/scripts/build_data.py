@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 """Build web/data.js from the raw NASA PSI tables in data/raw.
 
 Every number the dashboard shows is computed here from the CSV files exactly as
@@ -890,7 +890,7 @@ corpus["MOON"] = (f"Runs at Moon-base oxygen. The challenge statement expects {S
                   f"{S['hi_o2']['gas']} gas-flame runs. Of these, {S['moon_range']['gas']} gas-flame runs are also at {S['moon_psia_max']:g} psi or less, all from "
                   f"{', '.join(S['moon_range_by'])}, and {S['moon_near']['droplet']} droplet runs sit just above it, at {S['moon_near_psia'][0]:g} to {S['moon_near_psia'][1]:g} psia.")
 corpus["SI"] = ("Use of SI (Super Intelligence, the term NASA Space Apps 2026 uses for AI) in QUENCH. Claude (Anthropic) was used to write code, normalise tables "
-                "and draft the investigation summaries, the wording of the findings and the analyst answers; the team reviewed them. Code checks the drafts: "
+                "and draft the investigation summaries, the wording of the findings and the analyst answers. Code checks the drafts: "
                 "every number in a claim must appear in a cited NASA record with the same unit, and every quote must match its saved source word for word. "
                 "The predictor is a machine-learning model and the video lab is computer vision. No model is called while the site is used.")
 corpus["RANK"] = ("How QUENCH ranks investigations. Tier 1, named in the challenge statement as a fire-safety study: "

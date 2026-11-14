@@ -1,4 +1,4 @@
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 """Checks that every number QUENCH shows is right.
 
     python3 -m unittest discover -s tests -v

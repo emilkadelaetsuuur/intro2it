@@ -1,6 +1,6 @@
 /* QUENCH core: data helpers, briefing, evidence map, findings, lessons.
    Everything is computed in the browser from data.js. No network calls.
-   SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team. */
+   SI notice: written with SI (AI) assistance (Claude, Anthropic). */
 const D = window.FLAME, S = D.stats;
 const $ = (s, r) => (r || document).querySelector(s);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

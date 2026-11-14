@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 """Run the BASS-II video measurement on a set of tests and write data/derived/video_results.json.
 
     python3 video/run_all.py VIDEO_DIR

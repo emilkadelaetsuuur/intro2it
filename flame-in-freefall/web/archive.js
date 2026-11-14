@@ -1,6 +1,6 @@
 /* QUENCH archive: ranks the investigations for a crew habitat, shows what each one varied and measured,
    compares investigations side by side, and hands the runs over as CSV. Computed in the browser from data.js.
-   SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team. */
+   SI notice: written with SI (AI) assistance (Claude, Anthropic). */
 const HABITATS = [
   { id: "station", name: "Space station", o2: 21, psia: 14.7, g: "0" },
   { id: "craft", name: "Spacecraft, 10.2 psia cabin", o2: 26.5, psia: 10.2, g: "0" },

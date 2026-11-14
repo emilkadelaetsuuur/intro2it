@@ -1,5 +1,5 @@
 {
-  "_about": "Analyst answers written ahead of time with an AI model (Claude) from the archive records, then reviewed. scripts/build_data.py checks every claim: each cited record must exist and each number must appear in it with the same unit, or the build stops. The page picks the answer that best matches the question; nothing is generated at run time.",
+  "_about": "Analyst answers written ahead of time with an AI model (Claude) from the archive records, then checked by code. scripts/build_data.py checks every claim: each cited record must exist and each number must appear in it with the same unit, or the build stops. The page picks the answer that best matches the question; nothing is generated at run time.",
   "answers": [
     {"id": "vent", "q": ["Does turning off ventilation put out a fire at 34 % oxygen?", "Does stopping the airflow extinguish a fire?", "Can we cut the fans to kill a fire in an oxygen-rich cabin?"],
      "a": "Not reliably. At station air it helps: thin plastic films in BASS-II went out once the airflow fell to about 1 cm/s. In oxygen-rich air the one relevant experiment points the other way: Burning Rate Emulator flames kept burning with no airflow at all. No solid material has been tested at 34 % oxygen, so for the exploration atmosphere this step is unproven.",

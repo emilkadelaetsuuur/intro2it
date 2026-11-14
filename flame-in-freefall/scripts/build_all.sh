@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 # Rebuild everything the page shows from the raw NASA files, then run the checks.
 # The video step needs the BASS-II videos; pass their folder as the first argument to rerun it.
 set -euo pipefail

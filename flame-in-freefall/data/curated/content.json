@@ -1,5 +1,5 @@
 {
-  "_about": "Hand-curated content. Every 'quote' must appear word for word (ignoring line breaks and repeated spaces) in the file named by 'src' under data/sources; scripts/build_data.py fails if one does not. Summaries were drafted with Claude from the NASA PSI records and checked by a person; every number in a summary must appear in the record or its table.",
+  "_about": "Hand-curated content. Every 'quote' must appear word for word (ignoring line breaks and repeated spaces) in the file named by 'src' under data/sources; scripts/build_data.py fails if one does not. Summaries were drafted with Claude from the NASA PSI records; every number in a summary must appear in the record or its table.",
   "sources": {
     "apollo1": {
       "file": "apollo-1_sma.txt",

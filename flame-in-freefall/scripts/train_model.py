@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 """Train and test the FLEX outcome model, then write web/model.js.
 
 Question the model answers: under these conditions, does a burning fuel droplet in

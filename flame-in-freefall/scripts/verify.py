@@ -1,4 +1,4 @@
-# SI notice: written with SI (AI) assistance (Claude, Anthropic) and reviewed by the team.
+# SI notice: written with SI (AI) assistance (Claude, Anthropic).
 """Check AI-written claims against the archive before they ship.
 
 Two rules, applied to every claim the model makes:

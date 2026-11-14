@@ -150,6 +150,21 @@ window.EvidenceInspector = (() => {
     const summary = node("p", "ei-summary", detail.summary);
     summary.id = "ei-summary";
     fragment.append(summary);
+    if (options.askCosmo && location.protocol !== "file:") {
+      const ru = /^ru\b/i.test(navigator.language);
+      const ask = node("button", "ei-ask", ru ? "Спросить Cosmo" : "Ask Cosmo");
+      ask.lang = ru ? "ru" : "en";
+      ask.type = "button";
+      ask.id = "ei-ask-cosmo";
+      ask.setAttribute("aria-controls", "cosmo-panel");
+      ask.setAttribute("aria-haspopup", "dialog");
+      const portrait = node("img", "ei-ask-portrait");
+      portrait.alt = "";
+      portrait.src = "img/cosmo.webp";
+      ask.prepend(portrait);
+      ask.addEventListener("click", options.askCosmo);
+      fragment.append(ask);
+    }
     if (options.nearby?.length) fragment.append(overlaps(options.nearby));
 
     const sources = node("section", "ei-sources");

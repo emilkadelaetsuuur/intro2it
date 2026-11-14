@@ -286,9 +286,9 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
 <link rel="stylesheet" href="console.css?v=6d63994c95">
-<link rel="stylesheet" href="cosmo.css?v=a50ddd571b">
+<link rel="stylesheet" href="cosmo.css?v=f6dd749ed9">
 <link rel="stylesheet" href="flight.css?v=56cd6438df">
-<link rel="stylesheet" href="evidence-inspector.css?v=543b574785">
+<link rel="stylesheet" href="evidence-inspector.css?v=f99b492421">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
@@ -562,6 +562,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
       <div><h2 id="cosmo-title">Cosmo</h2><p>Archive companion · SI-generated character</p></div>
       <button type="button" id="cosmo-close" class="cosmo-close" aria-label="Close chat"><span aria-hidden="true">×</span></button>
     </header>
+    <div id="cosmo-point-context" class="cosmo-point-context" hidden>
+      <div><span class="cosmo-point-label">Point in this chat</span><strong id="cosmo-point-name"></strong></div>
+      <button type="button" id="cosmo-point-clear">Clear point</button>
+    </div>
     <div class="cosmo-log" id="cosmo-log" role="log" aria-live="polite" aria-label="Conversation with Cosmo" tabindex="0">
       <div id="cosmo-intro" class="cosmo-intro">
         <div class="cosmo-stage" aria-hidden="true"><span class="cosmo-ring"></span><span class="cosmo-float" data-cosmo-figure="welcome" aria-hidden="true"><img src="img/cosmo.webp" alt="" width="112" height="98"></span></div>
@@ -590,10 +594,12 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <script src="model.js?v=96b86849b6"></script>
 <script src="core.js?v=701edf20c4"></script>
 <script src="evidence-records.js?v=13ce5fac05"></script>
-<script src="evidence-inspector.js?v=93be995e8c"></script>
+<script src="evidence-chat.js?v=9ec8cf6e84"></script>
+<script src="evidence-inspector.js?v=3ac71db7c2"></script>
 <script src="archive.js?v=5e28c151e7"></script>
-<script src="tools.js?v=d4fc6d5384"></script>
+<script src="tools.js?v=d5fe3e40bb"></script>
 <script src="tour.js?v=e2d58c53a7"></script>
-<script src="ask.js?v=ca83013fa1"></script>
+<script src="cosmo-reactions.js?v=21b0f28681"></script>
+<script src="ask.js?v=790645dea3"></script>
 </body>
 </html>

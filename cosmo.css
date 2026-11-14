@@ -148,12 +148,19 @@
   .cosmo-lid-upper, .cosmo-lid-lower { animation: cosmo-blink 13s linear -5s infinite; }
   .cosmo-head-joint { transition: transform .42s cubic-bezier(.22,.62,.28,1); }
   .cosmo-panel[data-attentive] .cosmo-head-joint { transform: rotate(-8deg); }
+  .cosmo-toggle:is(:hover,:focus-visible) .cosmo-head-joint { transform: rotate(4deg); }
   .cosmo-panel[data-attentive] .cosmo-float,
   .cosmo-toggle:is(:hover,:focus-visible) .cosmo-float { animation-play-state: paused; }
   .cosmo-toggle[aria-expanded="true"] :is(.cosmo-float, use) { animation: none; }
+  .cosmo-dock[data-reaction="point"] { --cosmo-gesture: cosmo-receive-point; }
+  .cosmo-dock[data-reaction="answer"] { --cosmo-gesture: cosmo-answer-nod; }
+  .cosmo-dock[data-reaction] :is(.cosmo-toggle[aria-expanded="false"], .cosmo-panel:not([hidden])) :is(.cosmo-head-joint, .cosmo-float > img) {
+    animation: var(--cosmo-gesture) var(--cosmo-gesture-duration) ease-in-out;
+  }
   /* Stop peripheral movement while the reader points at or tabs into a plot. */
   body:has(main :is(.frame, #cabin-chart, #o2hist):is(:hover, :focus-within)) .cosmo-toggle .cosmo-float { animation-play-state: paused; }
   body:has(main :is(.frame, #cabin-chart, #o2hist):is(:hover, :focus-within)) .cosmo-toggle use { animation: none; }
+  body:has(main :is(.frame, #cabin-chart, #o2hist):is(:hover, :focus-within)) .cosmo-dock .cosmo-toggle :is(.cosmo-head-joint, img) { animation-play-state: paused; }
   .cosmo-panel:not([hidden]) { animation: cosmo-open .18s ease-out; transform-origin: bottom right; }
   @keyframes cosmo-drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
   /* A single 195 ms shutter stroke; the glass stays entirely clear between blinks. */
@@ -161,11 +168,21 @@
     0%,95%,96.5%,100% { transform: translateY(var(--lid-open)); }
     95.62%,95.82% { transform: translateY(0); }
   }
+  /* Rotate the head at its neck, independently of the typing pose and the shutter. */
+  @keyframes cosmo-receive-point {
+    0%, 100% { rotate: 0deg; }
+    36%, 57% { rotate: 12deg; }
+  }
+  @keyframes cosmo-answer-nod {
+    0%, 100% { rotate: 0deg; translate: 0 0; }
+    44% { rotate: -9deg; translate: 0 2%; }
+  }
   @keyframes cosmo-open { from { opacity:.3; transform: translateY(5px); } }
 }
 @media (prefers-reduced-motion: no-preference) and (min-height: 531px) {
   /* When the welcome portrait is on screen, only its lens blinks. */
-  .cosmo-panel:has(.cosmo-intro:not([hidden])) .cosmo-portrait use { animation: none; }
+  .cosmo-panel:has(.cosmo-intro:not([hidden])) .cosmo-portrait use,
+  .cosmo-dock[data-reaction] .cosmo-panel:has(.cosmo-intro:not([hidden])) .cosmo-portrait :is(.cosmo-head-joint, img) { animation: none; }
 }
 @media print { .cosmo-dock { display:none; } }
 /* SI-generated artwork is marked where it appears. */

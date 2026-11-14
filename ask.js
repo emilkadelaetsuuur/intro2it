@@ -372,10 +372,72 @@
     const send = document.getElementById("cosmo-send");
     const feedback = document.getElementById("cosmo-status");
     const viewport = window.visualViewport;
-    const exchanges = [];
+    const context = document.getElementById("cosmo-point-context");
+    const contextName = document.getElementById("cosmo-point-name");
+    const clearPoint = document.getElementById("cosmo-point-clear");
+    const conversations = new Map();
+    let exchanges = [];
+    let point = null;
+    let origin = null;
+    let returnToPoint = false;
+    let contextVersion = 0;
+    let interruptedSearch = null;
+    const russianUI = /^ru\b/i.test(navigator.language);
+    if (russianUI) {
+      context.querySelector(".cosmo-point-label").textContent = "Точка на карте";
+      clearPoint.textContent = "Снять выбор";
+    }
     let pending = false;
     let unread = null;
     let draftVersion = 0;
+
+    // Keep a separate draft and transcript for the general chat and recently opened points.
+    function switchConversation(next) {
+      if (point === next) return;
+      if (pending && interruptedSearch) {
+        if (!field.value && interruptedSearch.version === draftVersion) field.value = interruptedSearch.draft;
+        const stopped = addMessage("notice", "Cosmo", russianUI
+          ? "Поиск остановлен при переходе к другой беседе. Можно отправить вопрос ещё раз."
+          : "Search stopped when you switched conversations. You can send the question again.");
+        interruptedSearch.exchange.push(stopped);
+        interruptedSearch = null;
+      }
+      const history = document.createDocumentFragment();
+      for (const message of log.querySelectorAll(":scope > .cosmo-message")) history.append(message);
+      conversations.set(point, {history, exchanges, draft: field.value});
+      const saved = conversations.get(next);
+      conversations.delete(next);
+      if (conversations.size > 8) {
+        const oldest = [...conversations.keys()].find(key => key !== null);
+        conversations.delete(oldest);
+      }
+      point = next;
+      contextVersion++;
+      draftVersion++;
+      exchanges = saved?.exchanges || [];
+      field.value = saved?.draft || "";
+      field.setCustomValidity("");
+      if (saved) log.append(saved.history);
+      context.hidden = !point;
+      contextName.textContent = point ? pointLabel(point) : "";
+      intro.hidden = Boolean(point || exchanges.length);
+      let placeholder = "Ask Cosmo a question…";
+      if (point) placeholder = russianUI ? "Спросите об этой точке…" : "Ask about this point…";
+      field.placeholder = placeholder;
+      pending = false;
+      unread = null;
+      send.removeAttribute("aria-disabled");
+      feedback.textContent = "";
+      // Retry a supplementary search if it was interrupted while switching conversations.
+      log.querySelectorAll(".cosmo-more:disabled").forEach(button => { button.disabled = false; });
+      if (exchanges.length) scrollToMessage(exchanges.at(-1).at(-1));
+      syncAttention();
+    }
+
+    function rememberExchange(messages) {
+      if (exchanges.length >= 8) for (const message of exchanges.shift()) message.remove();
+      exchanges.push(messages);
+    }
 
     function syncAttention() {
       const composing = document.activeElement === field && field.value.trim().length > 0;
@@ -428,7 +490,9 @@
         if (unread) scrollToMessage(unread);
         unread = null;
       } else {
-        toggle.focus({preventScroll: true});
+        const pointOpener = point && returnToPoint && origin ? document.querySelector(origin) : null;
+        (pointOpener?.getClientRects().length ? pointOpener : toggle).focus({preventScroll: true});
+        returnToPoint = false;
       }
       syncAttention();
     }
@@ -455,8 +519,53 @@
       log.append(message);
       if (panel.hidden) unread = message;
       else if (kind === "user" || atEnd) scrollToMessage(message);
+      if (kind === "assistant") window.CosmoReactions?.answer();
       return message;
     }
+
+    function pointReply(question) {
+      const reply = EvidenceChat.answer(point, question);
+      const allowed = new Set(getEvidenceDetail(point).groups.flatMap(g => g.sources.map(s => s.url)));
+      const cited = reply.sources.filter(source => allowed.has(source.url) && /^https:\/\//.test(source.url));
+      const message = addMessage("assistant", "Cosmo · " + reply.label, reply.answer, cited);
+      log.querySelector(".cosmo-followups")?.remove();
+      const choices = document.createElement("div");
+      choices.className = "cosmo-followups";
+      for (const suggestion of EvidenceChat.suggestions(point, question).slice(0, 3)) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = suggestion;
+        button.addEventListener("click", () => {
+          const exchange = [addMessage("user", "You", suggestion)];
+          rememberExchange(exchange);
+          exchange.push(pointReply(suggestion));
+          field.focus({preventScroll: true});
+        });
+        choices.append(button);
+      }
+      message.append(choices);
+      return message;
+    }
+
+    document.addEventListener("cosmo-inspect-point", event => {
+      const {group, trigger} = event.detail;
+      if (!evidencePoints.includes(group)) return;
+      origin = (trigger.closest("#maptable") ? "#maptable" : "#chart") + " [data-point='" + pointIds.get(group) + "']";
+      switchConversation(group);
+      returnToPoint = true;
+      setOpen(true);
+      window.CosmoReactions?.receivePoint();
+      if (!exchanges.length) {
+        const greeting = pointReply(russianUI ? "Объясни эту точку" : "");
+        rememberExchange([greeting]);
+        scrollToMessage(greeting);
+      }
+    });
+    clearPoint.addEventListener("click", () => {
+      switchConversation(null);
+      returnToPoint = false;
+      field.focus({preventScroll: true});
+    });
 
     toggle.addEventListener("click", () => setOpen(panel.hidden));
     close.addEventListener("click", () => setOpen(false));
@@ -507,26 +616,31 @@
       if (pending) return;
       const draft = field.value;
       const submittedVersion = draftVersion;
+      const submittedContext = contextVersion;
       const question = draft.trim().replace(/\s+/gu, " ");
       if (!question) {
         field.setCustomValidity("Enter a question first.");
         field.reportValidity();
         return;
       }
-      pending = true;
-      syncAttention();
-      send.setAttribute("aria-disabled", "true");
       if (intro) intro.hidden = true;
-      if (exchanges.length >= 8) {
-        for (const message of exchanges.shift()) message.remove();
-      }
       const exchange = [addMessage("user", "You", question)];
-      exchanges.push(exchange);
+      rememberExchange(exchange);
       field.value = "";
       field.focus({preventScroll: true});
+      if (point) {
+        syncAttention();
+        exchange.push(pointReply(question));
+        return;
+      }
+      pending = true;
+      interruptedSearch = {draft, version: submittedVersion, exchange};
+      syncAttention();
+      send.setAttribute("aria-disabled", "true");
       feedback.textContent = "Searching the organizer sources…";
       try {
         const reply = await search(question);
+        if (submittedContext !== contextVersion) return;
         const mode = reply.local ? "Local archive · " + reply.label : reply.label;
         const message = addMessage("assistant", "Cosmo · " + mode, reply.answer, reply.sources);
         exchange.push(message);
@@ -538,31 +652,43 @@
           more.textContent = "Search the organizer sources";
           more.addEventListener("click", async () => {
             if (pending) return;
+            const searchContext = contextVersion;
             pending = true;
             syncAttention();
-            more.remove();
+            more.disabled = true;
             feedback.textContent = "Searching the organizer sources…";
             try {
               const extra = await search(question, true);
+              if (contextVersion !== searchContext) return;
+              more.remove();
               exchange.push(addMessage("assistant", "Cosmo · " + (extra.local ? "Local archive · " : "") + extra.label, extra.answer, extra.sources));
             } catch (error) {
-              exchange.push(addMessage("error", "Cosmo", error.message));
+              if (contextVersion === searchContext) {
+                exchange.push(addMessage("error", "Cosmo", error.message));
+                more.disabled = false;
+              }
             } finally {
-              pending = false;
-              syncAttention();
-              feedback.textContent = "";
+              if (contextVersion === searchContext) {
+                pending = false;
+                syncAttention();
+                feedback.textContent = "";
+              }
             }
           });
           message.append(more);
         }
       } catch (error) {
+        if (submittedContext !== contextVersion) return;
         exchange.push(addMessage("error", "Cosmo", error.message));
         if (draftVersion === submittedVersion) field.value = draft;
       } finally {
-        pending = false;
-        syncAttention();
-        send.removeAttribute("aria-disabled");
-        feedback.textContent = "";
+        if (submittedContext === contextVersion) {
+          interruptedSearch = null;
+          pending = false;
+          syncAttention();
+          send.removeAttribute("aria-disabled");
+          feedback.textContent = "";
+        }
       }
     });
   }

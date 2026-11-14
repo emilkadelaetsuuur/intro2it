@@ -20,9 +20,12 @@ box where Claude answers from the archive only, with every claim checked by code
 
 ## Links
 
-- Demo (7 slides): TODO link to `submission/FlameGap-demo.pdf`
-- Project: TODO public link to the page (GitHub Pages or the shared artifact)
-- Code: TODO GitHub repository link
+- Demo (7 slides): https://github.com/emilkadelaetsuuur/intro2it/blob/claude/loving-johnson-f47e2l/flame-in-freefall/submission/FlameGap-demo.pdf
+  (30-second video: `submission/FlameGap-demo-30s.mp4` in the same folder)
+- Project: https://claude.ai/artifact/8mt9hxj4G4EAC5e5hbvMan (turn on public sharing in its Share menu first),
+  or any static host serving the `web/` folder
+- Code: https://github.com/emilkadelaetsuuur/intro2it/tree/claude/loving-johnson-f47e2l/flame-in-freefall
+- Check before submitting: every link must open for someone who is not logged in.
 
 ## Project details
 

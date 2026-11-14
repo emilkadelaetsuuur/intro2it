@@ -1,0 +1,19 @@
+Spacecraft smoke detectors must detect different types of smoke. For example, hydrocarbon fuels typically produce soot and plastics produce droplets of recondensed polymer fragments.
+
+The Dust and Aerosol Measurement Feasibility Test (DAFT) was designed to ensure that a modified P-Trak—a key component of the forthcoming NASA Smoke Aerosol Measurement Experiment (SAME)—will perform properly in the unique environment of microgravity.
+
+The Burning and Suppression of Solids (BASS) investigation examines the burning and extinction characteristics of a wide variety of fuel samples in microgravity.
+
+The Flame Extinguishment Experiment (FLEX) experiment was designed to assess and quantify the effectiveness of inert-gas suppressants in microgravity and obtain the most conservative estimate of the limiting oxygen index for steady combustion.
+
+ACME is focused on advanced combustion technology via fundamental microgravity research. The primary goal is to improve efficiency and reduce pollutant emission in practical terrestrial combustion.
+
+The Combustion Integrated Rack (CIR), located in the U.S. Laboratory Module (Destiny), enables investigators to perform combustion research to understand the fundamentals of the combustion process, understand fire safety, and methods for suppression of fires in space. The CIR’s main feature is a 100-liter combustion chamber to provide the necessary safety features necessary for the various combustion investigations and is the only rack on ISS dedicated to combustion experimentation. Developed by NASA’s Glenn Research Center, the CIR was launched to the International Space Station (ISS) in November 2008 by the Space Shuttle (STS-126).
+
+To develop a methodology to correlate material flammability limits in normal gravity and microgravity, which allows quantitative estimation of material flammability limit in microgravity based on the flammability data obtained on the ground. FLARE involves an international team including JAXA, NASA, ESA, CNES, DLR and universities in Japan, France, Germany and USA.
+
+Fire can be a catastrophic hazard for manned spacecraft. NASA mitigates the risk of fire with the implementation of NASA-STD-6001, which establishes program requirements for evaluation, testing, and selection of materials to preclude unsafe conditions related to flammability, odor, offgassing, and fluid compatibility. NASA-STD-6001 impelements a 1-g flame propagation test for proposed space flight materials which some researchers believe is not conservative in low-g.
+
+FM2 is the first-ever combustion experiment to be performed on another planetary body. Building on the success of the decades-long combustion science ground (1g) program and International Space Station (ISS) microgravity (~0g) combustion experiment campaigns, FM2 investigates burning materials on the Moon at its 1/6 reduced gravity level.
+
+Coflow laminar diffusion flames are especially valuable for studies of combustion because of the availability of accurate numerical modeling with that flame configuration.

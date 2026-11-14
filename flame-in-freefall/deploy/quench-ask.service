@@ -1,0 +1,30 @@
+[Unit]
+Description=QUENCH organizer-source question service
+After=network-online.target
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/quench/server
+EnvironmentFile=/etc/quench/ask.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=CLAUDE_DAILY_ATTEMPTS=150
+StateDirectory=quench-ask
+Environment=CLAUDE_BUDGET_DB=/var/lib/quench-ask/usage.sqlite3
+ExecStart=/usr/bin/python3 -I /opt/quench/server/ask.py --port 8765
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+MemoryMax=192M
+TasksMax=72
+UMask=0077
+[Install]
+WantedBy=multi-user.target

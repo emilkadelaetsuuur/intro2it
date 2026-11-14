@@ -1,6 +1,5 @@
-/* QUENCH tools: outcome predictor, video lab, mission check, question engine, method notes, navigation.
-   No model is called at run time. The predictor is a small logistic model shipped in model.js; analyst
-   answers were written ahead of time and verified at build time.
+/* QUENCH tools: outcome predictor, video lab, mission check, method notes, navigation.
+   The predictor is a small logistic model shipped in model.js.
    SI notice: written with SI (AI) assistance (Claude, Anthropic). */
 const M = window.FLAME_MODEL;
 
@@ -237,94 +236,6 @@ function drawMission() {
   MC.report += "\nMOST RELEVANT INVESTIGATIONS FOR THIS CABIN\n" + topInv.map((x, n) => `${n + 1}. ${nameOf(x.i)} (${x.i.acc}), score ${Math.round(x.s)}: ${x.parts[2][3]}.`).join("\n") + "\n";
 }
 
-/* ---------- ask the archive (no model at run time) ---------- */
-const STOP = new Set("a an and are as at be but by can did do does for from has have how if in into is it its of on or that the their there these this to was we what when where which who why will with would you your any about been were than then so not no out up down".split(" "));
-const stem = w => w.replace(/(ing|ed|es|s)$/, "");
-const toks = s => s.toLowerCase().replace(/percent/g, "%").replace(/[^a-z0-9.% ]+/g, " ").split(/\s+/).filter(w => w.length > 1 && !STOP.has(w)).map(stem);
-const SYN = {};
-Object.entries({ moon: ["lunar", "exploration", "gravity"], lunar: ["moon", "exploration", "gravity"], mars: ["martian", "exploration", "gravity"], o2: ["oxygen"], oxygen: ["o2"],
-  extinguish: ["extinction", "suppression", "suppressant", "extinguisher"], extinguisher: ["suppressant", "suppression", "jet"], ventilation: ["airflow", "flow", "fan"], fan: ["ventilation", "airflow"],
-  airflow: ["ventilation", "flow"], smoke: ["detector", "detection"], detector: ["smoke", "detection"], material: ["solid", "fabric", "pmma"], plastic: ["pmma", "solid", "material"],
-  liquid: ["droplet", "fuel"], droplet: ["liquid"], data: ["video", "table", "raw"], pressure: ["psia", "atm"], standard: ["6001", "approval", "ground"], habitat: ["cabin", "base"], base: ["moon", "habitat"],
-  co2: ["carbon", "dioxide"], investigation: ["experiment"], study: ["experiment"], burn: ["fire", "flame"], safe: ["safety", "risk"], gap: ["missing", "untested"], accurate: ["accuracy", "good"], earth: ["firefighter", "spinoff", "benefit"] })
-  .forEach(([k, v]) => { SYN[stem(k)] = v.map(stem); });
-const BANK = D.answers.map(a => ({ a, qs: a.q.map(q => new Set(toks(q))), body: new Set(toks(a.a)) }));
-const FDOCS = D.findings.map(f => ({ f, title: toks(f.title), tags: f.tags.map(stem), body: toks(f.claim + " " + f.evidence + " " + f.action) }));
-const DF = {}; BANK.forEach(b => { const seen = new Set(); b.qs.forEach(set => set.forEach(w => seen.add(w))); seen.forEach(w => { DF[w] = (DF[w] || 0) + 1; }); });
-const idf = w => Math.log(1 + BANK.length / DF[w]);
-function bankScore(base) {
-  // For each stored answer: the summed weight of the question's words found in any of its phrasings.
-  // Rare words weigh more, so a shared "test" or "oxygen" is not enough; a synonym counts for 60 %.
-  // Words the bank never uses add nothing. Ties go to the answer with the closest single phrasing.
-  let best = { s: 0, r: -1, a: null };
-  BANK.forEach(b => {
-    const all = new Set(); b.qs.forEach(set => set.forEach(w => all.add(w)));
-    const hit = (set, w) => set.has(w) ? idf(w) : (z => z ? 0.6 * idf(z) : 0)((SYN[w] || []).find(y => set.has(y)));
-    let s = 0; base.forEach(w => { s += hit(all, w); });
-    let one = 0, extra = 0;
-    b.qs.forEach(set => { let v = 0; base.forEach(w => { v += hit(set, w); }); if (v > one) { one = v; extra = [...set].filter(w => !base.includes(w)).length; } });
-    const r = s + 0.3 * one - 0.05 * extra;
-    if (s > 0 && r > best.r) best = { s, r, a: b.a };
-  });
-  return best;
-}
-function bankMatch(base, strict) { const b = bankScore(base); return b.s >= (strict ? 4.8 : 2.7) ? b.a : null; }
-function relatedFindings(base, skip) {
-  const terms = []; base.forEach(w => { terms.push([w, 1]); (SYN[w] || []).forEach(z => terms.push([z, 0.5])); });
-  return FDOCS.map(d => { let s = 0; terms.forEach(([w, wt]) => { if (d.title.includes(w)) s += 3 * wt; if (d.tags.includes(w)) s += 2 * wt; if (d.body.includes(w)) s += wt; }); return { f: d.f, s }; })
-    .filter(x => x.s > 1.5 && !skip.includes("F-" + x.f.id)).sort((a, b) => b.s - a.s).slice(0, 2).map(x => x.f);
-}
-function countAnswer(q) {
-  const mo = q.match(/(\d+(?:\.\d+)?)\s*(?:%|percent)/i); if (!mo) return "";
-  const mp = q.match(/(\d+(?:\.\d+)?)\s*(psia|psi|atm)/i), o2 = +mo[1]; if (o2 < 5 || o2 > 100) return "";
-  const p = mp ? (/atm/i.test(mp[2]) ? +mp[1] : +mp[1] / PSIA) : null;
-  if (p != null && p <= 0) return "";
-  const T = { o2, p };
-  const near = k => D.tests.filter(t => t.k === k && (p == null ? oxygenMatches(t.o, T) : cabinMatches(t, T))).length;
-  const events = saffireEvents.filter(r => p == null ? oxygenMatches(r.oxygen_percent, T) : saffireMatches(r, T));
-  const extra = events.length ? `<p>Separately, the Saffire-VI report lists ${plural(events.length, "material event")} in that window: ${esc(events.map(r => saffireConditions(r) + (r.outcome === "noign" ? " (did not ignite)" : " (burned)")).join("; "))}. ${refLink("SAFFIRE6")}</p>` : "";
-  return `<div class="a"><span class="lab">Counted from the PSI run tables</span><p>Within ${S.o2_window} points of ${f1(o2)}% ambient oxygen${p ? ` and ${Math.round(S.p_window * 100)}% of ${f2(p)} atm` : ", including runs with unreported pressure"}: <b>${near("solid")}</b> solid-material runs, <b>${near("droplet")}</b> liquid-droplet runs and <b>${near("gas")}</b> gas-flame runs.</p>${extra}</div>`;
-}
-const MAT_WORDS = { pmma: ["pmma", "acrylic", "plexiglas"], sibal: ["sibal", "cotton", "fabric", "fiberglass"], nomex: ["nomex"], silicone: ["silicone"], ultem: ["ultem"], wax: ["wax", "candle", "paraffin"], kapton: ["kapton", "polyimide"], teflon: ["teflon", "ptfe"] };
-function materialAnswer(q) {
-  const lq = q.toLowerCase();
-  return D.materials.filter(m => MAT_WORDS[m.id].some(w => lq.includes(w))).map(m => {
-    const invs = Object.keys(m.invs).map(a => `${a} ${m.invs[a]}`).join(", ");
-    let t = m.flame ? `${plural(m.flame, "material test")} in the included PSI tables (${esc(invs)}).` + (m.o2 ? ` ${m.with_o2} record ambient oxygen in the range ${rangeText(m.o2)}%.` : " None records an oxygen level.") : "No flame-spread test in the included PSI tables.";
-    if (m.smoke) t += ` ${plural(m.smoke, "smoke test")} in SAME and SAME-R.`;
-    const external = saffireEvents.filter(r => r.material_id === m.id);
-    if (external.length) t += ` Saffire-VI separately reports ${esc(external.map(r => saffireConditions(r) + (r.outcome === "noign" ? " (did not ignite)" : " (burned)")).join("; "))}. ${refLink("SAFFIRE6")}.`;
-    if (m.id === D.external_sofie.material_id) t += ` SoFIE-GEL tested PMMA spheres in orbit at ambient oxygen levels up to ${D.external_sofie.oxygen_max_percent}%. ${refLink("SOFIEGEL")}.`;
-    return `<div class="a"><span class="lab">Looked up in the run tables · ${esc(m.name)}</span><p>${t}</p>${m.results.map(r => `<p>${esc(r)}</p>`).join("")}<p class="fine">${esc(m.what)}. <a href="#mission" data-go="mission">Check it against a cabin</a></p></div>`;
-  }).join("");
-}
-function investigationAnswer(q) {
-  const lq = " " + q.toLowerCase().replace(/[^a-z0-9-]+/g, " ") + " ";
-  const hits = D.investigations.filter(i => i.combustion && i.acr).map(i => { const full = i.acr.toLowerCase().split(/\s*\/\s*/).concat(i.acr.toLowerCase().replace(/^acme\s+/, "")); return { i, keys: full.concat(full.map(k => k.replace(/[-\s](i{1,3}|r|2)$/, ""))) }; })
-    .filter(x => x.keys.some(k => k.length > 2 && lq.includes(" " + k + " "))).sort((a, b) => b.i.acr.length - a.i.acr.length).slice(0, 2);
-  return hits.map(({ i }) => `<div class="a"><span class="lab">From the NASA record · ${esc(i.acr)}</span><p>${esc(i.summary || i.title)}</p><p class="fine">${plural(i.rows, "source table row")}, ${plural(D.tests.filter(t => t.i === i.acc).length, "indexed run")}${i.o2 ? `, ambient oxygen ${rangeText(i.o2)}%` : ""}${i.burner_o2 ? `, burner oxidizer oxygen ${rangeText(i.burner_o2)}%` : ""}${i.p ? `, pressure ${rangeText(i.p)} atm` : ""}. ${refLink(i.acc)}</p></div>`).join("");
-}
-function ask(q) {
-  const box = $("#answer"); box.hidden = false;
-  const base = toks(q); if (!base.length) { box.innerHTML = `<div class="a"><p>Type a question first.</p></div>`; return; }
-  const counted = countAnswer(q);
-  const a = bankMatch(base, !!counted);
-  let h = "";
-  if (a) h += `<div class="a"><span class="lab">Prepared analyst answer · sources and numerical checks below</span><p class="lead">${esc(a.a)}</p>` +
-    a.claims.map(c => `<div class="claim"><span class="ok" title="Checked at build time">✓</span><span>${esc(c.text)}</span><span class="src">${c.sources.map(refLink).join(" · ")}</span></div>`).join("") + `</div>`;
-  h += counted + materialAnswer(q) + investigationAnswer(q);
-  const rel = relatedFindings(base, a ? a.claims.flatMap(c => c.sources) : []);
-  if (rel.length) h += `<div class="a"><span class="lab">Related findings</span>${rel.map(f => `<p><a href="#findings" data-go="findings" data-f="${f.id}">${esc(f.title)}</a>. ${esc(f.claim.split(/(?<=\.)\s/)[0])}</p>`).join("")}</div>`;
-  box.innerHTML = h || `<div class="a"><p class="lead">Nothing in the archive answers that.</p><p>Try naming a material, an experiment, a hazard or an oxygen level. QUENCH answers only from NASA's records; it does not guess.</p></div>`;
-}
-function askSetup() {
-  const nClaims = D.answers.reduce((n, a) => n + a.claims.length, 0);
-  $("#asksub").textContent = `Search the run tables by material or cabin atmosphere, or choose a question below. The archive also includes ${D.answers.length} prepared answers with ${nClaims} cited claims. Automated checks cover references and numbers.`;
-  ["Does turning off ventilation put out a fire at 34 % oxygen?", "Has Nomex been tested?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "What is the biggest fire risk for a Moon base?", "What did FLEX do?", "Is the ground flammability test the worst case?"]
-    .forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
-  $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
-}
-
 /* ---------- method ---------- */
 function drawMethod() {
   const R = M.cv.results;
@@ -334,7 +245,7 @@ function drawMethod() {
   <div><h3>Mission check</h3><ul><li>Grades are set by fixed rules, printed under the scorecard, from counts of flight runs near the cabin's oxygen level and pressure.</li><li>Materials are matched by name in the BASS, BASS-II and Saffire tables; smoke-only materials come from SAME.</li><li>The ventilation, agent and smoke rows rest on the findings they link to, including their limits.</li></ul></div>
   <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} source runs excluded). Inputs include oxygen, pressure, fuel, droplet size, carbon dioxide and helium.</li><li>${esc(M.cv.method)}. Mean accuracy ${Math.round(R["Full model"].accuracy.mean * 100)}%, AUC ${f2(R["Full model"].auc.mean)}. Held-out days are from FLEX. Transfer to another fuel system or mission has not been tested here.</li><li>Neighbour distances compare measurements in training standard deviations within the same fuel. The edge warning starts at ${f2(M.domain.nn95)}. A distance above ${f2(2 * M.domain.nn95)} or a value outside a training range triggers extrapolation.</li></ul></div>
   <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second. Spread rates use a steady interval before the fan cut. Fits are repeated at three brightness thresholds.</li><li>B1 sets the pixel scale using the report’s spread rate. ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} additional checks against this experiment passed. The calibration itself is excluded from that total.</li></ul></div>
-  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used to design the QUENCH logo. The cover and candle photographs are credited to NASA. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
+  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>Ask retrieves passages from the challenge organizers’ resources. When available, Claude uses those passages to answer questions. Archive mode shows excerpts from the same collection. Each result identifies its mode and links to its sources. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used to design the QUENCH logo. The cover and candle photographs are credited to NASA. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
   <div><h3>What the challenge asks</h3><ul><li>“${esc(D.challenge.task.text)}”</li><li>Summarise: Briefing, Archive rows, Lessons. Rank: Archive (investigations for a habitat) and Findings (by weights you set). Interpret: Mission check, Findings, Ask.</li><li>${esc(D.challenge.obj_relevant.text)} See <a href="#archive" data-go="archive">Archive</a> and <a href="#mission" data-go="mission">Mission check</a>.</li><li>${esc(D.challenge.obj_data.text)} See the downloads in <a href="#evidence" data-go="evidence">Evidence</a> and the <a href="#lab" data-go="lab">Lab</a>.</li><li>${esc(D.challenge.obj_controls.text)} See <a href="#findings" data-go="findings">Findings</a>, sorted into prevention, detection and suppression.</li><li>${esc(D.challenge.scope.text)} QUENCH leaves rockets and propellants out as well.</li></ul></div>
   <div><h3>Ranking of investigations</h3><ul><li>Four parts, each from 0 to 100, combined with weights you can change: how the challenge statement and PSI tie the investigation to fire safety, how close its fuel is to cabin materials, how close its runs come to the chosen cabin's oxygen and pressure, and how ready its data is to use.</li><li>Tier 1 (${S.tiers["1"]} investigations) is named in the challenge statement as a prevention, detection or suppression study. Tier 2 (${S.tiers["2"]}) is named there as related, filed by PSI under fire safety, or built on a tier 1 study. Tier 3 (${S.tiers["3"]}) is every other combustion investigation, which the statement calls “still relevant to fire safety, just not as strongly or directly”.</li><li>What varied, what stayed the same and what was recorded are computed from each PSI run table. Measurement types are found by keyword in the record, so a type the record does not name is not listed.</li><li>The parts follow NASA's records. The numbers given to them are our judgement and are printed in full under the weights.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
@@ -389,5 +300,5 @@ $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
 $("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;
 
-drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); askSetup(); invSetup();
+drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

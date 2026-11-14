@@ -22,7 +22,7 @@ Research prototype. Not validated for spacecraft design or fire-safety decisions
 | Lab | A predictor for droplet fires trained on 261 FLEX runs (82 % correct on unseen test days against 69 % for the majority-class baseline, and it flags extrapolation), and flame spread measured from NASA's raw BASS-II video (five consistency checks after a one-run calibration). Training runs and model coefficients download |
 | Archive | The 24 investigations ranked for the habitat you pick (station, spacecraft, Moon base or rover, Mars base). Each row shows what it burned, what changed between runs, what stayed the same, what was measured and on which hardware. Compare two or three side by side |
 | Lessons | Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir fire in NASA's words, and three NASA Spinoffs for firefighters |
-| Ask | Questions in plain words, answered from the records only |
+| Ask | Free-form questions answered with linked excerpts from the organizers’ source list |
 
 ## How it answers the challenge
 
@@ -39,16 +39,11 @@ dashboard that "summarizes, ranks, and interprets combustion science investigati
 | Show similarities and differences between investigations | Archive compare, hardware families |
 | Address fire safety on Earth | Lessons |
 
-## Free to run: no API, no key, no server code
+## Ask and the offline dashboard
 
-The page is static files. Open `web/index.html`, or serve the `web/` folder from any web server.
-Nothing calls a model at run time:
+Counts, plots and the fitted FLEX model run locally in the browser. Ask accepts free-form questions. The production server retrieves passages only from the organizers’ NASA resource list, including combustion investigations returned by their PSI search. Claude selects passages to cite; the site displays sourced excerpts and never accepts URLs invented by a model. If the provider is unavailable, Ask labels its answer as archive search. A question unsupported by the approved sources can receive no answer.
 
-- counts and material look-ups are computed in the browser from `web/data.js`;
-- the predictor is a small logistic model shipped in `web/model.js`;
-- the 38 analyst answers in *Ask* were written with SI (AI) ahead of time; the build checks each of
-  the cited records and numeric tokens for these answers (the records must exist and the checked values must appear in
-  them with the same unit) and stops if one fails.
+Only the server holds the two API credentials. For installation, renewal and fallback behavior see [Ask service](deploy/ASK.md).
 
 ## Put it on a server
 
@@ -99,6 +94,5 @@ pip install -r requirements-dev.txt
 NASA Space Apps 2026 uses the term Super Intelligence (SI) for AI. Claude (Anthropic) was used while
 building: to write code, normalise the tables, and draft the investigation summaries, the wording of the
 findings and the analyst answers. Source files, the page metadata and the download README carry an SI
-notice. Code checks the SI-drafted text against NASA's records at build time. No model runs when the page
-is used. The predictor is a machine-learning model trained here on NASA data; the video lab is computer
+notice. Code checks the SI-drafted text against NASA's records at build time. The optional Ask endpoint sends the question and selected organizer-source passages to the configured Claude provider. The predictor is a machine-learning model trained here on NASA data; the video lab is computer
 vision. OpenAI Codex assisted with the interface redesign and the run-table and source audit. OpenAI image generation was used for the QUENCH logo design and an earlier cover illustration. The current cover is a NASA photograph of Jessica Watkins operating SoFIE hardware (ISS067-E-170237). The candle comparison is NASA Glenn image GRC-1998-C-00485. Experimental frames in the Lab are from NASA BASS-II video.

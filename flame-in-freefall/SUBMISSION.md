@@ -86,8 +86,7 @@ plain words, answered from the records only).
 **How it works.** Python scripts read the raw PSI tables, clean them without guessing missing values,
 calculate run counts and measurement ranges, match every quote word for word against a saved copy of its source
 (including the challenge statement), and stop the build if anything does not match. Automated regression tests
-recount key facts from the raw CSV files with independent code. The site is static HTML and JavaScript:
-no server code, no API, no key, nothing to pay.
+recount key facts from the raw CSV files with independent code. The dashboard and its figures run as static HTML and JavaScript. Ask optionally uses a server-side Claude API to select supporting passages, and can return linked archive excerpts when the API is unavailable.
 
 **Benefits.** A mission designer gets an evidence check for their own cabin, with sources and a ranked
 test list, in seconds. A researcher or student sees which investigations to read first, how they differ
@@ -110,13 +109,11 @@ Yes. We used Claude (Anthropic), a large language model, throughout the project:
   pages and the tests were written with SI assistance. Source files and the page metadata say so.
 - Data: SI-written code renames columns and converts units. The values are NASA's. The download files
   carry a notice in their README.
-- Text: the one-line investigation summaries, the wording of the 15 findings and the 38 analyst answers
-  in the Ask section were drafted with SI. The page labels them as SI drafts.
+- Text: the one-line investigation summaries, the wording of the 15 findings and the original answer bank were drafted with SI. The live Ask feature now selects evidence from organizer-provided sources.
 - Analysis and design: SI helped explore the PSI tables, proposed analyses and helped lay out the pages
   and the slides.
 
-The build script calculates the run statistics, checks the answer bank for source references and numeric tokens, and compares selected quotations with archived originals. These checks cannot certify an interpretation; the dashboard distinguishes observations, project-defined rules and open questions. No
-model runs when the site is used. The predictor is a machine-learning model trained on NASA data and the
+The build script calculates the run statistics, checks the answer bank for source references and numeric tokens, and compares selected quotations with archived originals. These checks cannot certify an interpretation; the dashboard distinguishes observations, project-defined rules and open questions. Ask sends a submitted question and evidence excerpts to the configured Claude provider when available. Its output mode is labeled; the static dashboard calculations do not use the API. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
 OpenAI Codex assisted with the interface redesign and the run-table and source audit. OpenAI image generation was used for the QUENCH logo and an earlier orbital illustration.

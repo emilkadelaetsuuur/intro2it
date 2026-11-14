@@ -62,43 +62,6 @@
 body:has(main :is(.frame, #cabin-chart):is(:hover, :focus-within)),
 body:has(#cosmo-panel:not([hidden])) { --sky-play: paused; }
 .report-cover { overflow:clip; margin-bottom:clamp(24px,2.7vw,48px); }
-.lunar-stage {
-  position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
-  align-items:center; min-height:clamp(490px,39vw,630px); padding-block:clamp(42px,4.3vw,74px);
-}
-.cover-copy { min-width:0; position:relative; z-index:1; }
-.collection-name { display:flex; align-items:center; gap:12px; color:var(--ink2); font:500 11px/1.5 var(--mono); letter-spacing:.115em; text-transform:uppercase; }
-.collection-name::before { content:""; width:29px; height:3px; background:linear-gradient(112deg,var(--accent) 0 57%,transparent 59% 68%,var(--orbit-blue) 70%); }
-.report-cover h1 { font:600 clamp(76px,7.6vw,124px)/.88 var(--sans); letter-spacing:-.065em; margin:18px 0 20px -.05em; color:var(--ink); }
-.report-cover h1 span { display:block; }
-.cover-deck { font:400 clamp(17px,1.3vw,21px)/1.48 var(--sans); color:var(--ink2); max-width:39ch; text-wrap:pretty; }
-.cover-tour { display:flex; align-items:center; flex-wrap:wrap; gap:12px clamp(18px,2vw,32px); margin:25px 0 0; }
-.explore-map, .cover-tour .tour-link { display:inline-flex; gap:11px; align-items:center; min-height:44px; font:600 15px/1.2 var(--sans); text-decoration:none; }
-.explore-map { color:#19120f; background:var(--accent); padding:12px 18px; border-radius:3px; }
-.explore-map span { font:500 20px/.8 var(--sans); }
-.explore-map:hover { background:#ff9e83; }
-.cover-tour .tour-link { background:transparent; color:var(--ink); border:0; padding:3px 0; }
-.cover-tour .tour-link:hover { color:var(--blue); }
-.play-tour { display:grid; place-content:center; width:21px; height:21px; border:1px solid currentColor; border-radius:50%; }
-.play-tour::after { content:""; margin-left:2px; border-block:3px solid transparent; border-left:5px solid currentColor; }
-.lunar-plate { position:absolute; z-index:0; inset:0 calc(var(--gutter) * .65) 0 44%; margin:0; display:grid; align-items:center; justify-items:center; pointer-events:none; }
-:root:not([data-theme="light"]) .lunar-plate { mix-blend-mode:screen; }
-.lunar-sight { position:relative; width:min(100%,clamp(450px,39vw,635px)); aspect-ratio:1; display:grid; place-items:center; }
-.lunar-ring { position:absolute; inset:12% -5%; pointer-events:none; border:1px solid rgb(137 177 245 / .49); border-radius:50%; transform:rotate(-28deg); }
-.lunar-ring::before { content:""; position:absolute; inset:-6% -3.5%; border:1px solid rgb(151 186 241 / .22); border-radius:inherit; }
-.lunar-ring::after { content:""; position:absolute; width:5px; height:5px; left:14.1%; top:14.1%; background:#ffad91; border-radius:50%; box-shadow:0 0 0 3px #1b2531; }
-.lunar-sight::after {
-  content:""; position:absolute; left:-17%; bottom:23%; width:128%; height:21%;
-  border-bottom:2px solid #f16c55; border-radius:0 0 54% 46%; transform:rotate(-24deg);
-  mask-image:linear-gradient(90deg, transparent 1%, black 15% 79%, transparent 98%); pointer-events:none;
-}
-.lunar-sight picture { display:block; position:relative; width:89%; aspect-ratio:1; border-radius:50%; overflow:hidden; }
-:root[data-theme="light"] .lunar-sight picture { clip-path:circle(45.5% at 49.5% 50%); }
-.lunar-sight img { width:100%; height:100%; display:block; object-fit:contain; }
-.lunar-plate figcaption { position:absolute; right:2.5%; bottom:18px; text-align:right; }
-.lunar-plate figcaption a { pointer-events:auto; display:inline-flex; align-items:center; gap:8px; min-height:32px; color:var(--ink2); font:500 12px/1.3 var(--sans); text-decoration:none; }
-.lunar-plate figcaption a span { color:var(--ink3); }
-.lunar-plate figcaption a:hover { text-decoration:underline; text-underline-offset:3px; }
 .collection-index { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-block:1px solid var(--rule); }
 .collection-index a { display:flex; align-items:center; gap:clamp(12px,1.3vw,24px); min-width:0; position:relative; padding:clamp(16px,1.65vw,24px) 12px; color:var(--ink2); font:500 clamp(13px,1.2vw,17px)/1.15 var(--sans); text-decoration:none; }
 .collection-index a:first-child { padding-left:0; }
@@ -197,27 +160,12 @@ footer a { margin-left:auto; }
   .tabs { grid-column:1/-1; gap:23px; margin-inline:calc(-1 * var(--gutter)); padding-inline:var(--gutter); }
   .tabs a { min-height:40px; }
   html { scroll-padding-top:96px; }
-  .lunar-plate { inset-inline:44% 0; }
-  .lunar-stage { min-height:474px; }
   .cabin-header, .cabin-body { gap:20px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
   .oxygen-story { gap:26px; }
 }
 @media (max-width:680px) {
   #main-content::before { height:730px; }
   .oxygen-story, .cabin-body { grid-template-columns:minmax(0,1fr); }
-  .lunar-stage { grid-template-columns:1fr; min-height:0; padding-block:26px 38px; }
-  .collection-name { font-size:9px; gap:8px; letter-spacing:.09em; }
-  .collection-name::before { width:18px; }
-  .report-cover h1 { font-size:clamp(54px,15.2vw,94px); margin:clamp(30px,7vw,48px) 0 clamp(26px,7vw,48px) -.05em; }
-  .cover-deck { font-size:16px; max-width:40ch; }
-  .cover-tour { gap:clamp(9px,3vw,18px); margin-top:19px; }
-  .cover-tour .tour-link, .explore-map { font-size:14px; gap:8px; }
-  .explore-map { padding-inline:13px; }
-  .lunar-plate { inset:0; display:block; }
-  .lunar-sight { position:absolute; right:-2%; top:32px; width:47%; }
-  .lunar-sight::after { left:-7%; bottom:25%; width:118%; border-width:1px; }
-  .lunar-plate figcaption { bottom:2px; right:var(--gutter); }
-  .lunar-plate figcaption a { font-size:11px; min-height:27px; }
   .collection-index a { align-items:flex-start; flex-direction:column; gap:5px; font-size:12px; padding:13px 6px 14px; }
   .collection-index a + a { padding-left:12px; }
   .collection-index b { font-size:32px; }
@@ -230,11 +178,7 @@ footer a { margin-left:auto; }
   footer a { margin-left:0; }
 }
 @media (prefers-reduced-motion:no-preference) {
-  :root:not([data-sky-paused]) .lunar-sight picture { transform:translateY(var(--lunar-depth, 0px)); }
-  :root:not([data-sky-paused]) .lunar-ring { translate:0 calc(var(--lunar-depth, 0px) * .35); }
   .star-field::after { animation: star-drift 38s ease-in-out -13s infinite alternate; animation-play-state: var(--sky-play, running); }
-  :root:not([data-theme="light"]) .lunar-ring { animation: lunar-arc 44s ease-in-out infinite alternate; animation-play-state: var(--sky-play, running); }
-  @keyframes lunar-arc { from { transform:rotate(-28deg); } to { transform:rotate(-25deg); } }
   @keyframes star-drift {
     from { transform: translate(-12px, -4px); }
     to { transform: translate(12px, 4px); }

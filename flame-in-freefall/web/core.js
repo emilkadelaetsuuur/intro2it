@@ -174,29 +174,36 @@ function chips() {
 }
 let hit = [];
 function drawMap() {
-  const box = $("#chart"), W = Math.max(300, box.clientWidth), small = W < 620;
-  const m = { l: small ? 42 : 60, r: small ? 12 : 22, t: 26 }, mainH = small ? 290 : 380, rowH = 44, gap = 46;
+  const box = $("#chart"), W = Math.max(240, box.clientWidth), small = W < 620;
+  const m = { l: small ? 42 : 60, r: small ? 12 : 22, t: small ? 55 : 26 };
+  const mainH = small ? 290 : 380, rowH = 44, gap = small ? 76 : 46;
   const stripY = m.t + mainH + gap, H = stripY + rowH * 2 + 44;
   const x = o => m.l + (o - X0) / (X1 - X0) * (W - m.l - m.r);
   const Y0 = 0.4, Y1 = 6, y = p => m.t + (1 - Math.log(p / Y0) / Math.log(Y1 / Y0)) * mainH;
   const rad = n => 2.6 + (small ? 1.5 : 1.9) * Math.sqrt(n);
   const T = target(); hit = [];
   let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flight test runs by oxygen level and pressure" xmlns="http://www.w3.org/2000/svg">`;
+  if (small) {
+    const selected = `${T.name} · ${f1(T.o2)}% O₂ · ${f1(T.psia)} psia`;
+    s += `<desc>Selected cabin: ${esc(selected)}. The lower rows show oxygen levels for solid-material runs and gas-burner test days without recorded pressure.</desc>
+      <text x="6" y="15" fill="var(--red)" font-size="13" font-weight="600">${esc(selected)}</text>`;
+  }
   for (let o = X0; o <= X1; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="${m.t}" y2="${m.t + mainH}" stroke="var(--rule)"/><text x="${x(o)}" y="${m.t + mainH + 16}" text-anchor="middle" font-size="11" font-family="var(--mono)">${o}</text>`;
   [0.5, 0.7, 1, 2, 3, 5].forEach(p => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" stroke="var(--rule)"/><text x="${m.l - 7}" y="${y(p) + 4}" text-anchor="end" font-size="11" font-family="var(--mono)">${p}</text>`; });
-  s += `<text x="${m.l}" y="14" font-size="11" fill="var(--ink3)" font-family="var(--mono)">PRESSURE, ATM (LOG SCALE)</text><text x="${W - m.r}" y="${m.t + mainH + 32}" text-anchor="end" font-size="11" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
+  s += `<text x="${m.l}" y="${m.t - 12}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">PRESSURE, ATM (LOG SCALE)</text><text x="${W - m.r}" y="${m.t + mainH + 32}" text-anchor="end" font-size="11" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
   const mp = S.moon_psia_max / PSIA;
   s += `<rect x="${x(S.moon_o2_min)}" y="${y(mp)}" width="${x(X1) - x(S.moon_o2_min)}" height="${y(Y0) - y(mp)}" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-opacity=".7" stroke-dasharray="4 4"/>`;
   s += `<text x="${x(X1) - 6}" y="${y(Y0) - 7}" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${small ? "MOON RANGE" : `MOON BASE RANGE: ${f1(S.moon_o2_min)} % OR MORE, ${f1(S.moon_psia_max)} PSI OR LESS`}</text>`;
   const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = T.p * (1 + S.p_window), wy1 = T.p * (1 - S.p_window);
   s += `<rect x="${x(wx0)}" y="${y(wy0)}" width="${x(wx1) - x(wx0)}" height="${y(wy1) - y(wy0)}" fill="var(--red)" fill-opacity=".08" stroke="var(--red)" stroke-width="1.5"/>`;
-  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${stripY + rowH * 2}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
+  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${small ? m.t + mainH : stripY + rowH * 2}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
+  if (small) s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${stripY}" y2="${stripY + rowH * 2}" stroke="var(--red)" stroke-opacity=".6"/>`;
   [["Solid materials", "pressure not in table"], ["Gas burner standing in for solids", "ACME BRE, pressure not listed"]].forEach((r, i) => {
     const cy = stripY + rowH * i + rowH / 2;
     s += `<line x1="${m.l}" x2="${W - m.r}" y1="${cy}" y2="${cy}" stroke="var(--rule)"/>`;
     s += `<text x="${m.l}" y="${cy - rowH / 2 + 9}" font-size="11.5" font-weight="700" fill="var(--ink)">${r[0]}<tspan font-weight="400" fill="var(--ink3)">  ${small ? "" : r[1]}</tspan></text>`;
   });
-  s += `<text x="${m.l}" y="${stripY - 16}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">RUNS WITH AN OXYGEN LEVEL BUT NO PRESSURE IN THE TABLE</text>`;
+  s += `<text x="${m.l}" y="${stripY - 16}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${small ? "OXYGEN ONLY · PRESSURE UNRECORDED" : "RUNS WITH AN OXYGEN LEVEL BUT NO PRESSURE IN THE TABLE"}</text>`;
   const marks = [];
   groups.filter(g => state.kinds[g.k] && g.o <= X1).forEach(g => marks.push({ cx: x(g.o), cy: y(g.p), r: rad(g.n), g, hollow: false }));
   if (state.kinds.solid) solidStrip.forEach(g => marks.push({ cx: x(g.o), cy: stripY + rowH / 2 + 4, r: rad(g.n), g, hollow: true, strip: "solid" }));
@@ -209,7 +216,7 @@ function drawMap() {
   list.forEach(a => {
     const on = a.id === T.id, cx = x(a.o2), cy = y(a.p), col = on ? "var(--red)" : "var(--ink)";
     s += `<g pointer-events="none"><rect x="${cx - (on ? 5 : 4)}" y="${cy - (on ? 5 : 4)}" width="${on ? 10 : 8}" height="${on ? 10 : 8}" fill="var(--bg)" stroke="${col}" stroke-width="${on ? 2 : 1.4}"/><line x1="${cx - 12}" x2="${cx + 12}" y1="${cy}" y2="${cy}" stroke="${col}" stroke-width="${on ? 1.6 : 1}"/><line x1="${cx}" x2="${cx}" y1="${cy - 12}" y2="${cy + 12}" stroke="${col}" stroke-width="${on ? 1.6 : 1}"/>`;
-    if (on || !small) { const lab = on ? `${a.name}: ${f1(a.o2)} %, ${f1(a.psia)} psia` : a.short; const right = cx + 16 + lab.length * 6.6 > W - m.r;
+    if (!small) { const lab = on ? `${a.name}: ${f1(a.o2)} %, ${f1(a.psia)} psia` : a.short; const right = cx + 16 + lab.length * 6.6 > W - m.r;
       s += `<text x="${right ? cx - 15 : cx + 15}" y="${on ? y(a.p * (1 + S.p_window)) - 8 : cy - 13}" text-anchor="${right ? "end" : "start"}" font-size="${on ? 12.5 : 11.5}" font-weight="${on ? 700 : 400}" fill="${on ? "var(--red)" : "var(--ink)"}" stroke="var(--bg)" stroke-width="3.5" paint-order="stroke">${esc(lab)}</text>`; }
     s += "</g>";
   });

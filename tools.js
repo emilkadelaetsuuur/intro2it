@@ -415,5 +415,5 @@ skyMotion.addEventListener("click", () => {
   try { localStorage.setItem("quench-sky-paused", paused ? "yes" : "no"); } catch { /* Still applies to this page. */ }
 });
 
-drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
+setupCabinCoverage(); drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

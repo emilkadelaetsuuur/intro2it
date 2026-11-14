@@ -229,7 +229,11 @@ class ReleasedArchiveTests(unittest.TestCase):
                 ("How did spacesuit technology change firefighters’ air tanks?", "spinoff-air-tanks"),
                 ("Что стало причиной пожара на станции Мир?", "mir-cause"),
                 ("Что измерял эксперимент SAME?", "psi102-approach-1"),
-                ("Как NASA улучшило дыхательные баллоны пожарных?", "spinoff-air-tanks")]:
+                ("Как NASA улучшило дыхательные баллоны пожарных?", "spinoff-air-tanks"),
+                ("Что измерял SAME в дыме на космической станции?", "psi102-approach-1"),
+                ("Из-за чего начался пожар на станции Мир в 1997 году?", "mir-cause"),
+                ("Каким стал воздушный баллон для пожарных?", "spinoff-air-tanks"),
+                ("How many FLEX tests ended in extinction?", "psi69-test-ends")]:
             with self.subTest(q=q):
                 result = archive.fallback(q, archive.find(q))
                 self.assertEqual([r["id"] for r in result], [identifier])

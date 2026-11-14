@@ -64,6 +64,12 @@ for _ in {1..24}; do
 done
 [[ $ready = 1 ]]
 systemctl reload nginx
-curl --noproxy '*' -fsS --max-time 8 --resolve nasa.cartify.ink:443:127.0.0.1 -H 'Content-Type: application/json' --data '{"question":"weather on Saturn?"}' https://nasa.cartify.ink/api/ask | python3 -c 'import json,sys; r=json.load(sys.stdin); assert r["supported"] is False and not r["sources"]'
+public_ready=0
+# nginx signals its master asynchronously; old workers can briefly serve the prior vhost.
+for _ in {1..20}; do
+    if curl --noproxy '*' -fsS --max-time 3 --resolve nasa.cartify.ink:443:127.0.0.1 -H 'Content-Type: application/json' --data '{"question":"weather on Saturn?"}' https://nasa.cartify.ink/api/ask > "$backup/https-smoke.json" && python3 -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["supported"] is False and not r["sources"]' "$backup/https-smoke.json"; then public_ready=1; break; fi
+    sleep 0.5
+done
+[[ $public_ready = 1 ]]
 trap - ERR
 echo "Verified QUENCH Ask at its HTTPS origin. Prior configuration: $backup"

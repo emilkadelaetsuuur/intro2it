@@ -62,7 +62,8 @@ its me of on or our that the their there these they this to was were what when w
 who why will with would you your about actually any tell please explain give describe find
 show using used use during between happen happens happened help according aboard during nasa
 что как на и ли или в во с со у от к по для из это чем при почему какие какой какая
-каковы каких какую сколько чем они было были была за так расскажи пожалуйста про можно
+каковы каких какую каким чем они было были была за так расскажи пожалуйста про можно году года
+год стал стали стала стало чего
 """.split())
 ALIASES = {
     "o2": "oxygen", "o₂": "oxygen", "fan": "flow", "fans": "flow", "airflow": "flow",
@@ -78,6 +79,7 @@ ALIASES = {
     "weightlessness": "microgravity", "weightless": "microgravity",
     "cause": "cause", "caused": "cause", "scientific": "science", "astronauts": "crew",
     "changed": "change", "improve": "change", "improved": "change", "redesigned": "change",
+    "ended": "end", "ending": "end", "ends": "end", "tests": "test",
 }
 # Translate query vocabulary only. Source text is always rendered from the local corpus.
 RUSSIAN = {
@@ -94,7 +96,8 @@ RUSSIAN = {
     "баллон": "tank", "дыхател": "breathing", "материал": "material", "измер": "measurement",
     "топлив": "fuel", "эксперимент": "experiment", "исследован": "investigation",
     "причин": "cause", "сфери": "spherical", "форм": "shape", "мкс": "iss",
-    "улучш": "change", "измен": "change", "стал": "cause",
+    "улучш": "change", "измен": "change", "воздуш": "air", "космическ": "space",
+    "нача": "cause", "сколько": "many", "заверш": "end",
 }
 
 
@@ -158,21 +161,29 @@ class Archive:
             for pos, in_title in self.postings[word]:
                 matched[pos] += 1
                 numeric[pos] += int(word[0].isdigit())
-                scores[pos] += weight * (1.6 if in_title else 1)
+                factor = 1.6 if in_title else 1
+                if qualified_entities and word in {"experiment", "investigation", "study"}:
+                    factor *= .3
+                scores[pos] += weight * factor
         # One overlapping word in a long question is insufficient for a public citation.
         minimum = max(1, math.ceil(len(words) * .40))
         if len(words) > 1:
             minimum = max(2, minimum)
         for pos in scores:
+            record = self.records[pos]
             if self.experiments[pos] & qualified_entities:
                 scores[pos] += 8
             elif self.experiments[pos] and qualified_entities:
                 scores[pos] *= .4
             # Catalog metadata names a study and platform. Questions about measurements
             # and findings need the research description, even if its title is shorter.
-            if self.records[pos]["id"].endswith("-record") and len(words) > 1:
-                if words.isdisjoint({"platform", "title", "name", "station", "type", "where"}):
+            if record["id"].endswith("-record") and len(words) > 1:
+                if words.isdisjoint({"platform", "title", "name", "type", "where"}):
                     scores[pos] *= .65
+            if "measurement" in words and "research approach" in record["title"].lower():
+                scores[pos] += 4
+            if "many" in words and record["id"].endswith("-test-ends"):
+                scores[pos] += 3
         matches = []
         per_source = Counter()
         for pos, _ in scores.most_common():

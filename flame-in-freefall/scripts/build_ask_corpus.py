@@ -35,7 +35,7 @@ LINK = re.compile(r"https?://|www\.|\bdoi\.org/|\b10\.\d{4,9}/", re.I)
 
 
 def compact(text):
-    return " ".join(text.split())
+    return " ".join(text.replace("\x07", "").split())
 
 
 def item(key, title, url, text):
@@ -80,7 +80,7 @@ def article_chunks():
          "For flame spread across solid materials, the ordinate", "implications for spacecraft fire safety."),
         (31, "lowflow", "Direction of flame spread at low airflow",
          "Another related phenomenon", "absence of forced flow."),
-        (31, "limits", "BASS oxygen limits and suppression results",
+        (31, "limits", "BASS oxygen limits and fire suppression when ventilation is turned off",
          "Recent results from the BASS experiment", "ambient airflow is turned off."),
         (33, "cool", "FLEX cool flames after visible extinction",
          "Recent spaceflight experiments (FLEX)", "forms after visible flame extinction."),
@@ -92,6 +92,11 @@ def article_chunks():
     for page, key, title, start, end in fragments:
         text = span(guide[page - 1], start, end)
         yield item("guide-" + key, f"{title} · Researcher’s Guide, p. {page}", GUIDE, text)
+    # Preserve the preceding label and following refutation in one excerpt.
+    safety = span(guide[34], "This resulted in several critical misconceptions",
+                  "material flammability and screening.")
+    yield item("guide-ventilation", "Can shutting off ventilation always extinguish a "
+               "spacecraft fire? · Researcher’s Guide, p. 35", GUIDE, safety)
 
     guide_intro = snapshot("researchers-guide-combustion_nasa.txt")
     yield item("guide-overview", "A Researcher’s Guide to Combustion Science", GUIDE,
@@ -163,6 +168,9 @@ def metadata_chunks(number, study, citation):
               ("hypothesis", "Research hypothesis"))
     for field, label in fields:
         content = compact(study[field])
+        title = f"{citation} · {label}"
+        if number == 102 and field in ("objective", "approach"):
+            title = f"SAME spacecraft smoke particle size measurements (PSI-102) · {label}"
         # Two PSI fields are bibliographies, not standalone evidence.
         if not content or LINK.search(content):
             continue
@@ -175,12 +183,12 @@ def metadata_chunks(number, study, citation):
                 raise ValueError(f"Unsegmented PSI field: PSI-{number} {field}")
             if chunk and len(chunk) + len(section) + len(label) + 3 > MAX_TEXT:
                 index += 1
-                yield item(f"psi{number}-{field}-{index}", f"{citation} · {label}",
+                yield item(f"psi{number}-{field}-{index}", title,
                            PSI_URL + study["accession"], f"{label}: {chunk}")
                 chunk = ""
             chunk = (chunk + " " + section).strip()
         if chunk:
-            yield item(f"psi{number}-{field}-{index+1}", f"{citation} · {label}",
+            yield item(f"psi{number}-{field}-{index+1}", title,
                        PSI_URL + study["accession"], f"{label}: {chunk}")
 
 
@@ -271,13 +279,13 @@ def table_chunks(number, table, acronym):
     if number == 69:
         counts = Counter(row[-1] for row in rows if any(row))
         summary = ", ".join(f"{n} {label}" for label, n in sorted(counts.items()))
-        yield item("psi69-test-ends", "FLEX · recorded test-end outcomes", url,
+        yield item("psi69-test-ends", "FLEX · test counts for extinction, completion and disruption", url,
                    f"FLEX (PSI-69) experimental table. Across {sum(counts.values())} data rows, "
                    f"the values in the Test end column are {summary}.")
         for fuel in sorted({row[4] for row in rows if any(row)}):
             fuel_ends = Counter(row[-1] for row in rows if any(row) and row[4] == fuel)
             ends = ", ".join(f"{n} {label}" for label, n in sorted(fuel_ends.items()))
-            yield item(f"psi69-ends-{fuel.lower()}", f"FLEX · {fuel} droplet test-end outcomes",
+            yield item(f"psi69-ends-{fuel.lower()}", f"FLEX · {fuel} droplet tests ending in extinction, completion and disruption",
                        url, f"The FLEX (PSI-69) table lists {sum(fuel_ends.values())} rows for "
                        f"{fuel}. Recorded values in the Test end column: {ends}.")
     if number == 98:

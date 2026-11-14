@@ -285,9 +285,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=a6d8098071">
+<link rel="stylesheet" href="console.css?v=5b1240f8df">
 <link rel="stylesheet" href="cosmo.css?v=8df6d73ce7">
-<link rel="stylesheet" href="flight.css?v=dcbf9bd7d8">
+<link rel="stylesheet" href="flight.css?v=3d474238d9">
+<link rel="stylesheet" href="flight-gallery.css?v=bbb13f238b">
 <link rel="stylesheet" href="briefing.css?v=82ea3259dd">
 <link rel="stylesheet" href="evidence-inspector.css?v=f99b492421">
 </head>
@@ -305,27 +306,69 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <div class="star-field" aria-hidden="true"></div>
 <div class="page" id="v-brief">
   <section class="report-cover" aria-labelledby="hero-title">
-    <div class="wrap lunar-stage">
-      <div class="cover-copy">
-        <p class="collection-name">Spaceflight combustion archive</p>
-        <h1 id="hero-title">Flame in <span>freefall</span></h1>
-        <p class="cover-deck">Explore NASA’s fire experiments in orbit. Compare the flight data with conditions inside a future lunar cabin.</p>
-        <div class="cover-tour">
-          <a class="explore-map" href="#evidence" data-go="evidence">Explore the evidence <span aria-hidden="true">↗</span></a>
-          <button type="button" class="tour-link" data-tour-start><span class="play-tour" aria-hidden="true"></span>60-second tour</button>
-        </div>
-      </div>
-      <figure class="lunar-plate">
-        <div class="lunar-sight">
-          <span class="lunar-ring" aria-hidden="true"></span>
+    <div class="lunar-stage">
+      <div class="lunar-sight" aria-label="Artemis II flight photographs" role="group">
+        <figure data-frame="earthlight" data-title="Hello, World" data-date="2026-04-02" data-record="https://www.nasa.gov/image-article/hello-world/" aria-hidden="false">
+          <picture>
+            <source media="(max-width: 680px)" srcset="img/artemis-earthlight-mobile.webp">
+            <img src="img/artemis-earthlight.webp" width="1920" height="1144" fetchpriority="high" alt="The blue Earth seen from Orion, with spiralling white clouds, the African continent and a thin green aurora at the edge.">
+          </picture>
+        </figure>
+        <figure data-frame="eclipse" data-title="Artemis II in eclipse" data-date="2026-04-06" data-record="https://www.nasa.gov/image-detail/amf-art002e009301/" aria-hidden="true">
+          <picture>
+            <source media="(max-width: 680px)" srcset="img/artemis-eclipse-mobile.webp">
+            <img src="img/artemis-eclipse.webp" width="1920" height="1144" loading="lazy" alt="A halo of sunlight surrounds the dark lunar disk. Stars and faint details on the Moon are visible from Orion.">
+          </picture>
+        </figure>
+        <figure data-frame="orion" data-title="Orion, the Moon and Earth" data-date="2026-04-06" data-record="https://www.nasa.gov/image-detail/amf-art002e009567/" aria-hidden="true">
+          <picture>
+            <source media="(max-width: 680px)" srcset="img/artemis-orion-mobile.webp">
+            <img src="img/artemis-orion.webp" width="1920" height="1144" loading="lazy" alt="Orion’s sunlit hull faces the crescent Moon. A small blue crescent of Earth appears just past the lunar horizon.">
+          </picture>
+        </figure>
+        <figure data-frame="flyby" data-title="The Moon during the Artemis II flyby" data-date="2026-04-06" data-record="https://www.nasa.gov/image-detail/amf-art002e009582/" aria-hidden="true">
           <picture>
             <source media="(max-width: 680px)" srcset="img/lunar-cover-mobile.webp">
-            <img src="img/lunar-cover.webp" width="1440" height="1440" fetchpriority="high" alt="The Moon seen by the Artemis II crew, with craters along the left edge of the sunlit surface.">
+            <img src="img/lunar-cover.webp" width="1440" height="1440" loading="lazy" alt="Craters pick up sunlight along the shadowed edge of the Moon as the Artemis II crew flies past.">
           </picture>
+        </figure>
+      </div>
+      <div class="wrap cover-content">
+        <div class="cover-copy">
+          <p class="collection-name">Spaceflight combustion archive</p>
+          <h1 id="hero-title">Flame in <span>freefall</span></h1>
+          <p class="cover-deck">What happens when fire breaks out beyond Earth? Explore NASA’s flight experiments and the air a lunar crew will breathe.</p>
+          <div class="cover-tour">
+            <a class="explore-map" href="#evidence" data-go="evidence">Explore the evidence <span aria-hidden="true">↗</span></a>
+            <button type="button" class="tour-link" data-tour-start><span class="play-tour" aria-hidden="true"></span>60-second tour</button>
+          </div>
         </div>
-        <figcaption><a href="https://www.nasa.gov/image-detail/amf-art002e009582/" target="_blank" rel="noopener">Artemis II lunar flyby <span>NASA ↗</span></a></figcaption>
-      </figure>
+      </div>
+      <div class="wrap cover-rail">
+        <div class="photo-credit">
+          <p>Orion <span>/</span> Artemis II <span>/</span> <time datetime="2026-04-02">02 Apr 2026</time></p>
+          <a id="photo-source" href="https://www.nasa.gov/image-article/hello-world/" target="_blank" rel="noopener">Hello, World <span>NASA ↗</span></a>
+        </div>
+        <div class="photo-controls" role="group" aria-label="Choose a flight photograph">
+          <button type="button" data-photo="earthlight" aria-pressed="true"><span class="photo-thumb" aria-hidden="true"></span>Earth</button>
+          <button type="button" data-photo="eclipse" aria-pressed="false"><span class="photo-thumb" aria-hidden="true"></span>Eclipse</button>
+          <button type="button" data-photo="orion" aria-pressed="false"><span class="photo-thumb" aria-hidden="true"></span>Orion</button>
+          <button type="button" data-photo="flyby" aria-pressed="false"><span class="photo-thumb" aria-hidden="true"></span>Moon</button>
+        </div>
+        <button type="button" id="photo-open" aria-label="Enlarge selected photograph" title="Enlarge photograph" aria-haspopup="dialog" aria-controls="photo-viewer"><span class="zoom-glyph" aria-hidden="true"></span></button>
+      </div>
     </div>
+    <dialog id="photo-viewer" aria-labelledby="viewer-title">
+      <div class="photo-viewer-bar">
+        <span>Artemis II <time class="viewer-date" datetime="2026-04-02">02 Apr 2026</time></span>
+        <button type="button" id="photo-close" autofocus>Close <span aria-hidden="true">×</span></button>
+      </div>
+      <div class="photo-viewer-image"></div>
+      <div class="photo-viewer-foot">
+        <div aria-live="polite"><h2 id="viewer-title">Hello, World</h2><a id="viewer-source" href="https://www.nasa.gov/image-article/hello-world/" target="_blank" rel="noopener">View original at NASA ↗</a></div>
+        <div class="viewer-arrows"><button type="button" data-step="-1" aria-label="Previous photograph">←</button><button type="button" data-step="1" aria-label="Next photograph">→</button></div>
+      </div>
+    </dialog>
     <div class="wrap"><nav class="collection-index" id="overview-metrics" aria-label="Explore the archive"></nav></div>
   </section>
   <div class="wrap cabin-workspace">
@@ -636,6 +679,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 <script src="evidence-inspector.js?v=3ac71db7c2"></script>
 <script src="archive.js?v=5e28c151e7"></script>
 <script src="tools.js?v=56cafcf6e3"></script>
+<script src="flight-gallery.js?v=591ee6f395"></script>
 <script src="tour.js?v=e2d58c53a7"></script>
 <script src="cosmo-reactions.js?v=21b0f28681"></script>
 <script src="ask.js?v=ba9b06d895"></script>

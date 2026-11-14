@@ -1,0 +1,195 @@
+/* The flight photographs fill the opening spread. The instruments use their own surfaces below. */
+.lunar-stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  isolation: isolate;
+  overflow: clip;
+  background: #05070b;
+  color: #f5f4f0;
+  min-height: clamp(560px, min(54vw, 85svh), 850px);
+  cursor: zoom-in;
+}
+.cover-copy, .cover-rail { cursor: auto; }
+.lunar-sight, .lunar-sight figure, .lunar-sight picture, .lunar-sight img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.lunar-sight { z-index: -2; pointer-events: none; }
+.lunar-sight figure { overflow: hidden; opacity: 0; }
+.lunar-sight figure[aria-hidden="false"] { opacity: 1; z-index: 1; }
+.lunar-sight picture { inset: -18px 0; height: calc(100% + 36px); }
+.lunar-sight img { object-fit: cover; object-position: 50% 48%; }
+.lunar-sight [data-frame="orion"] { background: #050609; }
+.lunar-sight [data-frame="orion"] img {
+  inset-inline: auto 0;
+  width: 74%;
+  object-position: right center;
+  mask-image: linear-gradient(90deg, transparent, #000 28%);
+}
+.lunar-sight [data-frame="flyby"] { background: #020407; }
+.lunar-sight [data-frame="flyby"] img {
+  width: clamp(620px, 79vw, 1540px);
+  height: auto;
+  inset: 45% -6% auto auto;
+  transform: translateY(-50%);
+  mix-blend-mode: screen;
+}
+.lunar-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #06090ed9, #06090e8a 26%, transparent 56%),
+              linear-gradient(0deg, #06090f 0%, #06090fa6 9%, transparent 31%);
+}
+.cover-content, .cover-rail { width: 100%; }
+.cover-content { align-self: center; padding-block: clamp(38px, 4.7vw, 88px) 22px; }
+.cover-copy { width: min(55%, 780px); }
+.collection-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 500 clamp(13px, 1.05vw, 18px)/1.3 var(--sans);
+  color: #e6e3df;
+}
+.collection-name::before { content: ""; width: 32px; height: 2px; background: #fd805b; }
+.report-cover h1 {
+  margin: clamp(19px, 2vw, 37px) 0 clamp(20px, 2.15vw, 36px) -.025em;
+  font: 600 clamp(86px, 10.2vw, 182px)/.79 var(--display);
+  letter-spacing: -.038em;
+  text-transform: uppercase;
+  color: #faf6ed;
+}
+.report-cover h1 span { display: block; }
+.cover-deck { max-width: 36ch; font: 400 clamp(17px, 1.33vw, 22px)/1.42 var(--sans); color: #e1e3e6; text-wrap: pretty; }
+.cover-tour { display: flex; align-items: center; flex-wrap: wrap; gap: 7px clamp(14px, 2.1vw, 34px); margin-top: clamp(18px, 2.1vw, 32px); }
+.explore-map, .cover-tour .tour-link { display: inline-flex; align-items: center; gap: 11px; min-height: 45px; font: 600 15px/1.2 var(--sans); text-decoration: none; }
+.explore-map { padding: 11px 17px; background: #ff885f; color: #200d08; border-radius: 2px; }
+.explore-map:hover { background: #ffa381; }
+.explore-map span { font-size: 20px; line-height: .8; }
+.cover-tour .tour-link { background: none; border: none; padding: 0; color: #eceeef; }
+.cover-tour .tour-link:hover { color: #ffbda5; }
+.play-tour { display: grid; place-content: center; width: 21px; height: 21px; border: 1px solid currentColor; border-radius: 50%; }
+.play-tour::after { content: ""; margin-left: 2px; border-block: 3px solid transparent; border-left: 5px solid currentColor; }
+.cover-rail {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px 25px;
+  align-items: end;
+  padding-block: 14px clamp(18px, 2.2vw, 33px);
+}
+.photo-credit p, .viewer-date { color: #c6c8cd; font: 500 11px/1.4 var(--mono); letter-spacing: .025em; }
+.photo-credit p span { padding-inline: 3px; color: #f9a58b; }
+.photo-credit a, .photo-viewer-foot a { color: #f2f1ec; font: 500 15px/1.4 var(--sans); text-decoration: none; }
+.photo-credit a { display: inline-block; padding-block: 4px; }
+.photo-credit a span { margin-left: 8px; font-size: 12px; color: #c6c8cd; }
+.photo-credit a:hover, .photo-viewer-foot a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.photo-controls { display: flex; align-items: stretch; gap: clamp(7px, 1.3vw, 20px); margin-right: max(0px, calc(127px - var(--gutter))); }
+.photo-controls button { background: transparent; color: #c9cbd0; border: 0; }
+.photo-controls [data-photo] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 0 7px;
+  border-bottom: 2px solid transparent;
+  font: 500 14px/1.15 var(--sans);
+  text-align: left;
+}
+.photo-controls [aria-pressed="true"] { color: #fff; border-bottom-color: #ff8961; }
+.photo-controls [data-photo]:hover { color: white; border-bottom-color: #a89f96; }
+.photo-thumb {
+  width: 65px;
+  height: 42px;
+  border-radius: 1px;
+  background: #18202a url("img/artemis-frames.webp") 0 50% / auto 100% no-repeat;
+  box-shadow: inset 0 0 0 1px #ffffff24;
+}
+[data-photo="flyby"] .photo-thumb { background-position-x: 100%; }
+[data-photo="eclipse"] .photo-thumb { background-position-x: 33.3333%; }
+[data-photo="orion"] .photo-thumb { background-position-x: 66.6667%; }
+#photo-open, .viewer-arrows button, #photo-close {
+  display: inline-grid; place-items: center; min-width: 44px; min-height: 44px;
+  color: #f4f2ee; background: #090d137d; border: 1px solid #ffffff47; border-radius: 2px;
+}
+#photo-open:hover, .viewer-arrows button:hover, #photo-close:hover { background: #2d323b; }
+#photo-open { position: absolute; right: max(var(--gutter), env(safe-area-inset-right)); top: clamp(14px, 1.6vw, 27px); }
+.zoom-glyph {
+  display: block; width: 16px; height: 16px;
+  background: linear-gradient(to right, currentColor 6px, transparent 6px calc(100% - 6px), currentColor 0) top / 100% 1.5px,
+              linear-gradient(to right, currentColor 6px, transparent 6px calc(100% - 6px), currentColor 0) bottom / 100% 1.5px,
+              linear-gradient(to bottom, currentColor 6px, transparent 6px calc(100% - 6px), currentColor 0) left / 1.5px 100%,
+              linear-gradient(to bottom, currentColor 6px, transparent 6px calc(100% - 6px), currentColor 0) right / 1.5px 100%;
+  background-repeat: no-repeat;
+}
+#photo-viewer {
+  position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; height: 100dvh; max-height: none;
+  margin: 0; border: 0; color: #f2f2f0; background: #040609;
+  padding: max(14px, env(safe-area-inset-top)) max(18px, var(--gutter)) max(14px, env(safe-area-inset-bottom));
+}
+#photo-viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 9px; }
+#photo-viewer::backdrop { background: #040609; }
+html:has(#photo-viewer[open]) { overflow: hidden; }
+.photo-viewer-bar, .photo-viewer-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.photo-viewer-bar { font: 600 17px/1 var(--sans); }
+.viewer-date { margin-left: 6px; }
+#photo-close { display: flex; gap: 12px; padding: 0 14px; font: 500 15px/1 var(--sans); }
+#photo-close span { font-size: 24px; font-weight: 400; }
+.photo-viewer-image { display: grid; min-height: 0; }
+.photo-viewer-image img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.photo-viewer-foot h2 { font: 600 clamp(21px, 2.6vw, 42px)/1.1 var(--display); }
+.photo-viewer-foot a { display: inline-block; padding-block: 4px; color: #c1cee0; }
+.viewer-arrows { display: flex; gap: 6px; }
+.viewer-arrows button { font: 500 22px/1 var(--sans); }
+.report-cover :focus-visible { outline: 2px solid #b9d4ff; outline-offset: 3px; }
+@media (min-width: 681px) and (max-width: 975px) {
+  .photo-controls [data-photo] { grid-template-columns: 1fr; gap: 4px; font-size: 12px; }
+  .photo-controls { align-items: center; }
+}
+@media (max-width: 680px) {
+  .lunar-stage { min-height: 0; }
+  .lunar-sight { height: clamp(300px, 80vw, 445px); overflow: clip; }
+  .lunar-sight img { object-position: 50% 45%; }
+  .lunar-sight [data-frame="orion"] img { width: 100%; mask-image: none; }
+  .lunar-sight [data-frame="flyby"] img { width: 99%; inset: 38% -12% auto auto; }
+  .lunar-stage::before {
+    height: clamp(300px, 80vw, 445px);
+    background: linear-gradient(0deg, #05070b, #05070baa 10%, transparent 45%);
+  }
+  .cover-content { padding-top: clamp(195px, 49vw, 291px); padding-bottom: 0; }
+  .cover-copy { width: auto; }
+  .collection-name { gap: 8px; font-size: 13px; text-shadow: 0 1px 4px #05070b; }
+  .collection-name::before { width: 20px; }
+  .report-cover h1 { font-size: clamp(69px, 17vw, 108px); margin: 15px 0 18px -.025em; line-height: .81; }
+  .cover-deck { max-width: 39ch; font-size: 16px; }
+  .cover-tour { margin-top: 14px; gap: 5px 15px; }
+  .cover-tour .tour-link, .explore-map { font-size: 14px; gap: 7px; }
+  .explore-map { padding-inline: 12px; }
+  .cover-rail { display: grid; align-items: center; gap: 6px; padding-block: 19px 13px; }
+  .photo-controls { order: -1; width: min(100%, 350px); max-width: calc(100% - 62px); margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; align-items: stretch; }
+  .photo-controls [data-photo] { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; font-size: 12px; }
+  .photo-thumb { width: min(100%, 65px); height: auto; aspect-ratio: 65 / 42; }
+  .photo-credit { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 9px; }
+  .photo-credit p, .photo-credit a span { font-size: 10px; }
+  .photo-credit a { font-size: 12px; }
+  .photo-credit a span { margin-left: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-sky-paused]) .lunar-sight figure { transition: opacity .48s ease-in-out; }
+  :root:not([data-sky-paused]) .lunar-sight figure[aria-hidden="false"] picture {
+    animation: approach-limb 2.3s cubic-bezier(.16,.7,.21,1) both;
+    animation-play-state: var(--sky-play, running);
+    translate: 0 var(--lunar-depth, 0px);
+    transform-origin: 69% 48%;
+  }
+  @keyframes approach-limb { from { transform: scale(1.16); } to { transform: scale(1); } }
+}
+@media (max-width: 350px) {
+  .photo-controls { max-width: calc(100% - 76px); gap: 4px; }
+}

@@ -354,7 +354,13 @@ function inspectEvidence(trigger) {
   document.querySelectorAll(".map-selected").forEach(el => el.classList.remove("map-selected"));
   trigger.classList.add("map-selected");
   $("#tip").hidden = true;
-  EvidenceInspector.open(getEvidenceDetail(group), trigger, {nearby});
+  EvidenceInspector.open(getEvidenceDetail(group), trigger, {
+    nearby,
+    askCosmo: () => {
+      EvidenceInspector.clear();
+      document.dispatchEvent(new CustomEvent("cosmo-inspect-point", {detail: {group, trigger}}));
+    }
+  });
 }
 document.addEventListener("evidence-inspector-close", event => {
   document.querySelectorAll(".map-selected").forEach(el => el.classList.remove("map-selected"));

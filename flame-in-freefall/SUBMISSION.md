@@ -125,8 +125,8 @@ same unit), matches every quote word for word against its saved source, and stop
 model runs when the site is used. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
-No SI-generated images, video or audio. The cover drawing and all charts are drawn by code. No NASA
-logos, flags or mission identifiers are used.
+OpenAI Codex assisted with the interface redesign. OpenAI image generation produced the orbital
+cover illustration. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
 
 ## NASA Data
 
@@ -157,8 +157,7 @@ Everything else used to make the project:
 - Olson, S. L., Ferkul, P. V. et al., BASS-II Summary Report, NASA/TM-20210011385.
 - A Researcher's Guide to International Space Station Combustion Science, NASA, 2015.
 - The publications listed in each PSI record, linked from the Archive page.
-- Fonts: Public Sans and DM Mono, SIL Open Font License, served by Google Fonts.
+- Website fonts: Barlow, Barlow Condensed and IBM Plex Mono, distributed locally under the SIL Open Font License.
 - Software: Python 3, numpy, ffmpeg, Playwright and Chromium (testing and slide rendering).
-- SI tool: Claude (Anthropic), as described above.
-- All code, charts and drawings in the project are our own. No third-party images, video, audio or code
-  libraries are included in the site.
+- SI tools: Claude (Anthropic), Codex and image generation (OpenAI), as described above.
+- The interface includes original diagrams, the generated cover illustration and NASA experiment frames.

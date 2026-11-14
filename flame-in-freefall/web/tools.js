@@ -317,7 +317,7 @@ function drawMethod() {
   <div><h3>Mission check</h3><ul><li>Grades are set by fixed rules, printed under the scorecard, from counts of flight runs near the cabin's oxygen level and pressure.</li><li>Materials are matched by name in the BASS, BASS-II and Saffire tables; smoke-only materials come from SAME.</li><li>The ventilation, agent and smoke rows rest on the findings they link to, including their limits.</li></ul></div>
   <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>${esc(M.cv.method)}: accuracy ${Math.round(R["Full model"].accuracy.mean * 100)} %, AUC ${f2(R["Full model"].auc.mean)}.</li><li>A query farther than ${f2(M.domain.nn95)} standard deviations from every real run, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
   <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li></ul></div>
-  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. No SI-generated images, video or audio; the cover drawing and the charts are drawn by code.</li></ul></div>
+  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. OpenAI Codex assisted with the interface redesign. The cover shows an OpenAI-generated illustration of a station in orbit. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
   <div><h3>What the challenge asks</h3><ul><li>“${esc(D.challenge.task.text)}”</li><li>Summarise: Briefing, Archive rows, Lessons. Rank: Archive (investigations for a habitat) and Findings (by weights you set). Interpret: Mission check, Findings, Ask.</li><li>${esc(D.challenge.obj_relevant.text)} See <a href="#archive" data-go="archive">Archive</a> and <a href="#mission" data-go="mission">Mission check</a>.</li><li>${esc(D.challenge.obj_data.text)} See the downloads in <a href="#evidence" data-go="evidence">Evidence</a> and the <a href="#lab" data-go="lab">Lab</a>.</li><li>${esc(D.challenge.obj_controls.text)} See <a href="#findings" data-go="findings">Findings</a>, sorted into prevention, detection and suppression.</li><li>${esc(D.challenge.scope.text)} QUENCH leaves rockets and propellants out as well.</li></ul></div>
   <div><h3>Ranking of investigations</h3><ul><li>Four parts, each from 0 to 100, combined with weights you can change: how the challenge statement and PSI tie the investigation to fire safety, how close its fuel is to cabin materials, how close its runs come to the chosen cabin's oxygen and pressure, and how ready its data is to use.</li><li>Tier 1 (${S.tiers["1"]} investigations) is named in the challenge statement as a prevention, detection or suppression study. Tier 2 (${S.tiers["2"]}) is named there as related, filed by PSI under fire safety, or built on a tier 1 study. Tier 3 (${S.tiers["3"]}) is every other combustion investigation, which the statement calls “still relevant to fire safety, just not as strongly or directly”.</li><li>What varied, what stayed the same and what was recorded are computed from each PSI run table. Measurement types are found by keyword in the record, so a type the record does not name is not listed.</li><li>The parts follow NASA's records. The numbers given to them are our judgement and are printed in full under the weights.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
@@ -325,6 +325,59 @@ function drawMethod() {
 }
 
 /* ---------- navigation and wiring ---------- */
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const motionControl = $("#motion-control");
+const orbitArt = $(".orbit-art");
+const orbitHero = $(".orbit-hero");
+let pauseRequested = false;
+let playForThisVisit = false;
+try { pauseRequested = localStorage.getItem("quench-motion") === "off"; } catch { /* Storage is optional. */ }
+function setMotion(enabled) {
+  document.documentElement.dataset.motion = enabled ? "on" : "off";
+  if (enabled) orbitArt.setAttribute("data-drift", "");
+  else if (motionPreference.matches) orbitArt.removeAttribute("data-drift");
+  const label = enabled ? "Pause motion" : "Play motion";
+  motionControl.setAttribute("aria-label", label);
+  motionControl.title = label;
+}
+function syncMotion() {
+  setMotion(!pauseRequested && (!motionPreference.matches || playForThisVisit));
+}
+motionControl.addEventListener("click", () => {
+  pauseRequested = document.documentElement.dataset.motion === "on";
+  playForThisVisit = !pauseRequested;
+  try {
+    if (pauseRequested) localStorage.setItem("quench-motion", "off");
+    else localStorage.removeItem("quench-motion");
+  } catch { /* Still applies in this tab. */ }
+  syncMotion();
+});
+motionPreference.addEventListener("change", () => {
+  playForThisVisit = false;
+  syncMotion();
+});
+syncMotion();
+
+// Fine pointer input changes the camera framing by only a few pixels.
+orbitHero.addEventListener("pointermove", event => {
+  if (event.pointerType !== "mouse" || document.documentElement.dataset.motion !== "on") return;
+  const rect = orbitHero.getBoundingClientRect();
+  const dx = ((event.clientX - rect.left) / rect.width - .5) * 10;
+  const dy = ((event.clientY - rect.top) / rect.height - .5) * 6;
+  orbitArt.style.setProperty("--look-x", dx.toFixed(2) + "px");
+  orbitArt.style.setProperty("--look-y", dy.toFixed(2) + "px");
+});
+orbitHero.addEventListener("pointerleave", () => {
+  if (document.documentElement.dataset.motion === "off") return;
+  orbitArt.style.removeProperty("--look-x");
+  orbitArt.style.removeProperty("--look-y");
+});
+
+$(".skip-link").addEventListener("click", e => {
+  e.preventDefault();
+  $("#main-content").focus({ preventScroll: true });
+  window.scrollTo(0, 0);
+});
 const VIEWS = [["brief", "Briefing"], ["mission", "Mission check"], ["evidence", "Evidence"], ["findings", "Findings"], ["lab", "Lab"], ["archive", "Archive"], ["lessons", "Lessons"], ["ask", "Ask"], ["method", "Method"]];
 const DRAW = { brief: drawBrief, mission: drawMission, evidence: drawEvidence, findings: drawFindings, lab: () => { syncPred(); drawVideo(); }, archive: drawInv, lessons: drawHistory, ask: () => {}, method: drawMethod };
 function show(name, f) {
@@ -341,8 +394,19 @@ function show(name, f) {
 }
 function go(name, f) { show(name, f); try { if (location.hash !== "#" + name) location.hash = name; } catch (e) { /* hash not available: the view still switches */ } }
 $("#tabs").innerHTML = VIEWS.map(([id, label]) => `<a href="#${id}" data-go="${id}">${label}</a>`).join("");
-document.addEventListener("click", e => { const a = e.target.closest("a[data-go]"); if (!a || a.id === "mcmap") return; e.preventDefault(); go(a.dataset.go, a.dataset.f || null); });
-window.addEventListener("hashchange", () => { const n = location.hash.slice(1); if (n && n !== state.view) show(n); });
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[data-go]");
+  if (!a || a.id === "mcmap" || e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  go(a.dataset.go, a.dataset.f || null);
+  if (a.dataset.scrollTo) {
+    const target = document.getElementById(a.dataset.scrollTo);
+    if (target) { target.focus({ preventScroll: true }); target.scrollIntoView({ block: "start" }); }
+  } else if (!a.closest(".mast")) {
+    $("#main-content").focus({ preventScroll: true });
+  }
+});
+window.addEventListener("hashchange", () => { const n = location.hash.slice(1); if ((n || "brief") !== state.view) show(n || "brief"); });
 $("#flist").addEventListener("toggle", e => { if (e.target.open) state.openF = e.target.id.slice(2); }, true);
 $("#chart").addEventListener("mousemove", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); else $("#tip").hidden = true; });
 $("#chart").addEventListener("mouseleave", () => { $("#tip").hidden = true; });

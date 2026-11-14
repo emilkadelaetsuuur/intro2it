@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="110" viewBox="0 0 310 110" fill="none">
+  <g stroke="#ff915c" stroke-linecap="round" stroke-linejoin="round">
+    <g opacity=".33" stroke-width=".75">
+      <path d="M8 87h11m-5.5-5.5v11m108.5-81h9m-4.5-4.5v9M165 31h31l12-12h27" />
+      <path d="M152 76h38l10-10h39m8 0h22" stroke-dasharray="3 5"/>
+      <circle cx="239" cy="19" r="1.5"/>
+    </g>
+    <g stroke-width="1.1">
+      <path d="m24 65 83-37 59 31-83 39z" fill="#ff915c" fill-opacity=".04" opacity=".54"/>
+      <path d="m25 57 83-37 59 31-83 39z" fill="#16151a" opacity=".8"/>
+      <path d="m26 49 83-37 59 31-83 39z" fill="#17161b"/>
+      <path d="m26 49 59 33 83-39m-83 39v3m-1 5v3" opacity=".7"/>
+    </g>
+    <g transform="matrix(.94 -.423 .87 .465 27 49)" stroke-width="1.15">
+      <path d="M9 10h30m-30 6h17M9 22h70" opacity=".7"/>
+      <g opacity=".9">
+        <path d="M10 28h6v9h-6zM21 28h6v12h-6zM32 28h6v7h-6z" fill="#ff915c" fill-opacity=".34"/>
+        <path d="M47 30h22m-22 6h29m-29 6h15"/>
+      </g>
+      <path d="M10 48h43M10 52h27M71 9h5v5h-5z" opacity=".65"/>
+    </g>
+  </g>
+</svg>

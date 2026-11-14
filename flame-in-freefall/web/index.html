@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>QUENCH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Every NASA microgravity combustion flight test, checked against the cabin air of a Moon base.">
-<meta name="generator" content="Hand-written static site. Code and draft text produced with SI (Super Intelligence / AI) assistance: Claude, Anthropic.">
-<meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Every number is recomputed from NASA PSI tables and every quote is matched to its saved source at build time. No SI-generated images, video or audio.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+<meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
+<meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
+<meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Every number is recomputed from NASA PSI tables and every quote is matched to its saved source at build time. The orbital cover illustration was generated with OpenAI. Experimental imagery comes from NASA.">
+<link rel="icon" type="image/svg+xml" href="img/quench-mark.svg">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
-/* Layout: a flight-document. Black masthead and cover, then ruled white pages on a strict left-aligned grid.
-   Square corners, hairlines, mono data labels. Red is reserved for what is missing or dangerous. */
+/* Shared structure and scientific chart primitives. */
 :root {
   --bg: #ffffff; --sunk: #f1f3f6; --ink: #0b0c0e; --ink2: #434851; --ink3: #6a7280;
   --rule: #d4d8df; --strong: #0b0c0e; --blue: #0b3d91; --blue-ink: #ffffff; --red: #d42a1a; --focus: #2f7df6;
@@ -64,24 +64,8 @@ button { cursor: pointer; }
 .tabs a[aria-current="page"] { color: var(--cover-ink); border-bottom-color: var(--cover-red); }
 .mast .tag { display: flex; align-items: center; font: 500 11px var(--mono); letter-spacing: 0.08em; color: var(--cover-ink2); white-space: nowrap; flex: none; }
 
-/* cover */
-.cover { background: var(--cover); color: var(--cover-ink); }
-.cover .strip { display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; padding-block: 14px; border-bottom: 1px solid var(--cover-rule); font: 500 11.5px var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--cover-ink2); }
-.cover .head { padding-block: 44px 0; }
-.cover .grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 48px; padding-block: 26px 36px; align-items: center; }
-.cover h1 { font-size: clamp(64px, 17.4vw, 214px); font-weight: 900; letter-spacing: -0.045em; line-height: 0.86; margin-left: -0.04em; white-space: nowrap; }
-.cover h1 span { color: var(--cover-red); }
-.cover .long { font: 500 12.5px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cover-ink2); margin-top: 18px; }
-.cover .thesis { font-size: clamp(19px, 2.4vw, 27px); line-height: 1.35; max-width: 30ch; font-weight: 500; }
-.cover .thesis b { color: var(--cover-red); font-weight: 700; }
-.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
 .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--strong); background: var(--strong); color: var(--bg); padding: 10px 16px; font: 500 13px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; }
 .btn.line { background: transparent; color: var(--ink); }
-.cover .btn { border-color: var(--cover-red); background: var(--cover-red); color: var(--cover); }
-.cover .btn.line { border-color: var(--cover-ink2); background: transparent; color: var(--cover-ink); }
-.cover figure { margin: 0; }
-.cover figure svg { display: block; width: 100%; height: auto; }
-.cover figcaption { font: 400 12px/1.5 var(--mono); color: var(--cover-ink2); margin-top: 10px; max-width: 46ch; }
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--cover-rule); }
 .facts div { padding: 18px 18px 22px 0; border-right: 1px solid var(--cover-rule); margin-right: 18px; }
 .facts div:last-child { border-right: 0; margin-right: 0; }
@@ -251,7 +235,7 @@ blockquote cite { display: block; font: 400 11.5px var(--mono); font-style: norm
 footer { border-top: 1px solid var(--rule); padding-block: 18px 36px; font: 400 11.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--ink3); }
 
 @media (max-width: 860px) {
-  .cover .grid, .cols, .cols.even, .cols.side { grid-template-columns: 1fr; }
+  .cols, .cols.even, .cols.side { grid-template-columns: 1fr; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .facts div:nth-child(2) { border-right: 0; margin-right: 0; }
   .facts div:nth-child(-n+2) { border-bottom: 1px solid var(--cover-rule); }
@@ -271,14 +255,6 @@ footer { border-top: 1px solid var(--rule); padding-block: 18px 36px; font: 400 
 .o2ctx blockquote { grid-column: 2; grid-row: 1 / span 2; margin: 0; border-left: 3px solid var(--red); padding: 2px 0 2px 14px; font-size: 14px; color: var(--ink); align-self: start; }
 .o2ctx blockquote cite { display: block; margin-top: 6px; font: 500 11.5px var(--mono); font-style: normal; color: var(--ink3); }
 #earthq { grid-template-columns: minmax(0, 1fr); } #earthq blockquote { grid-column: 1; grid-row: auto; }
-.tasks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--rule); }
-.task { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 6px 10px; padding: 16px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: inherit; text-decoration: none; align-content: start; }
-.task:hover { background: var(--sunk); }
-.task .r { font: 500 13px var(--mono); color: var(--red); padding-top: 3px; }
-.task h3 { font-size: 17px; line-height: 1.25; }
-.task p, .task .go { grid-column: 2; font-size: 13.5px; color: var(--ink2); }
-.task .ask { font-size: 12.5px; color: var(--ink3); }
-.task .go { font: 500 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 /* archive: ranking, detail, compare */
 details.how { border: 1px solid var(--rule); padding: 0 14px; }
 details.how summary { cursor: pointer; padding: 11px 0; font: 500 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
@@ -298,34 +274,55 @@ table.cmp td { min-width: 190px; overflow-wrap: anywhere; font-size: 13.5px; col
 table.cmp tr.same td { background: var(--good-bg); color: var(--ink); }
 a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: flex-start; } button.chip:disabled { opacity: .45; cursor: default; }
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
-@media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } .tasks { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
+<link rel="stylesheet" href="console.css">
+<link rel="stylesheet" href="flight.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 <header class="mast"><div class="wrap">
   <a class="brand" href="#brief" data-go="brief" aria-label="QUENCH, briefing">
-    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="none" stroke="#f4f6f9" stroke-width="1.5"/><circle cx="13" cy="13" r="7.5" fill="none" stroke="#5aa2ff" stroke-width="3"/><circle cx="13" cy="13" r="2.2" fill="#ff4b2e"/></svg>
-    QUENCH</a>
+    <img src="img/quench-mark.svg" width="37" height="37" alt=""><span>QUENCH</span>
+  </a>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-  <span class="tag">SPACE APPS 2026</span>
+  <a class="event-link" href="https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/" target="_blank" rel="noopener">Space Apps 2026 <span aria-hidden="true">↗</span></a>
 </div></header>
 
-<main>
-<!-- 01 briefing -->
+<main id="main-content" tabindex="-1">
 <div class="page" id="v-brief">
-  <section class="cover">
-    <div class="wrap">
-      <div class="strip"><span>NASA Space Apps Challenge 2026 · Flame in Freefall</span><span>Team project · not a NASA product</span></div>
-      <div class="head">
-        <h1>QUENCH<span>.</span></h1>
-        <p class="long">Quantified Evidence Navigator for Combustion Hazards</p>
-      </div>
-      <div class="grid">
-        <div>
-          <p class="thesis" id="thesis"></p>
-          <div class="cta"><a class="btn" href="#mission" data-go="mission">Check a mission</a><a class="btn line" href="#evidence" data-go="evidence">See the evidence</a></div>
+  <section class="orbit-hero" aria-labelledby="hero-title">
+    <picture class="orbit-art">
+      <source media="(max-width: 620px)" srcset="img/orbital-station-mobile.webp">
+      <img src="img/orbital-station.webp" width="1920" height="818" fetchpriority="high" alt="">
+    </picture>
+    <div class="hero-shade"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="mission-kicker"><i aria-hidden="true"></i> Microgravity combustion research</p>
+        <h1 id="hero-title">Flame in<br>Freefall<span>.</span></h1>
+        <p class="hero-intro">Explore NASA’s flight experiments to see how fire behaves in space and what it means for crew safety.</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#mission" data-go="mission">Check a mission <span aria-hidden="true">→</span></a>
+          <a class="secondary-action" href="#evidence" data-go="evidence">Explore evidence <span aria-hidden="true">↗</span></a>
         </div>
-        <figure>
+      </div>
+      <div class="orbital-caption"><i aria-hidden="true"></i> Low Earth orbit <span>/</span> Illustration</div>
+      <button class="motion-control" type="button" id="motion-control" aria-label="Pause motion" title="Pause motion">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path class="pause-glyph" d="M4 3h3v10H4zm5 0h3v10H9z"/><path class="play-glyph" d="m5 3 8 5-8 5z"/></svg>
+      </button>
+    </div>
+  </section>
+  <section class="metric-band" aria-label="What's in the NASA archive"><div class="wrap metric-grid" id="overview-metrics"></div></section>
+  <section class="wrap tools-deck" aria-labelledby="tools-heading">
+    <h2 id="tools-heading">Research tools</h2>
+    <div id="tasks" class="tool-grid"></div>
+  </section>
+  <div class="wrap view">
+    <div class="sec"><span class="no">01</span><h2>Mission briefing</h2><p class="sub" id="briefsub"></p></div>
+    <div class="brief-spotlight">
+      <div><h3>Fire in lunar cabin air</h3><p class="thesis" id="thesis"></p><div class="facts" id="facts"></div></div>
+      <div class="flame-compare"><figure>
           <svg viewBox="0 0 420 300" style="max-width:460px" role="img" aria-label="A flame on Earth is a pointed yellow teardrop. The same flame in orbit is a dim blue sphere.">
             <defs>
               <radialGradient id="gE" cx="50%" cy="72%" r="62%"><stop offset="0" stop-color="#fff6c9"/><stop offset=".42" stop-color="#ffc14a"/><stop offset=".8" stop-color="#ff7a1f"/><stop offset="1" stop-color="#ff7a1f" stop-opacity="0"/></radialGradient>
@@ -344,16 +341,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
             <text x="315" y="276" text-anchor="middle" font-size="11">nothing rises,</text><text x="315" y="291" text-anchor="middle" font-size="11">the flame is a sphere</text>
           </svg>
           <figcaption>Fire does not behave in space as it does on the ground. What burns in a spacecraft has to be learned in flight.</figcaption>
-        </figure>
-      </div>
-      <div class="facts" id="facts"></div>
+        </figure></div>
     </div>
-  </section>
-  <div class="wrap view">
-    <div class="sec"><span class="no">01</span><h2>Briefing</h2><p class="sub" id="briefsub"></p></div>
     <div class="frame figbox" id="gapfig" role="img" aria-label="Oxygen levels of solid-material flight tests compared with three cabin atmospheres and the Moon-base range"></div>
     <div class="o2ctx" id="o2ctx"></div>
-    <div class="block"><span class="lab">Three ways in · what the challenge asks for</span><div class="tasks" id="tasks"></div></div>
     <div class="cols">
       <div class="block"><span class="lab">What the archive says · top findings</span><div class="toplist" id="toplist"></div><a class="btn line" href="#findings" data-go="findings" style="align-self:flex-start">All findings</a></div>
       <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
@@ -459,7 +450,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   <div class="tablewrap"><table id="invtable"></table></div>
   <p class="fine" id="invnote"></p>
   <div class="group"><span class="lab">Download</span><button class="chip" type="button" id="dlshown">Runs of the investigations shown (CSV)</button><a class="chip" href="downloads/quench-investigations.csv" download>All investigations (CSV)</a><a class="chip" href="downloads/quench-runs.csv" download>All runs (CSV)</a></div>
-  <div class="block"><span class="lab">Shared hardware · investigations that can be compared directly</span><div class="hgrid" id="invfam"></div></div>
+  <div class="block"><span class="lab">Shared hardware · investigations that can be compared directly</span><div class="hgrid" id="invfam" tabindex="-1"></div></div>
 </div>
 
 <!-- 07 lessons -->

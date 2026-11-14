@@ -105,7 +105,15 @@ function drawGap(box) {
   box.innerHTML = s + "</svg>";
 }
 function drawBrief() {
-  const cov = coverage(EXP);
+  const overview = [
+    [S.combustion, "Investigations", "archive", "M4 5h7l2 2h7v12H4z M7 11h10m-10 4h7"],
+    [S.tests, "Flight test runs", "evidence", "M2 13h5l3-8 4 15 3-9 2 2h3"],
+    [D.findings.length, "Ranked findings", "findings", "M5 18V12m5 6V8m5 10V5m5 13H3"],
+    [D.families.length, "Hardware families", "archive", "m12 3 8 4.5v9L12 21l-8-4.5v-9z M4 7.5l8 4.5 8-4.5 M12 12v9"]
+  ];
+  $("#overview-metrics").innerHTML = overview.map(([value, label, route, path]) =>
+    `<a class="overview-metric" href="#${route}" data-go="${route}"${label === "Hardware families" ? ' data-scroll-to="invfam"' : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg><span><b>${value}</b><span>${label}</span></span></a>`
+  ).join("");
   $("#thesis").innerHTML = `NASA expects Moon-base air with <b>${f1(S.moon_o2_min)} % oxygen or more</b>. NASA's open combustion archive holds no solid-fuel flight test above <b>${f1(S.solid_o2_max)} %</b>.`;
   $("#facts").innerHTML = [
     [f1(S.solid_o2_max) + " %", "highest oxygen level of any solid-fuel flight test in the archive", 1],
@@ -113,17 +121,23 @@ function drawBrief() {
     [S.hi_o2.solid, `solid-fuel runs at ${f1(S.moon_o2_min)} % oxygen or more`, 1],
     [S.tests, `flight test runs read from ${S.combustion} NASA investigations`, 0]
   ].map(a => `<div><b class="${a[2] ? "hot" : ""}">${esc(a[0])}</b><span>${esc(a[1])}</span></div>`).join("");
-  $("#briefsub").textContent = `QUENCH reads every combustion investigation in NASA's Physical Sciences Informatics archive, ${S.tests} test runs in all, and answers one question for mission designers, researchers and students: does flight evidence cover the air your crew will breathe? It summarises the archive, ranks what matters, and turns it into a check you can run on any cabin.`;
+  $("#briefsub").textContent = `QUENCH (Quantified Evidence Navigator for Combustion Hazards) reads every combustion investigation in NASA's Physical Sciences Informatics archive, ${S.tests} test runs in all, and answers one question for mission designers, researchers and students: does flight evidence cover the air your crew will breathe? It summarises the archive, ranks what matters, and turns it into a check you can run on any cabin.`;
   drawGap($("#gapfig"));
   const C = D.challenge, hiP = S.moon_range, nearP = S.moon_near;
   $("#o2ctx").innerHTML = `<p>Spacesuits hold pure oxygen at ${f1(S.suit_psia)} psi. To shorten the oxygen pre-breathe before a moonwalk, NASA expects the Moon base and its rovers to run in between: <b>${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less</b>. That makes materials much more flammable.</p>
     <p>At ${f1(S.moon_o2_min)} % oxygen or more the archive holds <b>${S.hi_o2.solid} solid-fuel runs</b>, ${S.hi_o2.droplet} droplet runs (${hiP.droplet} at ${f1(S.moon_psia_max)} psi or less, ${nearP.droplet} just above it at ${f1(S.moon_near_psia[0])} to ${f1(S.moon_near_psia[1])} psia) and ${S.hi_o2.gas} gas-flame runs (${hiP.gas} at ${f1(S.moon_psia_max)} psi or less, all from ${esc(Object.keys(S.moon_range_by).join(", "))}).</p>
     <blockquote>“${esc(C.moon_air.text)}”<cite><a href="${esc(C.moon_air.url)}" target="_blank" rel="noopener">Flame in Freefall challenge statement</a></cite></blockquote>`;
-  $("#tasks").innerHTML = [
-    ["archive", "Find the investigations that matter for a habitat", `${S.combustion} investigations ranked for a station, a spacecraft, a Moon base or rover, or a Mars base, with what each one burned, varied and measured.`, C.obj_relevant.text, "Open the ranked archive"],
-    ["evidence", "Pull data for your own model", `${S.tests} flight test runs on one oxygen and pressure map, downloadable as CSV, plus a worked predictor and flame-spread numbers read from NASA video.`, C.obj_data.text, "Open the evidence and downloads"],
-    ["findings", "See what should change in controls and equipment", `${D.findings.length} ranked findings sorted into prevention, detection and suppression, each with its evidence, its limits and an action.`, C.obj_controls.text, "Open the findings"]
-  ].map((t, n) => `<a class="task" href="#${t[0]}" data-go="${t[0]}"><span class="r">${pad2(n + 1)}</span><h3>${esc(t[1])}</h3><p>${esc(t[2])}</p><p class="ask">The challenge asks: “${esc(t[3])}”</p><span class="go">${esc(t[4])}</span></a>`).join("");
+  const tools = [
+    ["archive", "Investigation archive", "Compare the fuels, conditions and measurements from each investigation."],
+    ["evidence", "Evidence map", "Plot flight tests by oxygen and pressure. Export the runs that match your cabin."],
+    ["findings", "Safety findings", "Rank the evidence for fire prevention, detection and suppression."]
+  ];
+  $("#tasks").innerHTML = tools.map(([route, title, summary]) =>
+    `<a class="research-tool tool-${route}" href="#${route}" data-go="${route}">
+      <img src="img/${route}-diagram.svg" width="310" height="110" alt="">
+      <div class="tool-content"><h3>${title}</h3><p>${summary}</p></div>
+      <span class="tool-arrow" aria-hidden="true">↗</span></a>`
+  ).join("");
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");
   $("#matrix1").innerHTML = matrixHtml(D.atmospheres);

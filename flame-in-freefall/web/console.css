@@ -1,0 +1,261 @@
+/* Research screens share the flight deck's type, palette and data colors. */
+.view {
+  --field-bg: color-mix(in srgb, var(--bg) 62%, var(--sunk));
+  --tint-blue: color-mix(in srgb, var(--blue) 9%, var(--bg));
+  --tint-orange: color-mix(in srgb, var(--red) 8%, var(--bg));
+  --panel-pad: clamp(16px, 2vw, 28px);
+  gap: clamp(20px, 2.3vw, 32px);
+  padding-block: clamp(30px, 4vw, 64px) clamp(52px, 7vw, 100px);
+  font-variant-numeric: tabular-nums;
+}
+.view > *, .view .cols > * { min-width: 0; }
+.view .sec {
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 0 clamp(23px, 3.5vw, 44px);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px 17px;
+  align-items: center;
+}
+.view .sec .no {
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  min-width: 35px;
+  height: 30px;
+  margin-top: .15em;
+  padding: 1px 7px 0;
+  color: var(--red);
+  border: 1px solid color-mix(in srgb, var(--red) 46%, var(--rule));
+  border-radius: 3px;
+  font: 500 12px/1 var(--mono);
+}
+.view .sec h2 {
+  color: var(--ink);
+  font-size: clamp(36px, 4.5vw, 68px);
+  line-height: 1;
+  font-weight: 620;
+  letter-spacing: -.052em;
+}
+.view .sec .sub {
+  max-width: 78ch;
+  margin: 0;
+  color: var(--ink2);
+  font-size: clamp(15px, 1.22vw, 18px);
+  line-height: 1.58;
+}
+.view .lab { color: var(--ink3); letter-spacing: .075em; }
+.view .block {
+  gap: 15px;
+  padding-top: 19px;
+  border-top-color: var(--rule);
+}
+.view .block > .lab, .view .method h3 {
+  font: 600 clamp(17px, 1.48vw, 22px)/1.24 var(--sans);
+  letter-spacing: -.025em;
+  text-transform: none;
+  color: var(--ink);
+}
+.view .cols { gap: clamp(20px, 2.8vw, 40px); }
+.view .frame, .view .compare, .view .how {
+  background: var(--sunk);
+  border-color: var(--rule);
+  border-radius: 6px;
+}
+.view .frame { padding: clamp(14px, 1.65vw, 22px); }
+.view .figbox { padding: 14px; }
+.view .controls {
+  padding: 15px 18px;
+  background: var(--sunk);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  gap: 12px 22px;
+}
+.view .group { gap: 7px; }
+.view .chip, .view .seg button {
+  background: var(--field-bg);
+  border-color: var(--rule);
+  border-radius: 4px;
+  min-height: 34px;
+  padding: 7px 12px;
+  color: var(--ink2);
+  font-weight: 500;
+  line-height: 1.27;
+}
+.view a.chip { color: var(--blue); }
+.view .chip[aria-pressed="true"], .view .seg button[aria-pressed="true"] {
+  color: var(--blue);
+  background: var(--tint-blue);
+  border-color: color-mix(in srgb, var(--blue) 60%, var(--rule));
+  box-shadow: inset 0 -2px color-mix(in srgb, var(--blue) 70%, transparent);
+}
+.view .seg { max-width: 100%; border-radius: 4px; }
+.view .seg button { border-radius: 0; }
+.view .seg:focus-within { overflow: visible; }
+.view :is(.chip, .seg button):hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink3);
+}
+.view .btn {
+  min-height: 41px;
+  justify-content: center;
+  color: var(--bg);
+  background: var(--strong);
+  border-color: var(--strong);
+  border-radius: 4px;
+  font: 600 14px/1.3 var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.view .btn.line { color: var(--ink); border-color: var(--rule); background: transparent; }
+.view .btn:hover { filter: brightness(1.08); }
+.view .btn.line:hover { border-color: var(--ink3); background: var(--sunk); }
+.view :is(.search, select) {
+  min-height: 39px;
+  border-radius: 4px;
+  border-color: var(--rule);
+  background: var(--field-bg);
+  padding: 8px 11px;
+  color: var(--ink);
+}
+.view .search::placeholder { color: var(--ink3); opacity: 1; }
+.view :is(input[type="range"], input[type="checkbox"]) { accent-color: var(--blue); }
+.view input[type="range"] { min-height: 22px; }
+.view .field { gap: 7px; }
+.view .field > span { color: var(--ink2); }
+.view .field output { color: var(--blue); font-weight: 500; }
+.view :is(a, button, input, select, summary, tr.row):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.view .tablewrap {
+  max-width: 100%;
+  scrollbar-color: var(--ink3) var(--sunk);
+}
+.view th {
+  color: var(--ink3);
+  background: var(--sunk);
+  border-color: var(--rule);
+  vertical-align: bottom;
+  padding: 12px;
+}
+.view td { padding: 13px 12px; }
+.view table tr.row td { transition: background-color .16s ease; }
+.view table tr.row:hover td, .view table tr.row:focus-visible td { background: var(--tint-blue); }
+.view table tr.row[aria-expanded="true"] td { background: var(--tint-blue); }
+.view table tr.row[aria-expanded="true"] td:first-child { box-shadow: inset 3px 0 var(--blue); }
+.view .detail td { padding: var(--panel-pad); }
+.view .detail h4 { margin-bottom: 7px; color: var(--blue); }
+.view .detail .dcols { gap: 19px 28px; }
+.view .sbar { height: 6px; }
+.view .sbar i { background: var(--blue); }
+.view .compare { padding: var(--panel-pad); border-top: 2px solid var(--blue); }
+.view .how { padding-inline: 16px; }
+.view .how summary { padding-block: 14px; color: var(--blue); }
+.view .legend {
+  padding-top: 12px;
+  margin-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+.view .matrix { border-color: var(--rule); }
+.view .matrix .c { background: var(--field-bg); }
+.view .matrix .c.none { background: var(--crit-bg); }
+.view .matrix .c.thin { background: var(--warn-bg); }
+.view .matrix .c b { font-size: clamp(20px, 2.5vw, 33px); }
+.view .matrix .h, .view .matrix .c { overflow-wrap: anywhere; }
+.view .verdict {
+  background: linear-gradient(110deg, var(--tint-orange) 0, var(--sunk) 75%);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  border-radius: 5px;
+  padding: var(--panel-pad);
+}
+.view .verdict h3 { font-size: clamp(21px, 2.1vw, 32px); }
+.view .verdict .meter i { width: 9px; height: 23px; border-radius: 2px; }
+.view #mcform {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: var(--panel-pad);
+  background: var(--sunk);
+  gap: 18px;
+}
+.view #mcform > .lab {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.view .score .q { padding-block: 17px; }
+.view .score .q h3 { font-size: 16px; }
+.view :is(.grade i, .pill, .tagk, .rel, .atm) { border-radius: 3px; }
+.view .hgrid, .view .method {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  border: 0;
+  gap: 12px;
+}
+.view .hcard, .view .method > div {
+  padding: var(--panel-pad);
+  background: var(--sunk);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+.view .hcard h3 { font-size: clamp(18px, 1.5vw, 22px); letter-spacing: -.025em; }
+.view .hcard .atm { width: fit-content; }
+.view .method ul { gap: 8px; margin-top: 13px; }
+.view .hcard blockquote, .view .o2ctx blockquote, .view details.f blockquote {
+  border-left-width: 2px;
+  padding-left: 15px;
+}
+.view .weights { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+.view details.f summary { padding-block: 17px; }
+.view details.f summary .sc, .view .toplist .sc { color: var(--blue); }
+.view details.f .body { padding-top: 8px; }
+.view details.f[open] { box-shadow: inset 2px 0 var(--blue); padding-inline: 14px; background: var(--tint-blue); }
+.view .scores .track { background: var(--rule); }
+.view .scores .track i { background: var(--blue); }
+.view .pbig { color: var(--blue); font-size: clamp(40px, 5vw, 74px); letter-spacing: -.055em; }
+.view .pbig small { font-family: var(--sans); }
+.view .thumbs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); }
+.view .thumbs figure { overflow: hidden; border-radius: 4px; background: var(--sunk); }
+.view .thumbs figcaption { padding: 11px 14px; }
+.view .askbox {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 11px;
+  background: var(--sunk);
+}
+.view .askbox:focus-within { border-color: var(--blue); }
+.view .askbox .search { flex-basis: min(100%, 230px); }
+.view .askbox .btn { padding-inline: 24px; }
+.view .answer { border-color: var(--blue); }
+.view .answer .a { gap: 11px; padding-block: 23px; }
+.view .toplist a { padding-block: 15px; }
+.view .toplist a:last-child, .view .todo li:last-child { border-bottom: 0; }
+footer.wrap { padding-block: 24px 38px; line-height: 1.7; letter-spacing: .01em; }
+
+@media (min-width: 861px) {
+  .view .cols.side { grid-template-columns: minmax(0, 315px) minmax(0, 1fr); }
+  .view .score .q { grid-template-columns: minmax(0, 1fr) minmax(114px, auto); }
+  .view .score .q .grade { max-width: 185px; white-space: normal; }
+}
+@media (max-width: 620px) {
+  .view { --panel-pad: 15px; gap: 22px; }
+  .view .sec { gap: 12px 10px; }
+  .view .sec h2 { font-size: clamp(32px, 8.5vw, 44px); }
+  .view .sec .sub { grid-column: 1 / -1; }
+  .view .sec .no { min-width: 28px; height: 25px; font-size: 10px; }
+  .view .controls { padding: 13px; }
+  .view .controls > .group { flex: 1 1 100%; }
+  .view .controls .search { flex: 1 1 100%; }
+  .view .weights { grid-template-columns: 1fr; }
+  .view .frame { padding: 12px; }
+  .view .figbox { padding: 14px; }
+  .view .matrix { grid-template-columns: minmax(64px, .85fr) repeat(3, minmax(0, 1fr)); }
+  .view .matrix > div { padding: 7px 5px; }
+  .view .matrix .h { font-size: 10px; letter-spacing: 0; }
+  .view .matrix .c span { font-size: 11px; }
+  .view .verdict { gap: 12px; }
+  .view .hgrid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view table tr.row td { transition: none; }
+}

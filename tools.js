@@ -36,7 +36,7 @@ const pct = p => p < 0.005 ? "<1" : p > 0.995 ? ">99" : String(Math.round(p * 10
 function burnK(q) { const b = M.burn_k, x = [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.co2 / 100, q.he / 100]; return b.intercept + b.coef.reduce((a, c, i) => a + c * x[i], 0); }
 function drawPredInputs() {
   const R = M.cv.results;
-  $("#psub").textContent = `The model was fitted to ${M.n} FLEX droplet runs. On held-out test days it predicted the recorded outcome with ${Math.round(R["Full model"].accuracy.mean * 100)}% accuracy. A most-common-outcome baseline scored ${Math.round(R["Always the most common outcome"].accuracy.mean * 100)}%. The results flag conditions outside the training data.`;
+  $("#psub").textContent = `The model was fitted to ${M.n} FLEX droplet runs. During cross-validation by test day it predicted extinction with ${Math.round(R["Full model"].accuracy.mean * 100)}% accuracy, compared with ${Math.round(R["Always the most common outcome"].accuracy.mean * 100)}% for the most-common-outcome baseline. These checks reuse the FLEX dataset and do not assess performance on another mission.`;
   const pr = $("#ppresets"); PRESETS.forEach(([n, v]) => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = n; b.onclick = () => { Object.assign(PQ, v); syncPred(); }; pr.appendChild(b); });
   $("#pfuel").innerHTML = ["methanol", "heptane"].map(f => `<button type="button" data-f="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join("");
   $("#pfuel").onclick = e => { const b = e.target.closest("button"); if (b) { PQ.fuel = b.dataset.f; syncPred(); } };
@@ -74,7 +74,7 @@ function drawPredChart(x) {
   const cx = X(Math.min(40, Math.max(10, PQ.o2))), cy = Y(pOf(x));
   s += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--s2)" stroke="var(--bg)" stroke-width="2"/><text x="${cx + (cx > W - 140 ? -9 : 9)}" y="${cy - 9}" text-anchor="${cx > W - 140 ? "end" : "start"}" font-size="12" font-weight="700" fill="var(--ink)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">${pct(pOf(x))} %</text>`;
   box.innerHTML = s + "</svg>";
-  $("#plegend").innerHTML = `<span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2"/></svg>model, inside or near tested conditions</span><span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2" stroke-dasharray="5 5"/></svg>extrapolation</span><span><svg width="12" height="14" aria-hidden="true"><line x1="6" x2="6" y1="2" y2="12" stroke="var(--ink3)" stroke-width="1.5"/></svg>real runs at similar pressure and diluent: top went out, bottom kept burning</span>`;
+  $("#plegend").innerHTML = `<span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2"/></svg>model, inside or near tested conditions</span><span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2" stroke-dasharray="5 5"/></svg>extrapolation</span><span><svg width="12" height="14" aria-hidden="true"><line x1="6" x2="6" y1="2" y2="12" stroke="var(--ink3)" stroke-width="1.5"/></svg>FLEX runs at similar pressure and diluent · top: extinction · bottom: completion or disruption</span>`;
 }
 function drawPredCard() {
   const r = M.cv.results, names = Object.keys(r);
@@ -91,7 +91,7 @@ function drawVideo() {
   const V = D.video; if (!V) { $("#videoblock").hidden = true; return; }
   const cols = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
   const rated = V.tests.filter(t => t.spread_mm_s).map(t => Object.assign({}, t, { series: t.series.filter(p => p[0] >= t.fit_window_s[0] && p[0] <= (t.fan_change_s || t.fit_window_s[1])) }));
-  $("#vsub").textContent = `On 19 February 2014, the BASS-II cameras recorded these thin-film tests in orbit. We tracked the leading edge of the flame in ${V.tests.length} side-view videos. The test table below reports spread rates where the front could be measured. ${V.validation.passed} of ${V.validation.independent} independent checks passed.`;
+  $("#vsub").textContent = `On 19 February 2014, the BASS-II cameras recorded these thin-film tests in orbit. The tracker measured spread rates in ${rated.length} of ${V.tests.length} videos. B1 set the distance scale. ${V.validation.passed} of ${V.validation.independent} additional checks against the same experiment passed.`;
   const box = $("#vchart"), W = Math.max(300, box.clientWidth), wide = W >= 600, H = 280, m = { l: 48, r: wide ? 96 : 16, t: 24, b: 44 };
   const tmax = Math.max(...rated.map(t => t.series[t.series.length - 1][0] - t.series[0][0]));
   const ymax = Math.max(...rated.map(t => Math.max(...t.series.map(p => p[1] - t.series[0][1]))));
@@ -124,34 +124,45 @@ const GRADE = { A: "Flight-tested", B: "Partly tested", C: "Indirect evidence", 
 const AGENT = { co2: "carbon dioxide", n2: "nitrogen", he: "helium" };
 const worst = gs => gs.slice().sort().pop();
 function mcEval(c) {
-  const T = { o2: c.o2, p: c.psia / PSIA, psia: c.psia }, cabin = Math.abs(c.psia / 14.7 - 1) <= S.p_window, hi = c.o2 > S.solid_o2_max + 0.3;
+  const T = { o2: c.o2, p: c.psia / PSIA, psia: c.psia }, cabin = Math.abs(1 / T.p - 1) <= S.p_window, hi = c.o2 > S.solid_o2_max;
   const rows = [];
   // 1. materials
   const per = c.mats.map(id => {
     const m = D.materials.find(z => z.id === id), ts = D.tests.filter(t => (t.m || []).includes(id) && t.o != null);
-    const near = ts.filter(t => Math.abs(t.o - c.o2) <= S.o2_window).length;
+    const near = ts.filter(t => oxygenMatches(t.o, T)), paired = near.filter(t => cabinMatches(t, T));
+    const reports = saffireEvents.filter(r => r.material_id === id && oxygenMatches(r.oxygen_percent, T));
+    const reportMatch = reports.filter(r => saffireMatches(r, T));
     let g, txt;
-    if (!m.flame) { g = "D"; txt = m.smoke ? `Never burned in a flight test in this archive. ${plural(m.smoke, "smoke test")} only.` : "Not in the archive."; }
-    else if (!ts.length) { g = "D"; txt = `${plural(m.flame, "flaming test")}, none with a recorded oxygen level.`; }
-    else if (near >= 5 && cabin) { g = "A"; txt = `${near} runs within ${S.o2_window} points of this oxygen level, at cabin pressure.`; }
-    else if (near >= 1) { g = "B"; txt = cabin ? `Only ${plural(near, "run")} within ${S.o2_window} points of this oxygen level.` : `${plural(near, "run")} match the oxygen level, but at station pressure, not ${f1(c.psia)} psia.`; }
-    else { g = "D"; txt = c.o2 > m.o2[1] ? `Tested from ${f1(m.o2[0])} to ${f1(m.o2[1])} % oxygen: ${f1(c.o2 - m.o2[1])} points short of this cabin.` : `Tested only from ${f1(m.o2[0])} % oxygen up.`; }
+    if (paired.length) { g = paired.length >= 5 ? "A" : "B"; txt = `${plural(paired.length, "PSI run")} within the ambient oxygen and pressure window.`; }
+    else if (near.length) { g = "B"; txt = `${plural(near.length, "PSI run")} within the oxygen window. ${near.every(t => !hasPressure(t)) ? "Their pressure is unreported." : "None has a matching recorded pressure."}`; }
+    else if (!m.flame) { g = "D"; txt = m.smoke ? `The indexed PSI records include ${plural(m.smoke, "smoke test")} and no flame-spread test.` : "No indexed PSI material test."; }
+    else if (!ts.length) { g = "D"; txt = `${plural(m.flame, "PSI test")}, none with a recorded oxygen level.`; }
+    else { g = "D"; txt = `No PSI run matches on oxygen. The reported range is ${rangeText(m.o2)}%.`; }
+    if (id === D.external_sofie.material_id && c.o2 >= D.external_sofie.oxygen_min_percent && c.o2 <= D.external_sofie.oxygen_max_percent) {
+      if (g === "D") g = "C";
+      txt += ` SoFIE-GEL tested spheres over ${D.external_sofie.oxygen_min_percent}–${D.external_sofie.oxygen_max_percent}% oxygen. Its published ranges leave the pressure at this oxygen level unspecified.`;
+    }
+    if (reports.length) {
+      if (reportMatch.length && g !== "A") g = "B";
+      else if (g === "D") g = "C";
+      txt += " Saffire-VI separately reports " + reports.map(r => `${saffireConditions(r)} (${r.outcome === "noign" ? "did not ignite" : "burned"})`).join("; ") + ".";
+    }
     return { m, g, txt };
   });
   if (per.length) {
     const g = worst(per.map(x => x.g)), bad = per.filter(x => x.g === "D").map(x => x.m.name);
     rows.push({ key: "mat", q: "Will the cabin materials burn in this air?", g,
-      text: (g === "A" ? "Each selected material was flight-tested near this oxygen level. The results are in video and papers, not in the table." : g === "B" ? "Flight tests exist near this oxygen level, but they are few or at another pressure." : hi ? `No selected material was flight-tested at ${f1(c.o2)} % oxygen. The archive stops at ${f1(S.solid_o2_max)} %.` : "At least one selected material has no flight test near this oxygen level.") + " NASA's guide adds that the ground approval test is not conservative: materials can burn at lower oxygen levels in microgravity than on Earth.",
-      list: per.map(x => [x.m.name, x.txt, x.g]), refs: ["F-solid-gap", "F-one-g"], prio: 5,
-      action: g > "B" ? `Burn ${bad.join(", ")} at ${f1(c.o2)} % oxygen and ${f1(c.psia)} psia in microgravity. NASA's guide says SoFIE can run exploration atmospheres.` : null });
+      text: "Each material is assessed separately. The overall grade follows the least-covered material. NASA reports that some materials burn at lower oxygen levels in microgravity than on Earth.",
+      list: per.map(x => [x.m.name, x.txt, x.g]), refs: ["F-solid-gap", "F-one-g", "SAFFIRE6", ...(c.mats.includes("pmma") ? ["SOFIEGEL"] : [])], prio: 5,
+      action: g > "B" ? `Measure flammability of ${(bad.length ? bad : per.filter(x => x.g === "C").map(x => x.m.name)).join(", ")} at ${f1(c.o2)}% oxygen and ${f1(c.psia)} psia.` : null });
   }
   // 2. ventilation
   const flowNote = c.flow >= 5 && c.flow <= 20 ? ` Your ventilation speed, ${c.flow} cm/s, is in the range NASA's guide calls most flammable (about 10 cm/s).` : "";
   rows.push(hi ? { key: "vent", q: "Does stopping ventilation put the fire out?", g: "C",
-      text: "The evidence points to no. No solid material was tested at this oxygen level, and in the one experiment at elevated oxygen (ACME BRE, a gas burner standing in for solids) flames kept burning with no airflow." + flowNote,
+      text: "NASA reports that some ACME BRE flames persisted in elevated oxygen after airflow stopped. BRE used a gas burner to emulate solid materials. The reported observations cannot establish the outcome for every cabin material." + flowNote,
       refs: ["F-vent", "F-vent-speed"], prio: 5, action: `Test ventilation shutdown on solid materials at ${f1(c.o2)} % oxygen before the fire response relies on it.` }
     : { key: "vent", q: "Does stopping ventilation put the fire out?", g: "B",
-      text: "For thin plastic film, yes: BASS-II flames went out when the airflow fell to about 1 cm/s at 21 % oxygen, and already at 2.6 to 4 cm/s at 16 %. Thicker materials are not in the table." + flowNote,
+      text: "BASS-II thin-film tests found extinction near 1 cm/s at 21% oxygen and 2.6–4 cm/s at 16% oxygen. These results concern the tested samples and flow conditions." + flowNote,
       refs: ["F-vent-speed", "F-vent"], prio: 5, action: null });
   // 3. extinguishing agent
   if (c.agent === "n2") rows.push({ key: "agent", q: "Will nitrogen put the fire out?", g: "C",
@@ -160,31 +171,30 @@ function mcEval(c) {
   else {
     const key = c.agent, runs = D.tests.filter(t => t.i === "PSI-69" && t[key] > 0), near = runs.filter(t => Math.abs(t.o - c.o2) <= S.o2_window).length, top = key === "co2" ? S.flex_co2_o2_max : S.flex_he_o2_max;
     rows.push({ key: "agent", q: `Will ${AGENT[key]} put the fire out?`, g: near ? "B" : "D",
-      text: near ? `Tested on burning droplets only: ${plural(near, "FLEX run")} with ${AGENT[key]} within ${S.o2_window} points of this oxygen level. Not tested on solid materials, and NASA's guide warns that a directed jet can feed the flame.` : `No flight run with ${AGENT[key]} above ${f1(top)} % oxygen. Quantities for this cabin cannot be scaled from station values.`,
+      text: near ? `${plural(near, "FLEX droplet run")} with ${AGENT[key]} within ${S.o2_window} points of this oxygen level. This count compares oxygen only. It does not establish an extinguishing concentration for cabin solids.` : `No indexed FLEX droplet run with ${AGENT[key]} falls within ${S.o2_window} points of this oxygen level. The highest measured level with this diluent was ${f1(top)}%.`,
       refs: ["F-suppress", "F-local-jet"], prio: 4, action: near ? null : `Measure how much ${AGENT[key]} is needed at ${f1(c.o2)} % oxygen, on droplets and on solid materials.` });
   }
   // 4. liquids
   if (c.liquids) {
     const cv = coverage(T).droplet, n = cv.n, same = D.tests.filter(t => t.k === "droplet" && t.o != null && Math.abs(t.o - c.o2) <= S.o2_window).length;
-    const g = n >= 10 ? "A" : n >= 1 ? "B" : same ? "C" : "D", known = cv.res.ext + cv.res.burn + cv.res.other + cv.res.noign;
+    const g = n >= 10 ? "A" : n >= 1 ? "B" : same ? "C" : "D", known = n - (cv.res.na || 0);
     const x = xOf({ o2: c.o2, psia: c.psia, fuel: "heptane", d0: 3, co2: 0, he: 0 }), dm = domainOf(x);
     rows.push({ key: "liq", q: "Will a burning liquid go out on its own?", g,
-      text: (n ? `${plural(n, "droplet run")} inside the window.` + (known ? ` Of ${known} with a recorded end, ${cv.res.ext} went out on their own.` : "") : same ? nearText(cv) : `No droplet run within ${S.o2_window} points of this oxygen level.`) +
+      text: (n ? `${plural(n, "droplet run")} inside the window.` + (known ? ` Of ${known} with a recorded end, ${cv.res.ext || 0} went out on their own.` : "") : same ? nearText(cv) : `No droplet run within ${S.o2_window} points of this oxygen level.`) +
         ` Model estimate for a 3 mm heptane droplet: ${pct(pOf(x))} % chance of going out on its own${dm.status === "out" ? ", extrapolated beyond the tested conditions" : ""}.`,
-      refs: ["F-selfext", "F-corner", "MODEL"], prio: 3, action: g > "B" ? `Run droplet tests at ${f1(c.psia)} psia and ${f1(c.o2)} % oxygen. FLEX-2 planned such conditions, but PSI holds no run table for it.` : null });
+      refs: ["F-selfext", "F-corner", "MODEL"], prio: 3, action: g > "B" ? `Seek droplet measurements at ${f1(c.psia)} psia and ${f1(c.o2)}% oxygen. The indexed FLEX-2 table describes planned conditions.` : null });
   }
   // 5. smoke
   const station = cabin && Math.abs(c.o2 - 21) <= S.o2_window;
   rows.push({ key: "smoke", q: "Will smoke be detected in time?", g: station ? "B" : "C",
-    text: station ? `Smoke from five overheated materials was measured in flight at station air (${S.same_rows} table rows). Particle sizes are in the data files, not in the table.` : `Smoke was measured in flight only at station air. Nothing at ${f1(c.psia)} psia and ${f1(c.o2)} % oxygen.`,
+    text: `SAME and SAME-R studied smoke from overheated materials on the station (${S.same_rows} source table rows). These rows give no paired atmosphere for a cabin match or detector response time.`,
     refs: ["F-smoke"], prio: 3, action: station ? null : `Repeat the smoke measurements at ${f1(c.psia)} psia and ${f1(c.o2)} % oxygen to calibrate detectors.` });
   // 6. gravity
   rows.push(c.g === "0" ? { key: "grav", q: "Does the evidence hold at this gravity?", g: "A", text: `Yes. All ${S.tests} runs in the archive were in microgravity.`, refs: ["F-gravity"], prio: 4, action: null }
     : { key: "grav", q: `Does the evidence hold at ${GRAV[c.g][1]}?`, g: "D",
-      text: (c.g === "moon" ? "No. Every run was in orbit, and NASA's challenge statement confirms that PSI holds no partial-gravity combustion data. LUCI and FM2 are expected to add it." : "No. Every run was in orbit, PSI holds no partial-gravity data, and no experiment in these sources addresses Martian gravity.")
-        + " Until then the microgravity result and the normal-gravity result bound what happens in between; ACME E-FIELD Flames mimicked partial gravity with an electric field.",
+      text: "The included flight runs were made in orbit. Microgravity and normal-gravity results offer comparison points. A flame response at partial gravity can fall outside their range. ACME E-FIELD Flames used electric forcing to study related effects.",
       refs: c.g === "moon" ? ["F-gravity", "N-fm2", "N-luci", "PSI-22"] : ["F-gravity", "PSI-22"], prio: 4,
-      action: c.g === "moon" ? "Fly partial-gravity flammability tests (LUCI, FM2), and meanwhile bound each case between its microgravity and normal-gravity results." : "Plan flammability tests at Martian gravity. None is named in these sources. Meanwhile bound each case between its microgravity and normal-gravity results." });
+      action: c.g === "moon" ? "Measure material flammability at lunar gravity and compare the results with microgravity and Earth-gravity data." : "Measure material flammability at Martian gravity." });
   return rows;
 }
 function mcSetup() {
@@ -202,7 +212,7 @@ function mcSetup() {
   $("#mccopy").onclick = () => { const done = ok => { $("#mccopied").textContent = ok ? "Copied to clipboard" : "Copy failed. Select the text instead."; };
     try { navigator.clipboard.writeText(MC.report).then(() => done(true), () => done(false)); } catch (e) { done(false); } };
   $("#mcmap").addEventListener("click", e => { e.preventDefault(); state.atm = "custom"; state.custom = { o2: MC.o2, p: MC.psia / PSIA }; go("evidence"); });
-  $("#mcrules").textContent = `How grades are set. A: enough flight runs match the cabin (5 for a material, 10 for liquids), within ${S.o2_window} points of oxygen and ${Math.round(S.p_window * 100)} % of pressure. B: fewer runs, a match in oxygen but not pressure, or one kind of fuel only. C: no direct test, but related flight evidence. D: nothing in the archive. Solid-material tables record no pressure, so they count as a pressure match only for a cabin at station pressure. This is a research aid, not a basis for spacecraft design decisions.`;
+  $("#mcrules").textContent = `For materials and liquids, grade A requires at least 5 and 10 PSI runs, respectively, within ±${S.o2_window} oxygen percentage points and ±${Math.round(S.p_window * 100)}% of recorded pressure. Grade B covers fewer matches or limited evidence. A solid with only a PSI oxygen match can receive at most B. Separately cited Saffire-VI events contribute to the material grade; they are excluded from PSI run counts. C indicates indirect evidence, D a gap in the records reviewed. These grades describe research coverage.`;
 }
 function drawMission() {
   $("#mc_o2").value = MC.o2; $("#mc_p").value = MC.psia; $("#mc_flow").value = MC.flow; $("#mc_agent").value = MC.agent; $("#mc_liq").checked = MC.liquids; $("#mc_vent").checked = MC.ventOff;
@@ -210,7 +220,7 @@ function drawMission() {
   document.querySelectorAll("#mc_g button").forEach(b => b.setAttribute("aria-pressed", b.dataset.g === MC.g));
   document.querySelectorAll("#mc_mats input").forEach(i => { i.checked = MC.mats.includes(i.value); });
   document.querySelectorAll("#mcpresets .chip").forEach((b, i) => { const v = MC_PRESETS[i][1]; b.setAttribute("aria-pressed", MC.o2 === v.o2 && Math.abs(MC.psia - v.psia) < 1e-9 && MC.g === v.g); });
-  const rows = mcEval(MC), nD = rows.filter(r => r.g === "D").length, nC = rows.filter(r => r.g === "C").length, hi = MC.o2 > S.solid_o2_max + 0.3;
+  const rows = mcEval(MC), nD = rows.filter(r => r.g === "D").length, nC = rows.filter(r => r.g === "C").length, hi = MC.o2 > S.solid_o2_max;
   const head = nD ? `${nD} of ${rows.length} questions have no flight evidence for this cabin` : nC ? `Evidence is only indirect for ${nC} of ${rows.length} questions` : "Flight evidence exists for every question";
   const where = `${f1(MC.o2)} % oxygen, ${f1(MC.psia)} psia, ${GRAV[MC.g][1]}.`;
   const warn = MC.ventOff && hi ? " The fire response starts with a step that is unproven in this air: stopping ventilation." : "";
@@ -268,16 +278,23 @@ function countAnswer(q) {
   const mo = q.match(/(\d+(?:\.\d+)?)\s*(?:%|percent)/i); if (!mo) return "";
   const mp = q.match(/(\d+(?:\.\d+)?)\s*(psia|psi|atm)/i), o2 = +mo[1]; if (o2 < 5 || o2 > 100) return "";
   const p = mp ? (/atm/i.test(mp[2]) ? +mp[1] : +mp[1] / PSIA) : null;
-  const near = k => D.tests.filter(t => t.k === k && t.o != null && Math.abs(t.o - o2) <= S.o2_window && (p == null || (t.ps === "recorded" && Math.abs(t.p / p - 1) <= S.p_window))).length;
-  return `<div class="a"><span class="lab">Counted from the run tables just now</span><p>Within ${S.o2_window} points of ${f1(o2)} % oxygen${p ? ` and ${Math.round(S.p_window * 100)} % of ${f2(p)} atm` : ", at any pressure"}: <b>${near("solid")}</b> solid-material runs, <b>${near("droplet")}</b> liquid-droplet runs and <b>${near("gas")}</b> gas-flame runs.${p ? " Solid-material tables record no pressure, so they cannot match a pressure." : ""}</p></div>`;
+  if (p != null && p <= 0) return "";
+  const T = { o2, p };
+  const near = k => D.tests.filter(t => t.k === k && (p == null ? oxygenMatches(t.o, T) : cabinMatches(t, T))).length;
+  const events = saffireEvents.filter(r => p == null ? oxygenMatches(r.oxygen_percent, T) : saffireMatches(r, T));
+  const extra = events.length ? `<p>Separately, the Saffire-VI report lists ${plural(events.length, "material event")} in that window: ${esc(events.map(r => saffireConditions(r) + (r.outcome === "noign" ? " (did not ignite)" : " (burned)")).join("; "))}. ${refLink("SAFFIRE6")}</p>` : "";
+  return `<div class="a"><span class="lab">Counted from the PSI run tables</span><p>Within ${S.o2_window} points of ${f1(o2)}% ambient oxygen${p ? ` and ${Math.round(S.p_window * 100)}% of ${f2(p)} atm` : ", including runs with unreported pressure"}: <b>${near("solid")}</b> solid-material runs, <b>${near("droplet")}</b> liquid-droplet runs and <b>${near("gas")}</b> gas-flame runs.</p>${extra}</div>`;
 }
 const MAT_WORDS = { pmma: ["pmma", "acrylic", "plexiglas"], sibal: ["sibal", "cotton", "fabric", "fiberglass"], nomex: ["nomex"], silicone: ["silicone"], ultem: ["ultem"], wax: ["wax", "candle", "paraffin"], kapton: ["kapton", "polyimide"], teflon: ["teflon", "ptfe"] };
 function materialAnswer(q) {
   const lq = q.toLowerCase();
   return D.materials.filter(m => MAT_WORDS[m.id].some(w => lq.includes(w))).map(m => {
     const invs = Object.keys(m.invs).map(a => `${a} ${m.invs[a]}`).join(", ");
-    let t = m.flame ? `${plural(m.flame, "flaming flight test")} in the archive (${esc(invs)}).` + (m.o2 ? ` ${m.with_o2} of them record an oxygen level, from ${f1(m.o2[0])} to ${f1(m.o2[1])} %. The exploration atmosphere is ${f1(EXP.o2)} %, ${f1(EXP.o2 - m.o2[1])} points above the highest.` : " None records an oxygen level.") : "Never burned in a flight test in this archive.";
+    let t = m.flame ? `${plural(m.flame, "material test")} in the included PSI tables (${esc(invs)}).` + (m.o2 ? ` ${m.with_o2} record ambient oxygen in the range ${rangeText(m.o2)}%.` : " None records an oxygen level.") : "No flame-spread test in the included PSI tables.";
     if (m.smoke) t += ` ${plural(m.smoke, "smoke test")} in SAME and SAME-R.`;
+    const external = saffireEvents.filter(r => r.material_id === m.id);
+    if (external.length) t += ` Saffire-VI separately reports ${esc(external.map(r => saffireConditions(r) + (r.outcome === "noign" ? " (did not ignite)" : " (burned)")).join("; "))}. ${refLink("SAFFIRE6")}.`;
+    if (m.id === D.external_sofie.material_id) t += ` SoFIE-GEL tested PMMA spheres in orbit at ambient oxygen levels up to ${D.external_sofie.oxygen_max_percent}%. ${refLink("SOFIEGEL")}.`;
     return `<div class="a"><span class="lab">Looked up in the run tables · ${esc(m.name)}</span><p>${t}</p>${m.results.map(r => `<p>${esc(r)}</p>`).join("")}<p class="fine">${esc(m.what)}. <a href="#mission" data-go="mission">Check it against a cabin</a></p></div>`;
   }).join("");
 }
@@ -285,7 +302,7 @@ function investigationAnswer(q) {
   const lq = " " + q.toLowerCase().replace(/[^a-z0-9-]+/g, " ") + " ";
   const hits = D.investigations.filter(i => i.combustion && i.acr).map(i => { const full = i.acr.toLowerCase().split(/\s*\/\s*/).concat(i.acr.toLowerCase().replace(/^acme\s+/, "")); return { i, keys: full.concat(full.map(k => k.replace(/[-\s](i{1,3}|r|2)$/, ""))) }; })
     .filter(x => x.keys.some(k => k.length > 2 && lq.includes(" " + k + " "))).sort((a, b) => b.i.acr.length - a.i.acr.length).slice(0, 2);
-  return hits.map(({ i }) => `<div class="a"><span class="lab">From the NASA record · ${esc(i.acr)}</span><p>${esc(i.summary || i.title)}</p><p class="fine">${i.rows ? plural(i.rows, "run") + " listed" : "No run table"}${i.o2 ? `, oxygen ${f1(i.o2[0])} to ${f1(i.o2[1])} %` : ""}${i.p ? `, pressure ${f2(i.p[0])} to ${f2(i.p[1])} atm` : ""}, ${plural(i.npub, "publication")}. ${refLink(i.acc)}</p></div>`).join("");
+  return hits.map(({ i }) => `<div class="a"><span class="lab">From the NASA record · ${esc(i.acr)}</span><p>${esc(i.summary || i.title)}</p><p class="fine">${plural(i.rows, "source table row")}, ${plural(D.tests.filter(t => t.i === i.acc).length, "indexed run")}${i.o2 ? `, ambient oxygen ${rangeText(i.o2)}%` : ""}${i.burner_o2 ? `, burner oxidizer oxygen ${rangeText(i.burner_o2)}%` : ""}${i.p ? `, pressure ${rangeText(i.p)} atm` : ""}. ${refLink(i.acc)}</p></div>`).join("");
 }
 function ask(q) {
   const box = $("#answer"); box.hidden = false;
@@ -293,7 +310,7 @@ function ask(q) {
   const counted = countAnswer(q);
   const a = bankMatch(base, !!counted);
   let h = "";
-  if (a) h += `<div class="a"><span class="lab">Analyst answer · written with AI ahead of time, every claim checked against the records</span><p class="lead">${esc(a.a)}</p>` +
+  if (a) h += `<div class="a"><span class="lab">Prepared analyst answer · sources and numerical checks below</span><p class="lead">${esc(a.a)}</p>` +
     a.claims.map(c => `<div class="claim"><span class="ok" title="Checked at build time">✓</span><span>${esc(c.text)}</span><span class="src">${c.sources.map(refLink).join(" · ")}</span></div>`).join("") + `</div>`;
   h += counted + materialAnswer(q) + investigationAnswer(q);
   const rel = relatedFindings(base, a ? a.claims.flatMap(c => c.sources) : []);
@@ -302,7 +319,7 @@ function ask(q) {
 }
 function askSetup() {
   const nClaims = D.answers.reduce((n, a) => n + a.claims.length, 0);
-  $("#asksub").textContent = `Search the run tables by material, oxygen level or pressure, or choose a question below. The browser can also retrieve ${D.answers.length} prepared answers drafted with SI. Their ${nClaims} claims were checked against ${D.record_ids.length} records.`;
+  $("#asksub").textContent = `Search the run tables by material or cabin atmosphere, or choose a question below. The archive also includes ${D.answers.length} prepared answers with ${nClaims} cited claims. Automated checks cover references and numbers.`;
   ["Does turning off ventilation put out a fire at 34 % oxygen?", "Has Nomex been tested?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "What is the biggest fire risk for a Moon base?", "What did FLEX do?", "Is the ground flammability test the worst case?"]
     .forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
   $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
@@ -312,16 +329,16 @@ function askSetup() {
 function drawMethod() {
   const R = M.cv.results;
   $("#methodbody").innerHTML = `
-  <div><h3>Data</h3><ul><li>Source: <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>, every investigation returned for “combustion”. Public domain (CC0-1.0).</li><li>${S.investigations} records, ${S.combustion} of them about combustion; ${S.table_rows} table rows; ${S.pubs} linked publications; ${S.raw_tb} TB of raw data.</li><li>Cabin atmospheres are the three NASA names in the ACME BRE record: 14.7 psia at 21 %, 10.2 psia at 26.5 % and 8.2 psia at 34 % oxygen. The Moon-base range, ${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less, is from the <a href="${esc(D.meta.challenge_url)}" target="_blank" rel="noopener">challenge statement</a>.</li><li>PSI does not hold everything NASA has flown. Saffire-IV, -V and -VI are not in it; NASA reports that Saffire-VI burned solid samples at “${esc(D.challenge.saffire6.text.split("because of the ")[1].split(" generated")[0])}”.</li><li>Current experiments are from the <a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science page</a>.</li><li>Built ${esc(D.meta.built)}. One script rebuilds every number from the CSV files.</li></ul></div>
-  <div><h3>Rules we held to</h3><ul><li>A missing value stays missing. Nothing is estimated or filled in.</li><li>Runs without a recorded pressure are drawn apart and never counted as a pressure match.</li><li>Every quote is matched word for word against a saved copy of its NASA source; the build stops if one is not found.</li><li>Finding scores are judgements. They are shown in full and you can reweight them.</li><li>Research prototype. Not validated for spacecraft design or fire-safety decisions.</li></ul></div>
+  <div><h3>Data</h3><ul><li>The project uses a saved search for “combustion” in <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>.</li><li>${S.investigations} records, ${S.combustion} classified as combustion, ${S.table_rows} source table rows and ${S.tests} individual flight runs in the analysis. The records list ${S.pubs} publication entries across investigations and ${S.raw_tb} TB of raw data.</li><li>NASA describes three cabin atmospheres in the ACME BRE record: ${D.atmospheres.map(a => f1(a.psia) + " psia at " + f1(a.o2) + "% oxygen").join(", ")}. The ${f1(S.moon_o2_min)}% minimum and ${f1(S.moon_psia_max)} psia maximum for the broader lunar range come from the <a href="${esc(D.meta.challenge_url)}" target="_blank" rel="noopener">challenge statement</a>.</li><li>Saffire-VI and SoFIE-GEL contribute solid-material evidence from outside the indexed run tables. ${refLink("SAFFIRE6")} · ${refLink("SOFIEGEL")}.</li><li>Built ${esc(D.meta.built)} from saved records, primary sources and derived analyses.</li></ul></div>
+  <div><h3>Reading the evidence map</h3><ul><li>Cabin-window counts compare each run’s reported ambient oxygen and recorded pressure. CFI-G normal flames use pre-test chamber oxygen. In inverse flames the oxidizer flows through the burner. Its oxygen fraction is retained in a separate export column.</li><li>For display only, oxygen is grouped to the nearest percentage point. Pressure is grouped to the nearest 0.05 atm below 1.5 atm and to 0.5 atm above that threshold. Circles sit at mean oxygen and geometric mean pressure. Select a circle to see the source range. An oxygen-only circle has no pressure coordinate.</li><li>BRE diamonds show approximate chamber oxygen settings by test day. The daily table does not assign a run count or pressure to each setting.</li><li>Finding scores are project judgements. Research prototype for exploring the evidence.</li></ul></div>
   <div><h3>Mission check</h3><ul><li>Grades are set by fixed rules, printed under the scorecard, from counts of flight runs near the cabin's oxygen level and pressure.</li><li>Materials are matched by name in the BASS, BASS-II and Saffire tables; smoke-only materials come from SAME.</li><li>The ventilation, agent and smoke rows rest on the findings they link to, including their limits.</li></ul></div>
-  <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>${esc(M.cv.method)}: accuracy ${Math.round(R["Full model"].accuracy.mean * 100)} %, AUC ${f2(R["Full model"].auc.mean)}.</li><li>A query farther than ${f2(M.domain.nn95)} standard deviations from every real run, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
-  <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li></ul></div>
+  <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} source runs excluded). Inputs include oxygen, pressure, fuel, droplet size, carbon dioxide and helium.</li><li>${esc(M.cv.method)}. Mean accuracy ${Math.round(R["Full model"].accuracy.mean * 100)}%, AUC ${f2(R["Full model"].auc.mean)}. Held-out days are from FLEX. Transfer to another fuel system or mission has not been tested here.</li><li>Neighbour distances compare measurements in training standard deviations within the same fuel. The edge warning starts at ${f2(M.domain.nn95)}. A distance above ${f2(2 * M.domain.nn95)} or a value outside a training range triggers extrapolation.</li></ul></div>
+  <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second. Spread rates use a steady interval before the fan cut. Fits are repeated at three brightness thresholds.</li><li>B1 sets the pixel scale using the report’s spread rate. ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} additional checks against this experiment passed. The calibration itself is excluded from that total.</li></ul></div>
   <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used to design the QUENCH logo. The cover and candle photographs are credited to NASA. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
   <div><h3>What the challenge asks</h3><ul><li>“${esc(D.challenge.task.text)}”</li><li>Summarise: Briefing, Archive rows, Lessons. Rank: Archive (investigations for a habitat) and Findings (by weights you set). Interpret: Mission check, Findings, Ask.</li><li>${esc(D.challenge.obj_relevant.text)} See <a href="#archive" data-go="archive">Archive</a> and <a href="#mission" data-go="mission">Mission check</a>.</li><li>${esc(D.challenge.obj_data.text)} See the downloads in <a href="#evidence" data-go="evidence">Evidence</a> and the <a href="#lab" data-go="lab">Lab</a>.</li><li>${esc(D.challenge.obj_controls.text)} See <a href="#findings" data-go="findings">Findings</a>, sorted into prevention, detection and suppression.</li><li>${esc(D.challenge.scope.text)} QUENCH leaves rockets and propellants out as well.</li></ul></div>
   <div><h3>Ranking of investigations</h3><ul><li>Four parts, each from 0 to 100, combined with weights you can change: how the challenge statement and PSI tie the investigation to fire safety, how close its fuel is to cabin materials, how close its runs come to the chosen cabin's oxygen and pressure, and how ready its data is to use.</li><li>Tier 1 (${S.tiers["1"]} investigations) is named in the challenge statement as a prevention, detection or suppression study. Tier 2 (${S.tiers["2"]}) is named there as related, filed by PSI under fire safety, or built on a tier 1 study. Tier 3 (${S.tiers["3"]}) is every other combustion investigation, which the statement calls “still relevant to fire safety, just not as strongly or directly”.</li><li>What varied, what stayed the same and what was recorded are computed from each PSI run table. Measurement types are found by keyword in the record, so a type the record does not name is not listed.</li><li>The parts follow NASA's records. The numbers given to them are our judgement and are printed in full under the weights.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
-  <div><h3>Resources from the organizers</h3><ul>${D.sources.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join("")}<li><a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI combustion investigations</a></li><li><a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science</a></li></ul></div>`;
+  <div><h3>Sources</h3><ul>${D.sources.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join("")}</ul></div>`;
 }
 
 /* ---------- navigation and wiring ---------- */
@@ -367,7 +384,7 @@ $("#chart").addEventListener("focusout", () => { $("#tip").hidden = true; });
 $("#chart").addEventListener("click", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); });
 $("#viewbtn").onclick = () => { state.table = !state.table; drawMapTable(); };
 $("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
-$("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69")));
+$("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69" && t.p > 0 && t.o != null && t.d0 != null && ["Extinction", "Completion", "Disruption"].includes(t.rr))));
 $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
 $("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;

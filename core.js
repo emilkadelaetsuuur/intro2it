@@ -29,52 +29,81 @@ function target() {
   return D.atmospheres.find(a => a.id === state.atm);
 }
 
-/* ---------- grouping of runs with identical conditions ---------- */
+/* ---------- bins for plotting; cabin comparisons always use individual runs ---------- */
+const X0 = 10, X1 = 45, Y0 = 0.4, Y1 = 6;
+const hasPressure = t => t.p > 0 && t.ps === "recorded";
+const oxygenMatches = (o, T) => o != null && Math.abs(o - T.o2) <= S.o2_window;
+const cabinMatches = (t, T) => oxygenMatches(t.o, T) && hasPressure(t) && Math.abs(t.p / T.p - 1) <= S.p_window;
+const saffireReport = "https://ntrs.nasa.gov/citations/20250002675";
+const saffireResults = "https://ntrs.nasa.gov/citations/20240007488";
+const sofieReport = "https://doi.org/10.1016/j.combustflame.2025.114244";
+const saffireEvents = D.external_saffire6?.runs || [];
+const saffireConditions = r => `${r.material}, ${r.oxygen_percent.toFixed(1)}% O₂${r.pressure_kpa == null ? ", pressure unreported" : " at " + r.pressure_kpa + " kPa"}`;
+const saffireMatches = (r, T) => r.pressure_kpa != null && oxygenMatches(r.oxygen_percent, T) && Math.abs(r.pressure_kpa / 101.325 / T.p - 1) <= S.p_window;
 const pBucket = p => p < 1.5 ? Math.round(p * 20) / 20 : Math.round(p * 2) / 2;
-function groupBy(tests, keyFn) {
+function axisLimit(t) {
+  if (t.o < X0) return `below ${X0}% ambient oxygen`;
+  if (t.o > X1) return `above ${X1}% ambient oxygen`;
+  if (hasPressure(t) && t.p < Y0) return `below ${Y0} atm`;
+  if (hasPressure(t) && t.p > Y1) return `above ${Y1} atm`;
+  return "";
+}
+function groupRuns(tests) {
   const m = new Map();
   for (const t of tests) {
-    const key = keyFn(t); let g = m.get(key);
-    if (!g) { g = { k: t.k, n: 0, so: 0, slp: 0, inv: {}, out: { ext: 0, burn: 0, other: 0, noign: 0, na: 0 } }; m.set(key, g); }
-    g.n++; g.so += t.o; g.slp += Math.log(t.p || 1); g.inv[t.a] = (g.inv[t.a] || 0) + 1; g.out[t.r]++;
+    const recorded = hasPressure(t), off = axisLimit(t);
+    const key = [t.k, Math.round(t.o), recorded ? pBucket(t.p) : "", off].join("|");
+    if (!m.has(key)) m.set(key, { k: t.k, off, recorded, runs: [], inv: {}, out: {} });
+    const g = m.get(key);
+    g.runs.push(t); g.inv[t.a] = (g.inv[t.a] || 0) + 1; g.out[t.r] = (g.out[t.r] || 0) + 1;
   }
-  return [...m.values()].map(g => Object.assign(g, { o: g.so / g.n, p: Math.exp(g.slp / g.n) }));
+  return [...m.values()].map(g => {
+    const os = g.runs.map(t => t.o), ps = g.runs.map(t => t.p), n = os.length;
+    return Object.assign(g, { n, o: os.reduce((a, b) => a + b, 0) / n,
+      p: g.recorded ? Math.exp(ps.reduce((a, b) => a + Math.log(b), 0) / n) : null,
+      oxygen: [Math.min(...os), Math.max(...os)], pressure: g.recorded ? [Math.min(...ps), Math.max(...ps)] : null });
+  });
 }
-const recorded = D.tests.filter(t => t.o != null && t.p != null && t.ps === "recorded");
-const groups = groupBy(recorded, t => t.k + "|" + Math.round(t.o) + "|" + pBucket(t.p));
-const solidStrip = groupBy(D.tests.filter(t => t.k === "solid" && t.o != null), t => Math.round(t.o));
-const breStrip = (() => { const m = {}; for (const c of D.conditions) if (c.i === "PSI-20") for (const o of c.o) { (m[o] = m[o] || { o, days: 0 }).days++; } return Object.values(m); })();
-const X0 = 10, X1 = 45;
-const offscale = recorded.filter(t => t.o > X1);
+const groups = groupRuns(D.tests.filter(t => t.o != null));
+const stripKinds = KINDS.filter(k => groups.some(g => g.k === k && !g.recorded));
+const breStrip = [...new Set(D.conditions.filter(c => c.i === "PSI-20").flatMap(c => c.o))].sort((a, b) => a - b).map(o => ({
+  o, days: new Set(D.conditions.filter(c => c.i === "PSI-20" && c.o.includes(o)).map(c => c.day)).size
+}));
+const numText = x => Number(x.toPrecision(6)).toString();
+const rangeText = ([lo, hi]) => lo === hi ? numText(lo) : `${numText(lo)}–${numText(hi)}`;
 
 /* ---------- coverage of a cabin atmosphere ---------- */
 function coverage(T) {
   const out = {};
   KINDS.forEach(k => {
     const all = D.tests.filter(t => t.k === k && t.o != null);
-    const win = all.filter(t => t.ps === "recorded" && t.p != null && Math.abs(t.o - T.o2) <= S.o2_window && Math.abs(t.p / T.p - 1) <= S.p_window);
-    const o2only = all.filter(t => t.ps !== "recorded" && Math.abs(t.o - T.o2) <= S.o2_window);
+    const win = all.filter(t => cabinMatches(t, T));
+    const o2only = all.filter(t => !hasPressure(t) && oxygenMatches(t.o, T));
     let best = null;
-    all.forEach(t => { const p = t.p || 1, d = Math.hypot((t.o - T.o2) / S.o2_window, Math.log(p / T.p) / Math.log(1 + S.p_window)); if (!best || d < best.d) best = { d, t, p }; });
+    const measured = all.filter(hasPressure), candidates = measured.length ? measured : all;
+    candidates.forEach(t => {
+      const dp = hasPressure(t) ? Math.log(t.p / T.p) / Math.log(1 + S.p_window) : 0;
+      const d = Math.hypot((t.o - T.o2) / S.o2_window, dp);
+      if (!best || d < best.d) best = { d, t };
+    });
     let near = null;
-    if (best) { const same = all.filter(t => Math.round(t.o) === Math.round(best.t.o) && pBucket(t.p || 1) === pBucket(best.p));
-      near = { n: same.length, o: best.t.o, p: best.p, assumed: best.t.ps !== "recorded", accs: [...new Set(same.map(t => t.a))], do: best.t.o - T.o2, dp: (best.p / T.p - 1) * 100 }; }
-    const res = { ext: 0, burn: 0, other: 0, noign: 0 }; win.forEach(t => { if (res[t.r] != null) res[t.r]++; });
-    const cabin = Math.abs(1 / T.p - 1) <= S.p_window;
-    let status, n;
-    if (k === "solid") { n = cabin ? o2only.length : 0; status = n >= 10 ? "ok" : (n > 0 || o2only.length) ? "thin" : "none"; }
-    else { n = win.length; status = n >= 10 ? "ok" : n > 0 ? "thin" : "none"; }
-    out[k] = { n, win, o2only, near, res, status, cabin };
+    if (best) {
+      const same = candidates.filter(t => t.o === best.t.o && t.p === best.t.p);
+      near = { n: same.length, o: best.t.o, p: hasPressure(best.t) ? best.t.p : null, accs: [...new Set(same.map(t => t.a))] };
+    }
+    const res = {};
+    win.forEach(t => { res[t.r] = (res[t.r] || 0) + 1; });
+    const n = win.length, status = n >= 10 ? "ok" : n ? "thin" : "none";
+    out[k] = { n, win, o2only, near, res, status };
   });
   return out;
 }
-const STATUS = { none: ["✕", "No flight tests"], thin: ["!", "Thin evidence"], ok: ["✓", "Tested"] };
+const STATUS = { none: ["✕", "No matches"], thin: ["!", "1–9 matching runs"], ok: ["✓", "10 or more matching runs"] };
 function nearText(c) {
-  const n = c.near; if (!n) return "No runs with an oxygen level on record.";
-  const dOx = Math.abs(n.do) < 0.25 ? "the same oxygen level" : `${f1(Math.abs(n.do))} points ${n.do < 0 ? "less" : "more"} oxygen`;
-  const dP = n.assumed ? "at cabin pressure, which the table does not record" : Math.abs(n.dp) < 3 ? "at the same pressure" : `at ${Math.abs(Math.round(n.dp))} % ${n.dp > 0 ? "higher" : "lower"} pressure`;
-  return `Closest: ${plural(n.n, "run")} from ${n.accs.join(" and ")} at ${f1(n.o)} % oxygen${n.assumed ? "" : " and " + f2(n.p) + " atm"}. That is ${dOx}, ${dP}.`;
+  const n = c.near; if (!n) return "No run lists ambient oxygen.";
+  return `Closest ${n.p == null ? "by oxygen" : "measured conditions"}: ${plural(n.n, "run")} from ${n.accs.join(" and ")} at ${numText(n.o)}% ambient oxygen${n.p == null ? ", pressure unavailable" : " and " + numText(n.p) + " atm"}.`;
 }
+const oxygenOnlyText = c => c.o2only.length ? `${plural(c.o2only.length, "run")} in the oxygen window with unreported pressure.` : "";
 
 /* ---------- briefing ---------- */
 const cabinCoverage = Object.fromEntries(D.atmospheres.map(a => [a.id, coverage(a)]));
@@ -96,6 +125,9 @@ function drawCabinCoverage() {
     $(".cabin-count", row).textContent = count;
     $(".cabin-track i", row).style.transform = "scaleX(" + count / maxCabinRuns + ")";
   });
+  const partial = KINDS.filter(k => cabinCoverage[cabin.id][k].o2only.length)
+    .map(k => plural(cabinCoverage[cabin.id][k].o2only.length, KIND[k].one + " run"));
+  $("#cabin-partial").textContent = partial.length ? `${partial.join(" and ")} match on oxygen alone. Their tables omit pressure.` : "";
 }
 
 function setupCabinCoverage() {
@@ -108,10 +140,10 @@ function setupCabinCoverage() {
   ).join("")}</tr></thead><tbody>${KINDS.map(k =>
     `<tr><th scope="row">${KIND[k].label}</th>${D.atmospheres.map(a => {
       const cell = cabinCoverage[a.id][k];
-      return `<td><b>${cell.n}</b><small>${STATUS[cell.status][1]}</small></td>`;
+      return `<td><b>${cell.n}</b><small>${cell.o2only.length ? cell.o2only.length + " oxygen-only" : STATUS[cell.status][1]}</small></td>`;
     }).join("")}</tr>`
   ).join("")}</tbody>`;
-  $("#matrixnote").textContent = `A run counts within ±${S.o2_window} percentage points of the cabin oxygen level and ±${Math.round(S.p_window * 100)}% of its pressure. For solid materials the tables omit pressure, so oxygen matches count only for the station cabin.`;
+  $("#matrixnote").textContent = `A run counts when its ambient oxygen is within ±${S.o2_window} percentage points and its recorded pressure is within ±${Math.round(S.p_window * 100)}% of the selected cabin. Oxygen-only counts are listed separately wherever pressure is missing.`;
   $(".cabin-switch").addEventListener("click", event => {
     const button = event.target.closest("button[data-cabin]");
     if (!button || button.dataset.cabin === briefingCabin) return;
@@ -138,20 +170,21 @@ function drawBrief() {
   $("#overview-metrics").innerHTML = index.map(([count, label, route]) =>
     `<a href="#${route}" data-go="${route}"><b>${count}</b> ${label}</a>`
   ).join("");
-  const moon = D.challenge.moon_air, saffire = D.challenge.saffire6;
+  const moon = D.challenge.moon_air;
   const min = f1(S.moon_o2_min), pressure = f1(S.moon_psia_max);
-  $("#thesis").textContent = `The PSI archive contains ${S.solid_with_o2} solid-fuel flight runs with a reported oxygen level. The proposed lunar cabin starts above the highest value in those records.`;
+  $("#thesis").textContent = `The PSI archive contains ${S.solid_with_o2} solid-fuel flight runs with a reported ambient oxygen level. ${S.moon_o2_min > S.solid_o2_max ? "The proposed lunar cabin starts above the highest value in those records." : "The table compares that range with the proposed lunar cabin."}`;
   $("#gapfig").innerHTML = `<table class="oxygen-table"><caption>Oxygen by volume</caption>
     <thead><tr><th scope="col">Condition</th><th scope="col">Oxygen</th></tr></thead>
     <tbody><tr><th scope="row">Solid-fuel runs in NASA PSI</th><td>${f1(S.solid_o2_min)}–${f1(S.solid_o2_max)}%</td></tr>
     <tr><th scope="row">Proposed lunar cabin <small>At or below ${pressure} psia</small></th><td>≥${min}%</td></tr></tbody></table>
     <p class="source-line">Sources <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI</a>
     <span> / </span><a href="${esc(moon.url)}" target="_blank" rel="noopener">Lunar cabin specification</a></p>`;
-  $("#archive-limit").innerHTML = `NASA also burned solid samples at higher oxygen and lower pressure during <a href="${esc(saffire.url)}" target="_blank" rel="noopener">Saffire-VI</a>. Its run tables are absent from this archive.`;
+  const external = saffireEvents.filter(r => r.outcome === "burn" && saffireMatches(r, EXP));
+  $("#archive-limit").innerHTML = `Outside these PSI tables, Saffire-VI reported ${plural(external.length, "burn")} within the exploration window: ${esc(external.map(saffireConditions).join("; "))}. <a href="${saffireReport}" target="_blank" rel="noopener">NASA flight report, Table 1</a> · <a href="${saffireResults}" target="_blank" rel="noopener">Saffire-VI results</a>. SoFIE-GEL also tested PMMA spheres on the ISS at oxygen levels up to ${D.external_sofie.oxygen_max_percent}%. Its published ranges do not pair each oxygen level with a pressure. <a href="${sofieReport}" target="_blank" rel="noopener">SoFIE-GEL flight study</a>.`;
   $("#o2ctx").innerHTML = `<table class="breakdown-table"><caption>Number of flight runs meeting each condition</caption>
     <thead><tr><th scope="col">Fuel</th><th scope="col">O₂ ≥${min}%</th><th scope="col">O₂ ≥${min}% and ≤${pressure} psia</th></tr></thead>
     <tbody>${KINDS.map(k => `<tr><th scope="row">${KIND[k].label}</th><td>${S.hi_o2[k]}</td><td>${S.moon_range[k]}</td></tr>`).join("")}</tbody></table>
-    <p>The gas-flame runs meeting both conditions come from ${esc(Object.keys(S.moon_range_by).join(", "))}. <a href="#evidence" data-go="evidence">Inspect individual runs</a></p>`;
+    <p>${S.moon_range.gas ? `The ${S.moon_range.gas} gas-flame runs meeting both conditions come from ${esc([...new Set(D.tests.filter(t => t.k === "gas" && t.o >= S.moon_o2_min && hasPressure(t) && t.p * PSIA <= S.moon_psia_max).map(t => t.a))].join(", "))}.` : "No gas-flame run meets both conditions."} <a href="#evidence" data-go="evidence">Explore the evidence map</a></p>`;
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");
   $("#todo").innerHTML = top.map(x => `<li>${esc(x.f.action)}<span>${esc(x.f.title)}</span></li>`).join("");
@@ -176,16 +209,16 @@ let hit = [];
 function drawMap() {
   const box = $("#chart"), W = Math.max(240, box.clientWidth), small = W < 620;
   const m = { l: small ? 42 : 60, r: small ? 12 : 22, t: small ? 55 : 26 };
-  const mainH = small ? 290 : 380, rowH = 44, gap = small ? 76 : 46;
-  const stripY = m.t + mainH + gap, H = stripY + rowH * 2 + 44;
+  const mainH = small ? 290 : 380, rowH = 54, gap = small ? 76 : 55;
+  const stripY = m.t + mainH + gap, stripCount = stripKinds.length + 1, stripBottom = stripY + rowH * stripCount, H = stripBottom + 16;
   const x = o => m.l + (o - X0) / (X1 - X0) * (W - m.l - m.r);
-  const Y0 = 0.4, Y1 = 6, y = p => m.t + (1 - Math.log(p / Y0) / Math.log(Y1 / Y0)) * mainH;
+  const y = p => m.t + (1 - Math.log(p / Y0) / Math.log(Y1 / Y0)) * mainH;
   const rad = n => 2.6 + (small ? 1.5 : 1.9) * Math.sqrt(n);
   const T = target(); hit = [];
   let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flight test runs by oxygen level and pressure" xmlns="http://www.w3.org/2000/svg">`;
   if (small) {
     const selected = `${T.name} · ${f1(T.o2)}% O₂ · ${f1(T.psia)} psia`;
-    s += `<desc>Selected cabin: ${esc(selected)}. The lower rows show oxygen levels for solid-material runs and gas-burner test days without recorded pressure.</desc>
+    s += `<desc>Selected cabin: ${esc(selected)}. The lower rows show runs with unreported pressure and the approximate oxygen settings listed on BRE test days.</desc>
       <text x="6" y="15" fill="var(--red)" font-size="13" font-weight="600">${esc(selected)}</text>`;
   }
   for (let o = X0; o <= X1; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="${m.t}" y2="${m.t + mainH}" stroke="var(--rule)"/><text x="${x(o)}" y="${m.t + mainH + 16}" text-anchor="middle" font-size="11" font-family="var(--mono)">${o}</text>`;
@@ -194,23 +227,29 @@ function drawMap() {
   const mp = S.moon_psia_max / PSIA;
   s += `<rect x="${x(S.moon_o2_min)}" y="${y(mp)}" width="${x(X1) - x(S.moon_o2_min)}" height="${y(Y0) - y(mp)}" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-opacity=".7" stroke-dasharray="4 4"/>`;
   s += `<text x="${x(X1) - 6}" y="${y(Y0) - 7}" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${small ? "MOON RANGE" : `MOON BASE RANGE: ${f1(S.moon_o2_min)} % OR MORE, ${f1(S.moon_psia_max)} PSI OR LESS`}</text>`;
-  const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = T.p * (1 + S.p_window), wy1 = T.p * (1 - S.p_window);
+  const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = Math.min(Y1, T.p * (1 + S.p_window)), wy1 = Math.max(Y0, T.p * (1 - S.p_window));
   s += `<rect x="${x(wx0)}" y="${y(wy0)}" width="${x(wx1) - x(wx0)}" height="${y(wy1) - y(wy0)}" fill="var(--red)" fill-opacity=".08" stroke="var(--red)" stroke-width="1.5"/>`;
-  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${small ? m.t + mainH : stripY + rowH * 2}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
-  if (small) s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${stripY}" y2="${stripY + rowH * 2}" stroke="var(--red)" stroke-opacity=".6"/>`;
-  [["Solid materials", "pressure not in table"], ["Gas burner standing in for solids", "ACME BRE, pressure not listed"]].forEach((r, i) => {
+  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${small ? m.t + mainH : stripBottom}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
+  if (small) s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${stripY}" y2="${stripBottom}" stroke="var(--red)" stroke-opacity=".6"/>`;
+  [...stripKinds.map(k => [KIND[k].label, "runs"]), ["BRE test days", "approximate chamber oxygen settings"]].forEach((r, i) => {
     const cy = stripY + rowH * i + rowH / 2;
     s += `<line x1="${m.l}" x2="${W - m.r}" y1="${cy}" y2="${cy}" stroke="var(--rule)"/>`;
     s += `<text x="${m.l}" y="${cy - rowH / 2 + 9}" font-size="11.5" font-weight="700" fill="var(--ink)">${r[0]}<tspan font-weight="400" fill="var(--ink3)">  ${small ? "" : r[1]}</tspan></text>`;
   });
-  s += `<text x="${m.l}" y="${stripY - 16}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${small ? "OXYGEN ONLY · PRESSURE UNRECORDED" : "RUNS WITH AN OXYGEN LEVEL BUT NO PRESSURE IN THE TABLE"}</text>`;
+  s += `<text x="${m.l}" y="${stripY - 12}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">OXYGEN ONLY · PRESSURE UNRECORDED</text>`;
   const marks = [];
-  groups.filter(g => state.kinds[g.k] && g.o <= X1).forEach(g => marks.push({ cx: x(g.o), cy: y(g.p), r: rad(g.n), g, hollow: false }));
-  if (state.kinds.solid) solidStrip.forEach(g => marks.push({ cx: x(g.o), cy: stripY + rowH / 2 + 4, r: rad(g.n), g, hollow: true, strip: "solid" }));
-  if (state.kinds.gas) breStrip.forEach(b => marks.push({ cx: x(b.o), cy: stripY + rowH * 1.5 + 4, r: rad(b.days * 3), g: { k: "gas", bre: b }, hollow: true, strip: "bre" }));
+  groups.filter(g => state.kinds[g.k] && !g.off).forEach(g => {
+    const cy = g.recorded ? y(g.p) : stripY + rowH * (stripKinds.indexOf(g.k) + 0.5) + 4;
+    marks.push({ cx: x(g.o), cy, r: rad(g.n), g, hollow: !g.recorded });
+  });
+  if (state.kinds.gas) breStrip.filter(b => b.o >= X0 && b.o <= X1).forEach(b => {
+    marks.push({ cx: x(b.o), cy: stripY + rowH * (stripKinds.length + 0.5) + 4, r: 6, g: { k: "gas", bre: b } });
+  });
   marks.sort((a, b) => b.r - a.r).forEach(mk => {
     const c = KIND[mk.g.k].color, i = hit.push(mk) - 1;
-    s += `<circle class="bub" data-i="${i}" tabindex="0" cx="${mk.cx.toFixed(1)}" cy="${mk.cy.toFixed(1)}" r="${mk.r.toFixed(1)}" fill="${c}" fill-opacity="${mk.hollow ? 0.28 : 0.82}" stroke="${mk.hollow ? c : "var(--bg)"}" stroke-width="1.5"/>`;
+    const attrs = `class="bub" data-i="${i}" tabindex="0" aria-label="${esc(tipHtml(mk).replace(/<br>/g, ". ").replace(/<[^>]+>/g, ""))}"`;
+    s += mk.g.bre ? `<rect ${attrs} x="-4.5" y="-4.5" width="9" height="9" transform="translate(${mk.cx} ${mk.cy}) rotate(45)" fill="${c}"/>`
+      : `<circle ${attrs} cx="${mk.cx.toFixed(1)}" cy="${mk.cy.toFixed(1)}" r="${mk.r.toFixed(1)}" fill="${c}" fill-opacity="${mk.hollow ? 0.28 : 0.82}" stroke="${mk.hollow ? c : "var(--bg)"}" stroke-width="1.5"/>`;
   });
   const list = state.atm === "custom" ? [...D.atmospheres, T] : D.atmospheres;
   list.forEach(a => {
@@ -222,23 +261,34 @@ function drawMap() {
   });
   box.innerHTML = s + "</svg>";
   $("#legend").innerHTML = KINDS.map(k => `<span><i style="background:${KIND[k].color}"></i>${KIND[k].label}</span>`).join("") +
-    `<span><svg width="46" height="18" aria-hidden="true"><circle cx="7" cy="9" r="4.5" fill="var(--ink3)"/><circle cx="30" cy="9" r="8.6" fill="var(--ink3)"/></svg>1 run and 10 runs</span>` +
-    `<span><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="var(--ink3)" fill-opacity=".28" stroke="var(--ink3)" stroke-width="1.5"/></svg>oxygen only</span>` +
+    `<span><svg width="46" height="20" aria-hidden="true"><circle cx="7" cy="10" r="${rad(1)}" fill="var(--ink3)"/><circle cx="30" cy="10" r="${rad(10)}" fill="var(--ink3)"/></svg>1 run and 10 runs</span>` +
+    `<span><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="var(--ink3)" fill-opacity=".28" stroke="var(--ink3)" stroke-width="1.5"/></svg>runs with oxygen only</span>` +
+    `<span><svg width="18" height="18" aria-hidden="true"><path d="M9 3l6 6-6 6-6-6z" fill="var(--s3)"/></svg>oxygen setting listed by BRE test day</span>` +
     `<span><svg width="20" height="18" aria-hidden="true"><rect x="6" y="5" width="8" height="8" fill="none" stroke="var(--red)" stroke-width="1.5"/><line x1="0" x2="20" y1="9" y2="9" stroke="var(--red)"/><line x1="10" x2="10" y1="0" y2="18" stroke="var(--red)"/></svg>selected cabin and its window</span>` +
     `<span><svg width="20" height="18" aria-hidden="true"><rect x="2" y="3" width="16" height="12" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-dasharray="3 3"/></svg>Moon base range in the challenge statement</span>`;
-  const off = {}; offscale.forEach(t => off[t.k] = (off[t.k] || 0) + 1);
-  $("#mapnote").textContent = `Not drawn: ${Object.keys(off).map(k => `${off[k]} ${KIND[k].one} runs above ${X1} % oxygen`).join(", ")}; ${S.solid_no_conditions} solid-material runs whose table lists no oxygen level; and the gas-jet and smoke investigations, whose tables hold no oxygen column. ACME BRE bubbles count test days, not runs.`;
+  const shown = D.tests.filter(t => state.kinds[t.k]), limits = new Map();
+  for (const t of shown.filter(t => t.o != null)) {
+    const label = axisLimit(t);
+    if (label) limits.set(label, (limits.get(label) || 0) + 1);
+  }
+  const notes = [...limits].map(([label, n]) => `The table includes ${plural(n, "run")} ${label}, outside the plot.`);
+  const inverse = shown.filter(t => t.o == null && t.burner_o2 != null);
+  if (inverse.length) notes.push(`${plural(inverse.length, "inverse-flame run")} report burner oxidizer oxygen (up to ${Math.max(...inverse.map(t => t.burner_o2))}%). They remain in the all-runs CSV and have no ambient oxygen coordinate.`);
+  const missing = shown.filter(t => t.o == null && t.burner_o2 == null);
+  if (missing.length) notes.push(`${plural(missing.length, "additional run")} with unreported ambient oxygen remain in the CSV.`);
+  if (state.kinds.gas) notes.push("Each BRE diamond marks a setting listed on one or more test days. A day can appear at several settings.");
+  $("#mapnote").textContent = notes.join(" ");
   drawMapTable();
 }
 function tipHtml(mk) {
   const g = mk.g;
-  if (g.bre) return `<b>ACME BRE · ${f1(g.bre.o)} % oxygen</b><br>${plural(g.bre.days, "test day")} included this level<br><span class="t2">A gas burner that imitates burning solids. PSI lists oxygen per test day and no chamber pressure.</span>`;
+  if (g.bre) return `<b>ACME BRE · about ${g.bre.o}% chamber oxygen</b><br>Setting listed on ${plural(g.bre.days, "test day")}.<br><span class="t2">A gas burner emulated solid fuels. Chamber pressure varied and the daily table omits its values.</span>`;
   const invs = Object.keys(g.inv).map(a => `${esc(a)} ${g.inv[a]}`).join(", ");
-  const o = g.out, known = g.n - o.na;
-  let h = `<b>${plural(g.n, "run")} · ${KIND[g.k].label}</b><br>${f1(g.o)} % oxygen` + (mk.strip ? ", cabin pressure (not in table)" : `, ${f2(g.p)} atm (${f1(g.p * PSIA)} psia)`) + `<br><span class="t2">${invs}</span>`;
-  if (known) h += `<br>Went out on its own: ${o.ext} · Kept burning: ${o.burn}` + (o.other ? ` · Other end: ${o.other}` : "") + (o.noign ? ` · No ignition: ${o.noign}` : "");
-  else h += `<br><span class="t2">Result not recorded in the table</span>`;
-  return h;
+  return `<b>${plural(g.n, "run")} · ${KIND[g.k].label}</b><br>${rangeText(g.oxygen)}% ambient oxygen, ${g.recorded ? rangeText(g.pressure) + " atm" : "pressure unreported"}<br><span class="t2">${invs}</span><br>${groupOutcomes(g)}`;
+}
+function groupOutcomes(g) {
+  const labels = { ext: "Self-extinguished", burn: "Burned", noign: "Did not ignite", nospread: "No flame spread", nohot: "No hot ignition", cool: "Direct cool ignition", other: "Other outcome", na: "Outcome unreported" };
+  return Object.entries(g.out).map(([code, n]) => `${esc(labels[code] || code)}: ${n}`).join(" · ");
 }
 function showTip(el, ev) {
   const mk = hit[+el.dataset.i]; if (!mk) return; const tip = $("#tip"); tip.innerHTML = tipHtml(mk); tip.hidden = false;
@@ -249,9 +299,9 @@ function showTip(el, ev) {
 }
 function drawMapTable() {
   const rows = groups.filter(g => state.kinds[g.k]).sort((a, b) => a.k.localeCompare(b.k) || a.o - b.o || a.p - b.p);
-  const strip = state.kinds.solid ? solidStrip.slice().sort((a, b) => a.o - b.o) : [];
-  $("#maptable").innerHTML = `<table><thead><tr><th>What burned</th><th class="n">Oxygen %</th><th class="n">Pressure atm</th><th class="n">Runs</th><th>Investigations</th><th class="n">Went out</th><th class="n">Kept burning</th></tr></thead><tbody>` +
-    strip.concat(rows).map(g => `<tr><td><i class="kdot" style="background:${KIND[g.k].color}"></i>${KIND[g.k].label}</td><td class="n">${f1(g.o)}</td><td class="n">${g.k === "solid" ? "not in table" : f2(g.p)}</td><td class="n">${g.n}</td><td>${esc(Object.keys(g.inv).join(", "))}</td><td class="n">${g.n - g.out.na ? g.out.ext : "–"}</td><td class="n">${g.n - g.out.na ? g.out.burn : "–"}</td></tr>`).join("") + "</tbody></table>";
+  const runRows = rows.map(g => `<tr><td><i class="kdot" style="background:${KIND[g.k].color}"></i>${KIND[g.k].label}</td><td class="n">${rangeText(g.oxygen)}</td><td class="n">${g.recorded ? rangeText(g.pressure) : "Unreported"}</td><td>${plural(g.n, "run")}</td><td>${esc(Object.keys(g.inv).join(", "))}</td><td>${groupOutcomes(g)}</td><td>${g.off ? "Off scale · " + g.off : g.recorded ? "Main plot" : "Oxygen strip"}</td></tr>`).join("");
+  const breRows = state.kinds.gas ? breStrip.map(b => `<tr><td>Gas burner</td><td class="n">≈${b.o}</td><td>Unreported</td><td>${plural(b.days, "test day")}</td><td>ACME BRE</td><td>Daily settings only</td><td>${b.o >= X0 && b.o <= X1 ? "BRE strip" : "Off scale"}</td></tr>`).join("") : "";
+  $("#maptable").innerHTML = `<table><caption>Conditions within each plotted group and groups outside the axes</caption><thead><tr><th>Fuel</th><th>Ambient O₂ (%)</th><th>Pressure (atm)</th><th>Count and unit</th><th>Investigations</th><th>Outcomes</th><th>Map position</th></tr></thead><tbody>` + runRows + breRows + "</tbody></table>";
   $("#maptable").hidden = !state.table; $("#chart").hidden = state.table; $("#legend").hidden = state.table;
   $("#viewbtn").setAttribute("aria-pressed", state.table); $("#viewbtn").textContent = state.table ? "Chart view" : "Table view";
 }
@@ -259,11 +309,11 @@ function drawWindow() {
   const T = target(), C = coverage(T);
   $("#matrix2").style.gridTemplateColumns = "repeat(3, minmax(0, 1fr))";
   $("#matrix2").innerHTML = KINDS.map(k => `<div class="h"><i class="kdot" style="background:${KIND[k].color}"></i>${KIND[k].label}</div>`).join("") +
-    KINDS.map(k => { const c = C[k]; return `<div class="c ${c.status}"><b>${c.n}</b><span>${STATUS[c.status][1]}. ${esc(c.status === "ok" ? "" : nearText(c))}</span></div>`; }).join("");
+    KINDS.map(k => { const c = C[k]; return `<div class="c ${c.status}"><b>${c.n}</b><span>${STATUS[c.status][1]}. ${esc(oxygenOnlyText(c))} ${c.n ? groupOutcomes({ out: c.res }) + "." : esc(nearText(c))}</span></div>`; }).join("");
 }
 function drawEvidence() {
   chips(); drawMap(); drawWindow();
-  const T = target(), C = coverage(T), inside = KINDS.flatMap(k => state.kinds[k] ? (k === "solid" && C[k].cabin ? C[k].o2only : C[k].win) : []);
+  const T = target(), inside = D.tests.filter(t => state.kinds[t.k] && cabinMatches(t, T));
   $("#dlwin").textContent = `Runs inside the window (${inside.length}), CSV`; $("#dlwin").disabled = !inside.length;
   $("#dlwin").onclick = () => download("quench-runs-window.csv", runsCsv(inside));
 }
@@ -302,7 +352,7 @@ function drawHistory() {
   s += `<line x1="${x(0)}" x2="${x(100)}" y1="70" y2="70" stroke="var(--strong)"/>`;
   for (let o = 0; o <= 100; o += 20) s += `<line x1="${x(o)}" x2="${x(o)}" y1="70" y2="75" stroke="var(--strong)"/><text x="${x(o)}" y="88" text-anchor="middle" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${o}</text>`;
   s += `<text x="${x(100)}" y="106" text-anchor="end" font-size="11" fill="var(--ink3)" font-family="var(--mono)">OXYGEN IN THE CABIN, % BY VOLUME</text>`;
-  s += `<rect x="${x(S.solid_o2_min)}" y="60" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" fill="var(--s1)"/><text x="${x(S.solid_o2_min)}" y="52" font-size="12" font-weight="700" fill="var(--ink)">Solid materials tested in flight</text>`;
+  s += `<rect x="${x(S.solid_o2_min)}" y="60" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" fill="var(--s1)"/><text x="${x(S.solid_o2_min)}" y="52" font-size="12" font-weight="700" fill="var(--ink)">Solid runs in the PSI tables</text>`;
   [{ o2: 34, lab: "Exploration 34 %", y: 20, hot: true }, { o2: 60, lab: "Apollo prelaunch 60 %", y: 36 }, { o2: 100, lab: "Apollo 1 and Apollo flight 100 %", y: 20, end: true }].forEach(mk => {
     s += `<line x1="${x(mk.o2)}" x2="${x(mk.o2)}" y1="${mk.y + 4}" y2="70" stroke="${mk.hot ? "var(--red)" : "var(--ink3)"}" stroke-width="${mk.hot ? 2 : 1.2}"/><rect x="${x(mk.o2) - 4}" y="66" width="8" height="8" fill="${mk.hot ? "var(--red)" : "var(--bg)"}" stroke="${mk.hot ? "var(--red)" : "var(--ink2)"}" stroke-width="1.5"/>`;
     if (W > 520 || mk.hot || mk.end) s += `<text x="${x(mk.o2) + (mk.end ? -6 : 6)}" y="${mk.y}" text-anchor="${mk.end ? "end" : "start"}" font-size="11.5" ${mk.hot ? 'font-weight="700" fill="var(--red)"' : 'fill="var(--ink2)"'}>${mk.lab}</text>`; });
@@ -324,5 +374,7 @@ function refLink(id) {
   if (id.startsWith("M-")) return `<a href="#mission" data-go="mission">${esc(id)}</a>`;
   if (id === "VIDEO" || id === "MODEL") return `<a href="#lab" data-go="lab">${id}</a>`;
   if (id === "GUIDE") return `<a href="${esc(D.quotes.not_conservative.url)}" target="_blank" rel="noopener">NASA guide</a>`;
+  if (id === "SAFFIRE6") return `<a href="${saffireReport}" target="_blank" rel="noopener">Saffire-VI flight events</a> · <a href="${saffireResults}" target="_blank" rel="noopener">Saffire-VI results</a>`;
+  if (id === "SOFIEGEL") return `<a href="${sofieReport}" target="_blank" rel="noopener">SoFIE-GEL flight study</a>`;
   return `<a href="#method" data-go="method">${esc(id)}</a>`;
 }

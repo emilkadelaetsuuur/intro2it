@@ -21,16 +21,19 @@ const nameOf = i => i.acr || i.acc;
 function atmMatch(i, T) {
   if (i.based_on) { const a = atmMatch(inv(i.based_on), T); return { v: a.v * 0.8, why: `Builds on ${nameOf(inv(i.based_on))}: ${a.why.charAt(0).toLowerCase() + a.why.slice(1)}` }; }
   const runs = D.tests.filter(t => t.i === i.acc && t.o != null), days = D.conditions.filter(c => c.i === i.acc);
-  const w = S.o2_window, pw = S.p_window, cabin = Math.abs(1 / T.p - 1) <= pw;
-  const near = runs.filter(t => Math.abs(t.o - T.o2) <= w);
-  const inWin = near.filter(t => t.ps === "recorded" ? Math.abs(t.p / T.p - 1) <= pw : cabin);
-  const dayNear = days.filter(c => c.o.some(o => Math.abs(o - T.o2) <= w));
+  const near = runs.filter(t => oxygenMatches(t.o, T));
+  const inWin = near.filter(t => cabinMatches(t, T));
+  const dayNear = days.filter(c => c.o.some(o => oxygenMatches(o, T)));
   if (inWin.length >= 10) return { v: 1, why: `${inWin.length} runs inside this cabin's window` };
   if (inWin.length) return { v: 0.8, why: `${plural(inWin.length, "run")} inside this cabin's window` };
-  if (near.length) return { v: 0.5, why: `${plural(near.length, "run")} at this oxygen level, ${near[0].ps === "recorded" ? "at another pressure" : "pressure not recorded"}` };
-  if (dayNear.length) return { v: 0.5, why: `${plural(dayNear.length, "test day")} at this oxygen level, pressure not listed` };
-  if (runs.length || days.length) return { v: 0.2, why: `Oxygen in the table ${i.o2[0] === i.o2[1] ? "is " + f1(i.o2[0]) : "runs from " + f1(i.o2[0]) + " to " + f1(i.o2[1])} %, away from this cabin` };
-  return { v: 0, why: i.rows ? "No oxygen level in the run table" : "No run table in PSI" };
+  if (near.length) {
+    const missing = near.filter(t => !hasPressure(t)).length;
+    const pressure = [missing ? `${missing} with unreported pressure` : "", missing < near.length ? `${near.length - missing} at another pressure` : ""].filter(Boolean).join(", ");
+    return { v: 0.5, why: `${plural(near.length, "run")} in the ambient oxygen window (${pressure})` };
+  }
+  if (dayNear.length) return { v: 0.5, why: `Settings in the oxygen window on ${plural(dayNear.length, "test day")}. No per-run atmosphere in this table.` };
+  if ((runs.length || days.length) && i.o2) return { v: 0.2, why: `Recorded ambient oxygen ${rangeText(i.o2)}%; no values in the cabin window` };
+  return { v: 0, why: i.rows ? "No comparable ambient oxygen in flight-run records" : "No run table in this PSI collection" };
 }
 function invScore(i, T) {
   const a = atmMatch(i, T), W = state.iw;
@@ -74,9 +77,9 @@ document.addEventListener("click", e => {
   fetch(href).then(r => r.text()).then(t => download(href.split("/").pop(), t)).catch(() => {});
 });
 const cell = v => { const s = v == null ? "" : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-const RUN_COLS = ["accession", "investigation", "fuel_type", "test_id", "fuel_or_material", "o2_percent", "pressure_atm", "pressure_source", "outcome", "outcome_in_source", "co2_mole_fraction", "he_mole_fraction", "droplet_diameter_mm", "extinction_diameter_mm", "burning_rate", "burn_time_s", "airflow_cm_s", "flow_direction", "normal_gravity_result", "materials", "psi_url"];
-const OUTCOME = { ext: "self-extinguished", burn: "burned", noign: "did not ignite", other: "other", na: "" };
-const runRow = t => [t.i, t.a, t.k, t.id, t.f, t.o, t.p, t.ps === "recorded" ? "recorded" : t.ps === "assumed" ? "not recorded (cabin pressure)" : "", OUTCOME[t.r], t.rr, t.co2, t.he, t.d0, t.dx, t.kb, t.t, t.flow, t.dir, t.g1, (t.m || []).join(" "), inv(t.i).url];
+const RUN_COLS = ["accession", "investigation", "fuel_type", "test_id", "fuel_or_material", "flame_configuration", "ambient_o2_percent", "o2_percent", "burner_oxidizer_o2_percent", "pressure_atm", "pressure_source", "outcome", "outcome_in_source", "co2_mole_fraction", "he_mole_fraction", "droplet_diameter_mm", "extinction_diameter_mm", "burning_rate", "burn_time_s", "airflow_cm_s", "flow_direction", "normal_gravity_result", "materials", "psi_url", "source_test_number", "ambient_o2_as_reported"];
+const OUTCOME = { ext: "self-extinguished", burn: "burned", noign: "did not ignite", nospread: "no flame spread", nohot: "no hot ignition", cool: "direct cool ignition", other: "other", na: "" };
+const runRow = t => [t.i, t.a, t.k, t.id, t.f, t.flame_config, t.o, t.o, t.burner_o2, t.p, hasPressure(t) ? "recorded" : "not recorded", OUTCOME[t.r], t.rr, t.co2, t.he, t.d0, t.dx, t.kb, t.t, t.flow, t.dir, t.g1, (t.m || []).join(" "), inv(t.i).url, t.source_test_number, t.ambient_o2_reported];
 const runsCsv = tests => [RUN_COLS.join(",")].concat(tests.map(t => runRow(t).map(cell).join(","))).join("\n") + "\n";
 
 /* ---------- compare ---------- */
@@ -93,13 +96,15 @@ function compareHtml() {
     ["Sample or burner size", i => colsOf(i, c => c.role === "geometry").map(varText).join(" · ") || "–"],
     ["Hardware", i => famOf(i) ? famOf(i).name : (i.hardware || "–")],
     ["Platform and years", i => (i.ground ? "Ground study" : i.platform.replace("International Space Station (ISS)", "Space station")) + ", " + yrs(i)],
-    ["Oxygen, %", i => rng(i.o2, f1)],
+    ["Ambient oxygen, %", i => rng(i.o2, f1)],
+    ["Burner oxidizer oxygen, %", i => rng(i.burner_o2, f1)],
     ["Pressure, atm", i => rng(i.p, f2)],
     ["What changed between runs", i => list(i, varied)],
     ["What stayed the same", i => list(i, constant)],
     ["What was recorded in the table", i => list(i, result)],
     ["Measurements named in the record", i => i.measures.join("; ") || "–"],
-    ["Runs listed", i => String(i.rows || "–")],
+    ["Source table rows", i => String(i.rows || "–")],
+    ["Individual flight runs included", i => String(D.tests.filter(t => t.i === i.acc).length)],
     ["Raw data and papers", i => (i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "no raw data") + ", " + plural(i.npub, "paper")]
   ];
   const body = ROWS.map(([label, fn]) => { const vals = sel.map(fn), same = vals.every(v => v === vals[0]) && vals[0] !== "–"; return { label, vals, same }; });
@@ -163,7 +168,7 @@ function drawInv() {
   const grav = T.g === "0" ? "" : " For a habitat with partial gravity, a link to partial gravity adds a fifth part with a fixed weight of 10.";
   $("#invrule").textContent = `Each part is scored from 0 to 100 and the weights above combine them. Named for fire safety: 100 if the challenge statement names the investigation as a prevention, detection or suppression study, 70 if it names it as related, PSI files it under fire safety or it builds on a named study, 40 otherwise. Fuel: solid materials 100, smoke 90, gas burner emulating solids 80, droplets 60, aerosol instrument 50, gas flames 30. Tested near this cabin's air: 100 for ten or more runs within ${S.o2_window} points of oxygen and ${Math.round(S.p_window * 100)} % of pressure, 80 for fewer, 50 for the right oxygen at another or unrecorded pressure, 20 for other oxygen levels, 0 with no oxygen level in the table. Data ready to use: 100 with results in the run table, down to 15 when PSI holds papers only.${grav} The parts follow NASA's records and the challenge statement; the numbers given to them are our judgement.`;
   $("#invhabnote").textContent = `${T.name}: ${f1(T.o2)} % oxygen, ${f1(T.psia)} psia, ${T.g === "0" ? "microgravity" : T.g === "moon" ? "one sixth gravity" : "three eighths gravity"}.` + (T.id === "mars" ? " The Mars-base air is our assumption: the challenge statement gives no figure for it, so the exploration atmosphere is used." : T.id === "moon" ? ` The challenge statement expects ${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less; NASA's exploration atmosphere is used here.` : "");
-  $("#invtable").innerHTML = `<thead><tr><th class="n">Rank</th><th>Investigation</th><th>What burned</th><th class="n">Runs</th><th class="n">Oxygen %</th><th>Near this cabin</th><th class="n">Score</th><th>Compare</th></tr></thead><tbody>` +
+  $("#invtable").innerHTML = `<thead><tr><th class="n">Rank</th><th>Investigation</th><th>What burned</th><th class="n">Source rows</th><th class="n">Ambient O₂ %</th><th>Near this cabin</th><th class="n">Score</th><th>Compare</th></tr></thead><tbody>` +
     rows.map(x => { const i = x.i, a = x.parts[2];
       return `<tr class="row" data-acc="${i.acc}" tabindex="0" aria-expanded="${state.open === i.acc}"><td class="n">${pad2(pos.get(i.acc))}</td><td><span class="accession">${esc(i.acc)}</span><b>${esc(nameOf(i))}</b>${roleTags(i)}<br><span class="fine">${esc(i.summary || i.title)}</span></td><td>${esc(i.fuel_label)}</td><td class="n">${i.rows || "–"}</td><td class="n">${rng(i.o2, f1)}</td><td class="fine">${esc(a[3])}</td><td class="n sccell"><b>${Math.round(x.s)}</b>${sbar(x)}</td><td><label class="cmpbox"><input type="checkbox" data-cmp="${i.acc}" ${state.cmp.includes(i.acc) ? "checked" : ""} aria-label="Compare ${esc(nameOf(i))}"></label></td></tr>` + (state.open === i.acc ? detailHtml(i, x) : ""); }).join("") + "</tbody>";
   const skipped = D.investigations.filter(i => !i.combustion);

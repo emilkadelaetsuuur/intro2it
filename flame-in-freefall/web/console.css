@@ -154,6 +154,7 @@
 }
 .page.view .tablewrap:has(> table) { border: 1px solid var(--rule); background: var(--field-bg); }
 .page.view .frame .tablewrap { border: 0; }
+.page.view table { background-color: var(--field-bg); }
 .view th {
   color: var(--ink3);
   background: var(--sunk);
@@ -204,6 +205,7 @@
   gap: 17px;
 }
 .view #mcform > .lab { padding-bottom:12px; border-bottom:1px solid var(--rule); }
+.view .score { padding-inline: var(--panel-pad); background: var(--panel-bg); }
 .view .score .q { padding-block: 17px; }
 .view .score .q h3 { font-size: 16px; }
 .view :is(.grade i, .pill, .tagk, .rel, .atm) { border-radius: 3px; }
@@ -249,7 +251,7 @@
 .view details.f summary .sc, .view .toplist .sc { color: var(--blue); }
 .view details.f .body { padding: 8px var(--panel-pad) var(--panel-pad); }
 .view details.f[open] { background:var(--panel-bg); box-shadow:inset 2px 0 var(--blue); }
-.view #flist { border:1px solid var(--rule); }
+.view #flist { border:1px solid var(--rule); background:var(--field-bg); }
 .view #flist > details:last-child { border-bottom:0; }
 .view .scores .track { background: var(--rule); }
 .view .scores .track i { background: var(--blue); }

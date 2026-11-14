@@ -152,6 +152,7 @@
 .ei-dialog :is(button, a, summary):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
 @media (max-width: 660px) {
+  :root:has(#evidence-inspector[open]) { scrollbar-gutter: auto; }
   .ei-dialog {
     inset: auto 0 0;
     width: 100%;

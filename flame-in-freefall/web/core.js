@@ -133,10 +133,9 @@ function drawBrief() {
     ["findings", "Safety findings", "Rank the evidence for fire prevention, detection and suppression."]
   ];
   $("#tasks").innerHTML = tools.map(([route, title, summary]) =>
-    `<a class="research-tool tool-${route}" href="#${route}" data-go="${route}">
+    `<a class="research-tool" href="#${route}" data-go="${route}">
       <img src="img/${route}-diagram.svg" width="310" height="110" alt="">
-      <div class="tool-content"><h3>${title}</h3><p>${summary}</p></div>
-      <span class="tool-arrow" aria-hidden="true">↗</span></a>`
+      <div class="tool-content"><h3>${title}</h3><p>${summary}</p></div></a>`
   ).join("");
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");

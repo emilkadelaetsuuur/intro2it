@@ -125,8 +125,8 @@ same unit), matches every quote word for word against its saved source, and stop
 model runs when the site is used. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
-OpenAI Codex assisted with the interface redesign. OpenAI image generation produced the orbital
-cover illustration. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
+OpenAI Codex assisted with the interface redesign. OpenAI image generation was used for the orbital
+cover illustration and the QUENCH logo design. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
 
 ## NASA Data
 

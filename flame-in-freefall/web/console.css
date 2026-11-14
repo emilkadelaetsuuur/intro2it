@@ -107,9 +107,38 @@
   letter-spacing: 0;
   text-transform: none;
 }
-.view .btn.line { color: var(--ink); border-color: var(--rule); background: transparent; }
 .view .btn:hover { filter: brightness(1.08); }
-.view .btn.line:hover { border-color: var(--ink3); background: var(--sunk); }
+.view a.btn.line {
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  background: transparent;
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+}
+.view a.btn.line:hover { color: var(--ink); }
+.view .group:has(> [download], > button[id^="dl"]) { column-gap: 20px; }
+.view .group:has(> [download], > button[id^="dl"]) .chip {
+  padding-inline: 0;
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: .25em;
+}
+.view #askchips { display: grid; justify-items: start; gap: 0; }
+.view #askchips .chip {
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 15px;
+  color: var(--blue);
+}
+.view #askchips .chip:hover { color: var(--ink); }
 .view :is(.search, select) {
   min-height: 39px;
   border-radius: 4px;

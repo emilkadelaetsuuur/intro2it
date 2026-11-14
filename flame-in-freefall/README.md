@@ -101,4 +101,4 @@ building: to write code, normalise the tables, and draft the investigation summa
 findings and the analyst answers. Source files, the page metadata and the download README carry an SI
 notice. Code checks the SI-drafted text against NASA's records at build time. No model runs when the page
 is used. The predictor is a machine-learning model trained here on NASA data; the video lab is computer
-vision. OpenAI Codex assisted with the interface redesign. The orbital cover illustration was generated with OpenAI. Experimental images in the Lab are NASA BASS-II video frames.
+vision. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used for the orbital cover illustration and the QUENCH logo design. Experimental images in the Lab are NASA BASS-II video frames.

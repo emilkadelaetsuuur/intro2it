@@ -10,6 +10,7 @@
   --display: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
   --mono: "IBM Plex Mono", Consolas, monospace;
   --gutter: clamp(18px, 4.8vw, 80px);
+  --wrap-width: 1560px;
   --accent: #ff8066;
   --orbit-blue: #92b9ff;
   --cover: #080e1b;
@@ -25,7 +26,7 @@
   --good:#99dfbd; --good-bg:#142d28; --warn:#f2d49b; --warn-bg:#312b20;
   --crit:#ffaf98; --crit-bg:#342425; --info:#a5d2fe; --info-bg:#172c41;
 }
-.wrap { max-width: 1560px; padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right)); }
+.wrap { max-width: var(--wrap-width); padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right)); }
 .skip-link { position: fixed; left: 14px; top: 8px; transform: translateY(-180%); z-index: 100; background: var(--ink); color: var(--bg); padding: 9px 16px; }
 .skip-link:focus { transform: none; }
 #main-content:focus { outline: none; }

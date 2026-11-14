@@ -9,6 +9,16 @@
 <meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
 <meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
 <meta name="si-disclosure" content="Claude assisted with code, data normalisation, draft summaries, findings and analyst answers. Ask uses Claude or archive excerpts from challenge organizer resources and labels each result. Run statistics are recomputed from archived PSI tables. The build checks cited numbers and selected source quotations. OpenAI image generation was used to design the QUENCH logo and Cosmo, the archive companion. The photographs are credited to their sources. Experimental imagery comes from NASA.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QUENCH">
+<meta property="og:title" content="QUENCH: fire-safety evidence for crews beyond Earth">
+<meta property="og:description" content="NASA's microgravity combustion flight tests, ranked, compared and checked against the air a Moon base will use. NASA Space Apps Challenge 2026, Flame in Freefall.">
+<meta property="og:url" content="https://nasa.cartify.ink/">
+<meta property="og:image" content="https://nasa.cartify.ink/img/social-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="QUENCH briefing: flight test runs compared with the oxygen and pressure of crew cabins.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
@@ -159,6 +169,7 @@ svg text { font-family: var(--sans); fill: var(--ink2); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--ink2); margin-top: 8px; align-items: center; }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 .legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.chip .sw-tri { flex: none; } .chip[aria-pressed="false"] .sw-tri { opacity: .4; }
 .tip { position: fixed; z-index: 40; pointer-events: none; background: var(--strong); color: var(--bg); padding: 9px 11px; font-size: 12.5px; line-height: 1.45; max-width: 270px; }
 .tip b { font-size: 13px; } .tip .t2 { opacity: .75; }
 
@@ -270,8 +281,8 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=b79e7c4c19">
-<link rel="stylesheet" href="cosmo.css?v=3d39ab7629">
+<link rel="stylesheet" href="console.css?v=362aa91675">
+<link rel="stylesheet" href="cosmo.css?v=14edff7cd6">
 <link rel="stylesheet" href="flight.css?v=4c1625670b">
 </head>
 <body>
@@ -398,7 +409,11 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   </div>
   <div class="frame"><div id="chart"></div><div class="tablewrap" id="maptable" hidden></div><div class="legend" id="legend"></div></div>
   <p class="fine" id="mapnote"></p>
+  <p class="fine" id="mappub" hidden></p>
   <div class="block"><h3 class="lab">Matching runs by fuel type</h3><div class="matrix" id="matrix2"></div></div>
+  <div class="block"><h3 class="lab">Between weightlessness and Earth · Saffire-II, sample by sample</h3>
+    <div class="frame"><div id="gchart"></div><div class="legend" id="glegend"></div></div>
+    <p class="fine" id="gnote"></p></div>
   <div class="block"><h3 class="lab">Flight test data</h3>
     <div class="group"><button class="chip" type="button" id="dlwin">Runs inside the window (CSV)</button><button class="chip" type="button" id="dlall">All runs (CSV)</button><a class="chip" href="downloads/README.txt" target="_blank" rel="noopener">Column notes</a></div>
     <p class="fine">Each row describes one run. Separate columns give ambient oxygen and burner oxidizer oxygen. Other fields include pressure, fuel, diluents, droplet size, airflow and outcome. The column notes document units and missing values.</p></div>
@@ -471,7 +486,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 08 ask -->
 <div class="page wrap view" id="v-ask" hidden>
-  <div class="sec"><h2>Ask the archive</h2><p class="sub">Explore spacecraft fires, combustion experiments and the equipment they inspired. Answers cite resources selected by the Flame in Freefall challenge organizers.</p></div>
+  <div class="sec"><h2>Ask the archive</h2><p class="sub">Explore spacecraft fires, combustion experiments and the equipment they inspired. Common questions get a checked analyst answer at once. Other questions search the resources selected by the Flame in Freefall challenge organizers.</p></div>
   <div class="ask-layout" id="ask-workspace">
     <div class="ask-main">
       <form class="askbox" id="askform">
@@ -487,7 +502,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
         <h3 id="ask-result-label" tabindex="-1"></h3>
         <p id="ask-result-question" dir="auto" hidden></p>
         <p id="ask-result-text" dir="auto"></p>
+        <p id="ask-result-note" class="fine" hidden></p>
+        <div id="ask-claims" hidden><h4>Checked statements and their records</h4><ul></ul></div>
         <div id="ask-sources" hidden><h4>Sources</h4><ol></ol></div>
+        <button type="button" class="chip" id="ask-more" hidden>Search the organizer sources for this question</button>
       </section>
     </div>
     <aside class="ask-examples" aria-labelledby="ask-examples-heading">
@@ -528,11 +546,12 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   <button class="cosmo-toggle" id="cosmo-toggle" type="button" aria-label="Chat with Cosmo" aria-controls="cosmo-panel" aria-expanded="false">
     <span class="cosmo-pet"><span class="cosmo-float" data-cosmo-figure="launcher" aria-hidden="true"><img src="img/cosmo.webp" alt="" width="86" height="78"></span></span>
     <span class="cosmo-name">Cosmo<span class="cosmo-bubble" aria-hidden="true"></span></span>
+    <span class="cosmo-si">SI-generated image</span>
   </button>
   <section id="cosmo-panel" class="cosmo-panel" role="dialog" aria-labelledby="cosmo-title" hidden>
     <header class="cosmo-head">
       <div class="cosmo-portrait"><span class="cosmo-float" data-cosmo-figure="portrait" aria-hidden="true"><img src="img/cosmo.webp" alt="" width="45" height="45"></span></div>
-      <div><h2 id="cosmo-title">Cosmo</h2><p>NASA archive companion</p></div>
+      <div><h2 id="cosmo-title">Cosmo</h2><p>Archive companion · SI-generated character</p></div>
       <button type="button" id="cosmo-close" class="cosmo-close" aria-label="Close chat"><span aria-hidden="true">×</span></button>
     </header>
     <div class="cosmo-log" id="cosmo-log" role="log" aria-live="polite" aria-label="Conversation with Cosmo" tabindex="0">
@@ -558,11 +577,11 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   </section>
 </aside>
 
-<script src="data.js?v=ed50961940"></script>
+<script src="data.js?v=32e348594b"></script>
 <script src="model.js?v=96b86849b6"></script>
-<script src="core.js?v=79cd651932"></script>
+<script src="core.js?v=763d5271e0"></script>
 <script src="archive.js?v=ece7677c29"></script>
-<script src="tools.js?v=fc2140a885"></script>
-<script src="ask.js?v=814517a607"></script>
+<script src="tools.js?v=09cf5d830a"></script>
+<script src="ask.js?v=6c405b6b3f"></script>
 </body>
 </html>

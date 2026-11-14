@@ -168,3 +168,10 @@
   .cosmo-panel:has(.cosmo-intro:not([hidden])) .cosmo-portrait use { animation: none; }
 }
 @media print { .cosmo-dock { display:none; } }
+/* SI-generated artwork is marked where it appears. */
+.cosmo-si { display: block; margin-top: 4px; font: 500 9.5px/1 var(--mono, monospace); letter-spacing: .09em; text-transform: uppercase; color: #a9b8c8; text-shadow: 0 1px 2px #020811; }
+.cosmo-more {
+  margin-top: 10px; padding: 6px 11px; border: 1px solid var(--pet-border); border-radius: 10px;
+  background: #172332; color: var(--pet-text); font: 500 13px/1.2 var(--sans);
+}
+.cosmo-more:hover { border-color: #cc9c7e; }

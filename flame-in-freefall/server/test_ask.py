@@ -150,6 +150,40 @@ class ArchiveTests(unittest.TestCase):
             with self.assertRaises(KeyError):
                 ask.claude_selection("test", model, "Mir", [MIR], provider="unapproved.example")
 
+    def test_breaker_skips_a_failing_provider_then_probes_again(self):
+        now = [0.0]
+        calls = []
+        def failing(key, *rest):
+            calls.append(key)
+            raise OSError("provider timed out")
+        breaker = ask.Breaker(failures=2, cooldown=600, clock=lambda: now[0])
+        service = ask.Ask(self.archive, ["a", "b"], select=failing, breaker=breaker)
+        for _ in range(2):
+            self.assertEqual(service.answer("Mir fire?")["mode"], "archive")
+        self.assertEqual(len(calls), 4)                       # two questions, both keys each
+        self.assertEqual(service.answer("Mir fire?")["mode"], "archive")
+        self.assertEqual(len(calls), 4)                       # breaker open: no provider call, no wait
+        now[0] = 601
+        service.select = lambda *a: {"excerpts": [1]}
+        self.assertEqual(service.answer("Mir fire?")["mode"], "claude")   # probe succeeds and closes it
+        self.assertTrue(breaker.allow())
+
+    def test_breaker_ignores_questions_that_never_reach_the_provider(self):
+        breaker = ask.Breaker(failures=1, cooldown=600, clock=lambda: 0.0)
+        service = ask.Ask(self.archive, ["a"], select=lambda *a: {"excerpts": [1]}, breaker=breaker)
+        self.assertFalse(service.answer("What is the capital of France?")["supported"])
+        self.assertTrue(breaker.allow())
+
+    def test_attempt_wait_is_short_enough_for_a_visitor(self):
+        self.assertLessEqual(ask.ATTEMPT_SECONDS, 10)
+
+    def test_russian_gravity_question_finds_the_flame_shape_passage(self):
+        archive = ask.Archive(json.loads((Path(__file__).with_name("corpus.json")).read_text(encoding="utf-8")))
+        ru = ask.Ask(archive).answer("Как гравитация влияет на форму пламени?")
+        en = ask.Ask(archive).answer("How does gravity affect flame shape?")
+        self.assertTrue(ru["supported"])
+        self.assertEqual(ru["sources"], en["sources"])
+
     def test_limits_per_client_total_and_expiration(self):
         limit = ask.RateLimit(per_client=1, total=2, window=10)
         self.assertTrue(limit.admit("a", 0))

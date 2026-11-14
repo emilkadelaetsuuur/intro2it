@@ -7,4 +7,5 @@ cd "$(dirname "$0")/.."
 if [ "${1:-}" != "" ]; then python3 video/run_all.py "$1"; fi
 python3 scripts/train_model.py
 python3 scripts/build_data.py
+python3 scripts/stamp_assets.py
 python3 -m unittest discover -s tests

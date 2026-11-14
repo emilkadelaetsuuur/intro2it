@@ -213,11 +213,38 @@ for r in rows:
     spread = not re.fullmatch(r"~ ?0", ug_len)
     saffire2.append({"id": r[0], "material": material, "thick": r[2], "o2": first_num(r[6]), "dir": r[10],
                      "ug_len": ug_len, "ug_rate": ug_rate, "g_len": g_len, "g_rate": g_rate, "spread": spread,
-                     "g_burned": not re.fullmatch(r"~ ?0.*", g_len)})
+                     "g_burned": not re.fullmatch(r"~ ?0.*", g_len), "sample_len": r[3]})
     add("PSI-99", "SAFFIRE-II", "solid", r[0], material + (", " + r[2] if r[2] else ""), first_num(r[6]), None,
         "assumed", "burn" if spread else "nospread",
         ("Reported microgravity burn length: " + ug_len) if spread else "Microgravity burn length: ~ 0",
         flow=first_num(r[5]), dir=r[10], g1=g_len, ambient_o2_reported=r[6])
+
+# Saffire-II is the one table that lists a normal-gravity result beside each microgravity one.
+# The challenge statement notes that such pairs could bound behaviour at lunar and Martian gravity.
+def burn_cm(text, sample_len):
+    """Burn length in cm when the cell states one plainly, else None. 'Complete' is the sample length."""
+    text = norm(text)
+    if re.fullmatch(r"~ ?0", text):
+        return 0.0
+    if text.lower() == "complete":
+        return num(sample_len.replace("cm", "").strip())
+    m = re.fullmatch(r"~? ?(\d+(?:\.\d+)?) cm(?: \(note \d\))?", text)
+    return float(m.group(1)) if m else None
+
+
+gravity_pairs = []
+for s2 in saffire2:
+    ug, g1 = burn_cm(s2["ug_len"], s2["sample_len"]), burn_cm(s2["g_len"], s2["sample_len"])
+    gravity_pairs.append({"id": s2["id"], "material": s2["material"], "thick": s2["thick"], "dir": s2["dir"],
+                          "sample_cm": num(s2["sample_len"].replace("cm", "").strip()),
+                          "ug_text": s2["ug_len"], "g1_text": s2["g_len"], "ug_cm": ug, "g1_cm": g1})
+pairs_ok = [g for g in gravity_pairs if g["ug_cm"] is not None and g["g1_cm"] is not None]
+gravity_summary = {"samples": len(gravity_pairs), "comparable": len(pairs_ok),
+                   "less_in_ug": sum(1 for g in pairs_ok if g["ug_cm"] < g["g1_cm"]),
+                   "same": sum(1 for g in pairs_ok if g["ug_cm"] == g["g1_cm"]),
+                   "more_in_ug": sum(1 for g in pairs_ok if g["ug_cm"] > g["g1_cm"])}
+notes.append("Saffire-II gravity pairs: burn lengths are read as numbers only where the cell states one plainly ('~ 0', '29 cm', "
+             "'~ 10 cm'). 'Complete' is read as the sample length. Sample 2-7 (PMMA with Nomex) reports two parts in one cell and is shown as text only.")
 
 h, rows = read_table("PSI-100_Experimental table_SAFFIRE-3.csv")
 table_rows["PSI-100"] = len(rows)
@@ -978,6 +1005,7 @@ data = {
     "apollo_atm": [{"name": "Apollo 1 test (pad)", "o2": 100.0, "psia": 16.2}, {"name": "Apollo flight", "o2": 100.0, "psia": 6.2}, {"name": "Apollo prelaunch, after the fire", "o2": 60.0, "psia": 16.2}],
     "materials": materials, "smoke_only": smoke_only, "quotes": GQ, "challenge": CQ, "families": families,
     "external_saffire6": CUR["external_saffire6"], "external_sofie": CUR["external_sofie"],
+    "gravity_pairs": gravity_pairs, "gravity_summary": gravity_summary,
     "answers": answers, "record_ids": list(corpus.keys()),
     "investigations": investigations, "tests": tests, "conditions": conditions, "notes": notes,
 }

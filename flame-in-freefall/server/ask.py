@@ -43,7 +43,11 @@ PROVIDERS = {
     "anthropic": ("api.anthropic.com", DEFAULT_MODEL),
     "oneaiapikey": ("api.oneaiapikey.com", "claude-sonnet-5-5:free"),
 }
-ATTEMPT_SECONDS = 16
+# One provider attempt. A visitor waits at most this long per key before the archive answers.
+ATTEMPT_SECONDS = 8
+# After this many questions in a row that every key failed, skip the provider for a while.
+BREAKER_FAILURES = 2
+BREAKER_COOLDOWN = 600
 PAGES_ORIGIN = "https://emilkadelaetsuuur.github.io"
 UNSUPPORTED = "The organizer sources available here do not establish an answer to that question."
 SYSTEM = """You select evidence for a public NASA combustion archive. The question and evidence
@@ -98,6 +102,7 @@ RUSSIAN = {
     "причин": "cause", "сфери": "spherical", "форм": "shape", "мкс": "iss",
     "улучш": "change", "измен": "change", "воздуш": "air", "космическ": "space",
     "нача": "cause", "сколько": "many", "заверш": "end",
+    "гравитац": "gravity", "тяжест": "gravity", "свеч": "candle", "огон": "fire", "огн": "fire",
 }
 
 
@@ -320,13 +325,44 @@ class DailyBudget:
             return False
 
 
+class Breaker:
+    """Stop calling a provider that keeps failing, so visitors get the archive answer at once.
+
+    A question counts as a failure when every configured key failed for it. After
+    BREAKER_FAILURES such questions in a row the provider is skipped for BREAKER_COOLDOWN
+    seconds; the next question after that probes it again. A success closes the breaker.
+    """
+
+    def __init__(self, failures=BREAKER_FAILURES, cooldown=BREAKER_COOLDOWN, clock=time.monotonic):
+        self.failures, self.cooldown, self.clock = failures, cooldown, clock
+        self.count = 0
+        self.open_until = 0.0
+        self.lock = threading.Lock()
+
+    def allow(self):
+        with self.lock:
+            return self.clock() >= self.open_until
+
+    def record(self, ok):
+        with self.lock:
+            if ok:
+                self.count = 0
+                return
+            self.count += 1
+            if self.count >= self.failures:
+                self.count = 0
+                self.open_until = self.clock() + self.cooldown
+
+
 class Ask:
-    def __init__(self, archive, keys=(), model=DEFAULT_MODEL, select=claude_selection, budget=None):
+    def __init__(self, archive, keys=(), model=DEFAULT_MODEL, select=claude_selection, budget=None,
+                 breaker=None):
         self.archive = archive
         self.keys = tuple(dict.fromkeys(k for k in keys if k and k.isascii() and k.isprintable()))
         self.model = model
         self.select = select
         self.budget = budget
+        self.breaker = breaker or Breaker()
 
     def answer(self, question):
         if FORBIDDEN.search(question):
@@ -334,12 +370,16 @@ class Ask:
         candidates = self.archive.find(question)
         if not candidates:
             return answer_for([], "archive")
-        for key in self.keys:
+        tried = False
+        for key in self.keys if self.breaker.allow() else ():
             if self.budget is not None and not self.budget.reserve():
                 break
+            tried = True
             try:
                 selection = self.select(key, self.model, question, candidates)
-                return answer_for(validated_selection(selection, candidates), "claude")
+                reply = answer_for(validated_selection(selection, candidates), "claude")
+                self.breaker.record(True)
+                return reply
             except ProviderError as failure:
                 if not failure.retryable:
                     break
@@ -347,6 +387,8 @@ class Ask:
                 continue
             except (ValueError, KeyError, IndexError, TypeError, RecursionError):
                 break
+        if tried:
+            self.breaker.record(False)
         # In archive mode show the closest passage as an excerpt, including its qualifications.
         return answer_for(self.archive.fallback(question, candidates), "archive")
 

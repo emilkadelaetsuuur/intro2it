@@ -118,7 +118,7 @@
      "claims": [
        {"text": "Engineers conducted 102 deliberate ignitions between December 1967 and February 1968.", "sources": ["H-apollotests"]}
      ]},
-    {"id": "mir", "q": ["What happened in the Mir fire?", "What caused the fire on Mir?", "How did the Mir crew fight the fire?"],
+    {"id": "mir", "q": ["What happened in the Mir fire?", "What caused the fire on Mir?", "How did the Mir crew fight the fire?", "What caused the 1997 fire aboard Mir?"],
      "a": "In February 1997 a solid-fuel oxygen generator caught fire, throwing a three-foot flame and filling the station with dense smoke. The crew put on masks and used extinguishers; the life support system took hours to clear the smoke.",
      "claims": [
        {"text": "The canister ignited, shooting a three-foot flame and generating a large quantity of dense smoke.", "sources": ["H-mir"]}
@@ -128,7 +128,7 @@
      "claims": [
        {"text": "The heaters reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation.", "sources": ["H-apollo13"]}
      ]},
-    {"id": "earth", "q": ["How does this research help on Earth?", "What are the benefits for firefighters?", "Are there spinoffs from space fire research?"],
+    {"id": "earth", "q": ["How does this research help on Earth?", "What are the benefits for firefighters?", "Are there spinoffs from space fire research?", "How did spacesuit technology change firefighters’ air tanks?"],
      "a": "NASA Spinoff describes lighter firefighter breathing equipment, a Shuttle-derived detector that distinguishes combustion particles from dust, and firefighter gear using heat-protective materials developed for spaceflight. NASA presents mines as a potential application of linked detectors.",
      "claims": [
        {"text": "The new air tank system weighs 20 pounds for a 30 minute air supply, 13 pounds less than conventional tanks.", "sources": ["S-airtanks"]},
@@ -161,7 +161,7 @@
        {"text": "Saffire burned samples inside an uncrewed Cygnus cargo ship.", "sources": ["PSI-98", "PSI-99"]},
        {"text": "Across the Saffire experiments, the reported flow settings include 20 and 30 cm/s.", "sources": ["F-vent-speed"]}
      ]},
-    {"id": "shape", "q": ["Why do flames look different in microgravity?", "What does a flame look like in space?", "Why are flames round in space?"],
+    {"id": "shape", "q": ["Why do flames look different in microgravity?", "What does a flame look like in space?", "Why are flames round in space?", "How does gravity affect flame shape?"],
      "a": "Without ordinary buoyant convection, a candle flame in weak flow can become rounded as oxygen reaches it by diffusion. A forced flow or a burner jet can stretch or distort the flame. The shape depends on the fuel geometry and the surrounding motion.",
      "claims": [
        {"text": "A candle in microgravity can form a rounded flame when oxygen transport depends mainly on diffusion.", "sources": ["CHALLENGE", "PSI-25"]}

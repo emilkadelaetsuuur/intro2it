@@ -298,7 +298,7 @@ $("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
 $("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69" && t.p > 0 && t.o != null && t.d0 != null && ["Extinction", "Completion", "Disruption"].includes(t.rr))));
 $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
-$("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;
+$("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only. The QUENCH logo and the Cosmo companion are SI-generated images.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;
 
 drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

@@ -36,15 +36,20 @@ Nothing calls a model at run time:
 
 ## Put it on a server
 
-On the server, as root (adds one site, touches nothing else; see the header of the script):
+On the server, as root. It adds one site and touches nothing else (see the header of `deploy/install.sh`):
 
 ```
-git clone -b claude/loving-johnson-f47e2l https://github.com/emilkadelaetsuuur/intro2it.git /opt/quench
-bash /opt/quench/flame-in-freefall/deploy/install.sh nasa.cartify.ink
+mkdir -p /opt/quench && curl -fsSL https://github.com/emilkadelaetsuuur/intro2it/archive/refs/heads/claude/loving-johnson-f47e2l.tar.gz | tar xz --strip-components=2 -C /opt/quench --wildcards '*/flame-in-freefall/web' '*/flame-in-freefall/deploy' && bash /opt/quench/deploy/install.sh nasa.cartify.ink
 ```
 
-Add `--tls you@example.com` for a Let's Encrypt certificate (nginx + certbot), or `--remove` to take
-the site down again. To update later: `git -C /opt/quench pull` and run the same command.
+Take it down again:
+
+```
+bash /opt/quench/deploy/install.sh nasa.cartify.ink --remove
+```
+
+Add `--tls you@example.com` to the install command for a Let's Encrypt certificate (nginx + certbot).
+To update later, run the install command again.
 
 ## Rebuild and check everything
 

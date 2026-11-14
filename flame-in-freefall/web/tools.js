@@ -415,5 +415,51 @@ skyMotion.addEventListener("click", () => {
   try { localStorage.setItem("quench-sky-paused", paused ? "yes" : "no"); } catch { /* Still applies to this page. */ }
 });
 
+function setupSkyParallax() {
+  if (!("IntersectionObserver" in window)) return;
+  const moon = $(".lunar-sight");
+  const smallScreen = matchMedia("(max-width: 680px)");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  let scene = null;
+  let frame = 0;
+
+  function paint() {
+    frame = 0;
+    if (!scene || reducedMotion.matches || document.hidden || document.documentElement.hasAttribute("data-sky-paused")) return;
+    const isMoon = scene === moon;
+    const property = isMoon ? "--lunar-depth" : "--earthset-depth";
+    const limit = isMoon ? (smallScreen.matches ? 8 : 18) : (smallScreen.matches ? 5 : 9);
+    // All nine views open at the top of the document. Clamp early, before the instruments take over.
+    const scroll = Math.max(0, window.scrollY);
+    const value = Math.min(limit, scroll * (smallScreen.matches ? .045 : .06)).toFixed(2) + "px";
+    if (scene.style.getPropertyValue(property) === value) return;
+    // The stars already pause while visitors inspect a chart or talk to Cosmo.
+    if (scroll > 0 && getComputedStyle(scene).getPropertyValue("--sky-play").trim() === "paused") return;
+    scene.style.setProperty(property, value);
+  }
+
+  function schedule() {
+    if (scene && !frame && !reducedMotion.matches && !document.hidden) frame = requestAnimationFrame(paint);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting && !entry.target.closest(".page").hidden) scene = entry.target;
+      else if (scene === entry.target) scene = null;
+    }
+    if (scene) window.addEventListener("scroll", schedule, {passive: true});
+    else window.removeEventListener("scroll", schedule);
+    schedule();
+  });
+  observer.observe(moon);
+  document.querySelectorAll(".page.view > .sec").forEach(header => observer.observe(header));
+  window.addEventListener("pageshow", schedule);
+  document.addEventListener("visibilitychange", schedule);
+  smallScreen.addEventListener("change", schedule);
+  reducedMotion.addEventListener("change", schedule);
+  skyMotion.addEventListener("click", schedule);
+}
+
+setupSkyParallax();
 setupCabinCoverage(); drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

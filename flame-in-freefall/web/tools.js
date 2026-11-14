@@ -326,7 +326,21 @@ $("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
 $("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69" && t.p > 0 && t.o != null && t.d0 != null && ["Extinction", "Completion", "Disruption"].includes(t.rr))));
 $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
-$("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only. The QUENCH logo and the Cosmo companion are SI-generated images.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;
+$("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only. The QUENCH logo and the Cosmo companion are SI-generated images.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>
+  <div class="sky-credit"><span>Milky Way photograph by <a href="https://www.eso.org/public/images/eso0932a/">ESO/S. Brunier</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), cropped, rotated and toned.</span>
+  <button type="button" class="sky-motion" id="sky-motion">Pause sky motion</button></div>`;
+
+const skyMotion = $("#sky-motion");
+function setSkyPaused(paused) {
+  document.documentElement.toggleAttribute("data-sky-paused", paused);
+  skyMotion.textContent = paused ? "Resume sky motion" : "Pause sky motion";
+}
+try { setSkyPaused(localStorage.getItem("quench-sky-paused") === "yes"); } catch { /* Storage is optional. */ }
+skyMotion.addEventListener("click", () => {
+  const paused = !document.documentElement.hasAttribute("data-sky-paused");
+  setSkyPaused(paused);
+  try { localStorage.setItem("quench-sky-paused", paused ? "yes" : "no"); } catch { /* Still applies to this page. */ }
+});
 
 drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

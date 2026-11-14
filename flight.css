@@ -42,8 +42,8 @@
 .event-link { flex:none; display:inline-flex; align-items:center; min-height:36px; font:500 13px/1.2 var(--sans); color:#beccda; text-decoration:underline; text-decoration-color:#657483; text-underline-offset:.24em; }
 .event-link:hover, .event-link:focus-visible { color:#fff; text-decoration-color:currentColor; }
 
-#v-brief { position:relative; isolation:isolate; }
-#v-brief::before { content:""; position:absolute; inset:0 0 auto; height:min(54vw,790px); z-index:-2; pointer-events:none; background:radial-gradient(ellipse at 70% 4%,#172e45 0%,#0e1c2e 36%,transparent 78%); }
+#main-content { position:relative; isolation:isolate; }
+#main-content::before { content:""; position:absolute; inset:0 0 auto; height:min(54vw,790px); max-height:100%; z-index:-2; pointer-events:none; background:radial-gradient(ellipse at 70% 4%,#172e45 0%,#0e1c2e 36%,transparent 78%); }
 .star-field {
   position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none;
   background: url("img/star-field.svg") repeat 29px 13px / 940px 704px;
@@ -129,7 +129,7 @@
 .oxygen-copy > p { max-width:66ch; font-size:clamp(15px,1.12vw,18px); line-height:1.45; color:var(--ink2); }
 .oxygen-copy #thesis { margin:10px 0 18px; }
 .oxygen-table caption { text-align:left; font:500 11px/1.5 var(--mono); text-transform:uppercase; letter-spacing:.075em; padding:8px 0; color:var(--ink2); }
-.oxygen-table, .breakdown-table { width:100%; }
+.oxygen-table, .breakdown-table { width:100%; background-color:var(--bg); }
 .oxygen-table thead th, .breakdown-table thead th { border-bottom:1px solid var(--rule); }
 .oxygen-table th, .oxygen-table td, .breakdown-table th, .breakdown-table td { text-transform:none; white-space:normal; letter-spacing:0; padding:7px 0; color:var(--ink); font:400 15px/1.35 var(--sans); }
 .oxygen-table thead th, .breakdown-table thead th { color:var(--ink3); font-size:12px; }
@@ -177,7 +177,7 @@ footer a { margin-left:auto; }
   .oxygen-story { gap:26px; }
 }
 @media (max-width:680px) {
-  #v-brief::before { height:730px; }
+  #main-content::before { height:730px; }
   .report-cover, .oxygen-story, .cabin-body { grid-template-columns:minmax(0,1fr); }
   .report-cover { padding-top:23px; gap:18px; }
   .report-cover h1 { font-size:clamp(55px,12vw,80px); max-width:none; margin-bottom:10px; }

@@ -1,0 +1,146 @@
+In July 1969, the Apollo 11 mission  achieved President John F. Kennedy’s goal of performing a crewed lunar landing and return to Earth. After the subsequent success of the Apollo 12 mission in November 1969, NASA set out to complete a third lunar landing with Apollo 13. Commander Jim Lovell, Command Module Pilot Fred Haise and Lunar Module Pilot Jack Swigert planned to explore the Fra Mauro region of the Moon. This mission, which many viewed as routine after the prior Moon landings, would soon grip the nation and the world.
+Problems Before and During Launch
+Apollo 13 had its first setback when a measles scare led to the replacement of the original Command Module Pilot Ken Mattingly with Swigert. Then, during launch, the Saturn V rocket experienced an early shutdown of one of the second stage’s J-2 engines. Thankfully, Apollo 13 achieved proper orbit after burning the remaining four engines an additional 34 seconds longer and the third stage an additional nine seconds longer, allowing the astronauts to settle into a comfortable rhythm for the next couple of days.
+Oxygen Tank Explosion
+This sense of calm was interrupted when during their third day in space, Lovell, Haise and Swigert heard a dull bang echo throughout the spacecraft shortly after the crew finished a 49-minute TV broadcast. Around this time, mission control recorded a sudden shift in the spacecraft's High Grain Antenna communications. A strange crackle in the radio stream followed and within a few seconds, controllers reported seeing unusual data from Apollo 13, including a restart of the main computer.
+Warning Lights in the Cabin
+About one to two seconds after the bang heard by the crew, warning lights indicated the loss of two of the three fuel cells and prompted Swigert to communicate to Mission Control, “Houston, we’ve had a problem.” About 14 minutes after the incident began, Lovell looked outside of the Command Module Odyssey to see that they were venting oxygen out into space. The crew then discovered that the explosion in tank number two also damaged tank number one, making use of the fuel cells impossible and threatening the eventual loss of all electrical power and water.
+The Mission Changes
+It was now clear that a lunar landing was no longer possible, and the sole priority was working together to develop solutions that would allow the astronauts to return home safely. Less than two hours after Houston received Swigert's message, and with only 15 minutes of power left in the Command Module (CM), mission control pronounced the CM mortally wounded and the crew entered “life boat” mode, escaping to the Lunar Module (LM) Aquarius. Aquarius had a full oxygen tank and descent engine, which proved critical in keeping the crew alive and returning them to Earth. Since the LM navigation system wasn’t designed to safely get the astronauts home, they also needed to determine how, when and in what altitude to burn the LM descent engine. Less than an hour after the crew heard the bang, Flight Director Eugene Kranz laid out the new mission; abandon the Moon landing, loop around the Moon and get the crew home as quickly as possible.
+Concerns With Aquarius
+After entering the Lunar Module (LM), the first order of business was to determine whether there were enough consumables like electricity and oxygen to allow for a successful reentry and splashdown. Additionally, the crew and mission control had concerns about a shortage of electrical power and how to remove dangerous carbon monoxide from the LM. Since the square lithium hydroxide canisters from the spacecraft were not compatible with the round openings in the LM, support staff in Houston had to devise a method of making the canisters work. Water was also an issue, as it was estimated that the crew would run out about five hours before Earth re-entry. To conserve supplies, the crew cut down to six ounces of water each per day, 1/5 of their normal intake.
+A New Plan Is Set
+Before the explosion, Apollo 13 made its normal midcourse correction to put it on a lunar landing course. Now, the task was to get back on a free-return-to-Earth trajectory and use the Sun as an alignment star for navigation. Ground control computed a 35-second burn and fired it five hours after the explosion. As the spacecraft approached the moon, they computed a longer, five-minute burn two hours after rounding the far side of the moon.
+An Uncomfortable Trip for the Crew
+Beyond the lack of food and water, the crew could barely sleep due to the cold. To preserve electricity, electrical systems were turned off and the spacecraft lost an important source of heat, dropping to 38 degrees Fahrenheit and causing condensation to form on the walls.
+Mission Control Develops Process for Powering up the Command Module (CM) for Reentry
+Mission control was tasked with writing up procedures for powering up the CM after a long hiatus. Houston had three days to devise their plan, a process that would normally take three months. A primary concern was whether cold condensation on the instrumentation would cause it to short circuit when power returned to the CM. Thankfully, a lesson learned from the Apollo I fire prevented arcing from happening, as a major redesign added increased insulation to better protect the wiring.
+The Apollo 13 Crew Returns Home
+On April 17, four hours before landing, the crew shed the Service Module and three hours later, the crew left the Lunar Module and splashed down in the Pacific Ocean, bringing a six-day mission that had gripped the nation and the world to a close.
+Apollo 13 Accident Review Board Identifies Cause of Explosion
+In 1965, the Command Module underwent many improvements, including raising the permissible voltage to the heaters in the oxygen tanks from 28 to 65 volts DC. However, the thermostatic switches on the heaters weren’t modified to suit this change. During the final test on the launch pad, the heaters were left on for an extended period and reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation. The tank, damaged from eight hours of overheating, was left vulnerable the next time it was filled with oxygen.
+CREW
+Biographies
+James A. Lovell Jr.
+COMMANDER
+VIEW BIO
+Fred W. Haise Jr.
+LUNAR MODULE PILOT
+VIEW BIO
+John L. "Jack" Swigert Jr.
+COMMAND MODULE PILOT
+VIEW BIO
+APOLLO 13
+Mission
+
+As the 1960s drew to a close, NASA had two successful moon landings under its belt with plans for a third to take place in 1970.
+
+The prime crew for Apollo 13 consisted of Commander Jim Lovell, Command Module (CM) Pilot Thomas "Ken" Mattingly and Lunar Module Pilot Fred Haise, with John “Jack” Swigert and Charles Duke serving as backups. The astronauts planned to land on the Fra Mauro region of the Moon, which was more rugged than the former landing sites and offered an extensive geologic area to explore around Mare Imbrium, the largest lava plain on the Moon.
+
+During the 10-day lunar mission, Lovell and Haise planned to conduct two four-hour spacewalks to set up the Lunar Surface Experiment Package, a series of five investigations to collect data about the lunar environment after departure, and to explore the geology of the landing site. Mattingly would remain in the Command Module (CM) to conduct geologic observations from lunar orbit and photograph potential landing sites for the future.
+
+On Dec. 10, workers topped the Saturn V rocket with the Apollo 13 spacecraft, comprised of the CM and the Lunar Module inside the Spacecraft LM Adaptor. Five days later, the Saturn V made its way to Launch Pad 39A for testing to prepare for launch.
+
+The Apollo 13 Mission Insignia
+
+  
+APOLLO 13
+Accident
+
+Many viewed the Apollo 13 mission as “routine” after the overwhelming successes of the Apollo 11 and Apollo 12 missions, but things did not go as planned.
+
+Misfortune plagued the mission early on, with ground tests before launch indicating the possibility of a poorly insulated helium tank in the Lunar Module and the previously damaged oxygen tank number two.
+
+Days before the mission, Charles Duke accidentally exposed the crew to German measles and as a precaution, Jack Swigert replaced Command Module Pilot Ken Mattingly, who lacked immunity.
+
+On launch day, 5 ½ minutes after liftoff, the center engine of the S-II shut down two minutes early, causing the remaining four engines to burn 34 seconds longer than planned and the S-IVB third stage to burn nine seconds longer to put Apollo 13 in orbit.
+
+Things went smoothly until the third day of the mission when, after finishing a 49-minute TV broadcast showing the conditions on board the spacecraft, oxygen tank number two blew up, leading to the subsequent failure of tank number one.
+
+The option for a lunar landing swiftly disappeared and the astronauts and mission control worked tirelessly around the clock to develop new procedures to get the crew home safely in a race against time.
+
+Apollo 13 Damaged Service Module After Separation
+
+ACCIDENT
+Investigation
+
+On June 15, 1970, Apollo 13 Review Board Chair Edgar M. Cortright released the final report detailing the cause of the oxygen tank explosion. The report found that the accident was a combination of mistakes and a deficient design. The board conducted seven weeks of investigation with four panels looking into different aspects of the accident.
+
+INVESTIGATION RESOURCES
+Report of Apollo 13 Review Board
+ 
+VIEW REPORT 
+INVESTIGATION RESOURCE
+Apollo 13 Mission Report
+VIEW RESOURCE
+APOLLO 13
+Lessons Learned
+
+On June 16, 1970, Edgar Cortright summarized the findings in a hearing before the House Committee on Science and Aeronautics and informed them of the Review Board’s recommendations, which included the redesign and recertification of the Service Module oxygen storage system and a thorough review by NASA of all Apollo systems that use cryogenic oxygen. The Review Board also recommended that management and organizational structures be strengthened to ensure an adequate understanding of the engineering and manufacturing processes of subsystems.
+
+For Apollo 14 and future missions, engineers at NASA and North American Rockwell redesigned the oxygen tank system by adding a third tank in a different bay, upgrading thermostats, removing stirring fans and sheathing all electrical wiring in stainless steel.
+
+LESSONS LEARNED
+Resources
+NASA REPORT
+Apollo 13 Mission Review Hearing Before the Committee on Aeronautical and Space Sciences
+READ REPORT
+NASA REPORT
+Apollo 13: The Successful Failure
+READ REPORT
+NASA PODCAST
+Houston We Have a Podcast: Apollo 13
+LISTEN TO PODCAST
+NASA VIDEO
+Apollo 13: Home Safe
+WATCH VIDEO
+NASA VIDEO
+Apollo 13: 'Houston, We've Had a Problem'
+WATCH VIDEO
+NASA VIDEO
+Apollo 13 Views of the Moon in 4K
+WATCH VIDEO
+SMITHSONIAN VIDEO
+How Mission control Saved the Apollo 13 Crew
+WATCH VIDEO
+THE INFOGRAPHICS SHOW VIDEO
+Apollo 13 Space Mission Disaster (Hour by Hour)
+WATCH VIDEO
+APOLLO 13
+Tributes
+
+There are a number of tributes throughout the United States dedicated to Apollo 13 and her crew.
+
+Apollo 13 Bronze Statue
+SPACE CENTER HOUSTON
+1601 E NASA Parkway
+Houston, TX 77058
+LEARN MORE
+ABOUT THE APOLLO 13 BRONZE STATUE
+ 
+Fred Haise Statue
+BILOXI, MS
+LEARN MORE
+ABOUT FRED HAISE STATUE
+Jack Swigert Statue
+UNITED STATES CAPITAL VISITOR CENTER'S EMANCIPATION HALL, FIRST ST. SE
+Washington DC, 20515
+LEARN MORE
+ABOUT JACK SWIGERT STATUE
+Jim Lovell Statue
+ADLER PLANETARIUM AND ASTRONOMY MUSEUM, 1300 S DUSABLE LAKE SHORE DR.
+Chicago, IL, 60605
+LEARN MORE
+ABOUT JIM LOVELL STATUE
+ 
+APOLLO 13
+Multimedia and Resources
+Apollo 13
+Apollo 13: Mission Details
+50 Years Ago: Apollo 13 Preps for 3rd Moon Landing
+50 Years Ago: “Houston, We’ve Had a Problem”
+50 Years Ago: Apollo 13 Crew Returns Safely to Earth
+50 Years Ago: Apollo 13 Crew Returns to Houston
+50 Years Ago: Apollo 13 Review Board Report
+The Hard-won Triumph of the Apollo 13 Mission – 45 Years Later
+Apollo 13: The Successful Failure

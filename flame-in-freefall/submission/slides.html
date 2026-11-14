@@ -1,0 +1,141 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>FlameGap demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Inter, "Liberation Sans", sans-serif; color: #0f1522; }
+.s { width: 1280px; height: 720px; padding: 52px 64px; position: relative; overflow: hidden; break-after: page; background: #f4f6f9; display: flex; flex-direction: column; gap: 22px; }
+.s:last-child { break-after: auto; }
+.eb { font: 500 15px "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #6f7a8e; }
+h1 { font: 700 84px "Space Grotesk", sans-serif; letter-spacing: -0.03em; margin: 0; line-height: 1; }
+h1 i { font-style: normal; color: #eb6834; }
+h2 { font: 700 44px "Space Grotesk", sans-serif; letter-spacing: -0.02em; margin: 0; line-height: 1.1; max-width: 26ch; }
+p, li { font-size: 21px; line-height: 1.45; color: #485266; margin: 0; }
+ul { margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
+b { color: #0f1522; }
+.big { font: 700 34px "Space Grotesk", sans-serif; color: #1b2f6b; }
+.row { display: flex; gap: 28px; align-items: flex-start; min-height: 0; flex: 1; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.shot { border: 1px solid #dde2ea; border-radius: 12px; background: #fff; overflow: hidden; }
+.shot img { display: block; width: 100%; height: auto; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 26px; display: flex; justify-content: space-between; font: 500 13px "IBM Plex Mono", monospace; color: #6f7a8e; }
+.stat { display: flex; gap: 40px; }
+.stat div b { display: block; font: 700 46px "Space Grotesk", sans-serif; color: #1b2f6b; }
+.stat div span { font-size: 17px; color: #485266; }
+.hot { color: #c03232; }
+.title { background: #0f1522; color: #fff; }
+.title p { color: #b8c0ce; }
+.title .eb { color: #8a94a6; }
+.title .shot { border-color: #252d3a; }
+blockquote { margin: 0; border-left: 4px solid #c03232; padding: 6px 0 6px 18px; font-size: 20px; color: #0f1522; }
+blockquote cite { display: block; font: 500 13px "IBM Plex Mono", monospace; color: #6f7a8e; margin-top: 6px; font-style: normal; }
+</style></head><body>
+
+<section class="s title">
+  <p class="eb">NASA Space Apps 2026 · Flame in Freefall</p>
+  <h1>Flame<i>Gap</i></h1>
+  <h2 style="color:#fff;max-width:30ch">Where the flight evidence on spacecraft fire ends, and what it means for a Moon base</h2>
+  <div class="shot" style="margin-top:auto"><img src="img/gap.png" alt=""></div>
+  <div class="foot" style="color:#8a94a6"><span>Data: NASA Physical Sciences Informatics (CC0)</span><span>1 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">The question</p>
+  <h2>NASA plans to fly lunar crews in 34&nbsp;% oxygen at 8.2&nbsp;psia. Has anything been burned in that air?</h2>
+  <div class="row">
+    <div class="col">
+      <p>We read all <b>24 combustion investigations</b> in NASA's PSI archive: <b>986 test runs</b>, 352 papers and 6.3 TB of raw data, and placed every run by the oxygen and pressure it burned in.</p>
+      <blockquote>“Because of the pure oxygen atmosphere, the fire spread quickly…”<cite>Apollo 1, NASA Office of Safety and Mission Assurance</cite></blockquote>
+    </div>
+    <div class="col"><div class="shot"><img src="img/o2hist.png" alt=""></div><p style="font-size:16px">Cabin oxygen through history against the range of solid-material flight tests.</p></div>
+  </div>
+  <div class="foot"><span>FlameGap</span><span>2 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">The answer</p>
+  <h2>No solid material was flight-tested above <span class="hot">22.2 %</span> oxygen</h2>
+  <div class="row">
+    <div class="col" style="flex:1.35"><div class="shot"><img src="img/map.png" alt=""></div></div>
+    <div class="col">
+      <ul>
+        <li>Zero solid or droplet runs inside the exploration window.</li>
+        <li>Droplets reached 34 %, but at <b>0.70 atm</b>, not 0.56.</li>
+        <li>At 25 % oxygen and above, only <b>8 %</b> of droplet flames went out on their own, against 92 % below 18 %.</li>
+        <li>Every run was in microgravity. None at lunar gravity.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Evidence map · Mission brief</span><span>3 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">Ranked findings</p>
+  <h2>15 findings, each with evidence, limits, an action and NASA sources</h2>
+  <div class="row">
+    <div class="col" style="flex:1.3"><div class="shot"><img src="img/finding.png" alt=""></div></div>
+    <div class="col">
+      <p>Users weight <b>safety, evidence, mission fit and actionability</b>; the ranking follows. Top of the list:</p>
+      <ul>
+        <li>Cutting the airflow may not put a fire out in oxygen-rich air.</li>
+        <li>NASA's own results say the material approval test is not the worst case.</li>
+        <li>A local extinguisher jet can feed a fire in weightlessness.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Findings</span><span>4 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">Predictor</p>
+  <h2>Will a burning droplet go out on its own? And can we trust the answer?</h2>
+  <div class="row">
+    <div class="col" style="flex:1.3"><div class="shot"><img src="img/predict.png" alt=""></div></div>
+    <div class="col">
+      <div class="stat"><div><b>82 %</b><span>right on unseen test days</span></div><div><b>69 %</b><span>always guessing</span></div></div>
+      <p>Logistic model on <b>261 FLEX runs</b>, cross-validated by test date. It shows the nearest real runs and <b>flags extrapolation</b>: the exploration atmosphere is outside every FLEX pressure.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Outcome predictor</span><span>5 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">Video lab</p>
+  <h2>NASA keeps the results as raw video. We turned it into numbers.</h2>
+  <div class="row">
+    <div class="col" style="flex:1.25"><div class="shot"><img src="img/vchart.png" alt=""></div></div>
+    <div class="col">
+      <div class="stat"><div><b>5 / 5</b><span>independent checks pass</span></div><div><b>1.6 %</b><span>between repeat tests</span></div></div>
+      <ul>
+        <li>Flame out <b>1.9 s</b> after the fan cut; NASA report: within 2 s.</li>
+        <li>Spread falls with film thickness, as thin-fuel theory predicts.</li>
+        <li>Ready to run over all 244 BASS-II videos.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Video lab</span><span>6 / 7</span></div>
+</section>
+
+<section class="s">
+  <p class="eb">Built to be trusted</p>
+  <h2>Every number computed from NASA data. Every quote checked. Every AI claim verified.</h2>
+  <div class="row">
+    <div class="col">
+      <ul>
+        <li>The build recomputes all figures from the raw PSI tables and <b>fails</b> if a quote is not word for word in its NASA source.</li>
+        <li><b>29 tests</b> recount key facts from the CSVs with independent code.</li>
+        <li>Claude answers questions from the archive only; code checks each claim's records and numbers.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <p class="big">Next</p>
+      <ul>
+        <li>Feed the gaps to SoFIE and FM2, which can test elevated oxygen and lunar gravity.</li>
+        <li>Publish a BASS results table from the videos.</li>
+        <li>On Earth: the same science made firefighter air tanks lighter and fire detectors smarter.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>FlameGap · research prototype, not a design basis · not an official NASA product</span><span>7 / 7</span></div>
+</section>
+</body></html>

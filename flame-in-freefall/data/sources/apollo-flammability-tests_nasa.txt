@@ -1,0 +1,19 @@
+Following the January 1967 fire that took the lives of the Apollo 1 astronauts, NASA established a Senior Flammability Test Review Board.  Headed by Manned Spacecraft Center (MSC) Director Robert Gilruth, the Board requested a flammability test program to determine whether the redesigned Apollo spacecraft were acceptable from a flammability perspective for human testing and flight.  The Board requested a series of flammability tests of both the Lunar Module (LM) and the Command Module (CM) to determine the optimal cabin atmospheric composition and pressure to minimize the risk of fire.  After the fire, engineers reduced or eliminated flammable materials and sources of ignition from the cabins wherever possible.  MSC’s Structures and Mechanics Division carried out all the testing in Houston.
+
+For the flammability testing, manufacturers of the LM and CM constructed mockups that reflected with high fidelity the interior geometry, electrical wiring and components, flight hardware and crew equipment of the spacecraft.  The Grumman Aircraft Engineering Corporation of Bethpage, NY, built the LM M-6 model for flammability testing which was completed in October and November 1967, with 41 deliberate ignitions carried out.  After the test, NASA determined that the LM was adequately fire protected.
+
+The Lunar Module Model M-6 used for flammability tests at the Manned Spacecraft Center.
+NASA
+
+For CM flammability testing, the North American Rockwell Corporation of Downey, CA, fabricated Boilerplate 1224.  Engineers in Houston conducted three series of tests comprising 102 deliberate ignitions between December 1967 and February 1968 at varying cabin atmospheric composition and pressure:  100% oxygen at 6.2 psi (the conditions during orbital flight); a mixture of 60% oxygen and 40% nitrogen at 16.2 psi (the expected conditions in the cabin during ground testing and prelaunch operations); and 100% oxygen at 16.2 psi (the conditions that were present during the Apollo fire). 
+
+The test results revealed a few areas of concern in the CM, which were corrected, but according to Gilruth the results indicated a drastically reduced fire hazard in the Apollo spacecraft.  Many of the fires self-extinguished during testing and all could have been dealt with easily by onboard firefighting equipment.  The series of tests led to a determination of ideal cabin atmospheres during ground testing, prelaunch operations and flight.  That decision announced March 14 took NASA one step closer to landing a man on the Moon before the end of the decade.
+
+The Command Module Boilerplate 1224 capsule used for flammability tests at the Manned Spacecraft Center.
+NASA
+
+The CM Boilerplate 1224 was transferred to the Smithsonian Institute in 1978, and is currently on loan to and on display at the private Harris County Youth Village in Seabrook, TX.  It can be viewed at a distance from the street.
+
+For more details on the Apollo flammability test program, please see https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19700015953.pdf
+
+National Aeronautics and Space Administration

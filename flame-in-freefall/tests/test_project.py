@@ -1,0 +1,293 @@
+"""Checks that every number FlameGap shows is right.
+
+    python3 -m unittest discover -s tests -v
+
+The tests recount key facts straight from the raw NASA CSV files with independent code,
+then compare them with what the build put into web/data.js. They also check the model,
+the video results, the answer checker and the server's handling of a model reply.
+Standard library only, plus numpy for the model check.
+"""
+import csv
+import io
+import json
+import math
+import os
+import re
+import sys
+import unittest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TAB = os.path.join(ROOT, "data", "raw", "tables")
+sys.path.insert(0, os.path.join(ROOT, "server"))
+
+
+def load_js(name, var):
+    with open(os.path.join(ROOT, "web", name), encoding="utf-8") as fh:
+        return json.loads(fh.read().split(f"window.{var} = ", 1)[1].rstrip().rstrip(";"))
+
+
+def rows(name):
+    with open(os.path.join(TAB, name), encoding="utf-8", errors="replace") as fh:
+        r = [x for x in csv.reader(io.StringIO(fh.read())) if any(c.strip() for c in x)]
+    return [h.strip() for h in r[0]], r[1:]
+
+
+D = load_js("data.js", "FLAME")
+M = load_js("model.js", "FLAME_MODEL")
+
+
+class RawRecount(unittest.TestCase):
+    """Facts recounted from the CSVs without using the build script."""
+
+    def test_solid_oxygen_ceiling(self):
+        vals = []
+        h, b = rows("PSI-25_Experimental table_BASS-II.csv")
+        i = next(k for k, x in enumerate(h) if "initial O2" in x)
+        vals += [float(r[i]) for r in b if re.fullmatch(r"\d+(\.\d+)?", r[i].strip())]
+        for name in ("PSI-98_Experimental table_SAFFIRE-1.csv", "PSI-99_Experimental table_SAFFIRE-2.csv"):
+            h, b = rows(name)
+            i = next(k for k, x in enumerate(h) if "Percent O2" in x)
+            vals += [float(m.group()) for r in b for m in [re.search(r"\d+(\.\d+)?", r[i])] if m]
+        self.assertEqual(max(vals), 22.2)
+        self.assertEqual(D["stats"]["solid_o2_max"], 22.2)
+        self.assertEqual(min(vals), D["stats"]["solid_o2_min"])
+
+    def test_flex_counts_and_outcomes(self):
+        h, b = rows("PSI-69_Experimental table_FLEX.csv")
+        self.assertEqual(len(b), 274)
+        ends = [r[-1].strip() for r in b]
+        self.assertEqual(ends.count("Extinction"), 186)
+        self.assertEqual(D["stats"]["flex_n"], 274)
+        o2 = [float(r[6]) for r in b]
+        self.assertAlmostEqual(max(o2), 0.34)
+        hi = [r for r in b if float(r[6]) >= 0.32]
+        self.assertEqual(len(hi), D["stats"]["flex_hi_o2"])
+        self.assertTrue(all(0.69 < float(r[5]) / 760 < 0.72 for r in hi), "34 % runs are all near 0.70 atm")
+        self.assertTrue(all(r[-1].strip() != "Extinction" for r in hi), "none of the 34 % runs went out on its own")
+
+    def test_flex_self_extinction_bands(self):
+        h, b = rows("PSI-69_Experimental table_FLEX.csv")
+        plain = [r for r in b if float(r[8] or 0) == 0 and float(r[9] or 0) == 0]
+        for band, (lo, hi) in zip(D["stats"]["flex_bands"], [(0, 18), (18, 25), (25, 101)]):
+            grp = [r for r in plain if lo <= float(r[6]) * 100 < hi]
+            self.assertEqual(len(grp), band["n"])
+            self.assertEqual(sum(1 for r in grp if r[-1].strip() == "Extinction"), band["ext"])
+
+    def test_bre_oxygen_levels(self):
+        h, b = rows("PSI-20_Experimental table_ACME BRE.csv")
+        i = h.index("Oxygen Conc (percent)")
+        levels = set()
+        for r in b:
+            v = r[i].strip()
+            levels |= {float(v.rstrip("%")) / 100} if v.endswith("%") else {float(x) for x in re.findall(r"\d+(?:\.\d+)?", v)}
+        self.assertEqual(sorted(levels), D["stats"]["bre_levels"])
+        self.assertIn(34.0, levels)
+        self.assertEqual(sum(int(r[h.index("Flames Ignited")]) for r in b), D["stats"]["bre_flames"])
+
+    def test_exploration_window_has_no_solid_or_droplet_runs(self):
+        cov = D["stats"]["coverage"]["exp"]
+        self.assertEqual(cov["solid"], 0)
+        self.assertEqual(cov["droplet"], 0)
+
+    def test_investigation_count(self):
+        self.assertEqual(D["stats"]["investigations"], 26)
+        self.assertEqual(D["stats"]["combustion"], 24)
+
+
+class Findings(unittest.TestCase):
+    def test_every_finding_is_complete_and_sourced(self):
+        accs = {i["acc"] for i in D["investigations"]}
+        next_ids = {n["id"] for n in D["next"]}
+        for f in D["findings"]:
+            for k in ("title", "claim", "evidence", "limits", "action", "scores", "sources"):
+                self.assertTrue(f.get(k), f"{f['id']} has no {k}")
+            self.assertTrue(set(f["scores"]) == {"safety", "evidence", "mission", "action"})
+            self.assertTrue(all(1 <= v <= 5 for v in f["scores"].values()))
+            self.assertTrue(all(s["acc"] in accs for s in f["sources"]), f["id"])
+            self.assertTrue(set(f["next"]) <= next_ids, f["id"])
+
+    def test_numbers_in_findings_match_stats(self):
+        S = D["stats"]
+        f = {x["id"]: x for x in D["findings"]}
+        self.assertIn(f"{S['solid_o2_max']:g} %", f["solid-gap"]["title"])
+        self.assertIn(f"{S['flex_bands'][0]['pct']} %", f["selfext"]["claim"])
+        self.assertIn("0.70 atm", f["corner"]["title"])
+
+    def test_finding_ids_unique(self):
+        ids = [f["id"] for f in D["findings"]]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_history_quotes_present(self):
+        self.assertEqual(len(D["history"]), 4)
+        for h in D["history"]:
+            self.assertTrue(h["quotes"] and h["changed_quote"]["url"].startswith("https://"))
+
+    def test_summaries_cover_every_combustion_investigation(self):
+        for i in D["investigations"]:
+            if i["combustion"]:
+                self.assertTrue(i.get("summary"), i["acc"])
+                self.assertIn(i.get("relevance"), ("direct", "indirect", "background"))
+
+
+class Model(unittest.TestCase):
+    def test_beats_baselines(self):
+        r = M["cv"]["results"]
+        self.assertGreater(r["Full model"]["accuracy"]["mean"], r["Always the most common outcome"]["accuracy"]["mean"] + 0.08)
+        self.assertGreater(r["Full model"]["auc"]["mean"], r["Oxygen only"]["auc"]["mean"])
+        self.assertLess(r["Full model"]["brier"]["mean"], r["Oxygen only"]["brier"]["mean"])
+
+    def test_physically_sensible_signs(self):
+        c = dict(zip([f["key"] for f in M["features"]], M["coef"]))
+        self.assertLess(c["o2"], 0, "more oxygen makes self-extinction less likely")
+        self.assertGreater(c["d0"], 0, "larger droplets go out more (radiative extinction)")
+        self.assertGreater(c["co2"], 0, "CO2 is a suppressant")
+        self.assertGreater(c["he"], 0, "helium is a suppressant")
+
+    def test_calibrated(self):
+        for b in M["cv"]["calibration"]:
+            if b["n"] >= 25:
+                self.assertLess(abs(b["predicted"] - b["observed"]), 0.15, b)
+
+    def test_exploration_is_flagged_outside(self):
+        # pressure 8.2 psia is below every FLEX run, so a query there must be outside the tested range
+        logp = math.log(8.2 / 14.696)
+        self.assertLess(logp, M["ranges"]["logp"][0])
+
+
+class Video(unittest.TestCase):
+    V = D["video"]
+
+    def test_all_independent_checks_pass(self):
+        checks = [c for c in self.V["validation"]["checks"] if c["independent"]]
+        self.assertEqual(len(checks), 5)
+        self.assertTrue(all(c["pass"] for c in checks), [c["check"] for c in checks if not c["pass"]])
+
+    def test_repeat_tests_agree(self):
+        t = {x["test"]: x for x in self.V["tests"]}
+        a, b = t["B2"]["spread_mm_s"], t["B5"]["spread_mm_s"]
+        self.assertLess(abs(a - b) / ((a + b) / 2), 0.05)
+
+    def test_thicker_films_spread_slower(self):
+        t = {x["test"]: x for x in self.V["tests"]}
+        self.assertGreater(t["B1"]["spread_mm_s"], t["B5"]["spread_mm_s"])
+        self.assertGreater(t["B5"]["spread_mm_s"], t["B4"]["spread_mm_s"])
+
+    def test_low_flow_tests_have_no_rate(self):
+        for x in self.V["tests"]:
+            if x["confidence"] == "low":
+                self.assertIsNone(x.get("spread_mm_s"))
+
+    def test_thumbnails_exist(self):
+        for x in self.V["tests"]:
+            for f in x.get("frames_web", []):
+                self.assertTrue(os.path.exists(os.path.join(ROOT, "web", f)), f)
+
+
+class Verifier(unittest.TestCase):
+    corpus = {"PSI-25": "BASS-II oxygen from 13.6 to 22.2 %. 129 tests.", "F-x": "Exploration atmosphere is 34 %."}
+
+    def test_good_claim(self):
+        from verify import check_claim
+        ok, issues = check_claim({"text": "BASS-II burned materials at up to 22.2 % oxygen.", "sources": ["PSI-25"]}, self.corpus)
+        self.assertTrue(ok, issues)
+
+    def test_invented_number_is_caught(self):
+        from verify import check_claim
+        ok, issues = check_claim({"text": "BASS-II reached 30 % oxygen.", "sources": ["PSI-25"]}, self.corpus)
+        self.assertFalse(ok)
+        self.assertIn("30", issues[0])
+
+    def test_unknown_source_is_caught(self):
+        from verify import check_claim
+        ok, issues = check_claim({"text": "Something.", "sources": ["PSI-999"]}, self.corpus)
+        self.assertFalse(ok)
+
+    def test_uncited_claim_is_caught(self):
+        from verify import check_claim
+        ok, _ = check_claim({"text": "Something.", "sources": []}, self.corpus)
+        self.assertFalse(ok)
+
+    def test_number_with_wrong_unit_is_caught(self):
+        from verify import check_claim
+        corpus = {"PSI-20": "Porous burners of 25 and 50 mm diameter. Oxygen in the table: 21 to 40 %."}
+        ok, issues = check_claim({"text": "BRE tested 50 % oxygen.", "sources": ["PSI-20"]}, corpus)
+        self.assertFalse(ok, "50 mm must not support 50 %")
+        ok, issues = check_claim({"text": "BRE ran from 21 to 40 % oxygen with 50 mm burners.", "sources": ["PSI-20"]}, corpus)
+        self.assertTrue(ok, issues)
+
+    def test_unit_lists_and_ranges(self):
+        from verify import numbers_with_units
+        self.assertEqual(numbers_with_units("about 1 cm/s for 100, 200, and 300 µm"), [(1.0, "cm/s"), (100.0, "um"), (200.0, "um"), (300.0, "um")])
+        self.assertEqual(numbers_with_units("12 to 34 %"), [(12.0, "%"), (34.0, "%")])
+
+    def test_record_ids_are_not_numbers(self):
+        from verify import check_claim
+        ok, issues = check_claim({"text": "PSI-25 tested films.", "sources": ["PSI-25"]}, self.corpus)
+        self.assertTrue(ok, issues)
+
+
+class Server(unittest.TestCase):
+    """The request path with a stand-in client, so no API key or network is needed."""
+
+    def test_ask_parses_and_verifies(self):
+        os.environ.pop("ANTHROPIC_API_KEY", None)
+        import serve
+
+        class Block:
+            type = "text"
+            text = json.dumps({"answer": "No solid material was flight tested above 22.2 % oxygen.",
+                               "claims": [{"text": "BASS-II tested up to 22.2 % oxygen.", "sources": ["PSI-25"]},
+                                          {"text": "BASS-II tested at 40 % oxygen.", "sources": ["PSI-25"]}],
+                               "outside_archive": ""})
+
+        class Resp:
+            stop_reason = "end_turn"
+            content = [Block()]
+            model = "stand-in"
+
+        class Msgs:
+            def create(self, **kw):
+                self.kw = kw
+                return Resp()
+
+        class Beta:
+            messages = Msgs()
+
+        class Client:
+            beta = Beta()
+
+        serve.CLIENT = Client()
+        out, code = serve.ask("What oxygen levels were solids tested at?")
+        self.assertEqual(code, 200)
+        self.assertEqual(out["total"], 2)
+        self.assertEqual(out["verified"], 1, "the claim with an invented 40 % must fail")
+        self.assertIn("40 %", out["claims"][1]["issues"][0])
+        kw = Client.beta.messages.kw
+        self.assertEqual(kw["model"], serve.MODEL)
+        self.assertEqual(kw["output_config"]["format"]["type"], "json_schema")
+        self.assertIn("PSI-25", kw["system"][0]["text"])
+
+    def test_refusal_is_reported(self):
+        import serve
+
+        class Resp:
+            stop_reason = "refusal"
+            content = []
+
+        class Msgs:
+            def create(self, **kw):
+                return Resp()
+
+        class Beta:
+            messages = Msgs()
+
+        class Client:
+            beta = Beta()
+
+        serve.CLIENT = Client()
+        out, code = serve.ask("x")
+        self.assertIn("error", out)
+
+
+if __name__ == "__main__":
+    unittest.main()

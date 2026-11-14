@@ -1,0 +1,157 @@
+In November 1966, after the successful completion of the Gemini program, NASA turned its focus to the first Apollo mission to carry a crew to the Moon. The mission, officially designated as AS-204, later became known as Apollo 1. NASA planned the mission as an open-ended flight lasting up to 14 days and targeted a launch for the first quarter of 1967. The main goals were to prove the space worthiness of the craft and test the Service Module’s large engine.
+ 
+Apollo I Construction
+Following two uncrewed suborbital tests of the Apollo spacecraft in 1966, AS-204 was to be the first Block I to carry astronauts into Earth orbit. Construction of Command Module (CM) 012, the spacecraft assigned to AS-204, began in Downey, California, in August 1964.
+ 
+Apollo I Crew
+NASA assigned Mercury 4 and Gemini 3 veteran Virgil “Gus” Grissom, Gemini IV veteran and the first American to conduct a spacewalk Edward White, and spaceflight rookie Roger Chaffee, as the crew for the Apollo I mission.
+
+ 
+Training Commences
+Grissom, White and Chaffee began training several months before being announced as the crew, which involved spending time with the spacecraft while it was under construction and taking part in classroom lectures. The prime and backup crews spent considerable time rehearsing their flight in the mission evaluator at the spacecraft’s manufacturer, North American Aviation.
+ 
+Journey to Kennedy
+In August 1966, NASA and North American Aviation cleared the spacecraft for shipment to Kennedy Space Center, with the Apollo CM-012 arriving on Aug. 26, 1966, followed by its Service Module. Engineers joined the two components and put the spacecraft into an altitude chamber for continued testing. The crew continued training in the Apollo Mission Simulator at Kennedy.
+ 
+Transport to Launch Pad 34
+The Block I spacecraft successfully completed altitude chamber tests in late December 1966. On Jan. 3, 1967, workers removed the spacecraft from the altitude chamber and transferred it to Launch Pad 34 to be stacked atop the Saturn IB rocket in preparation for pre-flight testing with the crew.
+ 
+Testing Issues
+During the last week of January, the crew returned to Kennedy for additional tests that were plagued by glitches. The tests extended into the early morning hours of the next day.
+ 
+Tragedy on the Launchpad
+On Jan. 27, Grissom, White and Chaffee were scheduled to conduct a key test on the launch pad, during which the spacecraft would switch to its own internal power. The astronauts would be wearing spacesuits with the spacecraft’s hatches closed and the cabin pressurized with 100% oxygen. During the test, a flash fire swept through the spacecraft so quickly, there was no time to open the hatches. U.S. Air Force pathologists concluded the astronauts perished from asphyxia from carbon monoxide and other toxic gases resulting from the fire. Their burns were likely survivable.
+ 
+Investigation
+After the mishap, NASA established an investigative board to determine the source of the fire. In the months that followed, the board determined that both technical and management lapses led to the accident. The board published their findings in a 3,000-page report and both houses of Congress held hearings to better understand the causes of the accident and NASA’s plans to prevent recurrence.
+ 
+Changes for Future Missions
+After the hearings, NASA made management and Safety Culture changes and redesigned the Apollo spacecraft. NASA decided that all subsequent Apollo crews would fly aboard the Block II version of the spacecraft, which included a docking probe and transfer tunnel that allowed the crew to make internal transfers between the CM and Lunar Module. They also replaced the three-piece hatch with a unified hatch that could be opened from inside or outside the spacecraft in three seconds. Additionally, NASA restricted and controlled the amount and location of combustible material within the spacecraft.
+ 
+The Apollo Program After Apollo I
+The investigation into the fire and reworking of the Apollo CM postponed crew launches until NASA officials cleared them for flight. In the spring of 1967, NASA's Associate Administrator for Manned Space Flight, Dr. George E. Mueller, announced that the mission originally scheduled for Grissom, White and Chaffee would be known as Apollo 1 and the first SATERN V launch would be known as Apollo 4. The eventual launch of AS-204 became known as Apollo 5. No missions or flights were ever designated Apollo 2 or 3.
+ 
+CREW
+Biographies
+Virgil "Gus" Grissom
+COMMANDER
+VIEW BIO 
+Edward White
+SENIOR PILOT
+VIEW BIO 
+Roger Chaffee
+PILOT
+VIEW BIO
+AS-204
+Mission
+
+The Apollo I mission was set to be the first crewed flight of the Apollo program and was scheduled to launch on Feb. 21, 1967.
+
+President John F. Kennedy’s goal of landing a man on the Moon and returning him safely to Earth by the end of the decade led NASA to set ambitious goals for 1967. The agency aimed to human-rate the Saturn IB and Saturn V rockets, as well as test the Apollo Command and Service Modules (CSM) and Lunar Module. Apollo I was the first of these missions and would be a 14-day Earth orbital test flight of a Block I Apollo CSM. The primary objectives included testing the spacecraft’s life support systems and the main Service Propulsion System (SPS) engine, which would be used for critical maneuvers on lunar missions. The mission plan included eight SPS test firings, with the final firing intended to deorbit the spacecraft for reentry during its 208th revolution around the Earth.
+
+Planning for Apollo began in 1961 when NASA awarded the contract to build the Apollo spacecraft to North American Aviation in Downey, California. North American Aviation planned to build two versions of Apollo that could carry a crew, with astronauts using the more basic Block I version to test the spacecraft in Earth orbit. A Block II version would be equipped with a docking station and take astronauts to the Moon. Following two uncrewed suborbital tests, AS-204, later to be known as Apollo I, would have become the first Block I to carry astronauts into Earth orbit.
+
+The agency assigned spaceflight veterans Virgil “Gus” Grissom and Edward White to the mission, along with spaceflight rookie Roger Chaffee. NASA announced the crew in a press conference held on March 21, 1966.
+
+The AS-204/Apollo 1 Mission Insignia
+
+Grissom, White and Chaffee began training for the mission several months before being announced, spending considerable time with their spacecraft while it was under construction at North American Aviation and taking part in classroom lectures. They also trained in Apollo Command Module  simulators at the Manned Spacecraft Center (now Johnson Space Center) and Kennedy Space Center.
+
+On the first day of the mission, the crew planned to fly in formation with the rocket’s S-IVB second stage for 20 minutes to photograph its condition. They also aimed to spend about 60 hours performing nine experiments, including five medical, three scientific and one technological. Additionally, they planned one television broadcast, which would’ve been the first to be beamed down from an American-crewed spacecraft in orbit.
+
+If the mission lasted its full duration, the spacecraft would bring the astronauts home to a splashdown in the Atlantic Ocean after 330 hours and 50 minutes, breaking Gemini VII’s record and making it the longest human spaceflight.
+
+READ FULL SUMMARY
+
+ 
+
+The AS-204/Apollo 1 Command Module and Launch System.
+
+AS-204
+Accident
+
+On Jan. 27, 1967, astronauts Virgil “Gus” Grissom, Edward White and Robert Chaffee lost their lives during a preflight test for AS-204 when a fire swept through the Command Module (CM). Within seconds, rising temperatures and pressure caused the CM pressure vessel to crack, releasing flames and smoke onto the launch pad’s service structure. The astronauts attempted to open the inner hatch while the pad crew tried to open the two outer hatches. By the time the pad crew was able to open the hatches, the crew had already perished. Through examinations conducted after the accident, U.S. Air Force pathologists concluded that the astronauts died of asphyxia from carbon monoxide and other toxic gases. Their burns were likely survivable.
+
+ACCIDENT
+Investigation
+
+On Jan. 28, 1967, Deputy NASA Administrator Robert C. Seamans established the Apollo 204 Review Board to investigate the causes of the accident. The board first met on Jan. 28 and visited the scene of the accident. Over the next several days, the board conducted interviews with witnesses and established 21 panels to handle the investigation.
+
+On April 9, 1967, the board released its 3,000-page report. Although they couldn’t determine a specific source of ignition, investigators found evidence of arcing in several wires in the spacecraft near the environment control system. This was the area that received the most severe fire damage.
+
+Because of the pure oxygen atmosphere, the fire spread quickly, causing a rapid rise in temperature and pressure that led to the rupture of the Command Module pressure vessel. This rupture generated toxic chemicals that caused the deaths of the astronauts.
+
+The design of the three-piece hatch, which took 90 seconds to open under ideal conditions, was impossible to open under increased pressure. Since the test took place with an unfueled rocket, it was considered non-hazardous and not reviewed by appropriate safety organizations. As a result, there was no defined process for rescuing or treating the crew members for injuries.
+
+INVESTIGATION RESOURCES
+Apollo 204 Review Board Final Report
+VIEW REPORT
+INVESTIGATION RESOURCES
+Borman Testimony Before Congress
+BORMAN TESTIMONY
+Part One
+VIEW
+ 
+BORMAN TESTIMONY
+Part Two
+VIEW
+ 
+INVESTIGATION RESOURCES
+Borman Testimony to the Senate
+BORMAN TESTIMONY
+Part One
+VIEW
+ 
+BORMAN TESTIMONY
+Part Two
+VIEW
+ 
+BORMAN TESTIMONY
+Part Three
+VIEW
+ 
+INVESTIGATION RESOURCE
+Apollo 1 Accident Summary
+VIEW RESOURCE
+INVESTIGATION RESOURCE
+Senate Report on Apollo 1 Accident
+VIEW RESOURCE
+INVESTIGATION RESOURCE
+Baron Report
+VIEW RESOURCE
+INVESTIGATION RESOURCE
+Baron’s Testimony Before Congress
+VIEW RESOURCE
+INVESTIGATION RESOURCE
+Phillips Report
+VIEW RESOURCE
+AS-204
+Lessons Learned
+
+Following the fire, NASA decided that all future Apollo crews would fly aboard the more advanced Block II version of the spacecraft. NASA also replaced the three-piece hatch with a unified hatch that could be opened from the inside or outside within three seconds. Additionally, NASA severely restricted and controlled the number of combustible materials in the spacecraft and made those changes in the Lunar Module as well. As another safeguard, the agency designed new spacesuits using fire-resistant materials.
+
+LESSONS LEARNED
+Resources
+NASA REPORT
+NASA Response to Findings, Determinations and Recommendations
+READ REPORT
+NASA REPORT
+NASA Space Craft Contractor Relations
+READ REPORT
+NASA REPORT
+Summary
+READ REPORT
+NASA PODCAST
+Apollo 1 Fire
+LISTEN TO PODCAST
+SMITHSONIAN VIDEO
+How a 'Non-Hazardous' NASA Mission Turned Deadly
+WATCH VIDEO
+SEEKER VIDEO
+Apollo 1's Fatal Fire Almost Ended the Spaceflight Program
+WATCH VIDEO
+NASA ARTICLE
+50 Years Ago: Apollo Flammability Tests
+WATCH VIDEO
+APOLLO 1
+Memorials and Tributes

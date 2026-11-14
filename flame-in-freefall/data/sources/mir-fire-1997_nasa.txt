@@ -1,0 +1,30 @@
+On Feb. 24, 1997, the six crew members aboard the Russian space station Mir faced significant danger when a fire ignited in an oxygen generating system. The searing flame, lasting several minutes, not only cut off access to one of the two Soyuz escape vehicles but also filled the station’s modules with smoke. Although the narrow confines where the fire occurred made fighting it difficult, through teamwork and composure the crew prevailed and extinguished the flames, with no damage to the station’s structure. The station’s life support systems cleared its atmosphere of the toxic smoke over several hours, with no lasting harm to the crew members. The lessons learned from the incident were passed on in the design and operations of the International Space Station.
+
+
+
+Left: The Russian space station Mir, as seen by the crew of the departing space shuttle Atlantis during the January 1997 STS-81 mission. Right: The six crew members aboard Mir during the February 1997 fire – (front) Aleksandr Y. Kaleri, left, Jerry M. Linenger, and Valeri G. Korzun; (back) Vasili V. Tsibliyev, left, Reinhold Ewald, and Aleksandr I. Lazutkin.
+
+The space station Mir normally housed a resident crew of three, but during handovers from one long-duration crew to another, crew size grew to six for short periods. Such was the case between Feb. 12 and March 3, 1997, when Russian cosmonauts Valeri G. Korzun and Aleksandr Y. Kaleri, on board since the previous August and nearing the end of their long-duration mission, and NASA astronaut Jerry M. Linenger, who arrived aboard space shuttle Atlantis in January, were joined by the newly-arrived trio of Vasili V. Tsibliyev and Aleksandr I. Lazutkin of Roscosmos and Reinhold Ewald of the German space agency DLR, the latter on a short-duration visiting flight. Shortly after dinner on Feb. 24, as Lazutkin activated a solid-fuel oxygen generator in Mir’s Kvant-1 module, the canister ignited, shooting a three-foot flame with sparks and bits of molten metal across the module and generating a large quantity of dense smoke. The flame blocked the evacuation route to the Soyuz spacecraft docked at the aft end of Kvant-1, the vehicle Korzun, Kaleri, and Ewald would use in an emergency evacuation. The crew quickly donned oxygen masks, and Korzun began dousing the flame with foam from a fire extinguisher, as Linenger held him in place and the other crew members handed him two more extinguishers. The flame finally extinguished itself, with Korzun’s efforts preventing significant damage – although some of Kvant-1’s panels were charred. Over the next several hours, the station’s life support system cleared the smoke and life returned to normal aboard Mir following the worst in-orbit fire incident in the history of spaceflight.
+
+
+Left: Before the fire, view inside the Kvant-1 module of the Mir space station, with
+the solid fuel oxygen generator (SFOG) visible at lower left. Right: Close-up of
+the undamaged SFOG apparatus in Kvant-1.
+
+During normal Mir operations, the three resident crew members’ oxygen needs were met by two Elektron oxygen generating units. The units, also now used aboard the International Space Station, generated oxygen through the electrolytic splitting of water, primarily reclaimed from sources aboard the station. When a larger crew inhabited Mir, solid fuel oxygen generators (SFOG), also known as Vika or by the Russian acronym TGK, supplemented the Elektrons. Utilized for decades aboard Soviet and Russian submarines, and for years aboard their space stations, SFOGs burned canisters of solid lithium perchlorate that chemically generated oxygen. Each canister provided enough oxygen to support one crew member per day. Although used without incident more than 2,500 times aboard Mir, on this day the canister burst into flames. Astronauts returned the damaged generator on the next space shuttle mission for evaluation, but the extensive damage made analysis of the fire’s cause difficult. After two years of study, investigators determined that hydrocarbons introduced into the canister increased the risk of problems. They identified the most likely culprit as latex working glove material inadvertently introduced into the canister.
+
+
+Left: NASA astronaut Jerry Linenger wearing a respirator following the fire aboard the
+Mir space station. Right: A charred wall panel in the Kvant-1 module following the fire.
+
+
+Two images of the charred remains of the solid fuel oxygen generator
+returned from space station Mir.
+
+Following the fire, based on lessons learned during the incident, Russian space officials instituted changes in how crew members trained for similar emergencies, and how ground controllers responded to aid the onboard crew. Eventual knowledge of the cause of the fire enabled them to implement changes in the ground preparation of the SFOG canisters. Today, the International Space Station has a robust oxygen generation system with dissimilar redundancies that include three improved Elektron units in the Russian segment and the Oxygen Generation System that, like its Russian counterpart, uses electrolytic splitting of regenerated water in the American segment. An SFOG system, with additional safety measures, is available in the Russian segment as needed when a larger crew is aboard or as a backup to the Elektron.
+
+
+
+Left: Cosmonaut Gennadi I. Padalka ignites solid fuel oxygen generator canisters during Expedition 20 in the Zvezda module of the International Space Station. Right: Cosmonauts Andei I. Borisenko, Aleksandr M. Samokutyayev, and Sergei A. Volkov during maintenance operations with the three Elektron units in the Zvezda module.
+
+National Aeronautics and Space Administration

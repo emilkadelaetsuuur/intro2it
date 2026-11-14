@@ -1,0 +1,337 @@
+{
+  "_about": "Hand-curated content. Every 'quote' must appear word for word (ignoring line breaks and repeated spaces) in the file named by 'src' under data/sources; scripts/build_data.py fails if one does not. Summaries were drafted with Claude from the NASA PSI records and checked by a person; every number in a summary must appear in the record or its table.",
+  "sources": {
+    "apollo1": {
+      "file": "apollo-1_sma.txt",
+      "title": "Apollo 1 (AS-204), NASA Office of Safety and Mission Assurance",
+      "url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-1"
+    },
+    "apollo13": {
+      "file": "apollo-13_sma.txt",
+      "title": "Apollo 13, NASA Office of Safety and Mission Assurance",
+      "url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-13"
+    },
+    "apollotests": {
+      "file": "apollo-flammability-tests_nasa.txt",
+      "title": "50 Years Ago: Apollo Flammability Tests, NASA",
+      "url": "https://www.nasa.gov/feature/50-years-ago-apollo-flammability-tests"
+    },
+    "mir": {
+      "file": "mir-fire-1997_nasa.txt",
+      "title": "25 Years Ago: Fire Aboard Space Station Mir, NASA",
+      "url": "https://www.nasa.gov/history/25-years-ago-fire-aboard-space-station-mir/"
+    },
+    "guide": {
+      "file": "researchers-guide-combustion_2015.txt",
+      "title": "A Researcher's Guide to International Space Station Combustion Science (NASA, 2015)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/"
+    },
+    "airtanks": {
+      "file": "spinoff-firemans-air-tanks.txt",
+      "title": "Fireman's Air Tanks, NASA Spinoff 1976",
+      "url": "https://spinoff.nasa.gov/node/9582"
+    },
+    "detector": {
+      "file": "spinoff-fire-detector.txt",
+      "title": "Fire Detector, NASA Spinoff 1978",
+      "url": "https://spinoff.nasa.gov/node/9407"
+    },
+    "attire": {
+      "file": "spinoff-fire-attire.txt",
+      "title": "New Technology for the Fire Attire, NASA Spinoff 1982",
+      "url": "https://spinoff.nasa.gov/node/9918"
+    },
+    "bass2report": {
+      "file": "bass2-summary-report_excerpts.txt",
+      "title": "BASS-II Summary Report, NASA/TM-20210011385",
+      "url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-25"
+    },
+    "video": {
+      "title": "NASA ScienceCasts: The Power of Studying Combustion on the ISS (2018)",
+      "url": "https://www.youtube.com/watch?v=W1oXykoz9zg"
+    }
+  },
+  "history": [
+    {
+      "id": "apollo1",
+      "year": "1967",
+      "date": "27 January 1967",
+      "name": "Apollo 1",
+      "atmosphere": {
+        "o2": 100,
+        "psi": 16.2,
+        "label": "100 % oxygen, 16.2 psi"
+      },
+      "what": "During a launch-pad test with the cabin full of pure oxygen, a fire swept through the command module in seconds. The three astronauts died from carbon monoxide and toxic gases before the hatch could be opened.",
+      "quotes": [
+        {
+          "src": "apollo1",
+          "text": "Because of the pure oxygen atmosphere, the fire spread quickly, causing a rapid rise in temperature and pressure that led to the rupture of the Command Module pressure vessel."
+        },
+        {
+          "src": "apollo1",
+          "text": "U.S. Air Force pathologists concluded the astronauts perished from asphyxia from carbon monoxide and other toxic gases resulting from the fire. Their burns were likely survivable."
+        },
+        {
+          "src": "apollotests",
+          "text": "100% oxygen at 16.2 psi (the conditions that were present during the Apollo fire)"
+        }
+      ],
+      "changed": "NASA restricted the amount and location of combustible material, redesigned the hatch to open in three seconds and made spacesuits from fire-resistant materials.",
+      "changed_quote": {
+        "src": "apollo1",
+        "text": "NASA restricted and controlled the amount and location of combustible material within the spacecraft."
+      },
+      "today": "Oxygen-enriched air and the materials inside the cabin were the core of the Apollo 1 failure. The exploration atmosphere raises oxygen to 34 %, above every solid-material flight test in this archive.",
+      "findings": [
+        "solid-gap",
+        "one-g"
+      ]
+    },
+    {
+      "id": "apollotests",
+      "year": "1967–68",
+      "date": "December 1967 to February 1968",
+      "name": "Apollo flammability tests",
+      "atmosphere": {
+        "o2": 100,
+        "psi": 6.2,
+        "label": "100 % oxygen, 6.2 psi (flight)"
+      },
+      "what": "After the fire, NASA burned full-scale mock-ups on purpose to choose a safe cabin atmosphere: 102 deliberate ignitions in a command-module boilerplate, at three oxygen and pressure combinations.",
+      "quotes": [
+        {
+          "src": "apollotests",
+          "text": "Engineers in Houston conducted three series of tests comprising 102 deliberate ignitions between December 1967 and February 1968 at varying cabin atmospheric composition and pressure"
+        },
+        {
+          "src": "apollotests",
+          "text": "Many of the fires self-extinguished during testing and all could have been dealt with easily by onboard firefighting equipment."
+        }
+      ],
+      "changed": "The tests set the cabin atmospheres for ground testing, prelaunch and flight.",
+      "changed_quote": {
+        "src": "apollotests",
+        "text": "The series of tests led to a determination of ideal cabin atmospheres during ground testing, prelaunch operations and flight."
+      },
+      "today": "NASA chose the Apollo atmosphere only after testing materials in it. For the exploration atmosphere the equivalent flight data for solid materials does not exist yet in this archive.",
+      "findings": [
+        "solid-gap",
+        "gravity"
+      ]
+    },
+    {
+      "id": "apollo13",
+      "year": "1970",
+      "date": "April 1970",
+      "name": "Apollo 13",
+      "atmosphere": null,
+      "what": "Heaters inside an oxygen tank had been left on during a ground test and overheated, damaging the wire insulation. In flight the tank blew up, the mission was aborted and the crew survived in the lunar module.",
+      "quotes": [
+        {
+          "src": "apollo13",
+          "text": "During the final test on the launch pad, the heaters were left on for an extended period and reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation."
+        },
+        {
+          "src": "apollo13",
+          "text": "a lesson learned from the Apollo I fire prevented arcing from happening, as a major redesign added increased insulation to better protect the wiring."
+        }
+      ],
+      "changed": "The oxygen tank system was redesigned: a third tank in another bay, better thermostats, no stirring fans, and all wiring sheathed in stainless steel.",
+      "changed_quote": {
+        "src": "apollo13",
+        "text": "redesigned the oxygen tank system by adding a third tank in a different bay, upgrading thermostats, removing stirring fans and sheathing all electrical wiring in stainless steel."
+      },
+      "today": "Insulation and wiring in contact with oxygen are fuel and ignition source at once. Pure-oxygen hardware is outside every test in this archive.",
+      "findings": [
+        "one-g"
+      ]
+    },
+    {
+      "id": "mir",
+      "year": "1997",
+      "date": "24 February 1997",
+      "name": "Fire on Mir",
+      "atmosphere": null,
+      "what": "A solid-fuel oxygen generator burst into flames on the Mir space station, blocking the way to one of the two Soyuz escape craft and filling the modules with dense smoke. The crew put on masks and fought it with three extinguishers.",
+      "quotes": [
+        {
+          "src": "mir",
+          "text": "the canister ignited, shooting a three-foot flame with sparks and bits of molten metal across the module and generating a large quantity of dense smoke."
+        },
+        {
+          "src": "mir",
+          "text": "The flame finally extinguished itself, with Korzun’s efforts preventing significant damage"
+        },
+        {
+          "src": "mir",
+          "text": "Over the next several hours, the station’s life support system cleared the smoke"
+        }
+      ],
+      "changed": "Russia changed crew training and ground response, and the canister preparation. The ISS uses electrolysis as its main oxygen source, with improved solid-fuel generators as backup.",
+      "changed_quote": {
+        "src": "mir",
+        "text": "They identified the most likely culprit as latex working glove material inadvertently introduced into the canister."
+      },
+      "today": "Smoke, not flame, filled the station for hours. Detecting and clearing smoke in microgravity is its own problem, and the smoke experiments in this archive ran only at station air.",
+      "findings": [
+        "smoke",
+        "suppress"
+      ]
+    }
+  ],
+  "spinoffs": [
+    {
+      "name": "Lighter firefighter air tanks",
+      "year": 1976,
+      "src": "airtanks",
+      "what": "Composite air tanks from spacesuit work: a 30-minute supply that weighs 20 pounds, 13 pounds less than the tanks firefighters used before.",
+      "quote": "New backpack system weighs only 20 pounds for 30 minute air supply, 13 pounds less than conventional firefighting tanks."
+    },
+    {
+      "name": "Fewer false fire alarms",
+      "year": 1978,
+      "src": "detector",
+      "what": "A fire detector first used on the Space Shuttle tells combustion particles from dust, so it raises fewer false alarms. It was used in mines.",
+      "quote": "can discriminate between combustion particles and extraneous matters such as dust. This gives an important advantage; it is less susceptible to false alarms."
+    },
+    {
+      "name": "Fire-resistant gear",
+      "year": 1982,
+      "src": "attire",
+      "what": "Project FIRES, with the U.S. Fire Administration, brought fire-resistant spacesuit materials into firefighter clothing, tested by fourteen city fire departments.",
+      "quote": "A major focus of the effort involves application to the FIRES ensemble of lightweight, fire-resistant, heat-protective materials originally developed for use in astronauts' space suits or in spacecraft components which require thermal protection."
+    }
+  ],
+  "guide_quotes": {
+    "not_conservative": {
+      "src": "guide",
+      "text": "Recent results from the BASS experiment currently running on the ISS indicate that NASA-STD-6001 Test 1 is not conservative, and materials can burn at lower oxygen levels in microgravity than on Earth."
+    },
+    "local_jet": {
+      "src": "guide",
+      "text": "Also, current findings show that local application of suppressant is not adequate for flame extinguishment. The local jet entrains air and sustains the flame even when the ambient airflow is turned off."
+    },
+    "ventilation_speed": {
+      "src": "guide",
+      "text": "the characteristic gas velocity of the minimum in the curve is on the order of 10 cm/s and also corresponds to a maximum in the flame spread rate. To give perspective, this is the velocity typical of that of spacecraft ventilation systems."
+    },
+    "upstream": {
+      "src": "guide",
+      "text": "Completely contrary to normal-gravity behavior, the flame spreads upstream, into the oncoming airflow, in space when the forced-flow velocities are low"
+    },
+    "sofie_sea": {
+      "src": "guide",
+      "text": "SoFIE can accommodate testing in exploration atmospheres with reduced pressure and elevated oxygen"
+    },
+    "ext_velocity_21": {
+      "src": "bass2report",
+      "text": "When tests are repeated with samples of different thicknesses, the extinction velocities are found to be about 1 cm/s for 100, 200, and 300 μm and about 1.5 cm/s for 400 μm."
+    },
+    "ext_velocity_16": {
+      "src": "bass2report",
+      "text": "the extinction velocities were found to be about 2.6 cm/s for 100 μm and about 4 cm/s for 200 μm"
+    }
+  },
+  "summaries": {
+    "PSI-10": {
+      "rel": "indirect",
+      "text": "Spherical ethylene and propane flames, burning outward and inward, used to find when flames start making soot. Oxygen ran from about 20 to 40 %. Aimed at cleaner engines and power plants, but 131 of its runs are at 30 % oxygen or more, the most of any investigation in the archive."
+    },
+    "PSI-20": {
+      "rel": "direct",
+      "text": "A porous gas burner that imitates burning solids, run in NASA's three candidate cabin atmospheres. Flames in elevated oxygen kept burning after the airflow stopped, while flames at 21 % went out. NASA calls the results preliminary."
+    },
+    "PSI-21": {
+      "rel": "indirect",
+      "text": "Weak methane and ethylene jet flames in a slow surrounding flow, measuring flame shape, lift-off, extinction limits and soot. Data for testing combustion models."
+    },
+    "PSI-22": {
+      "rel": "background",
+      "text": "How an electric field changes a flame and its soot. The record says it does not serve space applications directly."
+    },
+    "PSI-23": {
+      "rel": "indirect",
+      "text": "Spherical diffusion flames of hydrogen, methane and ethylene mixtures, in air-like atmospheres with nitrogen or helium, studied as they grow and go out."
+    },
+    "PSI-25": {
+      "rel": "direct",
+      "text": "Real spacecraft-type materials (PMMA films, rods and slabs, cotton-fiberglass fabric) burned in a slow airflow at 13.6 to 22.2 % oxygen. It tests whether NASA's normal-gravity screening test is the worst case. Results are in video, still photographs and papers, not in the table."
+    },
+    "PSI-26": {
+      "rel": "direct",
+      "text": "The first BASS series: cotton-fiberglass fabric, PMMA, Nomex and Ultem burned in opposed and concurrent airflow, plus nitrogen as an extinguishing agent. The table lists only the sample material."
+    },
+    "PSI-39": {
+      "rel": "indirect",
+      "text": "Dodecane droplets burning as low-temperature cool flames at 0.5 to 5 atm. Explains flames that keep reacting after the visible flame is gone."
+    },
+    "PSI-47": {
+      "rel": "direct",
+      "text": "Checked that a smoke particle counter works in weightlessness before it was used for the SAME smoke experiment."
+    },
+    "PSI-60": {
+      "rel": "indirect",
+      "text": "A ground study that turned more than 1600 SPICE flame photographs into soot and temperature maps."
+    },
+    "PSI-62": {
+      "rel": "direct",
+      "text": "A ground modelling study of flame spread along a material in the direction of the airflow, compared with BASS flights. Aims at screening new materials on the computer."
+    },
+    "PSI-68": {
+      "rel": "indirect",
+      "text": "Droplets of practical fuels and fuel mixtures, planned at 17 to 30 % oxygen and 0.5 to 3 atm. PSI holds the planned conditions, not the run results."
+    },
+    "PSI-69": {
+      "rel": "direct",
+      "text": "Methanol and heptane droplets burned in many atmospheres to find when a flame cannot survive, and how well carbon dioxide and helium put it out. 274 runs with recorded outcomes, from 12 to 34 % oxygen."
+    },
+    "PSI-98": {
+      "rel": "direct",
+      "text": "The first large spacecraft fire experiment: a fabric sheet of 94 by 40.6 cm burned inside an uncrewed Cygnus cargo ship after it left the station, measuring flame growth, oxygen and carbon dioxide."
+    },
+    "PSI-99": {
+      "rel": "direct",
+      "text": "Nine smaller samples (silicone, cotton-fiberglass, PMMA, Nomex) burned on Cygnus, each beside its normal-gravity result. Silicone spread little or no flame in weightlessness."
+    },
+    "PSI-100": {
+      "rel": "direct",
+      "text": "A repeat of the large fabric fire on Cygnus, in airflow of 30 cm/s in both directions along the sample."
+    },
+    "PSI-101": {
+      "rel": "direct",
+      "text": "A reflight of the smoke experiment with improved particle collection, so spacecraft smoke detectors can be tuned to smoke made in weightlessness."
+    },
+    "PSI-102": {
+      "rel": "direct",
+      "text": "Heated Teflon, Kapton, silicone rubber, lamp wick and dibutyl phthalate until they smoked, and measured the particles. Tests whether weightless smoke particles are larger than on Earth."
+    },
+    "PSI-106": {
+      "rel": "indirect",
+      "text": "Jet flames of methane, ethane and ethylene diluted with nitrogen, studied at the point where they lift off the burner. Flame stability data."
+    },
+    "PSI-107": {
+      "rel": "indirect",
+      "text": "How much fuel a jet flame can burn before it starts to smoke, for ethylene, propane and propylene, over 469 runs. Soot data for models."
+    },
+    "PSI-115": {
+      "rel": "direct",
+      "text": "Computer simulations of how smoke particles grow with and without gravity, built on the SAME data, to design better smoke detectors."
+    },
+    "PSI-117": {
+      "rel": "indirect",
+      "text": "Computer study using FLEX flight data to explain why cool flames on droplets behaved differently from run to run."
+    },
+    "PSI-142": {
+      "rel": "indirect",
+      "text": "Ground experiments and simulations that map when cool flames survive or go out, based on FLEX observations."
+    },
+    "PSI-159": {
+      "rel": "indirect",
+      "text": "Cool flames of ethane, propane and butane on a spherical burner, with oxygen from 12 to 85 %. Most of the 154 runs in the table recorded whether the flame went out on its own."
+    }
+  },
+  "data_notes": [
+    "SAFFIRE-I (PSI-98): the record lists the space station as platform and 2001 to 2008 as dates, the same dates as SAME (PSI-102). Its own text describes an uncrewed cargo vessel. The dates and platform look copied; we use the record text."
+  ]
+}

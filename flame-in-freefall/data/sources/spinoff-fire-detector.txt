@@ -1,0 +1,64 @@
+Fire Detector
+Originally published in 1978
+
+Sensor operates by sampling air to determine the presence of combustion particles, but unlike earlier equipment the Brunswick Incipient Fire Detector, originally used in space shuttle orbiters, can discriminate between combustion particles and extraneous matters such as dust. This gives an important advantage; it is less susceptible to false alarms. For large area applications such as mines, any number of sensors can be linked to a central processor/display unit to provide a central fire watch system that would instantly warn of incipient fire and pinpoint the location. Fire detector represents an advancement over commercially available smoke detectors in that it senses and signals the presence of a fire condition before appearance of flame and smoke.
+
+Full article: http://hdl.handle.net/hdl:2060/20070018916
+
+Sensor operates by sampling air to determine the presence of combustion particles, but unlike earlier equipment the Brunswick Incipient Fire Detector, originally used in space shuttle orbiters, can discriminate between combustion particles and extraneous matters such as dust. This gives an important advantage; it is less susceptible to false alarms. For large area applications such as mines, any number of sensors can be linked to a central processor/display unit to provide a central fire watch system that would instantly warn of incipient fire and pinpoint the location. Fire detector represents an advancement over commercially available smoke detectors in that it senses and signals the presence of a fire condition before appearance of flame and smoke.
+
+Fire Detector
+
+Fire Detector
+
+Related Stories
+Saving Lives at Sea and on Land
+For Battery Safety, KULR Heads Prevail
+Feeding People Through Disasters
+Giving Sensors Good Optics
+Where the Wildfires Are
+Spherical Robots to the Rescue
+FINDER Finds Its Way into Rescuers’ Toolkits
+Stay Safe with Battery Testing for Space
+Answering the Call of Distress
+Space-Grade Safety Checks for Poultry
+
+ 
+
+Explore the NASA Technology Transfer (T2) Program
+T2 Portal
+Patent Portfolio
+Software Catalog
+
+ 
+
+ 
+
+NASA
+Benefits to You
+
+
+ 
+
+NASA Home and City
+homeandcity.nasa.gov
+
+ 
+
+Follow Spinoff
+
+
+
+
+ 
+
+National Aeronautics and Space Administration
+NASA Official: Dan Lockney
+No Fear Act
+FOIA
+Privacy
+Office of Inspector General
+Office of Special Counsel
+Agency Financial Reports
+Contact NASA
+Accessibility

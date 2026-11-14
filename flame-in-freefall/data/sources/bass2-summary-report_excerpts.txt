@@ -1,0 +1,155 @@
+Source: BASS-II Summary Report, NASA/TM-20210011385, file 'PSI-25_Reports_BASS-II Summary Report.pdf' on NASA PSI (PSI-25). Text extracted with pdftotext.
+
+ International Space Station (ISS) with the Burning and Suppression of Solids—II (BASS–
+ II) experiment hardware installed. Working volume of MSG was diluted using ISS N2 gas.
+ Compound Specific Analyzer-Combustion Products (O2 and CO) and Carbon Dioxide
+ Monitor (CO2) sensors were used to obtain before and after burn gas concentrations.
+
+ The BASS–II hardware consists of a flow duct, still camera, video camera, video and power boxes,
+external control box and associated plumbing, and mounting systems. The black anodized 7.6- by 7.6- by
+17-cm rectangular flow duct with rounded corners was originally built to perform gas jet diffusion flame
+studies (Ref. 10). It was adapted to accommodate solid samples for the BASS experiments.
+ The flow was blown through the duct using a variable speed fan. Two additional flow restrictors
+could be used at the fan inlet to increase the pressure drop and thus reduce the flow through the duct to
+the desired value for the test point. With no restrictors, the maximum flow velocity was ~55 cm/s, and
+with two restrictors this was reduced to ~35 cm/s. The flow then passed through a honeycomb flow
+straightener and an inlet screen to reduce swirl. An omnidirectional spherical airspeed transducer (TSI
+Incorporated 8475) was positioned between the honeycomb and the screen and was used to measure the
+steady-state flow through the duct. The air velocity transducer probe had a response time of
+approximately 1 minute.
+ The test section was 17 cm long. Inside the test section was a nozzle for N2 flow, a movable scale,
+and an Oriel® 71768 thermopile detector (Newport Corporation) with a CaFl window (spectral range of
+0.13 to 11 µm) in the downstream top back corner of the duct viewing the upstream direction. The test
+section of the duct had two orthogonal windows; the top one was replaced for BASS to provide a
+mounting rail system for the solid samples. The top window was used by a Nikon D300s 12.3-megapixel
+digital color still camera with a 60-mm lens that provided 4,320- by 2,968-pixel images. The duct exit
+contained a perforated copper plate followed by a brass screen to provide heat rejection and a cold surface
+for soot deposition. The flow turned 90° to exit the duct, which facilitated mixing of the hot combustion
+gases with the cool ambient air.
+ The front window opened to provide access to the test section for sample and igniter change out. The
+front window also had interlocks for the igniter and N2 flow. A Panasonic Corporation color video camera
+
+
+
+NASA/TM-20210011385 4
+WV–CP654 (760- by 480-pixel array) with a turning mirror looked in the front window. The video
+camera had an overlay that displayed the N2 flow rate (cm3/min), fan voltage (10× V), air velocity
+transducer reading (cm/s), and the radiometer signal. The fan voltage was calibrated with the airspeed
+transducer at the end of every operations day. The radiometer signal was not calibrated but provided a
+measure of the flame dynamics and steadiness. The external control box had controls for the fan voltage,
+----
+
+
+
+
+NASA/TM-20210011385 12
+2.0 Individual Principal Investigator Report: Bhattacharjee
+2.1 Residence Time Driven Flame Spread
+ The objective of the Residence Time Driven Flame Spread (RTDFS) experiment of Burning and
+Suppression of Solids—II (BASS–II) was to examine how thermal and species fields can diverge and lead
+to microgravity flame extinguishment by varying fuel thickness.
+
+Symbols
+t time, s
+Vg opposed-flow velocity
+
+2.1.1 Test Matrix
+ Samples were 1- and 2-cm-wide thin films of plastic (PMMA (polymethylmethacrylate)).
+Thicknesses were between 0.1 and 0.4 mm. The test matrix is listed in Appendix A.
+
+2.1.2 Results
+ Twenty-two test points were obtained with the BASS–II experiments. The wealth of data has been
+catalogued at http://flame.sdsu.edu.
+
+2.1.2.1 Extinction Velocity
+ Each test is started by establishing a steady flame spread in the presence of a forced flow and then
+reducing the flow velocity in a gradual manner, as shown in Figure 2.1. In the first test, a steady flame
+was established over a 100-μm sample. After the flame propagated across half the sample length at a
+steady spread rate of 2.2 mm/s, the flow was abruptly cut off and the flame was observed to extinguish
+within 2 s, as shown by the radiometer signal drop in Figure 2.2. To pin down the extinction flow
+velocity, a second test was done under the same conditions except the flow velocity was set at 3 cm/s and
+after the flame propagated about half the sample length, the flow was gradually reduced. The flame
+spread rate of the leading edge, as plotted in Figure 2.3, shows that the flame extinguishes at about 30 s
+after ignition. The fan voltage at that time indicates a flow velocity of about 1.1 cm/s. The sequence of
+images in Figure 2.1 shows the pathway to radiative extinction. As the flow speed is gradually reduced
+from about t = 27 s, the flame size starts shrinking and the orange color disappears and the flame becomes
+completely blue, most possibly because of the temperature drop brought about by radiative losses, which
+is enhanced by the increased residence time at low flow velocity. The signal from the radiometer, shown
+in Figure 2.2, is also consistent with a cooling and shrinking flame as the signal starts decreasing from
+right about t = 27 s. After t = 30 s, there is no visible flame and the radiometer data (Figure 2.2) indicate a
+sudden change in slope at that time, possibly because the radiation is emitted mostly by the sample holder
+with the combustion products swept away by the flow.
+ When tests are repeated with samples of different thicknesses, the extinction velocities are found to
+be about 1 cm/s for 100, 200, and 300 μm and about 1.5 cm/s for 400 μm. At all these thicknesses, the
+fuel can be considered thermally thin because the maximum spread rate was found to be inversely
+proportional to fuel thickness (Ref. 1), a hallmark of a thermally thin regime. However, it must be
+mentioned that there are significant uncertainties in these values as the calibration at such low velocity
+has high error bars. The boundary layer formed by the fuel and the tunnel walls would influence the flow
+velocity seen by the flame. Also, there is a time lag between when the velocity is reduced and when the
+reduced velocity reaches the flame. However, we assume that the time lag works the same way when the
+
+
+
+
+NASA/TM-20210011385 13
+ Figure 2.1.—Flame images as function of opposed-
+ flow velocity Vg during radiative extinction.
+ (a) Time (t) = 27 s; Vg = 3.0 cm/s. (b) t = 28 s;
+ Vg = 1.5 cm/s. (c) t = 29 s; Vg = 1.1 cm/s.
+ (d) t = 30 s; Vg = 1.1 cm/s.
+
+
+
+
+ Figure 2.2.—Radiometer signal for entire duration of test. Discontinuity at time
+ (t) = 30 s coincides with disappearance of visible flame.
+
+
+
+
+NASA/TM-20210011385 14
+ Figure 2.3.—Flame spread rate obtained by tracking leading edge and location of
+ peak intensity.
+
+
+
+fuel thickness is changed. When a few of these tests were repeated, the results were very similar. It can be
+safely concluded that the extinction velocity does not depend on the fuel thickness. Tests were also
+conducted at a lower O2 level of about 16 percent for two different thicknesses and the extinction
+velocities were found to be about 2.6 cm/s for 100 μm and about 4 cm/s for 200 μm. It should be
+mentioned that the width of the sample was different, 20 mm for the 100-μm sample and 10 mm for the
+200-μm sample. Even though there is insufficient data at the lower O2 level, it is clear that the extinction
+velocity significantly increases as the O2 level is reduced and is independent of the fuel thickness.
+
+----
+regime for a given O2 level.
+
+2.3.5 Microgravity and Normal-Gravity Experiments
+ There are only a handful of experiments conducted on flame spread in a microgravity environment,
+an excellent review of which can be found as a book chapter by T’ien (Ref. 19). The only long-duration
+opposed-flow experimental facility is offered by the BASS–II apparatus (Ref. 20) in the ISS. It is depicted
+in Figure 2.16. It is a combustion tunnel, a 76-mm square duct, where the PMMA (C2H8O2) fuel samples,
+20 mm wide and about 95 mm long with the thickness ranging from 100 to 400 µm, are burned in an
+opposed-flow configuration. A fan forces a flow of an O2-N2 mixture through flow straighteners from the
+right to the left and the sample, 2 cm wide, is ignited at the left end. Depending on the flow velocity and
+O2 concentration, a steady flame is established that spreads from the left end of the sample towards the
+right end. The oxidizer mixture consists of O2 and N2 where the O2 level can be adjusted at 21 percent or
+below. During the experiment, an O2 sensor monitors the O2 level, which has been found to drift by less
+
+
+
+NASA/TM-20210011385 37
+than 0.1 percent. A hot wire anemometer is used to calibrate the flow velocity with the voltage of the fan
+(see Figure 2.16) used for creating a flow of 50 cm/s or below. The total pressure is also monitored, which
+varied from 99.2 to 99.5 kPa in the tests reported.
+ Experiments were conducted in the Microgravity Science Glovebox of ISS by two crew members.
+Operation instructions were communicated from NASA Glenn Operations Center in realtime as the
+experiment progressed. Each test starts by creating a desired opposing flow by adjusting the fan voltage.
+After the flow stabilizes, the igniter is turned on until a visible flame is observed. The igniter is then
+turned off and the top view of the flame propagation is photographed with a high-resolution digital still
+camera with a frame rate of 1 per second. A video camera captures the side view of the flame
+propagation. In some of the tests, the flow velocity is changed during the spread to maximize the test
+matrix without having to burn additional samples.
+ For downward spreading experiments, the Flame Stabilizer apparatus (Ref. 4) is used, where a 2-cm-
+wide sample of PMMA is held vertically by a stainless steel sample holder and ignited at the top with a
+top-view camera recording the flame spread. The sample holders used in the microgravity and downward

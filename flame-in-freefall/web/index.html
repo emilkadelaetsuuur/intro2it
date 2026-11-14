@@ -13,7 +13,7 @@
 :root {
   --bg: #f4f6f9; --surface: #ffffff; --surface-2: #edf0f5; --ink: #0f1522; --ink-2: #485266; --ink-3: #6f7a8e;
   --line: #dde2ea; --line-2: #c3cad6; --accent: #1b2f6b; --accent-ink: #ffffff; --focus: #2a78d6;
-  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
   --good: #0a8f0a; --good-bg: #e3f4e1; --warn: #9a6a00; --warn-bg: #fdf0cf; --crit: #c03232; --crit-bg: #fbe4e2;
   --display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -22,13 +22,13 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0b0e14; --surface: #131822; --surface-2: #1b2230; --ink: #eef0f4; --ink-2: #b8c0ce; --ink-3: #8a94a6;
   --line: #252d3a; --line-2: #36404f; --accent: #b3c4f7; --accent-ink: #0b0e14; --focus: #6da7ec;
-  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
   --good: #4cc24c; --good-bg: #12301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #f07f7f; --crit-bg: #3a1717;
   color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0b0e14; --surface: #131822; --surface-2: #1b2230; --ink: #eef0f4; --ink-2: #b8c0ce; --ink-3: #8a94a6;
   --line: #252d3a; --line-2: #36404f; --accent: #b3c4f7; --accent-ink: #0b0e14; --focus: #6da7ec;
-  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
   --good: #4cc24c; --good-bg: #12301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #f07f7f; --crit-bg: #3a1717;
   color-scheme: dark }
 
@@ -153,6 +153,33 @@ blockquote cite { display: block; font: 500 11.5px var(--mono); font-style: norm
 .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 28px; font-size: 14px; color: var(--ink-2); }
 .method ul { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
 footer { padding-block: 22px 40px; color: var(--ink-3); font-size: 13px; }
+
+.predgrid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 12px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.pout { display: flex; flex-direction: column; gap: 10px; }
+.pout .big { font: 600 44px var(--display); letter-spacing: -0.02em; line-height: 1; }
+.pout .big small { font: 400 14px var(--body); color: var(--ink-2); letter-spacing: 0; display: block; margin-top: 6px; }
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); padding: 6px 14px; cursor: pointer; font-size: 13.5px; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.effects { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; font-size: 13.5px; color: var(--ink-2); }
+.effects b { font-family: var(--mono); font-weight: 500; color: var(--ink); text-align: right; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.thumbs figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.thumbs img { display: block; width: 100%; height: auto; background: #000; }
+.thumbs figcaption { padding: 8px 10px; font-size: 12.5px; color: var(--ink-2); }
+.ok { color: var(--good); font-weight: 600; } .no { color: var(--crit); font-weight: 600; }
+.hcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.hcard .when { font: 500 12px var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+.hcard .atm { align-self: flex-start; font: 500 12px var(--mono); background: var(--crit-bg); color: var(--crit); border-radius: 5px; padding: 2px 7px; }
+.hcard p { font-size: 13.5px; color: var(--ink-2); }
+.hcard .today { color: var(--ink); font-weight: 500; }
+.rel { font: 500 11px var(--mono); border-radius: 5px; padding: 1px 6px; margin-left: 6px; white-space: nowrap; }
+.rel.direct { background: var(--good-bg); color: var(--good); } .rel.indirect { background: var(--surface-2); color: var(--ink-2); } .rel.background { background: var(--surface-2); color: var(--ink-3); }
+.claim { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 2px 8px; font-size: 14px; }
+.claim .mark { font-weight: 700; }
+.claim .src { grid-column: 2; font-size: 12.5px; color: var(--ink-3); }
+@media (max-width: 760px) { .predgrid, .two { grid-template-columns: 1fr; } }
 @media (max-width: 760px) {
   .finding { grid-template-columns: 40px minmax(0, 1fr); }
   .finding .scores { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
@@ -165,7 +192,7 @@ footer { padding-block: 22px 40px; color: var(--ink-3); font-size: 13px; }
 <body>
 <header class="top"><div class="wrap bar">
   <a class="brand" href="#top">Flame<i>Gap</i></a>
-  <nav aria-label="Sections"><a href="#map">Evidence map</a><a href="#brief">Mission brief</a><a href="#findings">Findings</a><a href="#investigations">Investigations</a><a href="#ask">Ask</a><a href="#method">Method</a></nav>
+  <nav aria-label="Sections"><a href="#map">Evidence map</a><a href="#brief">Mission brief</a><a href="#findings">Findings</a><a href="#predict">Predictor</a><a href="#video">Video lab</a><a href="#history">History</a><a href="#investigations">Investigations</a><a href="#ask">Ask</a><a href="#method">Method</a></nav>
 </div></header>
 
 <main class="wrap" id="top">
@@ -218,6 +245,45 @@ footer { padding-block: 22px 40px; color: var(--ink-3); font-size: 13px; }
   <div id="flist" style="display:flex;flex-direction:column;gap:12px"></div>
 </section>
 
+<section id="predict">
+  <p class="eyebrow">Outcome predictor</p>
+  <h2>Will a burning droplet go out on its own?</h2>
+  <p class="sub" id="psub"></p>
+  <div class="group" id="ppresets" role="group" aria-label="Start from a preset"><span>Start from</span></div>
+  <div class="predgrid">
+    <div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      <div class="group"><span>Fuel</span><div class="seg" id="pfuel" role="group" aria-label="Fuel"></div></div>
+      <div class="sliders" id="pinputs"></div>
+    </div>
+    <div class="panel pout" id="pout" aria-live="polite"></div>
+  </div>
+  <div class="panel"><div id="pchart"></div><div class="legend" id="plegend"></div></div>
+  <div class="two"><div class="panel tablewrap" id="pnear"></div><div class="panel" id="pcard"></div></div>
+</section>
+
+<section id="video">
+  <p class="eyebrow">Video lab</p>
+  <h2>Reading flame spread straight from NASA's raw video</h2>
+  <p class="sub" id="vsub"></p>
+  <div class="panel"><div id="vchart"></div><div class="legend" id="vlegend"></div></div>
+  <div class="thumbs" id="vthumbs"></div>
+  <div class="panel tablewrap" id="vtable"></div>
+  <h3>Checks the calibration does not use</h3>
+  <div class="panel tablewrap" id="vchecks"></div>
+  <p class="fine" id="vnote"></p>
+</section>
+
+<section id="history">
+  <p class="eyebrow">Lessons from real fires</p>
+  <h2>Four moments that shaped spacecraft fire safety</h2>
+  <p class="sub">Each card quotes NASA's own account and links it to what this archive can and cannot say today.</p>
+  <div class="gapfig" id="o2hist" role="img" aria-label="Cabin oxygen levels in history compared with the oxygen range of solid-material flight tests"></div>
+  <div class="cards" id="hcards"></div>
+  <h3>Fire safety on Earth</h3>
+  <p class="sub">Space fire research has already changed firefighting at home. Three examples from NASA Spinoff:</p>
+  <div class="cards" id="spin"></div>
+</section>
+
 <section id="investigations">
   <p class="eyebrow">Investigations</p>
   <h2>The archive, one row per investigation</h2>
@@ -246,6 +312,7 @@ footer { padding-block: 22px 40px; color: var(--ink-3); font-size: 13px; }
 <div class="tip" id="tip" hidden></div>
 
 <script src="data.js"></script>
+<script src="model.js"></script>
 <script>
 (function () {
 "use strict";
@@ -485,7 +552,7 @@ function drawFindings() {
     const f = x.f;
     return `<article class="finding" id="f-${f.id}"><div class="rank">${i + 1}<small>${Math.round(x.s)}/100</small></div><div class="body">
       <h3>${esc(f.title)}</h3><div class="meta"><span class="tag kind">${esc(f.kind)}</span>${f.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-      <p>${esc(f.claim)}</p>${f.quote ? `<blockquote>“${esc(f.quote)}”<cite>NASA, ${esc(f.quote_src)}</cite></blockquote>` : ""}
+      <p>${esc(f.claim)}</p>${f.quote ? `<blockquote>“${esc(f.quote)}”<cite>${f.quote_url ? `<a href="${esc(f.quote_url)}" target="_blank" rel="noopener">${esc(f.quote_src)}</a>` : "NASA, " + esc(f.quote_src)}</cite></blockquote>` : ""}
       <dl><dt>Evidence</dt><dd>${esc(f.evidence)}</dd><dt>Limits</dt><dd>${esc(f.limits)}</dd><dt>What to do</dt><dd class="act">${esc(f.action)}</dd>
       <dt>Sources</dt><dd>${f.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} (${esc(s.acc)})</a>`).join(", ")}${f.next.length ? ` · open question for ${f.next.map(n => esc(D.next.find(z => z.id === n).name)).join(", ")}` : ""}</dd></dl></div>
       <div class="scores">${Object.keys(DIM).map(k => `<div><span>${DIM[k]}</span><b>${f.scores[k]}</b><span class="track"><i style="width:${f.scores[k] * 20}%"></i></span></div>`).join("")}</div></article>`;
@@ -499,11 +566,11 @@ function drawInv() {
   kc.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === state.invkind));
   const q = state.invq.toLowerCase();
   const rows = D.investigations.filter(i => i.combustion).filter(i => state.invkind === "all" || (state.invkind === "outcome" ? i.outcome : i.kind === state.invkind))
-    .filter(i => !q || (i.acr + " " + i.title + " " + i.keywords + " " + i.area + " " + i.objective).toLowerCase().includes(q)).sort((a, b) => b.rows - a.rows);
+    .filter(i => !q || (i.acr + " " + i.title + " " + i.keywords + " " + i.area + " " + i.objective + " " + (i.summary || "")).toLowerCase().includes(q)).sort((a, b) => b.rows - a.rows);
   const rng = (r, d) => r ? (r[0] === r[1] ? d(r[0]) : d(r[0]) + " – " + d(r[1])) : "–";
   $("#invtable").innerHTML = `<thead><tr><th>Investigation</th><th>Burned</th><th>Platform</th><th class="n">Runs listed</th><th class="n">Oxygen %</th><th class="n">Pressure atm</th><th>Results in table</th><th class="n">Raw data</th><th class="n">Papers</th></tr></thead><tbody>` +
-    rows.map(i => `<tr class="row" data-acc="${i.acc}" tabindex="0" aria-expanded="${state.open === i.acc}"><td><b>${esc(i.acr || i.acc)}</b><br><span class="fine">${esc(i.title)}</span></td><td>${i.kind ? `<i class="kdot" style="background:${KIND[i.kind].color}"></i>${KIND[i.kind].label}` : esc(i.area || "–")}</td><td>${esc(i.platform.replace("International Space Station (ISS)", "Space station").replace("Not Applicable", "Ground analysis") || "–")}</td><td class="n">${i.rows || "–"}</td><td class="n">${rng(i.o2, f1)}</td><td class="n">${rng(i.p, f2)}</td><td>${esc(i.outcome || "no")}</td><td class="n">${i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "–"}</td><td class="n">${i.npub}</td></tr>` +
-      (state.open === i.acc ? `<tr class="detail"><td colspan="9"><div class="cols"><div><h4>Objective</h4><p>${esc(i.objective || "Not given in the record.")}</p></div><div><h4>Hypothesis</h4><p>${esc(i.hypothesis || "Not given in the record.")}</p></div><div><h4>Approach</h4><p>${esc(i.approach || "Not given in the record.")}</p></div><div><h4>Why it matters</h4><p>${esc(i.impacts || "Not given in the record.")}</p></div><div><h4>Publications (${i.pubs.length})</h4><ol>${i.pubs.map(p => `<li>${p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.t)}</a>` : esc(p.t)}</li>`).join("") || "<li>None listed</li>"}</ol></div><div><h4>Record</h4><p><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.acc)} on NASA PSI</a>${i.doi ? `<br>DOI ${esc(i.doi)}` : ""}<br>${esc(i.start || "?")} to ${esc(i.end || "?")}<br>Licence ${esc(i.lic || "not stated")}</p></div></div></td></tr>` : "")).join("") + "</tbody>";
+    rows.map(i => `<tr class="row" data-acc="${i.acc}" tabindex="0" aria-expanded="${state.open === i.acc}"><td><b>${esc(i.acr || i.acc)}</b>${i.relevance ? `<span class="rel ${i.relevance}">${{ direct: "fire safety", indirect: "related", background: "background" }[i.relevance]}</span>` : ""}<br><span class="fine">${esc(i.summary || i.title)}</span></td><td>${i.kind ? `<i class="kdot" style="background:${KIND[i.kind].color}"></i>${KIND[i.kind].label}` : esc(i.area || "–")}</td><td>${esc(i.platform.replace("International Space Station (ISS)", "Space station").replace("Not Applicable", "Ground analysis") || "–")}</td><td class="n">${i.rows || "–"}</td><td class="n">${rng(i.o2, f1)}</td><td class="n">${rng(i.p, f2)}</td><td>${esc(i.outcome || "no")}</td><td class="n">${i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "–"}</td><td class="n">${i.npub}</td></tr>` +
+      (state.open === i.acc ? `<tr class="detail"><td colspan="9"><div class="cols"><div><h4>Full title</h4><p>${esc(i.title)}</p><p class="fine" style="margin-top:6px">The one-line summary above was drafted with Claude from this record; every number in it is checked against the record or its table at build time.</p></div><div><h4>Objective</h4><p>${esc(i.objective || "Not given in the record.")}</p></div><div><h4>Hypothesis</h4><p>${esc(i.hypothesis || "Not given in the record.")}</p></div><div><h4>Approach</h4><p>${esc(i.approach || "Not given in the record.")}</p></div><div><h4>Why it matters</h4><p>${esc(i.impacts || "Not given in the record.")}</p></div><div><h4>Publications (${i.pubs.length})</h4><ol>${i.pubs.map(p => `<li>${p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.t)}</a>` : esc(p.t)}</li>`).join("") || "<li>None listed</li>"}</ol></div><div><h4>Record</h4><p><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.acc)} on NASA PSI</a>${i.doi ? `<br>DOI ${esc(i.doi)}` : ""}<br>${esc(i.start || "?")} to ${esc(i.end || "?")}<br>Licence ${esc(i.lic || "not stated")}</p></div></div></td></tr>` : "")).join("") + "</tbody>";
   const skipped = D.investigations.filter(i => !i.combustion);
   $("#invnote").textContent = `${rows.length} of ${S.combustion} investigations shown. The archive search for "combustion" also returns ${skipped.map(i => i.acc).join(" and ")}, which are about solders and fluid physics and are left out.`;
 }
@@ -537,7 +604,15 @@ function localAnswer(q) {
   if (is.length) h += `<div class="a"><h3>Investigations to read</h3><p>${is.map(x => `<a href="${esc(x.d.ref.url)}" target="_blank" rel="noopener">${esc(x.d.ref.acr || x.d.ref.acc)}</a> (${esc(x.d.ref.title)})`).join("; ")}.</p></div>`;
   return h;
 }
-const ASK_URL = (document.querySelector('meta[name="flame-ask-url"]') || {}).content || "";
+let ASK_URL = (document.querySelector('meta[name="flame-ask-url"]') || {}).content || "";
+let ASK_MODEL = "";
+const refLink = id => { if (/^PSI-\d+$/.test(id) && inv(id)) return `<a href="${inv(id).url}" target="_blank" rel="noopener">${id}</a>`;
+  if (id.startsWith("F-")) return `<a href="#f-${esc(id.slice(2))}">${esc(id)}</a>`; if (id.startsWith("H-")) return `<a href="#history">${esc(id)}</a>`;
+  if (id === "VIDEO") return `<a href="#video">${id}</a>`; if (id === "MODEL") return `<a href="#predict">${id}</a>`; return esc(id); };
+function renderAI(j, q) {
+  const claims = (j.claims || []).map(c => `<div class="claim"><span class="mark ${c.ok ? "ok" : "no"}" title="${c.ok ? "Checked against the cited records" : "Not verified"}">${c.ok ? "✓" : "!"}</span><span>${esc(c.text)}</span><span class="src">${(c.sources || []).map(refLink).join(", ")}${c.ok ? "" : " · " + esc(c.issues.join("; "))}</span></div>`).join("");
+  return `<div class="a"><h3>Answer</h3><p>${esc(j.answer)}</p></div>${claims ? `<div class="a"><h3>Claims, each checked against the records it cites</h3>${claims}<p class="fine">${j.verified} of ${j.total} claims passed: every cited record exists and every number appears in it.</p></div>` : ""}${j.outside_archive ? `<div class="a"><h3>Not covered by the archive</h3><p>${esc(j.outside_archive)}</p></div>` : ""}<p class="fine">Written by ${esc(j.model || "Claude")} from the archive records only. Research aid, not a design basis.</p>` + localAnswer(q);
+}
 async function ask(q) {
   const box = $("#answer"); box.hidden = false; if (!q.trim()) { box.innerHTML = "<p>Type a question first.</p>"; return; }
   if (ASK_URL) {
@@ -545,15 +620,24 @@ async function ask(q) {
     try {
       const r = await fetch(ASK_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: q }) });
       if (!r.ok) throw new Error("status " + r.status);
-      const j = await r.json(); if (!j.answer) throw new Error("empty");
-      const linked = esc(j.answer).replace(/\[(PSI-\d+)\]/g, (m, a) => inv(a) ? `<a href="${inv(a).url}" target="_blank" rel="noopener">${a}</a>` : m).replace(/\n+/g, "</p><p>");
-      box.innerHTML = `<div class="a"><h3>Answer from Claude, limited to the cited records</h3><p>${linked}</p></div>` + localAnswer(q); return;
+      const j = await r.json();
+      if (j.error) { box.innerHTML = `<p>${esc(j.error)} Showing the offline search instead.</p>` + localAnswer(q); return; }
+      box.innerHTML = renderAI(j, q); return;
     } catch (e) { /* fall through to the offline answer */ }
   }
   box.innerHTML = localAnswer(q);
 }
+async function detectAI() {
+  if (ASK_URL || !/^https?:/.test(location.protocol)) return;
+  try { const ctl = new AbortController(); setTimeout(() => ctl.abort(), 2500);
+    const r = await fetch("api/health", { signal: ctl.signal }); if (!r.ok) return; const j = await r.json();
+    if (j.ai) { ASK_URL = "api/ask"; ASK_MODEL = j.model; drawAskMode(); } } catch (e) { /* static hosting: stay offline */ }
+}
+function drawAskMode() {
+  $("#askmode").textContent = ASK_URL ? `Answers are written by Claude (${ASK_MODEL || "server model"}) from the records in this archive only. Every claim cites its records, and the server checks that each cited record exists and that each number appears in it before you see it.` : "This copy runs without a model: it finds the findings and investigations that match your words and counts runs from the tables. Run server/serve.py with an Anthropic API key to get answers written by Claude, with every claim checked against the records.";
+}
 function drawAsk() {
-  $("#askmode").textContent = ASK_URL ? "Answers are written by Claude from the records in this archive only, with every claim tied to a record. If the service is unavailable you get the offline search instead." : "This runs in your browser with no model call: it finds the findings and investigations that match your words and counts runs from the tables. Nothing is generated beyond the cited records.";
+  drawAskMode(); detectAI();
   ["Does turning off ventilation put out a fire at 34 % oxygen?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "Which materials were tested on the Moon?", "Do smoke detectors work the same in microgravity?", "Where is the raw data for solid materials?"].forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
   $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
 }
@@ -564,8 +648,143 @@ function drawMethod() {
   <div><h3>Data</h3><ul><li>Source: <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>, every investigation returned for “combustion”. Public domain (CC0-1.0).</li><li>${S.investigations} records, ${S.combustion} of them about combustion; ${S.table_rows} table rows; ${S.pubs} linked publications.</li><li>Cabin atmospheres are the three NASA names in the ACME BRE record: 14.7 psia at 21 %, 10.2 psia at 26.5 % and 8.2 psia at 34 % oxygen.</li><li>Current experiments are taken from the <a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science page</a>.</li><li>Built ${esc(D.meta.built)}. One script rebuilds every number on this page from the CSV files.</li></ul></div>
   <div><h3>Rules we held to</h3><ul><li>A missing value stays missing. Nothing is estimated or filled in.</li><li>Runs without a recorded pressure are drawn apart and never counted as a pressure match.</li><li>Quotes are checked against the PSI record at build time; the build fails if one no longer matches.</li><li>Finding scores are judgements. They are shown in full and you can reweight them.</li><li>This is a research prototype. It is not validated for spacecraft design or fire-safety decisions.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
-  <div><h3>Use of AI</h3><ul><li>Claude (Anthropic) helped write the code, normalise the tables and draft the wording of the findings.</li><li>Every number in a finding is computed from NASA's tables by the build script, not written by a model.</li><li>The question box runs offline by default. An optional endpoint lets Claude answer from the same records, with citations checked against the record list.</li></ul></div>`;
+  <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>Tested with ${esc(M.cv.method)}: accuracy ${Math.round(M.cv.results["Full model"].accuracy.mean * 100)} %, AUC ${f2(M.cv.results["Full model"].auc.mean)}.</li><li>Every query is compared with the nearest real runs; anything farther than ${f2(M.domain.nn95)} standard deviations, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
+  <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li><li>Code: <span class="mono">video/extract.py</span>, <span class="mono">video/run_all.py</span>, method in <span class="mono">video/METHOD.md</span>.</li></ul></div>
+  <div><h3>Use of AI</h3><ul><li>Claude (Anthropic) helped write the code, normalise the tables, draft the one-line investigation summaries and draft the wording of the findings. A person checked them.</li><li>Every number in a finding is computed from NASA's tables by the build script. Every quote is matched word for word against a saved copy of its NASA source, and the build fails if one is not found.</li><li>The question box can call Claude through <span class="mono">server/serve.py</span>. Claude must answer in a fixed shape with record IDs for every claim; the server checks that every cited record exists and that every number appears in it with the same unit. That catches invented numbers; it cannot catch a correct number used in the wrong sense, so each claim links to its record. Without a server, the box runs an offline search.</li></ul></div>
+  <div><h3>Resources from the organizers</h3><ul>${D.sources.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join("")}<li><a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI combustion investigations</a></li><li><a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science</a></li></ul></div>`;
   $("#foot").innerHTML = `FlameGap · NASA Space Apps Challenge 2026 · Data: NASA PSI, CC0-1.0 · Not an official NASA product.`;
+}
+
+/* ---------- predictor (FLEX model) ---------- */
+const M = window.FLAME_MODEL;
+const PQ = { o2: 34, psia: 8.2, fuel: "heptane", d0: 3.0, co2: 0, he: 0 };
+const PIN = [
+  { k: "o2", label: "Oxygen", unit: "%", min: 10, max: 40, step: 0.5, fmt: v => f1(v) + " %" },
+  { k: "psia", label: "Pressure", unit: "psia", min: 6, max: 45, step: 0.1, fmt: v => `${f1(v)} psia (${f2(v / PSIA)} atm)` },
+  { k: "d0", label: "Droplet diameter", unit: "mm", min: 1, max: 5, step: 0.1, fmt: v => f1(v) + " mm" },
+  { k: "co2", label: "Carbon dioxide in the air", unit: "%", min: 0, max: 70, step: 1, fmt: v => Math.round(v) + " %" },
+  { k: "he", label: "Helium in the air", unit: "%", min: 0, max: 45, step: 1, fmt: v => Math.round(v) + " %" }
+];
+const PRESETS = [
+  ["Station air", { o2: 21, psia: 14.7, co2: 0, he: 0 }],
+  ["10.2 psia cabin", { o2: 26.5, psia: 10.2, co2: 0, he: 0 }],
+  ["Exploration atmosphere", { o2: 34, psia: 8.2, co2: 0, he: 0 }],
+  ["Carbon dioxide flooding", { o2: 18, psia: 14.7, co2: 20, he: 0 }]
+];
+const xOf = q => [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.d0, q.co2 / 100, q.he / 100];
+const pOf = x => { let z = M.intercept; x.forEach((v, i) => { z += M.coef[i] * v; }); return 1 / (1 + Math.exp(-z)); };
+function domainOf(x) {
+  const idx = [0, 1, 3, 4, 5], near = [];
+  M.points.forEach((pt, i) => { if (pt[2] !== x[2]) return; let d = 0; idx.forEach(j => { const z = (pt[j] - x[j]) / M.train_sd[j]; d += z * z; }); near.push([Math.sqrt(d), i]); });
+  near.sort((a, b) => a[0] - b[0]);
+  const nn = near.length ? near[0][0] : Infinity;
+  const NAMES = { o2: "oxygen", logp: "pressure", d0: "droplet size", co2: "carbon dioxide", he: "helium" };
+  const out = M.features.filter((f, j) => j !== 2 && (x[j] < M.ranges[f.key][0] - 1e-9 || x[j] > M.ranges[f.key][1] + 1e-9)).map(f => NAMES[f.key]);
+  const status = out.length || nn > 2 * M.domain.nn95 ? "out" : nn > M.domain.nn95 ? "edge" : "in";
+  return { nn, near: near.slice(0, 6), status, out };
+}
+const DOM = { in: ["ok", "✓", "Inside the tested conditions"], edge: ["thin", "!", "Near the edge of the tested conditions"], out: ["none", "✕", "Outside the tested conditions: the model is extrapolating"] };
+function burnK(q) { const b = M.burn_k, x = [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.co2 / 100, q.he / 100]; return b.intercept + b.coef.reduce((a, c, i) => a + c * x[i], 0); }
+function drawPredInputs() {
+  $("#psub").textContent = `A logistic model trained on ${M.n} FLEX droplet runs from the space station. It was tested on whole days of runs it never saw: ${Math.round(M.cv.results["Full model"].accuracy.mean * 100)} % correct, against ${Math.round(M.cv.results["Always the most common outcome"].accuracy.mean * 100)} % for always guessing the most common outcome. It also tells you when your conditions are outside anything NASA tested.`;
+  const pr = $("#ppresets"); PRESETS.forEach(([n, v]) => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = n; b.onclick = () => { Object.assign(PQ, v); syncPred(); }; pr.appendChild(b); });
+  $("#pfuel").innerHTML = ["methanol", "heptane"].map(f => `<button type="button" data-f="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join("");
+  $("#pfuel").onclick = e => { const b = e.target.closest("button"); if (b) { PQ.fuel = b.dataset.f; syncPred(); } };
+  $("#pinputs").innerHTML = PIN.map(i => `<label for="pi_${i.k}"><span>${i.label} <output id="po_${i.k}"></output></span><input id="pi_${i.k}" type="range" min="${i.min}" max="${i.max}" step="${i.step}"></label>`).join("");
+  PIN.forEach(i => { $("#pi_" + i.k).oninput = e => { PQ[i.k] = +e.target.value; if (PQ.o2 + PQ.co2 + PQ.he > 100) { PQ[i.k] -= PQ.o2 + PQ.co2 + PQ.he - 100; } syncPred(); }; });
+}
+function syncPred() {
+  PIN.forEach(i => { $("#pi_" + i.k).value = PQ[i.k]; $("#po_" + i.k).textContent = i.fmt(PQ[i.k]); });
+  document.querySelectorAll("#pfuel button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === PQ.fuel));
+  document.querySelectorAll("#ppresets .chip").forEach((b, i) => { const v = PRESETS[i][1]; b.setAttribute("aria-pressed", Object.keys(v).every(k => Math.abs(PQ[k] - v[k]) < 1e-9)); });
+  const x = xOf(PQ), p = pOf(x), dm = domainOf(x), st = DOM[dm.status], K = burnK(PQ);
+  const word = p >= 0.8 ? "very likely" : p >= 0.6 ? "likely" : p >= 0.4 ? "about as likely as not" : p >= 0.2 ? "unlikely" : "very unlikely";
+  $("#pout").innerHTML = `<p class="eyebrow">Chance the flame goes out on its own</p><div class="big num">${p < 0.005 ? "<1" : p > 0.995 ? ">99" : Math.round(p * 100)} %<small>${word} for a ${f1(PQ.d0)} mm ${PQ.fuel} droplet at ${f1(PQ.o2)} % oxygen and ${f1(PQ.psia)} psia</small></div>
+    <span class="pill ${st[0]}"><span aria-hidden="true">${st[1]}</span>${st[2]}</span>
+    <p class="fine">${dm.status === "in" ? "Real runs exist close to these conditions; the table below lists them." : dm.out.length ? `Beyond the tested range of ${esc(dm.out.join(", "))}: FLEX ran ${dm.out.includes("pressure") ? `${f1(Math.exp(M.ranges.logp[0]) * PSIA)} to ${f1(Math.exp(M.ranges.logp[1]) * PSIA)} psia` : "a narrower range"}. Read the number as a direction, not a forecast.` : "The closest real runs differ noticeably from these conditions. Read the number as a direction, not a forecast."}</p>
+    <p class="fine">Burning-rate constant if it keeps burning: about <b class="num">${f2(Math.max(K, 0))} mm²/s</b> (typical model error ±${f2(M.burn_k.cv_rmse)}), so a ${f1(PQ.d0)} mm droplet would last about ${K > 0.05 ? Math.round(PQ.d0 * PQ.d0 / K) + " s" : "–"} by the d² law.</p>`;
+  drawPredChart(x, dm);
+  const rows = dm.near.map(([d, i]) => { const pt = M.points[i]; return `<tr><td class="mono">${esc(M.point_ids[i])}</td><td class="n">${f1(pt[0] * 100)}</td><td class="n">${f2(Math.exp(pt[1]))}</td><td class="n">${f1(pt[3])}</td><td class="n">${pt[4] ? Math.round(pt[4] * 100) + " % CO₂" : pt[5] ? Math.round(pt[5] * 100) + " % He" : "–"}</td><td>${esc(M.point_end[i])}</td><td class="n">${f2(d)}</td></tr>`; }).join("");
+  $("#pnear").innerHTML = `<h3 style="margin-bottom:8px">Closest real ${PQ.fuel} runs</h3><table><thead><tr><th>FLEX run</th><th class="n">O₂ %</th><th class="n">atm</th><th class="n">Drop mm</th><th class="n">Diluent</th><th>Ended in</th><th class="n">Distance</th></tr></thead><tbody>${rows}</tbody></table><p class="fine" style="margin-top:8px">Distance is in standard deviations of the training data. 95 % of real runs have a neighbour within ${f2(M.domain.nn95)}.</p>`;
+}
+function drawPredChart(x, dm) {
+  const box = $("#pchart"), W = Math.max(300, box.clientWidth), H = 240, m = { l: 44, r: 16, t: 26, b: 52 };
+  const X = o => m.l + (o - 10) / 30 * (W - m.l - m.r), Y = v => m.t + (1 - v) * (H - m.t - m.b);
+  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Chance of self-extinction against oxygen level" xmlns="http://www.w3.org/2000/svg">`;
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l - 7}" y="${Y(v) + 4}" text-anchor="end" font-size="11">${v * 100}%</text>`; });
+  for (let o = 10; o <= 40; o += 5) s += `<text x="${X(o)}" y="${H - m.b + 16}" text-anchor="middle" font-size="11">${o}</text>`;
+  s += `<text x="${W - m.r}" y="${H - m.b + 32}" text-anchor="end" font-size="11.5">Oxygen, % by volume</text><text x="${m.l}" y="14" font-size="11.5" fill="var(--ink-3)">Chance the flame goes out on its own, other conditions as set</text>`;
+  // real runs at similar conditions: rug above (went out) and below (kept burning)
+  M.points.forEach((pt, i) => { if (pt[2] !== x[2] || Math.abs(pt[1] - x[1]) > 0.15 || Math.abs(pt[4] - x[4]) > 0.05 || Math.abs(pt[5] - x[5]) > 0.05) return;
+    const yy = pt[6] ? m.t - 8 : H - m.b - 0 + 0; s += `<line x1="${X(pt[0] * 100)}" x2="${X(pt[0] * 100)}" y1="${pt[6] ? Y(1) - 2 : Y(0) + 2}" y2="${pt[6] ? Y(1) - 9 : Y(0) + 9}" stroke="var(--ink-3)" stroke-width="1.5"/>`; });
+  let seg = [], segs = [];
+  for (let o = 10; o <= 40.001; o += 0.5) { const q = Object.assign({}, PQ, { o2: o }), xx = xOf(q), st = domainOf(xx).status === "out"; const pt = [X(o), Y(pOf(xx)), st];
+    if (seg.length && seg[seg.length - 1][2] !== st) { seg.push(pt); segs.push(seg); seg = [pt]; } else seg.push(pt); }
+  segs.push(seg);
+  segs.forEach(sg => { s += `<polyline fill="none" stroke="var(--s2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ${sg[0][2] ? 'stroke-dasharray="5 5" opacity=".7"' : ""} points="${sg.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"/>`; });
+  const cx = X(Math.min(40, Math.max(10, PQ.o2))), cy = Y(pOf(x));
+  s += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"/><text x="${cx + (cx > W - 140 ? -9 : 9)}" y="${cy - 9}" text-anchor="${cx > W - 140 ? "end" : "start"}" font-size="12" font-weight="600" fill="var(--ink)" stroke="var(--surface)" stroke-width="3" paint-order="stroke">${pOf(x) < 0.005 ? "<1" : Math.round(pOf(x) * 100)} %</text>`;
+  box.innerHTML = s + "</svg>";
+  $("#plegend").innerHTML = `<span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2"/></svg>model, inside or near tested conditions</span><span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2" stroke-dasharray="5 5"/></svg>extrapolation</span><span><svg width="12" height="14" aria-hidden="true"><line x1="6" x2="6" y1="2" y2="12" stroke="var(--ink-3)" stroke-width="1.5"/></svg>real runs at similar pressure and diluent: top went out, bottom kept burning</span>`;
+}
+function drawPredCard() {
+  const r = M.cv.results, names = Object.keys(r);
+  const eff = [["Oxygen +5 points", Math.exp(M.coef[0] * 0.05)], ["Pressure doubled", Math.exp(M.coef[1] * Math.log(2))], ["Heptane instead of methanol", Math.exp(M.coef[2])],
+    ["Droplet 1 mm larger", Math.exp(M.coef[3])], ["Carbon dioxide +10 points", Math.exp(M.coef[4] * 0.1)], ["Helium +10 points", Math.exp(M.coef[5] * 0.1)]];
+  $("#pcard").innerHTML = `<h3 style="margin-bottom:8px">How good is it?</h3><table><thead><tr><th>Model</th><th class="n">Accuracy</th><th class="n">AUC</th><th class="n">Brier</th></tr></thead><tbody>` +
+    names.map(n => `<tr><td>${esc(n)}</td><td class="n">${Math.round(r[n].accuracy.mean * 100)} %</td><td class="n">${n.startsWith("Always") ? "–" : f2(r[n].auc.mean)}</td><td class="n">${r[n].brier.mean.toFixed(3)}</td></tr>`).join("") +
+    `</tbody></table><p class="fine" style="margin:8px 0 12px">${esc(M.cv.method)}. Lower Brier is better.</p><h3 style="margin-bottom:6px">What moves the odds of going out</h3><div class="effects">${eff.map(e => `<span>${e[0]}</span><b>×${e[1] < 1 ? e[1].toFixed(2) : e[1].toFixed(1)}</b>`).join("")}</div>
+    <p class="fine" style="margin-top:8px">Larger droplets go out more often because they lose more heat by radiation, which FLEX was designed to study. Carbon dioxide and helium are the suppressants FLEX tested.</p>`;
+}
+
+/* ---------- video lab ---------- */
+function drawVideo() {
+  const V = D.video; if (!V) { $("#video").hidden = true; return; }
+  const cols = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
+  const rated = V.tests.filter(t => t.spread_mm_s).map(t => Object.assign({}, t, { series: t.series.filter(p => p[0] >= t.fit_window_s[0] && p[0] <= (t.fan_change_s || t.fit_window_s[1])) }));
+  $("#vsub").textContent = `NASA's table for BASS-II lists the conditions of each test but not what the flame did. That answer sits in ${f1(inv("PSI-25").raw_gb)} GB of raw video. We tracked the flame's leading edge frame by frame in ${V.tests.length} side-view videos from 19 February 2014 and fitted the spread rate. ${V.validation.passed} of ${V.validation.independent} independent checks pass.`;
+  const box = $("#vchart"), W = Math.max(300, box.clientWidth), H = 280, m = { l: 48, r: box.clientWidth >= 600 ? 92 : 16, t: 24, b: 44 };
+  const tmax = Math.max(...rated.map(t => t.series[t.series.length - 1][0] - t.series[0][0]));
+  const ymax = Math.max(...rated.map(t => Math.max(...t.series.map(p => p[1] - t.series[0][1]))));
+  const X = v => m.l + v / tmax * (W - m.l - m.r), Y = v => m.t + (1 - v / (ymax * 1.05)) * (H - m.t - m.b);
+  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flame front distance against time during steady spread for four tests" xmlns="http://www.w3.org/2000/svg">`;
+  for (let v = 0; v <= ymax; v += 10) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l - 7}" y="${Y(v) + 4}" text-anchor="end" font-size="11">${v}</text>`;
+  for (let t = 0; t <= tmax; t += 10) s += `<text x="${X(t)}" y="${H - m.b + 16}" text-anchor="middle" font-size="11">${t}</text>`;
+  s += `<text x="${m.l}" y="14" font-size="11.5" fill="var(--ink-3)">Distance the flame front travelled, mm</text><text x="${W - m.r}" y="${H - m.b + 32}" text-anchor="end" font-size="11.5">${W >= 600 ? "Seconds from the start of steady spread to the fan cut" : "Seconds of steady spread"}</text>`;
+  const ends = [];
+  rated.forEach((t, i) => { const t0 = t.series[0][0], x0 = t.series[0][1];
+    s += `<polyline fill="none" stroke="${cols[i]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="${t.series.map(p => X(p[0] - t0).toFixed(1) + "," + Y(p[1] - x0).toFixed(1)).join(" ")}"/>`;
+    const l = t.series[t.series.length - 1]; ends.push({ y: Y(l[1] - x0), x: X(l[0] - t0), c: cols[i], lab: `${t.test} · ${t.thickness_um} µm` }); });
+  ends.sort((a, b) => a.y - b.y); for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+  if (W >= 600) ends.forEach(e => { s += `<text x="${Math.min(e.x + 6, W - m.r + 6)}" y="${e.y + 4}" font-size="11.5" font-weight="600" fill="var(--ink)">${esc(e.lab)}</text>`; });
+  box.innerHTML = s + "</svg>";
+  $("#vlegend").innerHTML = rated.map((t, i) => `<span><i style="background:${cols[i]}"></i>${t.test}: ${t.thickness_um} µm film, ${t.spread_mm_s} mm/s</span>`).join("");
+  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${t.test} with the detected flame front marked by a blue line" loading="lazy" width="480" height="220"><figcaption>${t.test}: ${esc(t.material)}. Blue line: detected leading edge.</figcaption></figure>`).join("");
+  $("#vtable").innerHTML = `<table><thead><tr><th>Test</th><th>Film</th><th class="n">O₂ %</th><th class="n">Air cm/s</th><th class="n">Spread mm/s</th><th class="n">Range across thresholds</th><th class="n">Fit R²</th><th class="n">Out after fan cut</th><th>Confidence</th></tr></thead><tbody>` +
+    V.tests.map(t => `<tr><td><b>${t.test}</b></td><td>${esc(t.material)}</td><td class="n">${t.o2 ?? "–"}</td><td class="n">${esc(t.air_cm_s)}</td><td class="n">${t.spread_mm_s ?? "–"}</td><td class="n">${t.spread_mm_s_range ? t.spread_mm_s_range.join(" – ") : "–"}</td><td class="n">${t.fit_r2 ?? "–"}</td><td class="n">${t.flame_out_after_fan_s != null ? t.flame_out_after_fan_s + " s" : "–"}</td><td>${t.confidence}${t.notes ? `<br><span class="fine">${esc(t.notes)}</span>` : ""}</td></tr>`).join("") + "</tbody></table>";
+  $("#vchecks").innerHTML = `<table><thead><tr><th>Check</th><th>What</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody>` +
+    V.validation.checks.map(c => `<tr><td><b>${esc(c.check)}</b></td><td>${esc(c.what)}</td><td>${esc(c.expected)}</td><td>${esc(c.measured)}</td><td>${c.independent ? (c.pass ? '<span class="ok">✓ pass</span>' : '<span class="no">✕ fail</span>') : "used for scale"}</td></tr>`).join("") + "</tbody></table>";
+  $("#vnote").innerHTML = `Scale ${V.scale_mm_per_px} mm per pixel, set from the 2.2 mm/s that the BASS-II Summary Report (NASA/TM-20210011385) gives for test B1. Ratios between tests do not depend on it. Code and method: <span class="mono">video/</span> in the repository.`;
+}
+
+/* ---------- history ---------- */
+function drawHistory() {
+  const box = $("#o2hist"), W = Math.max(300, box.clientWidth - 28), H = 120, l = 8, r = 16;
+  const x = o => l + o / 100 * (W - l - r);
+  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+  s += `<line x1="${x(0)}" x2="${x(100)}" y1="70" y2="70" stroke="var(--line-2)"/>`;
+  for (let o = 0; o <= 100; o += 20) s += `<line x1="${x(o)}" x2="${x(o)}" y1="70" y2="75" stroke="var(--line-2)"/><text x="${x(o)}" y="88" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--mono)">${o}</text>`;
+  s += `<text x="${x(100)}" y="106" text-anchor="end" font-size="11" fill="var(--ink-3)">oxygen in the cabin, % by volume</text>`;
+  s += `<rect x="${x(S.solid_o2_min)}" y="60" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" rx="3" fill="var(--s1)"/><text x="${x(S.solid_o2_min)}" y="52" font-size="12" font-weight="600" fill="var(--ink)">Solid materials tested in flight</text>`;
+  const marks = [{ o2: 21, lab: "ISS", y: 106 }, { o2: 34, lab: "Exploration 34 %", y: 20, hot: true }, { o2: 60, lab: "Apollo prelaunch 60 %", y: 36 }, { o2: 100, lab: "Apollo 1 and Apollo flight 100 %", y: 20, end: true }];
+  marks.forEach(mk => { s += `<line x1="${x(mk.o2)}" x2="${x(mk.o2)}" y1="${mk.y + 4}" y2="70" stroke="${mk.hot ? "var(--crit)" : "var(--ink-3)"}" stroke-width="${mk.hot ? 2 : 1.2}" ${mk.y > 70 ? 'opacity="0"' : ""}/><circle cx="${x(mk.o2)}" cy="70" r="4" fill="${mk.hot ? "var(--crit)" : "var(--surface)"}" stroke="${mk.hot ? "var(--crit)" : "var(--ink-2)"}" stroke-width="1.5"/>`;
+    if (W > 520 || mk.hot || mk.end) s += `<text x="${x(mk.o2) + (mk.end ? -6 : 6)}" y="${mk.y}" text-anchor="${mk.end ? "end" : "start"}" font-size="11.5" ${mk.hot ? 'font-weight="600" fill="var(--crit)"' : 'fill="var(--ink-2)"'}>${mk.lab}</text>`; });
+  box.innerHTML = s + "</svg>";
+  const fl = id => { const f = D.findings.find(z => z.id === id); return f ? `<a href="#f-${id}">${esc(f.title)}</a>` : ""; };
+  $("#hcards").innerHTML = D.history.map(h => `<article class="hcard"><span class="when">${esc(h.date)}</span><h3>${esc(h.name)}</h3>${h.atmosphere ? `<span class="atm">${esc(h.atmosphere.label)}</span>` : ""}<p>${esc(h.what)}</p>
+    ${h.quotes.slice(0, 1).map(q => `<blockquote>“${esc(q.text)}”<cite><a href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.src)}</a></cite></blockquote>`).join("")}
+    <p><b>What changed:</b> ${esc(h.changed)}</p><p class="today">${esc(h.today)}</p><p class="fine">Related: ${h.findings.map(fl).filter(Boolean).join("; ")}</p></article>`).join("");
+  $("#spin").innerHTML = D.spinoffs.map(sp => `<div class="card"><span class="when eyebrow">${sp.year}</span><h3>${esc(sp.name)}</h3><p>${esc(sp.what)}</p><blockquote>“${esc(sp.quote)}”<cite><a href="${esc(sp.url)}" target="_blank" rel="noopener">${esc(sp.src_title)}</a></cite></blockquote></div>`).join("");
 }
 
 /* ---------- wiring ---------- */
@@ -583,9 +802,9 @@ $("#copybrief").onclick = () => { const done = ok => { $("#copied").textContent 
 $("#invq").oninput = e => { state.invq = e.target.value; drawInv(); };
 $("#invtable").addEventListener("click", e => { if (e.target.closest("a")) return; const tr = e.target.closest("tr.row"); if (tr) { state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
 $("#invtable").addEventListener("keydown", e => { if (e.key !== "Enter" && e.key !== " ") return; const tr = e.target.closest("tr.row"); if (tr) { e.preventDefault(); state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
-let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { drawHero(); drawMap(); }, 120); });
+let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { drawHero(); drawMap(); syncPred(); drawVideo(); drawHistory(); }, 120); });
 
-drawHero(); refresh(); drawWeights(); drawFindings(); drawInv(); drawAsk(); drawMethod();
+drawHero(); refresh(); drawWeights(); drawFindings(); drawPredInputs(); syncPred(); drawPredCard(); drawVideo(); drawHistory(); drawInv(); drawAsk(); drawMethod();
 })();
 </script>
 </body>

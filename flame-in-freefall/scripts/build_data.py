@@ -323,6 +323,7 @@ stats = {
     "flex_bands": flex_bands,
     "flex_co2": len(flex_co2), "flex_he": len(flex_he),
     "flex_co2_o2_max": max(t["o"] for t in flex_co2), "flex_co2_hi": len([t for t in flex_co2 if t["o"] >= 30]),
+    "flex_co2_min": min(t["co2"] for t in flex_co2), "flex_co2_max": max(t["co2"] for t in flex_co2), "flex_he_max": max(t["he"] for t in flex_he),
     "flex_he_o2_max": max(t["o"] for t in flex_he),
     "coverage": coverage, "o2_window": O2_WINDOW, "p_window": P_WINDOW,
     "silicone_n": len(silicone), "silicone_no_spread": len([s for s in silicone if not s["spread"]]),
@@ -340,6 +341,70 @@ stats = {
 }
 S = stats
 gap = exp["o2"] - S["solid_o2_max"]
+
+# ------------------------------------------------------------- curated content
+with open(os.path.join(ROOT, "data", "curated", "content.json"), encoding="utf-8") as fh:
+    CUR = json.load(fh)
+SRC_DIR = os.path.join(ROOT, "data", "sources")
+_src_text = {}
+
+
+def squash(t):
+    return re.sub(r"\s+", " ", t.replace("\u2019", "'").replace("\u2018", "'")).strip()
+
+
+def check_quote(src_key, text):
+    """Fail the build if a quote is not word for word in its saved source."""
+    meta = CUR["sources"][src_key]
+    if src_key not in _src_text:
+        with open(os.path.join(SRC_DIR, meta["file"]), encoding="utf-8") as fh:
+            _src_text[src_key] = squash(fh.read())
+    assert squash(text) in _src_text[src_key], f"quote not found in {meta['file']}: {text[:80]}"
+    return {"text": text, "src": meta["title"], "url": meta["url"]}
+
+
+GQ = {k: check_quote(v["src"], v["text"]) for k, v in CUR["guide_quotes"].items()}
+history = []
+for h in CUR["history"]:
+    h = dict(h)
+    h["quotes"] = [check_quote(q["src"], q["text"]) for q in h["quotes"]]
+    h["changed_quote"] = check_quote(h["changed_quote"]["src"], h["changed_quote"]["text"])
+    history.append(h)
+spinoffs = []
+for sp in CUR["spinoffs"]:
+    q = check_quote(sp["src"], sp["quote"])
+    spinoffs.append({**sp, "src_title": q["src"], "url": q["url"]})
+sources_list = [{"key": k, "title": v["title"], "url": v["url"]} for k, v in CUR["sources"].items()]
+
+
+def table_numbers(acc):
+    vals = []
+    for name in os.listdir(TAB):
+        if name.startswith(acc + "_"):
+            with open(os.path.join(TAB, name), encoding="utf-8", errors="replace") as fh:
+                vals += [float(x) for x in re.findall(r"(?<![\w.])\d+(?:\.\d+)?", fh.read())]
+    return vals
+
+
+for inv in investigations:
+    sm = CUR["summaries"].get(inv["acc"])
+    if not sm:
+        continue
+    inv["summary"], inv["relevance"] = sm["text"], sm["rel"]
+    pool = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", " ".join(str(inv[k]) for k in ("title", "objective", "hypothesis", "approach", "impacts", "keywords")))]
+    hi30 = {a: sum(1 for t in tests if t["i"] == a and t["o"] is not None and t["o"] >= 30) for a in {t["i"] for t in tests}}
+    pool += table_numbers(inv["acc"]) + [inv["rows"], hi30.get(inv["acc"], 0)]
+    if "the most of any investigation" in sm["text"]:
+        assert hi30[inv["acc"]] == max(hi30.values()), f"{inv['acc']} is not the investigation with the most runs at 30 % oxygen"
+    for rng in (inv["o2"], inv["p"]):
+        if rng:
+            pool += [round(rng[0]), round(rng[1]), rng[0], rng[1]]
+    if inv["acc"] == "PSI-68":
+        pool += flex2["o2"] + flex2["p"]
+    for n in re.findall(r"\d+(?:\.\d+)?", sm["text"]):
+        v = float(n)
+        assert any(abs(v - q) < 0.051 or abs(v - q * 100) < 0.051 for q in pool), f"{inv['acc']} summary number {n} not in its record or table"
+notes += CUR["data_notes"]
 
 # ---------------------------------------------------------------------- findings
 # Scores are judgements (1-5) and are editable in the app. Numbers in the text are computed above.
@@ -405,16 +470,35 @@ findings = [
      "action": "Use the 0.70 atm runs as the nearest liquid-fuel evidence and state the pressure difference. Ask for the FLEX-2 run data.",
      "scores": {"safety": 3, "evidence": 5, "mission": 5, "action": 3}, "next": [], "sources": src("PSI-69", "PSI-68", "PSI-159")},
     {"id": "one-g", "kind": "NASA record", "tags": ["materials", "standards", "gravity"],
-     "title": "The ground test used to approve materials may not be the worst case",
-     "claim": "NASA screens materials with an upward-burning test in normal gravity. BASS and BASS-II test the hypothesis that the "
-              "same material, given enough airflow, burns as well or better in microgravity.",
+     "title": "NASA's own results say the material approval test is not the worst case",
+     "claim": "NASA screens spacecraft materials with an upward-burning test in normal gravity (NASA-STD-6001 Test 1). NASA's own "
+              "Researcher's Guide reports that BASS results show materials can burn at lower oxygen levels in microgravity than on Earth.",
      "evidence": f"BASS-II: {S['bass2_n']} tests with oxygen from {S['solid_o2_min']:g} to {S['solid_o2_max']:g} %. BASS: {S['bass_n']} tests. "
-                 "The Glenn combustion page says of the NASA-STD-6001 flame test that some researchers believe it is not conservative in low gravity.",
-     "quote": "BASS-II tests the hypothesis that " + BASS_QUOTE + ".", "quote_src": "PSI-25, Hypothesis",
-     "limits": "This is the hypothesis under test, not a tabulated result. The outcome of each BASS-II test is not in the PSI table.",
+                 "The Glenn combustion page says of the same test that some researchers believe it is not conservative in low gravity.",
+     "quote": GQ["not_conservative"]["text"], "quote_src": "NASA Researcher's Guide to ISS Combustion Science (2015)", "quote_url": GQ["not_conservative"]["url"],
+     "limits": "The guide states the result in one sentence; the per-test numbers behind it are in the BASS papers and video, not in the PSI table.",
      "action": "Add a microgravity margin to materials approved on the 1 g test alone.",
-     "scores": {"safety": 5, "evidence": 2, "mission": 4, "action": 4}, "next": ["flare", "sofie"],
+     "scores": {"safety": 5, "evidence": 4, "mission": 4, "action": 4}, "next": ["flare", "sofie"],
      "sources": src("PSI-25", "PSI-26")},
+    {"id": "local-jet", "kind": "NASA record", "tags": ["suppression"],
+     "title": "A local extinguisher jet can feed a fire in weightlessness",
+     "claim": "In the same summary of BASS results, NASA reports that spraying suppressant locally was not enough: the jet pulled in "
+              "surrounding air and kept the flame alive even after the cabin airflow was switched off.",
+     "evidence": "BASS (PSI-26) tested nitrogen as an extinguishing agent on fabric, PMMA and other samples in opposed and concurrent airflow.",
+     "quote": GQ["local_jet"]["text"], "quote_src": "NASA Researcher's Guide to ISS Combustion Science (2015)", "quote_url": GQ["local_jet"]["url"],
+     "limits": "Reported qualitatively. The flow rates and agent quantities behind it are not in the PSI table.",
+     "action": "Design extinguishers and procedures for flooding a volume, not for a directed jet, and test them at exploration oxygen levels.",
+     "scores": {"safety": 5, "evidence": 3, "mission": 4, "action": 5}, "next": [], "sources": src("PSI-26")},
+    {"id": "vent-speed", "kind": "NASA record", "tags": ["materials", "ventilation"],
+     "title": "Flames spread fastest at ordinary cabin ventilation speeds",
+     "claim": "In microgravity there is no rising hot air, so the cabin fan sets the airflow over a burning surface. NASA's guide puts "
+              "the most flammable condition at about 10 cm/s, the speed typical of spacecraft ventilation. Flames can also spread upstream, against the flow.",
+     "evidence": "BASS-II thin films went out when the opposing flow fell to about 1 cm/s at 21 % oxygen, and already at about 2.6 to 4 cm/s at 16 % "
+                 "(BASS-II Summary Report). Saffire burned its samples at 20 and 30 cm/s.",
+     "quote": GQ["ventilation_speed"]["text"], "quote_src": "NASA Researcher's Guide to ISS Combustion Science (2015)", "quote_url": GQ["ventilation_speed"]["url"],
+     "limits": "A general result for flame spread over solids, not a single number for every material.",
+     "action": "Test materials across the 0 to 30 cm/s range of spacecraft ventilation, with the worst case near 10 cm/s, not only in still air.",
+     "scores": {"safety": 4, "evidence": 4, "mission": 4, "action": 4}, "next": ["sofie"], "sources": src("PSI-25", "PSI-98")},
     {"id": "depends", "kind": "Computed from run tables", "tags": ["materials", "gravity"],
      "title": "Microgravity is not always worse: it depends on the material",
      "claim": f"In Saffire-II, {S['silicone_no_spread']} of {S['silicone_n']} silicone samples did not spread flame in microgravity, "
@@ -426,7 +510,7 @@ findings = [
      "scores": {"safety": 3, "evidence": 2, "mission": 3, "action": 3}, "next": ["flare"], "sources": src("PSI-99")},
     {"id": "gravity", "kind": "Archive audit", "tags": ["gravity", "exploration", "gap"],
      "title": "Every flight test here was in microgravity. None was at lunar or Martian gravity",
-     "claim": "All flight investigations in the archive flew on the space station, a Cygnus cargo ship or the Space Shuttle. "
+     "claim": "Every combustion flight experiment in the archive flew on the space station or on a Cygnus cargo ship in orbit. "
               "A Moon base sits at one sixth of Earth gravity, where there is no flight data at all.",
      "evidence": f"Platforms across {S['combustion']} combustion investigations: {', '.join(S['platforms'])}.",
      "quote": SAFFIRE_QUOTE, "quote_src": "PSI-99, Hypothesis",
@@ -437,7 +521,7 @@ findings = [
      "title": "Suppressant data stops well short of exploration oxygen levels",
      "claim": f"FLEX burned droplets in atmospheres diluted with carbon dioxide ({S['flex_co2']} runs) and helium ({S['flex_he']} runs). "
               f"None of the carbon dioxide runs went above {S['flex_co2_o2_max']:g} % oxygen and none of the helium runs above {S['flex_he_o2_max']:g} %.",
-     "evidence": f"FLEX: {S['flex_co2_hi']} carbon dioxide runs at 30 % oxygen or more.",
+     "evidence": f"FLEX table: carbon dioxide made up {S['flex_co2_min'] * 100:g} to {S['flex_co2_max'] * 100:g} % of the atmosphere and helium up to {S['flex_he_max'] * 100:g} %, always with 25 % oxygen or less.",
      "limits": "Suppressant effectiveness also depends on pressure and fuel, which vary across these runs.",
      "action": "Re-qualify extinguisher agent quantities for 34 % oxygen instead of scaling from station values.",
      "scores": {"safety": 4, "evidence": 4, "mission": 4, "action": 4}, "next": [], "sources": src("PSI-69")},
@@ -448,7 +532,7 @@ findings = [
               f"{S['bass2_raw'][0] + S['bass2_raw'][1]:.0f} GB of raw video.",
      "evidence": "Result columns exist for FLEX, ACME CFI-G and Saffire I and II. The BASS table lists the sample material only; BASS-II adds conditions but no outcome.",
      "limits": "Many results are reported in the linked publications, but not in a form that can be queried across tests.",
-     "action": "Extract spread rate and extinction from the BASS videos into a public table. This is a tractable computer-vision task.",
+     "action": "Extract spread rate and extinction from the BASS videos into a public table. The Video lab below shows it can be done automatically.",
      "scores": {"safety": 3, "evidence": 5, "mission": 3, "action": 5}, "next": [], "sources": src("PSI-25", "PSI-26")},
     {"id": "smoke", "kind": "NASA record", "tags": ["detection", "smoke"],
      "title": "Smoke behaves differently without gravity, so detectors need their own baseline",
@@ -471,6 +555,51 @@ findings = [
 ]
 assert "cool flame" in (inv_by["PSI-69"]["impacts"] + inv_by["PSI-69"]["approach"]).lower()
 
+VIDEO_PATH = os.path.join(ROOT, "data", "derived", "video_results.json")
+video = None
+if os.path.exists(VIDEO_PATH):
+    with open(VIDEO_PATH, encoding="utf-8") as fh:
+        video = json.load(fh)
+    import shutil
+    img_dir = os.path.join(ROOT, "web", "img", "video")
+    os.makedirs(img_dir, exist_ok=True)
+    for t in video["tests"]:
+        t["frames_web"] = []
+        for fpath in t.get("frames", []):
+            name = os.path.basename(fpath)
+            shutil.copyfile(os.path.join(ROOT, fpath), os.path.join(img_dir, name))
+            t["frames_web"].append("img/video/" + name)
+        t.pop("series_px", None)
+    vt = {t["test"]: t for t in video["tests"]}
+    vv = video["validation"]
+    findings.append({"id": "video-lab", "kind": "Measured from NASA video", "tags": ["data", "materials"],
+        "title": "Flame spread can be read from NASA's raw video automatically",
+        "claim": f"We measured flame spread in {sum(1 for t in video['tests'] if t.get('spread_mm_s'))} BASS-II videos with a simple tracker. "
+                 f"A 200 µm film spread at {vt['B2']['spread_mm_s']:g} and {vt['B5']['spread_mm_s']:g} mm/s in two identical tests, and "
+                 f"the flame went out {vt['B1']['flame_out_after_fan_s']:g} s after the fan was cut, matching the NASA report.",
+        "evidence": f"{vv['passed']} of {vv['independent']} independent checks pass, including the thin-fuel law "
+                    f"(exponent {vv['thin_fuel_exponent']:g}, theory -1) and the camera field of view. The scale comes from one reported value.",
+        "limits": "Seven videos from one day; dim flames at low airflow are not measured. A demonstration of the method, not a replacement for the PIs' analysis.",
+        "action": "Run the tracker over all 244 BASS-II videos to build the public results table the archive lacks.",
+        "scores": {"safety": 3, "evidence": 4, "mission": 3, "action": 5}, "next": [], "sources": src("PSI-25")})
+MODEL_PATH = os.path.join(ROOT, "web", "model.js")
+model_card = None
+if os.path.exists(MODEL_PATH):
+    with open(MODEL_PATH, encoding="utf-8") as fh:
+        mdl = json.loads(fh.read().split("window.FLAME_MODEL = ", 1)[1].rstrip().rstrip(";"))
+    full, base = mdl["cv"]["results"]["Full model"], mdl["cv"]["results"]["Always the most common outcome"]
+    model_card = {"n": mdl["n"], "acc": round(full["accuracy"]["mean"], 3), "auc": round(full["auc"]["mean"], 3),
+                  "base_acc": round(base["accuracy"]["mean"], 3), "brier": round(full["brier"]["mean"], 3)}
+    findings.append({"id": "model", "kind": "Model on run tables", "tags": ["liquids", "extinction", "oxygen", "exploration"],
+        "title": "Droplet fire outcomes are predictable inside the tested range, and not outside it",
+        "claim": f"A simple model of {mdl['n']} FLEX runs predicts whether a droplet flame goes out on its own with "
+                 f"{model_card['acc'] * 100:.0f} % accuracy on test days it never saw, against {model_card['base_acc'] * 100:.0f} % for always guessing "
+                 "the most common outcome. Oxygen has the strongest effect. For the exploration atmosphere the model has to extrapolate.",
+        "evidence": f"{mdl['cv']['method']}. Area under the ROC curve {model_card['auc']:g}. The predictor shows the nearest real runs for every query.",
+        "limits": "Two fuels and droplets only. Run-to-run conditions are not a designed experiment. Outside the tested pressures the prediction is flagged.",
+        "action": "Use the predictor to choose the next droplet test points where the model is least certain and the mission need is highest.",
+        "scores": {"safety": 3, "evidence": 4, "mission": 4, "action": 4}, "next": [], "sources": src("PSI-69")})
+
 NEXT = [
     {"id": "fm2", "name": "FM2", "full": "Flammability of Materials on the Moon",
      "what": "The first combustion experiment on another planetary body. It burns materials on the Moon at one sixth gravity.",
@@ -490,6 +619,8 @@ data = {
              "glenn_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
              "license": "CC0-1.0"},
     "atmospheres": ATMOSPHERES, "stats": stats, "flex2": flex2, "next": NEXT, "findings": findings,
+    "history": history, "spinoffs": spinoffs, "sources": sources_list, "video": video, "model_card": model_card,
+    "apollo_atm": [{"name": "Apollo 1 test (pad)", "o2": 100.0, "psia": 16.2}, {"name": "Apollo flight", "o2": 100.0, "psia": 6.2}, {"name": "Apollo prelaunch, after the fire", "o2": 60.0, "psia": 16.2}],
     "investigations": investigations, "tests": tests, "conditions": conditions, "notes": notes,
 }
 os.makedirs(os.path.dirname(OUT), exist_ok=True)

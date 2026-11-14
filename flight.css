@@ -182,7 +182,6 @@ footer a { margin-left:auto; }
   background: none; border: 0; padding: 4px 0; color: var(--ink2); font: inherit;
   cursor: pointer; text-decoration: underline; text-underline-offset: .2em;
 }
-:root[data-theme="light"] .sky-motion { display: none; }
 @media (prefers-reduced-motion: reduce) { .sky-motion { display: none; } }
 @media print { #main-content::before, .star-field, .sky-motion { display: none; } }
 @media (max-width:1130px) {
@@ -231,6 +230,8 @@ footer a { margin-left:auto; }
   footer a { margin-left:0; }
 }
 @media (prefers-reduced-motion:no-preference) {
+  :root:not([data-sky-paused]) .lunar-sight picture { transform:translateY(var(--lunar-depth, 0px)); }
+  :root:not([data-sky-paused]) .lunar-ring { translate:0 calc(var(--lunar-depth, 0px) * .35); }
   .star-field::after { animation: star-drift 38s ease-in-out -13s infinite alternate; animation-play-state: var(--sky-play, running); }
   :root:not([data-theme="light"]) .lunar-ring { animation: lunar-arc 44s ease-in-out infinite alternate; animation-play-state: var(--sky-play, running); }
   @keyframes lunar-arc { from { transform:rotate(-28deg); } to { transform:rotate(-25deg); } }

@@ -26,8 +26,15 @@
   content: ""; position: absolute; inset: auto 13px 1px; height: 9px;
   background: #020811a8; filter: blur(4px); border-radius: 50%;
 }
-.cosmo-dock img { display: block; object-fit: contain; pointer-events: none; }
-.cosmo-pet img { width: 100%; height: 100%; position: relative; filter: drop-shadow(0 2px 3px #0009); }
+.cosmo-float { display: block; position: relative; pointer-events: none; }
+.cosmo-float > img, .cosmo-rig { display: block; width: 100%; height: 100%; object-fit: contain; }
+.cosmo-rig { overflow: visible; }
+.cosmo-pet .cosmo-float { width: 100%; height: 100%; filter: drop-shadow(0 2px 3px #0009); }
+.cosmo-lid-upper { transform: translateY(-62px); }
+.cosmo-lid-lower { transform: translateY(66px); }
+.cosmo-head-joint { transform-box: view-box; transform-origin: 54% 60%; }
+/* The portrait sits to the left of the conversation; its lens faces inward. */
+.cosmo-portrait .cosmo-rig, .cosmo-portrait img { transform: scaleX(-1); }
 .cosmo-name {
   display: inline-flex; gap: 7px; align-items: center; padding: 3px 10px 4px;
   border: 1px solid var(--pet-border); background: #111c2b; color: #ecf2f8;
@@ -56,7 +63,7 @@
   flex: none; width: 43px; height: 43px; display: grid; place-items: center;
   border-radius: 50%; background: #0d1722; border: 1px solid #435366;
 }
-.cosmo-portrait img { width: 38px; height: 38px; }
+.cosmo-portrait .cosmo-float { width: 38px; height: 38px; }
 #cosmo-title { color: #f2f5f8; margin: 0; font: 600 26px/1 var(--display); letter-spacing: .01em; }
 .cosmo-head p { font: 500 13px/1.3 var(--sans); color: var(--pet-muted); margin: 3px 0 0; }
 .cosmo-close {
@@ -74,10 +81,10 @@
   position: relative; height: 83px; display: grid; place-items: center; margin: -1px 0 11px;
   background: url(img/star-field.svg) center 43% / 580px auto;
 }
-.cosmo-stage span {
+.cosmo-ring {
   position: absolute; bottom: 8px; width: 135px; height: 24px; border: 1px solid #586c815e; border-radius: 50%;
 }
-.cosmo-stage img { position: relative; align-self: end; height: 83px; width: 106px; }
+.cosmo-stage .cosmo-float { align-self: end; height: 83px; width: 106px; }
 .cosmo-intro h3 { font: 600 24px/1.15 var(--display); color: var(--pet-text); margin: 0 0 5px; }
 .cosmo-intro p { font: 400 15px/1.4 var(--sans); color: var(--pet-muted); margin: 0; max-width: 34ch; }
 .cosmo-prompts { display: grid; gap: 5px; margin: 13px 0 0; }
@@ -135,10 +142,29 @@
   .cosmo-stage { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .cosmo-pet img { animation: cosmo-hover 4s ease-in-out 1; }
-  .cosmo-toggle:hover .cosmo-pet img { transform: translateY(-2px) rotate(-3deg); transition: transform .2s ease; }
+  .cosmo-pet .cosmo-float, .cosmo-stage .cosmo-float { animation: cosmo-drift 8s ease-in-out infinite; }
+  .cosmo-lid-upper { --lid-open: -62px; }
+  .cosmo-lid-lower { --lid-open: 66px; }
+  .cosmo-lid-upper, .cosmo-lid-lower { animation: cosmo-blink 13s linear -5s infinite; }
+  .cosmo-head-joint { transition: transform .42s cubic-bezier(.22,.62,.28,1); }
+  .cosmo-panel[data-attentive] .cosmo-head-joint { transform: rotate(-8deg); }
+  .cosmo-panel[data-attentive] .cosmo-float,
+  .cosmo-toggle:is(:hover,:focus-visible) .cosmo-float { animation-play-state: paused; }
+  .cosmo-toggle[aria-expanded="true"] :is(.cosmo-float, use) { animation: none; }
+  /* Stop peripheral movement while the reader points at or tabs into a plot. */
+  body:has(main :is(.frame, #cabin-chart, #o2hist):is(:hover, :focus-within)) .cosmo-toggle .cosmo-float { animation-play-state: paused; }
+  body:has(main :is(.frame, #cabin-chart, #o2hist):is(:hover, :focus-within)) .cosmo-toggle use { animation: none; }
   .cosmo-panel:not([hidden]) { animation: cosmo-open .18s ease-out; transform-origin: bottom right; }
-  @keyframes cosmo-hover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px) rotate(-2deg); } }
+  @keyframes cosmo-drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  /* A single 195 ms shutter stroke; the glass stays entirely clear between blinks. */
+  @keyframes cosmo-blink {
+    0%,95%,96.5%,100% { transform: translateY(var(--lid-open)); }
+    95.62%,95.82% { transform: translateY(0); }
+  }
   @keyframes cosmo-open { from { opacity:.3; transform: translateY(5px); } }
+}
+@media (prefers-reduced-motion: no-preference) and (min-height: 531px) {
+  /* When the welcome portrait is on screen, only its lens blinks. */
+  .cosmo-panel:has(.cosmo-intro:not([hidden])) .cosmo-portrait use { animation: none; }
 }
 @media print { .cosmo-dock { display:none; } }

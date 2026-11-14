@@ -218,6 +218,35 @@
     let unread = null;
     let draftVersion = 0;
 
+    function syncAttention() {
+      const composing = document.activeElement === field && field.value.trim().length > 0;
+      panel.toggleAttribute("data-attentive", !panel.hidden && (pending || composing));
+    }
+
+    async function mountPortraits() {
+      const template = document.getElementById("cosmo-rig-template");
+      if (!template || location.protocol === "file:") return;
+      // Keep the original portrait visible on a slow connection or if artwork fails.
+      const rig = template.content.firstElementChild;
+      const paths = new Set(Array.from(rig.querySelectorAll("[href]"),
+        node => node.getAttribute("href").split("#")[0]));
+      try {
+        await Promise.all(Array.from(paths, path => {
+          const asset = new Image();
+          asset.src = path;
+          return asset.decode();
+        }));
+      } catch { return; }
+      for (const slot of toggle.closest(".cosmo-dock").querySelectorAll("[data-cosmo-figure]")) {
+        const clone = rig.cloneNode(true);
+        const clip = "cosmo-aperture-" + slot.dataset.cosmoFigure;
+        clone.querySelector("clipPath").id = clip;
+        clone.querySelector(".cosmo-shutter").setAttribute("clip-path", "url(#" + clip + ")");
+        slot.replaceChildren(clone);
+      }
+    }
+    mountPortraits();
+
     function adjustViewport() {
       if (!viewport || panel.hidden) return;
       panel.style.setProperty("--cosmo-viewport-height", viewport.height + "px");
@@ -242,6 +271,7 @@
       } else {
         toggle.focus({preventScroll: true});
       }
+      syncAttention();
     }
 
     function addMessage(kind, label, content, references = []) {
@@ -300,9 +330,12 @@
       field.setCustomValidity("");
       composer.requestSubmit();
     });
+    field.addEventListener("focus", syncAttention);
+    field.addEventListener("blur", () => panel.toggleAttribute("data-attentive", !panel.hidden && pending));
     field.addEventListener("input", () => {
       draftVersion++;
       field.setCustomValidity("");
+      syncAttention();
     });
     field.addEventListener("keydown", event => {
       if (event.key === "Enter" && !event.shiftKey && !event.isComposing && event.keyCode !== 229) {
@@ -322,6 +355,7 @@
         return;
       }
       pending = true;
+      syncAttention();
       send.setAttribute("aria-disabled", "true");
       if (intro) intro.hidden = true;
       if (exchanges.length >= 8) {
@@ -341,6 +375,7 @@
         if (draftVersion === submittedVersion) field.value = draft;
       } finally {
         pending = false;
+        syncAttention();
         send.removeAttribute("aria-disabled");
         feedback.textContent = "";
       }

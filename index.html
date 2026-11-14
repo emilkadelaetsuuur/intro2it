@@ -285,9 +285,10 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=2708f5c708">
+<link rel="stylesheet" href="console.css?v=6d63994c95">
 <link rel="stylesheet" href="cosmo.css?v=a50ddd571b">
 <link rel="stylesheet" href="flight.css?v=56cd6438df">
+<link rel="stylesheet" href="evidence-inspector.css?v=5e38158763">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
@@ -406,13 +407,15 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <!-- 03 evidence -->
 <div class="page wrap view" id="v-evidence" hidden>
-  <div class="sec"><h2>Evidence map</h2><p class="sub">QUENCH groups flight runs from the <a href="https://psi.nasa.gov/physci/repo/search?q=combustion&amp;data_source=psi&amp;data_type=investigation" target="_blank" rel="noopener">NASA PSI archive</a> into circles by fuel type, ambient oxygen and pressure. Select a circle for the measured range. The solid rectangle marks the cabin window. Counts use each run’s recorded conditions.</p></div>
+  <div class="sec"><h2>Evidence map</h2><p class="sub">Each circle groups flight runs from the <a href="https://psi.nasa.gov/physci/repo/search?q=combustion&amp;data_source=psi&amp;data_type=investigation" target="_blank" rel="noopener">NASA PSI archive</a> by fuel, ambient oxygen and pressure. Larger circles contain more runs. Triangles show results published outside the archive.</p></div>
   <div class="controls">
     <div class="group" id="atmchips" role="group" aria-label="Cabin atmosphere"><span class="lab">Atmosphere</span></div>
     <div class="group" id="kindchips" role="group" aria-label="What burned"><span class="lab">Show</span></div>
-    <button class="chip" id="viewbtn" aria-pressed="false">Table view</button>
   </div>
-  <div class="frame"><div id="chart"></div><div class="tablewrap" id="maptable" hidden></div><div class="legend" id="legend"></div></div>
+  <div class="frame evidence-frame">
+    <div class="map-heading"><div><h3>Oxygen and pressure</h3><p id="map-action">Select a point to inspect its records.</p></div><button class="chip" id="viewbtn" aria-pressed="false">Table view</button></div>
+    <div id="chart"></div><div class="tablewrap" id="maptable" hidden></div><div class="legend" id="legend"></div>
+  </div>
   <p class="fine" id="mapnote"></p>
   <p class="fine" id="mappub" hidden></p>
   <div class="block"><h3 class="lab">Matching runs by fuel type</h3><div class="matrix" id="matrix2"></div></div>
@@ -585,9 +588,11 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <script src="data.js?v=9f130573a9"></script>
 <script src="model.js?v=96b86849b6"></script>
-<script src="core.js?v=763d5271e0"></script>
+<script src="core.js?v=701edf20c4"></script>
+<script src="evidence-records.js?v=13ce5fac05"></script>
+<script src="evidence-inspector.js?v=93be995e8c"></script>
 <script src="archive.js?v=5e28c151e7"></script>
-<script src="tools.js?v=98ccfc3f0f"></script>
+<script src="tools.js?v=d4fc6d5384"></script>
 <script src="tour.js?v=e2d58c53a7"></script>
 <script src="ask.js?v=ca83013fa1"></script>
 </body>

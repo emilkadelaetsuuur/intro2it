@@ -171,6 +171,33 @@
   margin-top: 10px;
   border-top: 1px solid var(--rule);
 }
+.map-heading {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 1px 0 13px; margin-bottom: 12px; border-bottom: 1px solid var(--rule);
+}
+.map-heading h3 { font: 600 clamp(24px, 2.2vw, 34px)/1.1 var(--display); color: var(--ink); margin: 0; }
+.map-heading p { color: var(--ink2); font-size: 14px; margin: 4px 0 0; }
+.view .map-heading button { flex: none; padding: 7px 14px; }
+#chart svg { overflow: visible; }
+#chart .map-lanes-bg { fill: var(--panel-bg); pointer-events: none; }
+#chart .map-sea-level { stroke: var(--ink3); stroke-opacity: .62; }
+#chart .bub { touch-action: manipulation; }
+#chart .bub:is(:hover, :focus-visible, .map-selected),
+#chart g.bub:is(:hover, :focus-visible, .map-selected) path { stroke: var(--ink); stroke-width: 2.5px; }
+#chart .bub:focus-visible { outline: 1.5px dashed var(--ink); outline-offset: 3px; }
+#legend { row-gap: 9px; }
+.map-record-button {
+  background: transparent; color: var(--blue); border: none; padding: 4px 2px;
+  font: 600 14px/1.4 var(--sans); text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer; white-space: nowrap;
+}
+.map-record-button:hover { color: var(--ink); }
+.map-record-button span { font-size: 12px; }
+@media (max-width: 520px) {
+  .map-heading { gap: 8px; }
+  .map-heading p { font-size: 13px; }
+  .view .map-heading button { min-height: 40px; }
+}
 .view .matrix { border-color: var(--rule); }
 .view .matrix .c { background: var(--panel-bg); }
 .view .matrix .c.none { background: var(--crit-bg); }

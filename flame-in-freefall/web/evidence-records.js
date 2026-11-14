@@ -83,6 +83,7 @@ window.getEvidenceDetail = (() => {
         accession: "",
         sources: [
           { label: "NASA SoFIE-GEL investigation", url: "https://science.nasa.gov/biological-physical/investigations/sofie-gel/" },
+          { label: "NASA NTRS · published flight study", url: "https://ntrs.nasa.gov/citations/26234896351764" },
           source(study.source, "Published flight study")
         ],
         columns: ["Material", "O₂ range (%)", "Pressure range (atm)", "Flow range (cm/s)"],

@@ -46,6 +46,8 @@ dashboard that "summarizes, ranks, and interprets combustion science investigati
 
 Counts, plots and the fitted FLEX model run locally in the browser. Ask first looks for a checked analyst answer shipped with the page: these were drafted with SI ahead of time, the build verifies every statement against the records it cites, and matching happens in the browser, so they appear at once and need no service. Any other question, or the “search the organizer sources” button, goes to the service. The production server retrieves passages only from the organizers’ NASA resource list, including combustion investigations returned by their PSI search. Claude selects passages to cite; the site displays sourced excerpts and never accepts URLs invented by a model. If the provider is unavailable, Ask labels its answer as archive search. A question unsupported by the approved sources can receive no answer.
 
+On the Evidence map, open a point and select **Ask Cosmo**. The opening summary comes from the point's records. Follow-up questions can receive a Claude explanation linked to the NASA sources for that selection. When the API is unavailable, Cosmo answers from the same records in the browser.
+
 Only the server holds the two API credentials. For installation, renewal and fallback behavior see [Ask service](deploy/ASK.md).
 
 ## Put it on a server

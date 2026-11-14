@@ -9,7 +9,7 @@ snippet=/etc/nginx/snippets/quench-ask.conf
 host=/etc/nginx/sites-available/nasa.cartify.ink
 base=/opt/quench
 [[ $(id -u) = 0 && $(realpath "$host") = "$host" && $(realpath "$base") = "$base" ]]
-[[ -s "$src/ask.py" && -s "$src/corpus.json" && -s /etc/quench/ask.env ]]
+[[ -s "$src/ask.py" && -s "$src/corpus.json" && -s "$src/points.json" && -s /etc/quench/ask.env ]]
 [[ $(stat -c '%U:%a' /etc/quench/ask.env) = root:600 ]]
 grep -qF '# managed by the QUENCH installer' "$host"
 grep -qF 'server_name nasa.cartify.ink;' "$host"
@@ -17,7 +17,7 @@ grep -qF 'server_name nasa.cartify.ink;' "$host"
 backup=$(mktemp -d /opt/.quench-ask-rollback.XXXXXX)
 tmp=$(mktemp -d "$base/.ask-new.XXXXXX")
 chmod 755 "$tmp"
-install -m 644 "$src/ask.py" "$src/corpus.json" "$tmp/"
+install -m 644 "$src/ask.py" "$src/corpus.json" "$src/points.json" "$tmp/"
 for path in "$unit" "$snippet"; do
     [[ ! -e "$path" ]] || cp -a -- "$path" "$backup/"
 done

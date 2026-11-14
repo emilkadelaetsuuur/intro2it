@@ -275,5 +275,78 @@ class ReleasedArchiveTests(unittest.TestCase):
             self.assertFalse(ask.Ask(archive).answer(q)["supported"])
 
 
+class PointAskTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        release = json.loads(Path(__file__).with_name("points.json").read_text(encoding="utf-8"))
+        cls.catalog = ask.PointCatalog(release)
+
+    def setUp(self):
+        self.provider = MagicMock()
+        self.service = ask.Ask(ask.Archive([MIR]), ["primary", "backup"], points=self.catalog,
+                               synthesize=self.provider, select=lambda *a: self.fail("Used general archive"))
+
+    def post(self, question, point=0):
+        return self.service.answer_point(question, point, self.catalog.dataset)
+
+    def test_natural_language_with_a_source_tied_to_the_named_record(self):
+        for text in ["The methanol flame in 20CAL10 went out after 5 s.",
+                     "В опыте 20CAL10 пламя метанола погасло. Давление составляло 762 мм рт. ст."]:
+            self.provider.return_value = {"claims": [{"text": text, "fact": 1, "quote": "Extinction"}]}
+            result = self.post("Что произошло в 20CAL10?")
+            self.assertEqual(result["answer"], text + " [1]")
+            self.assertEqual((result["mode"], result["pointId"]), ("claude", 0))
+            self.assertEqual([s["url"].split("/")[-1] for s in result["sources"]], ["PSI-69"])
+            facts = self.provider.call_args.args[3]
+            self.assertEqual(len(facts), 1)
+            self.assertNotIn("20CAL08", facts[0]["text"])
+
+    def test_duplicate_identifiers_foreign_runs_and_stale_catalog(self):
+        both = self.catalog.facts(9, "193F001")
+        self.assertEqual(len(both), 2)
+        self.assertEqual(self.catalog.facts(9, "193F001 (test 73)"), [both[1]])
+        for question in ["193F001 (test 77)", "20CAL10", "BASS-II", "Read https://example.com"]:
+            self.assertEqual(self.post(question, 9)["mode"], "point-local")
+        self.assertFalse(self.service.answer_point("Explain this point", 0, "stale")["supported"])
+        self.assertFalse(self.post("Explain this point", 1234)["supported"])
+        self.provider.assert_not_called()
+
+    def test_anchor_unsupported_unit_fuel_outcome_and_source(self):
+        for text, anchor in [("Pressure was 21 atm.", "Methanol"), ("It used hydrogen.", "Methanol"),
+                             ("It did not ignite.", "Extinction"), ("It did not go out.", "Extinction"),
+                             ("The sky is blue.", "Methanol"), ("It went out. The sky is blue.", "Extinction"),
+                             ("It went out because it was unsafe.", "Extinction"),
+                             ("This is test 20CAL08.", "Extinction"), ("See www.other.com.", "Extinction"),
+                             ("The flame went out.", "ice sublimated")]:
+            with self.subTest(text=text):
+                self.provider.return_value = {"claims": [{"text": text, "fact": 1, "quote": anchor}]}
+                self.assertEqual(self.post("20CAL10")["mode"], "point-local")
+        self.assertTrue(self.service.breaker.allow())
+        for response in [{"claims": [{"text": "It went out.", "fact": 2, "quote": "Extinction"}]},
+                         {"answer": "free text", "sources": [MIR["url"]]}, {"claims": []}]:
+            self.provider.return_value = response
+            self.assertFalse(self.post("20CAL10")["supported"])
+
+    def test_backup_and_unavailable_return_a_local_fallback(self):
+        claim = {"claims": [{"text": "The flame went out.", "fact": 1, "quote": "Extinction"}]}
+        self.provider.side_effect = [ask.ProviderError(True), claim, TimeoutError(), TimeoutError()]
+        self.assertEqual(self.post("20CAL10")["mode"], "claude")
+        result = self.post("20CAL10")
+        self.assertEqual((result["mode"], result["pointId"], result["sources"]), ("point-local", 0, []))
+        self.assertEqual([c.args[0] for c in self.provider.call_args_list], ["primary", "backup"] * 2)
+
+    def test_scope_for_grouped_and_published_points(self):
+        for point_id in range(len(self.catalog.points)):
+            point = self.catalog.points[point_id]
+            expected = {s["url"] for g in point["groups"] for s in g["sources"]}
+            facts = self.catalog.facts(point_id, "Explain this point")
+            self.assertTrue(facts)
+            self.assertEqual({s["url"] for fact in facts for s in fact["sources"]}, expected)
+        for name, qualification in [("BRE test days", "across all listed settings"),
+                                    ("SoFIE-GEL", "separate ranges")]:
+            idx = next(n for n, point in enumerate(self.catalog.points) if name in point["title"])
+            self.assertTrue(all(qualification in f["text"] for f in self.catalog.facts(idx, "Explain")))
+
+
 if __name__ == "__main__":
     unittest.main()

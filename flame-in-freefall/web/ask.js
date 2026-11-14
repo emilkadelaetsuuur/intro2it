@@ -4,6 +4,7 @@
 (() => {
   const pagesOrigin = "https://emilkadelaetsuuur.github.io";
   const liveSite = "https://nasa.cartify.ink";
+  const askEndpoint = location.origin === pagesOrigin ? liveSite + "/api/ask" : "/api/ask";
   const form = document.getElementById("askform");
   const input = document.getElementById("askq");
   const submitButton = form.querySelector("[type=submit]");
@@ -280,10 +281,9 @@
       const checked = bank.match(question);
       if (checked) return checked;
     }
-    const endpoint = location.origin === pagesOrigin ? liveSite + "/api/ask" : "/api/ask";
     let response;
     try {
-      response = await fetch(endpoint, {
+      response = await fetch(askEndpoint, {
         method: "POST",
         headers: {"Content-Type": "application/json", "Accept": "application/json"},
         credentials: "omit",
@@ -382,6 +382,11 @@
     let returnToPoint = false;
     let contextVersion = 0;
     let interruptedSearch = null;
+    // A map index is meaningful only for the data and grouping rules loaded by this tab.
+    const pointDataset = ["data.js", "core.js", "evidence-records.js"].map(name => {
+      const tag = document.querySelector(`script[src^="${name}?"]`);
+      return tag ? new URL(tag.src).searchParams.get("v") : "";
+    }).join(".");
     const russianUI = /^ru\b/i.test(navigator.language);
     if (russianUI) {
       context.querySelector(".cosmo-point-label").textContent = "Точка на карте";
@@ -395,6 +400,7 @@
     function switchConversation(next) {
       if (point === next) return;
       if (pending && interruptedSearch) {
+        interruptedSearch.controller?.abort();
         if (!field.value && interruptedSearch.version === draftVersion) field.value = interruptedSearch.draft;
         const stopped = addMessage("notice", "Cosmo", russianUI
           ? "Поиск остановлен при переходе к другой беседе. Можно отправить вопрос ещё раз."
@@ -442,6 +448,7 @@
     function syncAttention() {
       const composing = document.activeElement === field && field.value.trim().length > 0;
       panel.toggleAttribute("data-attentive", !panel.hidden && (pending || composing));
+      for (const button of log.querySelectorAll(".cosmo-followups button")) button.disabled = pending;
     }
 
     async function mountPortraits() {
@@ -523,8 +530,45 @@
       return message;
     }
 
-    function pointReply(question) {
-      const reply = EvidenceChat.answer(point, question);
+    function claudePointReply(data, group, question) {
+      if (data?.mode !== "claude" || data.supported !== true || data.pointId !== pointIds.get(group) ||
+          typeof data.answer !== "string" || !data.answer.trim() || !Array.isArray(data.sources) || !data.sources.length) return null;
+      const allowed = new Map(getEvidenceDetail(group).groups.flatMap(study => study.sources)
+        .filter(source => /^https:\/\/(?:[a-z0-9-]+\.)*nasa\.gov\//i.test(source.url))
+        .map(source => [source.url, {title: source.label, url: source.url}]));
+      const refs = data.sources.map(source => allowed.get(source?.url));
+      const cited = new Set(Array.from(data.answer.matchAll(/\[(\d+)\]/g), match => Number(match[1])));
+      if (!refs.every(Boolean) || refs.some((_, i) => !cited.has(i + 1)) || cited.size !== refs.length ||
+          /(?:https?:\/\/|www\.)/i.test(data.answer)) return null;
+      return {answer: data.answer.trim(), sources: refs, label: /[а-яё]/iu.test(question)
+        ? "Claude по выбранным опытам" : "Claude on selected evidence"};
+    }
+
+    async function searchPoint(group, question, controller) {
+      const fallback = () => ({...EvidenceChat.answer(group, question), label: /[а-яё]/iu.test(question)
+        ? "Локальные данные точки" : "Local point records"});
+      if (!navigator.onLine || !/^[0-9a-f]{10}(?:\.[0-9a-f]{10}){2}$/.test(pointDataset)) return fallback();
+      const pointId = pointIds.get(group);
+      const timeout = setTimeout(() => controller.abort(), 38000);
+      try {
+        const response = await fetch(askEndpoint, {
+          method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
+          credentials: "omit", redirect: "error", signal: controller.signal,
+          body: JSON.stringify({question, pointId, dataset: pointDataset})
+        });
+        if (response.ok && response.headers.get("Content-Type")?.includes("application/json")) {
+          const live = claudePointReply(await response.json(), group, question);
+          if (live) return live;
+        }
+      } catch {
+        // The selected records are already loaded, including when the live request times out.
+      } finally {
+        clearTimeout(timeout);
+      }
+      return fallback();
+    }
+
+    function pointReply(question, reply) {
       const allowed = new Set(getEvidenceDetail(point).groups.flatMap(g => g.sources.map(s => s.url)));
       const cited = reply.sources.filter(source => allowed.has(source.url) && /^https:\/\//.test(source.url));
       const message = addMessage("assistant", "Cosmo · " + reply.label, reply.answer, cited);
@@ -536,10 +580,7 @@
         button.type = "button";
         button.textContent = suggestion;
         button.addEventListener("click", () => {
-          const exchange = [addMessage("user", "You", suggestion)];
-          rememberExchange(exchange);
-          exchange.push(pointReply(suggestion));
-          field.focus({preventScroll: true});
+          submitQuestion(suggestion, true);
         });
         choices.append(button);
       }
@@ -556,7 +597,8 @@
       setOpen(true);
       window.CosmoReactions?.receivePoint();
       if (!exchanges.length) {
-        const greeting = pointReply(russianUI ? "Объясни эту точку" : "");
+        const prompt = russianUI ? "Объясни эту точку" : "";
+        const greeting = pointReply(prompt, EvidenceChat.answer(group, prompt));
         rememberExchange([greeting]);
         scrollToMessage(greeting);
       }
@@ -611,10 +653,8 @@
         composer.requestSubmit();
       }
     });
-    composer.addEventListener("submit", async event => {
-      event.preventDefault();
+    async function submitQuestion(draft, suggestion = false) {
       if (pending) return;
-      const draft = field.value;
       const submittedVersion = draftVersion;
       const submittedContext = contextVersion;
       const question = draft.trim().replace(/\s+/gu, " ");
@@ -626,19 +666,22 @@
       if (intro) intro.hidden = true;
       const exchange = [addMessage("user", "You", question)];
       rememberExchange(exchange);
-      field.value = "";
+      if (!suggestion) field.value = "";
       field.focus({preventScroll: true});
-      if (point) {
-        syncAttention();
-        exchange.push(pointReply(question));
-        return;
-      }
       pending = true;
-      interruptedSearch = {draft, version: submittedVersion, exchange};
+      const controller = point ? new AbortController() : null;
+      interruptedSearch = {draft, version: submittedVersion, exchange, controller};
       syncAttention();
       send.setAttribute("aria-disabled", "true");
-      feedback.textContent = "Searching the organizer sources…";
+      feedback.textContent = point
+        ? (/[а-яё]/iu.test(question) ? "Читаю записи выбранной точки…" : "Reading the selected records…")
+        : "Searching the organizer sources…";
       try {
+        if (point) {
+          const reply = await searchPoint(point, question, controller);
+          if (submittedContext === contextVersion) exchange.push(pointReply(question, reply));
+          return;
+        }
         const reply = await search(question);
         if (submittedContext !== contextVersion) return;
         const mode = reply.local ? "Local archive · " + reply.label : reply.label;
@@ -680,7 +723,7 @@
       } catch (error) {
         if (submittedContext !== contextVersion) return;
         exchange.push(addMessage("error", "Cosmo", error.message));
-        if (draftVersion === submittedVersion) field.value = draft;
+        if (!suggestion && draftVersion === submittedVersion) field.value = draft;
       } finally {
         if (submittedContext === contextVersion) {
           interruptedSearch = null;
@@ -690,6 +733,10 @@
           feedback.textContent = "";
         }
       }
+    }
+    composer.addEventListener("submit", event => {
+      event.preventDefault();
+      submitQuestion(field.value);
     });
   }
   setupCosmo();

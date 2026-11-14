@@ -3,809 +3,439 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>FlameGap</title>
+<title>QUENCH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Where NASA's microgravity fire data ends, and what a Moon base needs. Built on the NASA PSI combustion archive.">
-<meta name="flame-ask-url" content="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Every NASA microgravity combustion flight test, checked against the cabin air of a Moon base.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
 <style>
-/* Layout: one working page. A thesis strip, then the evidence map as the centrepiece, then the tools that read it. */
+/* Layout: a flight-document. Black masthead and cover, then ruled white pages on a strict left-aligned grid.
+   Square corners, hairlines, mono data labels. Red is reserved for what is missing or dangerous. */
 :root {
-  --bg: #f4f6f9; --surface: #ffffff; --surface-2: #edf0f5; --ink: #0f1522; --ink-2: #485266; --ink-3: #6f7a8e;
-  --line: #dde2ea; --line-2: #c3cad6; --accent: #1b2f6b; --accent-ink: #ffffff; --focus: #2a78d6;
+  --bg: #ffffff; --sunk: #f1f3f6; --ink: #0b0c0e; --ink2: #434851; --ink3: #6a7280;
+  --rule: #d4d8df; --strong: #0b0c0e; --blue: #0b3d91; --blue-ink: #ffffff; --red: #d42a1a; --focus: #2f7df6;
   --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
-  --good: #0a8f0a; --good-bg: #e3f4e1; --warn: #9a6a00; --warn-bg: #fdf0cf; --crit: #c03232; --crit-bg: #fbe4e2;
-  --display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --good: #0a7a0a; --good-bg: #e2f2e0; --warn: #855900; --warn-bg: #fcefc9; --crit: #c2281b; --crit-bg: #fbe3df; --info: #0b3d91; --info-bg: #e2eaf7;
+  --cover: #05070b; --cover-2: #0e1219; --cover-ink: #f4f6f9; --cover-ink2: #a9b1bf; --cover-rule: #2b3241; --cover-red: #ff4b2e; --cover-blue: #5aa2ff;
+  --sans: "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0b0e14; --surface: #131822; --surface-2: #1b2230; --ink: #eef0f4; --ink-2: #b8c0ce; --ink-3: #8a94a6;
-  --line: #252d3a; --line-2: #36404f; --accent: #b3c4f7; --accent-ink: #0b0e14; --focus: #6da7ec;
+  --bg: #0a0c10; --sunk: #151a23; --ink: #f1f3f6; --ink2: #b8bec9; --ink3: #8891a1;
+  --rule: #262d39; --strong: #f1f3f6; --blue: #8fb2ff; --blue-ink: #0a0c10; --red: #ff5f45; --focus: #7fb0ff;
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
-  --good: #4cc24c; --good-bg: #12301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #f07f7f; --crit-bg: #3a1717;
+  --good: #58c658; --good-bg: #11301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #ff8573; --crit-bg: #3b1612; --info: #8fb2ff; --info-bg: #152444;
   color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #0b0e14; --surface: #131822; --surface-2: #1b2230; --ink: #eef0f4; --ink-2: #b8c0ce; --ink-3: #8a94a6;
-  --line: #252d3a; --line-2: #36404f; --accent: #b3c4f7; --accent-ink: #0b0e14; --focus: #6da7ec;
+  --bg: #0a0c10; --sunk: #151a23; --ink: #f1f3f6; --ink2: #b8bec9; --ink3: #8891a1;
+  --rule: #262d39; --strong: #f1f3f6; --blue: #8fb2ff; --blue-ink: #0a0c10; --red: #ff5f45; --focus: #7fb0ff;
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
-  --good: #4cc24c; --good-bg: #12301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #f07f7f; --crit-bg: #3a1717;
+  --good: #58c658; --good-bg: #11301a; --warn: #f0b93a; --warn-bg: #33290f; --crit: #ff8573; --crit-bg: #3b1612; --info: #8fb2ff; --info-bg: #152444;
   color-scheme: dark }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 64px; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); -webkit-text-size-adjust: 100%; }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
-.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-a { color: var(--accent); text-underline-offset: 2px; }
-h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
-h1 { font-size: clamp(26px, 4.4vw, 40px); font-weight: 700; max-width: 21ch; }
-h2 { font-size: clamp(20px, 2.6vw, 26px); font-weight: 600; }
-h3 { font-size: 16px; font-weight: 600; }
-p { margin: 0; }
-.sub { color: var(--ink-2); max-width: 68ch; }
-.num, td.n, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-text-size-adjust: 100%; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--cover); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--blue); text-underline-offset: 2px; }
+h1, h2, h3, h4, p { margin: 0; }
+h2 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-wrap: balance; }
+h3 { font-size: 16px; font-weight: 700; line-height: 1.3; }
+.lab { font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink3); }
+.sub { color: var(--ink2); max-width: 70ch; }
+.fine { font-size: 13px; color: var(--ink3); max-width: 86ch; }
+.num, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
 
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--surface); border-bottom: 1px solid var(--line); }
-.bar { display: flex; align-items: center; gap: 20px; min-height: 52px; }
-.brand { font: 700 18px var(--display); color: var(--ink); text-decoration: none; letter-spacing: -0.02em; white-space: nowrap; }
-.brand i { font-style: normal; color: var(--s2); }
-.top nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; min-width: 0; }
-.top nav a { padding: 6px 10px; border-radius: 6px; color: var(--ink-2); text-decoration: none; font-size: 14px; white-space: nowrap; }
-.top nav a:hover { background: var(--surface-2); color: var(--ink); }
+/* masthead */
+.mast { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--cover); color: var(--cover-ink); border-bottom: 1px solid var(--cover-rule); }
+.mast .wrap { display: flex; align-items: stretch; gap: 22px; min-height: 52px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--cover-ink); text-decoration: none; font-weight: 900; font-size: 19px; letter-spacing: 0.01em; flex: none; }
+.brand svg { display: block; }
+.tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a { display: flex; align-items: center; padding: 0 12px; color: var(--cover-ink2); text-decoration: none; font: 500 12px var(--mono); letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; border-bottom: 3px solid transparent; border-top: 3px solid transparent; }
+.tabs a:hover { color: var(--cover-ink); }
+.tabs a[aria-current="page"] { color: var(--cover-ink); border-bottom-color: var(--cover-red); }
+.mast .tag { display: flex; align-items: center; font: 500 11px var(--mono); letter-spacing: 0.08em; color: var(--cover-ink2); white-space: nowrap; flex: none; }
 
-section { padding-block: 34px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; }
-section:last-of-type { border-bottom: 0; }
-.eyebrow { font: 500 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+/* cover */
+.cover { background: var(--cover); color: var(--cover-ink); }
+.cover .strip { display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; padding-block: 14px; border-bottom: 1px solid var(--cover-rule); font: 500 11.5px var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--cover-ink2); }
+.cover .head { padding-block: 44px 0; }
+.cover .grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 48px; padding-block: 26px 36px; align-items: center; }
+.cover h1 { font-size: clamp(64px, 17.4vw, 214px); font-weight: 900; letter-spacing: -0.045em; line-height: 0.86; margin-left: -0.04em; white-space: nowrap; }
+.cover h1 span { color: var(--cover-red); }
+.cover .long { font: 500 12.5px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cover-ink2); margin-top: 18px; }
+.cover .thesis { font-size: clamp(19px, 2.4vw, 27px); line-height: 1.35; max-width: 30ch; font-weight: 500; }
+.cover .thesis b { color: var(--cover-red); font-weight: 700; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--strong); background: var(--strong); color: var(--bg); padding: 10px 16px; font: 500 13px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; }
+.btn.line { background: transparent; color: var(--ink); }
+.cover .btn { border-color: var(--cover-red); background: var(--cover-red); color: var(--cover); }
+.cover .btn.line { border-color: var(--cover-ink2); background: transparent; color: var(--cover-ink); }
+.cover figure { margin: 0; }
+.cover figure svg { display: block; width: 100%; height: auto; }
+.cover figcaption { font: 400 12px/1.5 var(--mono); color: var(--cover-ink2); margin-top: 10px; max-width: 46ch; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--cover-rule); }
+.facts div { padding: 18px 18px 22px 0; border-right: 1px solid var(--cover-rule); margin-right: 18px; }
+.facts div:last-child { border-right: 0; margin-right: 0; }
+.facts b { display: block; font-size: clamp(30px, 4.4vw, 52px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.facts b.hot { color: var(--cover-red); }
+.facts span { display: block; font-size: 13px; color: var(--cover-ink2); margin-top: 8px; max-width: 26ch; }
 
-.hero { gap: 20px; padding-top: 38px; }
-.hero .lede { font-size: 17px; color: var(--ink-2); max-width: 62ch; }
-.gapfig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 14px 8px; }
-.gapfig svg { display: block; width: 100%; height: auto; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border-top: 1px solid var(--line); }
-.stats div { padding: 12px 14px 4px 0; }
-.stats b { display: block; font: 600 24px var(--display); letter-spacing: -0.02em; }
-.stats span { color: var(--ink-2); font-size: 13px; }
-
-.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
-.group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.group > span { font-size: 13px; color: var(--ink-3); margin-right: 2px; }
-.chip { border: 1px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-.chip:hover { border-color: var(--ink-3); }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.chip .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-.chip[aria-pressed="false"] .sw { opacity: .35; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; min-width: 0; }
-#chart { width: 100%; min-width: 0; }
-#chart svg { display: block; width: 100%; }
-#chart text { font-family: var(--body); fill: var(--ink-2); }
-#chart .bub { cursor: pointer; }
-#chart .bub:focus-visible { outline: none; stroke: var(--ink); stroke-width: 2; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2); margin-top: 8px; align-items: center; }
-.legend span { display: inline-flex; align-items: center; gap: 6px; }
-.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.fine { font-size: 13px; color: var(--ink-3); max-width: 80ch; }
+/* pages */
+.view { padding-block: 30px 56px; display: flex; flex-direction: column; gap: 22px; }
+.sec { border-top: 3px solid var(--strong); padding-top: 12px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 0; }
+.sec .no { font: 500 13px var(--mono); color: var(--ink3); padding-top: 9px; }
+.sec .sub { grid-column: 2; margin-top: 6px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px 36px; }
+.cols.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.cols.side { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); align-items: start; }
+@media (min-width: 861px) { #mcform { position: sticky; top: 74px; } }
+.block { border-top: 1px solid var(--strong); padding-top: 12px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.block > .lab { color: var(--ink); }
+.frame { border: 1px solid var(--rule); padding: 14px; min-width: 0; }
 .tablewrap { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
-th { text-align: left; font-weight: 600; color: var(--ink-2); font-size: 12.5px; padding: 8px 10px; border-bottom: 1px solid var(--line-2); white-space: nowrap; }
-td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-td.n, th.n { text-align: right; white-space: nowrap; }
+th { text-align: left; font: 500 11px var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink3); padding: 8px 10px 8px 0; border-bottom: 1px solid var(--strong); white-space: nowrap; }
+td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.n, th.n { text-align: right; white-space: nowrap; font-family: var(--mono); font-variant-numeric: tabular-nums; }
 tr.row { cursor: pointer; }
-tr.row:hover td { background: var(--surface-2); }
+tr.row:hover td { background: var(--sunk); }
 .kdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
 
-.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); border-radius: 8px; padding: 9px 11px; font-size: 12.5px; line-height: 1.45; max-width: 270px; box-shadow: 0 6px 22px rgba(0,0,0,.25); }
-.tip b { font-family: var(--display); font-size: 13.5px; }
-.tip .t2 { opacity: .78; }
+/* controls */
+.controls { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+.group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.group > .lab { margin-right: 4px; }
+.chip { border: 1px solid var(--rule); background: var(--bg); padding: 6px 11px; font-size: 13px; border-radius: 2px; display: inline-flex; align-items: center; gap: 6px; text-align: left; }
+.chip:hover { border-color: var(--ink3); }
+.chip[aria-pressed="true"] { background: var(--strong); border-color: var(--strong); color: var(--bg); }
+.chip .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.chip[aria-pressed="false"] .sw { opacity: .4; }
+.field { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--ink2); }
+.field > span { display: flex; justify-content: space-between; gap: 8px; }
+.field output { font-family: var(--mono); color: var(--ink); }
+input[type="range"] { width: 100%; accent-color: var(--blue); margin: 0; }
+select, .search { border: 1px solid var(--rule); background: var(--bg); padding: 8px 10px; border-radius: 2px; min-width: 0; }
+.search { flex: 1 1 240px; }
+.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; font-size: 13.5px; color: var(--ink); }
+.checks label { display: flex; gap: 7px; align-items: flex-start; }
+.checks input { margin-top: 3px; accent-color: var(--blue); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; align-self: flex-start; }
+.seg button { border: 0; background: var(--bg); padding: 6px 13px; font-size: 13px; border-right: 1px solid var(--rule); }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--strong); color: var(--bg); }
 
-.sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px 24px; }
-.sliders label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); }
-.sliders output { font-family: var(--mono); color: var(--ink); }
-input[type="range"] { width: 100%; accent-color: var(--accent); }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.card .big { font: 600 30px var(--display); letter-spacing: -0.02em; line-height: 1; }
-.card .big small { font: 400 13px var(--body); color: var(--ink-2); letter-spacing: 0; }
-.pill { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; border-radius: 999px; padding: 3px 10px; font-size: 12.5px; font-weight: 600; }
-.pill.none { background: var(--crit-bg); color: var(--crit); }
-.pill.thin { background: var(--warn-bg); color: var(--warn); }
-.pill.ok { background: var(--good-bg); color: var(--good); }
-.card p { font-size: 13.5px; color: var(--ink-2); }
-.brieftext { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
-.brieftext ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
-.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 8px; padding: 8px 14px; font-weight: 600; font-size: 14px; cursor: pointer; }
-.btn.ghost { background: transparent; color: var(--accent); }
-.nextgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.nextgrid a { font-weight: 600; }
+/* grades and status */
+.grade { display: inline-flex; align-items: center; gap: 8px; font: 500 12px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.grade i { font-style: normal; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; font-size: 13px; }
+.grade.A { color: var(--good); } .grade.A i { background: var(--good-bg); }
+.grade.B { color: var(--info); } .grade.B i { background: var(--info-bg); }
+.grade.C { color: var(--warn); } .grade.C i { background: var(--warn-bg); }
+.grade.D { color: var(--crit); } .grade.D i { background: var(--crit-bg); }
+.pill { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; padding: 3px 9px; font: 500 12px var(--mono); letter-spacing: 0.03em; }
+.pill.none { background: var(--crit-bg); color: var(--crit); } .pill.thin { background: var(--warn-bg); color: var(--warn); } .pill.ok { background: var(--good-bg); color: var(--good); }
+.ok { color: var(--good); font-weight: 600; } .no { color: var(--crit); font-weight: 600; }
+.tagk { font: 500 11px var(--mono); letter-spacing: 0.04em; border: 1px solid var(--rule); padding: 1px 6px; color: var(--ink2); white-space: nowrap; }
+.tagk.k { background: var(--sunk); border-color: transparent; }
 
-.weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 22px; }
-.weights label { font-size: 13px; color: var(--ink-2); display: flex; flex-direction: column; gap: 2px; }
-.weights label span { display: flex; justify-content: space-between; }
-.finding { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; grid-template-columns: 54px minmax(0, 1fr) 190px; gap: 14px 18px; }
-.finding .rank { font: 700 28px var(--display); color: var(--ink-3); line-height: 1; }
-.finding .rank small { display: block; font: 500 11px var(--mono); margin-top: 6px; color: var(--ink-3); }
-.finding .body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.finding .meta { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag { font: 500 11.5px var(--mono); border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 6px; color: var(--ink-2); background: var(--surface); }
-.tag.kind { background: var(--surface-2); border-color: transparent; }
-.finding dl { margin: 0; display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 5px 10px; font-size: 13.5px; }
-.finding dt { color: var(--ink-3); font-size: 12.5px; padding-top: 1px; }
-.finding dd { margin: 0; color: var(--ink-2); }
-.finding dd.act { color: var(--ink); font-weight: 500; }
-blockquote { margin: 0; padding: 8px 12px; background: var(--surface-2); border-radius: 8px; font-size: 13.5px; color: var(--ink-2); }
-blockquote cite { display: block; font: 500 11.5px var(--mono); font-style: normal; margin-top: 5px; color: var(--ink-3); }
-.scores { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: var(--ink-2); }
-.scores div { display: grid; grid-template-columns: 1fr 22px; gap: 2px 6px; align-items: center; }
-.scores .track { grid-column: 1 / -1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
-.scores .track i { display: block; height: 100%; background: var(--ink-3); border-radius: 3px; }
-.scores b { text-align: right; font-family: var(--mono); font-weight: 500; }
-.search { flex: 1 1 240px; min-width: 0; border: 1px solid var(--line-2); border-radius: 8px; padding: 8px 12px; background: var(--surface); }
-.detail td { background: var(--surface-2); }
-.detail .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px 24px; font-size: 13.5px; color: var(--ink-2); }
-.detail h4 { margin: 0 0 4px; font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+/* briefing */
+.toplist { display: flex; flex-direction: column; }
+.toplist a { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 4px 10px; padding: 12px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.toplist a:hover h3 { text-decoration: underline; }
+.toplist .r { font: 500 13px var(--mono); color: var(--ink3); padding-top: 2px; }
+.toplist p { grid-column: 2 / -1; font-size: 13.5px; color: var(--ink2); }
+.toplist .sc { font: 500 12px var(--mono); color: var(--ink3); padding-top: 3px; }
+.matrix { display: grid; grid-template-columns: minmax(96px, 1fr) repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); font-size: 13px; }
+.matrix > div { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 9px 10px; min-width: 0; }
+.matrix .h { font: 500 11px/1.35 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink3); background: var(--sunk); }
+.matrix .c b { display: block; font: 500 22px var(--mono); line-height: 1.1; }
+.matrix .c.none { background: var(--crit-bg); } .matrix .c.none b { color: var(--crit); }
+.matrix .c.thin { background: var(--warn-bg); } .matrix .c.thin b { color: var(--warn); }
+.matrix .c.ok b { color: var(--good); }
+.matrix .c span { font-size: 12px; color: var(--ink2); }
+.todo { margin: 0; padding: 0; list-style: none; counter-reset: t; display: flex; flex-direction: column; }
+.todo li { counter-increment: t; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 2px 10px; padding: 11px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+.todo li::before { content: counter(t, decimal-leading-zero); font: 500 13px var(--mono); color: var(--red); padding-top: 1px; }
+.todo li span { grid-column: 2; font-size: 13px; color: var(--ink3); }
+.figbox svg { display: block; width: 100%; height: auto; }
+#chart, #pchart, #vchart { width: 100%; min-width: 0; }
+#chart svg, #pchart svg, #vchart svg { display: block; width: 100%; }
+svg text { font-family: var(--sans); fill: var(--ink2); }
+.cover svg text { fill: var(--cover-ink2); font-family: var(--mono); }
+.bub { cursor: pointer; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--ink2); margin-top: 8px; align-items: center; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.tip { position: fixed; z-index: 40; pointer-events: none; background: var(--strong); color: var(--bg); padding: 9px 11px; font-size: 12.5px; line-height: 1.45; max-width: 270px; }
+.tip b { font-size: 13px; } .tip .t2 { opacity: .75; }
+
+/* mission check */
+.verdict { border: 1px solid var(--strong); padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 20px; align-items: center; }
+.verdict h3 { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
+.verdict .meter { display: flex; gap: 3px; }
+.verdict .meter i { width: 18px; height: 26px; background: var(--sunk); border: 1px solid var(--rule); }
+.verdict .meter i.A { background: var(--good); border-color: var(--good); } .verdict .meter i.B { background: var(--info); border-color: var(--info); }
+.verdict .meter i.C { background: var(--warn); border-color: var(--warn); } .verdict .meter i.D { background: var(--crit); border-color: var(--crit); }
+.verdict p { grid-column: 1 / -1; color: var(--ink2); font-size: 14px; }
+.score { display: flex; flex-direction: column; }
+.score .q { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 4px 16px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.score .q h3 { font-size: 15px; }
+.score .q p { grid-column: 1; font-size: 13.5px; color: var(--ink2); }
+.score .q .grade { grid-column: 2; grid-row: 1; justify-self: end; }
+.score .q .refs { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink3); }
+.score .q ul { grid-column: 1 / -1; margin: 2px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--ink2); display: flex; flex-direction: column; gap: 3px; }
+.score .q ul li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 8px; }
+.score .q ul b { font-weight: 600; color: var(--ink); }
+
+/* findings */
+details.f { border-bottom: 1px solid var(--rule); }
+details.f summary { list-style: none; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto 54px; gap: 4px 12px; padding: 13px 0; cursor: pointer; align-items: baseline; }
+details.f summary::-webkit-details-marker { display: none; }
+details.f summary .r { font: 500 13px var(--mono); color: var(--ink3); }
+details.f summary .sc { font: 500 13px var(--mono); text-align: right; }
+details.f summary:hover h3 { text-decoration: underline; }
+details.f[open] summary h3 { color: var(--blue); }
+details.f .body { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 14px 30px; padding: 0 0 18px 46px; }
+details.f .body > div { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+details.f dl { margin: 0; display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 6px 10px; font-size: 13.5px; }
+details.f dt { font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); padding-top: 3px; }
+details.f dd { margin: 0; color: var(--ink2); }
+details.f dd.act { color: var(--ink); font-weight: 600; }
+blockquote { margin: 0; padding: 2px 0 2px 14px; border-left: 3px solid var(--red); font-size: 13.5px; color: var(--ink); }
+blockquote cite { display: block; font: 400 11.5px var(--mono); font-style: normal; margin-top: 5px; color: var(--ink3); }
+.scores { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--ink2); }
+.scores div { display: grid; grid-template-columns: 1fr 20px; gap: 3px 6px; }
+.scores .track { grid-column: 1 / -1; height: 4px; background: var(--sunk); }
+.scores .track i { display: block; height: 100%; background: var(--ink); }
+.scores b { text-align: right; font: 500 12px var(--mono); }
+.weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 26px; }
+
+/* lab, lessons, archive, ask */
+.pbig { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.pbig small { display: block; font-size: 14px; font-weight: 400; color: var(--ink2); letter-spacing: 0; margin-top: 8px; line-height: 1.4; }
+.effects { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 14px; font-size: 13.5px; color: var(--ink2); }
+.effects b { font: 500 13px var(--mono); color: var(--ink); text-align: right; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.thumbs figure { margin: 0; border: 1px solid var(--rule); }
+.thumbs img { display: block; width: 100%; height: auto; background: #000; }
+.thumbs figcaption { padding: 7px 9px; font-size: 12px; color: var(--ink2); }
+.hgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0; border-top: 1px solid var(--strong); border-left: 1px solid var(--rule); }
+.hcard { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 16px; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.hcard .atm { align-self: flex-start; font: 500 11.5px var(--mono); background: var(--crit-bg); color: var(--crit); padding: 2px 7px; }
+.hcard p { font-size: 13.5px; color: var(--ink2); }
+.hcard .today { color: var(--ink); font-weight: 600; }
+.rel { font: 500 10.5px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 6px; margin-left: 7px; white-space: nowrap; }
+.rel.direct { background: var(--good-bg); color: var(--good); } .rel.indirect { background: var(--sunk); color: var(--ink2); } .rel.background { background: var(--sunk); color: var(--ink3); }
+.detail td { background: var(--sunk); padding: 14px; }
+.detail .dcols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px 24px; font-size: 13.5px; color: var(--ink2); }
+.detail h4 { margin: 0 0 4px; font: 500 11px var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--ink3); }
 .detail ol { margin: 0; padding-left: 18px; max-height: 220px; overflow: auto; }
 .askbox { display: flex; gap: 8px; flex-wrap: wrap; }
-.answer { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-.answer .a { display: flex; flex-direction: column; gap: 4px; }
-.answer .a p { color: var(--ink-2); font-size: 14px; }
-.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 28px; font-size: 14px; color: var(--ink-2); }
+.answer { border-top: 1px solid var(--strong); display: flex; flex-direction: column; }
+.answer .a { padding: 14px 0; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px; }
+.answer .a > p { color: var(--ink2); font-size: 14.5px; max-width: 86ch; }
+.answer .a > p.lead { color: var(--ink); font-size: 17px; line-height: 1.5; }
+.claim { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 1px 8px; font-size: 13.5px; color: var(--ink2); }
+.claim .src { grid-column: 2; font: 400 11.5px var(--mono); color: var(--ink3); }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px 36px; font-size: 14px; color: var(--ink2); }
+.method > div { border-top: 1px solid var(--strong); padding-top: 10px; }
 .method ul { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
-footer { padding-block: 22px 40px; color: var(--ink-3); font-size: 13px; }
+footer { border-top: 1px solid var(--rule); padding-block: 18px 36px; font: 400 11.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--ink3); }
 
-.predgrid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 12px; }
-.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
-.pout { display: flex; flex-direction: column; gap: 10px; }
-.pout .big { font: 600 44px var(--display); letter-spacing: -0.02em; line-height: 1; }
-.pout .big small { font: 400 14px var(--body); color: var(--ink-2); letter-spacing: 0; display: block; margin-top: 6px; }
-.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
-.seg button { border: 0; background: var(--surface); padding: 6px 14px; cursor: pointer; font-size: 13.5px; }
-.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
-.effects { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; font-size: 13.5px; color: var(--ink-2); }
-.effects b { font-family: var(--mono); font-weight: 500; color: var(--ink); text-align: right; }
-.thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-.thumbs figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.thumbs img { display: block; width: 100%; height: auto; background: #000; }
-.thumbs figcaption { padding: 8px 10px; font-size: 12.5px; color: var(--ink-2); }
-.ok { color: var(--good); font-weight: 600; } .no { color: var(--crit); font-weight: 600; }
-.hcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
-.hcard .when { font: 500 12px var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
-.hcard .atm { align-self: flex-start; font: 500 12px var(--mono); background: var(--crit-bg); color: var(--crit); border-radius: 5px; padding: 2px 7px; }
-.hcard p { font-size: 13.5px; color: var(--ink-2); }
-.hcard .today { color: var(--ink); font-weight: 500; }
-.rel { font: 500 11px var(--mono); border-radius: 5px; padding: 1px 6px; margin-left: 6px; white-space: nowrap; }
-.rel.direct { background: var(--good-bg); color: var(--good); } .rel.indirect { background: var(--surface-2); color: var(--ink-2); } .rel.background { background: var(--surface-2); color: var(--ink-3); }
-.claim { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 2px 8px; font-size: 14px; }
-.claim .mark { font-weight: 700; }
-.claim .src { grid-column: 2; font-size: 12.5px; color: var(--ink-3); }
-@media (max-width: 760px) { .predgrid, .two { grid-template-columns: 1fr; } }
-@media (max-width: 760px) {
-  .finding { grid-template-columns: 40px minmax(0, 1fr); }
-  .finding .scores { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
-  .finding dl { grid-template-columns: 1fr; gap: 1px; }
-  .finding dt { margin-top: 5px; }
+@media (max-width: 860px) {
+  .cover .grid, .cols, .cols.even, .cols.side { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts div:nth-child(2) { border-right: 0; margin-right: 0; }
+  .facts div:nth-child(-n+2) { border-bottom: 1px solid var(--cover-rule); }
+  .sec { grid-template-columns: 40px minmax(0, 1fr); }
+  .mast .tag { display: none; }
+  .score .q { grid-template-columns: 1fr; } .score .q .grade { grid-column: 1; grid-row: auto; justify-self: start; }
+  .score .q ul li { grid-template-columns: 1fr; gap: 0; }
+  details.f summary { grid-template-columns: 28px minmax(0, 1fr) 44px; } details.f summary .tagk { display: none; }
+  details.f .body { grid-template-columns: 1fr; padding-left: 0; }
+  details.f dl { grid-template-columns: 1fr; gap: 1px; } details.f dt { margin-top: 6px; }
+  .checks { grid-template-columns: 1fr; }
+  .verdict { grid-template-columns: 1fr; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap bar">
-  <a class="brand" href="#top">Flame<i>Gap</i></a>
-  <nav aria-label="Sections"><a href="#map">Evidence map</a><a href="#brief">Mission brief</a><a href="#findings">Findings</a><a href="#predict">Predictor</a><a href="#video">Video lab</a><a href="#history">History</a><a href="#investigations">Investigations</a><a href="#ask">Ask</a><a href="#method">Method</a></nav>
+<header class="mast"><div class="wrap">
+  <a class="brand" href="#brief" data-go="brief" aria-label="QUENCH, briefing">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="none" stroke="#f4f6f9" stroke-width="1.5"/><circle cx="13" cy="13" r="7.5" fill="none" stroke="#5aa2ff" stroke-width="3"/><circle cx="13" cy="13" r="2.2" fill="#ff4b2e"/></svg>
+    QUENCH</a>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <span class="tag">SPACE APPS 2026</span>
 </div></header>
 
-<main class="wrap" id="top">
-<section class="hero">
-  <p class="eyebrow">NASA Space Apps 2026 · Flame in Freefall</p>
-  <h1>Where the flight evidence on spacecraft fire ends</h1>
-  <p class="lede" id="lede"></p>
-  <div class="gapfig" id="gapfig" role="img" aria-label="Oxygen levels of solid-material flight tests compared with three cabin atmospheres"></div>
-  <div class="stats" id="stats"></div>
-</section>
-
-<section id="map">
-  <p class="eyebrow">Evidence map</p>
-  <h2>Every flight test, placed by the air it burned in</h2>
-  <p class="sub">Each bubble is a group of test runs from NASA's archive at one oxygen level and pressure. Pick a cabin atmosphere to see how much evidence sits around it.</p>
-  <div class="controls">
-    <div class="group" id="atmchips" role="group" aria-label="Cabin atmosphere"><span>Atmosphere</span></div>
-    <div class="group" id="kindchips" role="group" aria-label="What burned"><span>Show</span></div>
-    <div class="group"><button class="chip" id="viewbtn" aria-pressed="false">Table view</button></div>
-  </div>
-  <div class="panel">
-    <div id="chart"></div>
-    <div class="tablewrap" id="maptable" hidden></div>
-    <div class="legend" id="legend"></div>
-  </div>
-  <p class="fine" id="mapnote"></p>
-</section>
-
-<section id="brief">
-  <p class="eyebrow">Mission brief</p>
-  <h2 id="brieftitle">Fire-safety evidence for this atmosphere</h2>
-  <p class="sub">Counts come straight from the run tables. A run counts when its oxygen level is within <span id="w1"></span> points and its pressure within <span id="w2"></span> % of the target.</p>
-  <div class="sliders" id="sliders">
-    <label for="o2s"><span>Oxygen <output id="o2o"></output></span><input id="o2s" type="range" min="12" max="42" step="0.5"></label>
-    <label for="ps"><span>Pressure <output id="po"></output></span><input id="ps" type="range" min="6" max="16" step="0.1"></label>
-  </div>
-  <div class="cards" id="cards"></div>
-  <div class="brieftext" id="brieftext"></div>
-  <div class="group"><button class="btn" id="copybrief">Copy brief</button><span class="fine" id="copied" role="status"></span></div>
-  <h3>Experiments NASA is running on the open questions</h3>
-  <div class="nextgrid" id="nextgrid"></div>
-</section>
-
-<section id="findings">
-  <p class="eyebrow">Ranked findings</p>
-  <h2>What the archive says, ordered by what matters to you</h2>
-  <p class="sub">Each finding is scored 1 to 5 on four questions. Move the weights and the order follows. The scores are our judgement and are shown in full; the numbers in the text are computed from NASA's tables.</p>
-  <div class="panel"><div class="weights" id="weights"></div></div>
-  <div class="group" id="tagchips" role="group" aria-label="Filter by topic"><span>Topic</span></div>
-  <div id="flist" style="display:flex;flex-direction:column;gap:12px"></div>
-</section>
-
-<section id="predict">
-  <p class="eyebrow">Outcome predictor</p>
-  <h2>Will a burning droplet go out on its own?</h2>
-  <p class="sub" id="psub"></p>
-  <div class="group" id="ppresets" role="group" aria-label="Start from a preset"><span>Start from</span></div>
-  <div class="predgrid">
-    <div class="panel" style="display:flex;flex-direction:column;gap:14px">
-      <div class="group"><span>Fuel</span><div class="seg" id="pfuel" role="group" aria-label="Fuel"></div></div>
-      <div class="sliders" id="pinputs"></div>
+<main>
+<!-- 01 briefing -->
+<div class="page" id="v-brief">
+  <section class="cover">
+    <div class="wrap">
+      <div class="strip"><span>NASA Space Apps Challenge 2026 · Flame in Freefall</span><span>Team project · not a NASA product</span></div>
+      <div class="head">
+        <h1>QUENCH<span>.</span></h1>
+        <p class="long">Quantified Evidence Navigator for Combustion Hazards</p>
+      </div>
+      <div class="grid">
+        <div>
+          <p class="thesis" id="thesis"></p>
+          <div class="cta"><a class="btn" href="#mission" data-go="mission">Check a mission</a><a class="btn line" href="#evidence" data-go="evidence">See the evidence</a></div>
+        </div>
+        <figure>
+          <svg viewBox="0 0 420 300" style="max-width:460px" role="img" aria-label="A flame on Earth is a pointed yellow teardrop. The same flame in orbit is a dim blue sphere.">
+            <defs>
+              <radialGradient id="gE" cx="50%" cy="72%" r="62%"><stop offset="0" stop-color="#fff6c9"/><stop offset=".42" stop-color="#ffc14a"/><stop offset=".8" stop-color="#ff7a1f"/><stop offset="1" stop-color="#ff7a1f" stop-opacity="0"/></radialGradient>
+              <radialGradient id="gO" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#05070b" stop-opacity="0"/><stop offset=".5" stop-color="#1d4fa8" stop-opacity=".35"/><stop offset=".78" stop-color="#5aa2ff"/><stop offset="1" stop-color="#5aa2ff" stop-opacity="0"/></radialGradient>
+            </defs>
+            <line x1="210" y1="18" x2="210" y2="262" stroke="#2b3241"/>
+            <line x1="20" y1="232" x2="400" y2="232" stroke="#2b3241"/>
+            <path d="M105 52 C132 96 146 150 128 190 C118 212 92 212 82 190 C64 150 78 96 105 52Z" fill="url(#gE)"/>
+            <path d="M105 150 C114 170 116 186 110 198 C107 204 103 204 100 198 C94 186 96 170 105 150Z" fill="#3f8cff" opacity=".85"/>
+            <rect x="101" y="200" width="8" height="32" fill="#f4f6f9"/><line x1="105" y1="186" x2="105" y2="200" stroke="#05070b" stroke-width="2"/>
+            <circle cx="315" cy="150" r="58" fill="url(#gO)"/>
+            <rect x="311" y="168" width="8" height="64" fill="#f4f6f9"/><line x1="315" y1="150" x2="315" y2="168" stroke="#f4f6f9" stroke-width="2"/>
+            <text x="105" y="256" text-anchor="middle" font-size="13" letter-spacing="1.2">1 g · EARTH</text>
+            <text x="315" y="256" text-anchor="middle" font-size="13" letter-spacing="1.2">0 g · ORBIT</text>
+            <text x="105" y="276" text-anchor="middle" font-size="11">hot gas rises,</text><text x="105" y="291" text-anchor="middle" font-size="11">the flame stretches</text>
+            <text x="315" y="276" text-anchor="middle" font-size="11">nothing rises,</text><text x="315" y="291" text-anchor="middle" font-size="11">the flame is a sphere</text>
+          </svg>
+          <figcaption>Fire does not behave in space as it does on the ground. What burns in a spacecraft has to be learned in flight.</figcaption>
+        </figure>
+      </div>
+      <div class="facts" id="facts"></div>
     </div>
-    <div class="panel pout" id="pout" aria-live="polite"></div>
+  </section>
+  <div class="wrap view">
+    <div class="sec"><span class="no">01</span><h2>Briefing</h2><p class="sub" id="briefsub"></p></div>
+    <div class="frame figbox" id="gapfig" role="img" aria-label="Oxygen levels of solid-material flight tests compared with three cabin atmospheres"></div>
+    <div class="cols">
+      <div class="block"><span class="lab">What the archive says · top findings</span><div class="toplist" id="toplist"></div><a class="btn line" href="#findings" data-go="findings" style="align-self:flex-start">All findings</a></div>
+      <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
+        <div class="block"><span class="lab">Flight test runs near each cabin atmosphere</span><div class="matrix" id="matrix1"></div><p class="fine" id="matrixnote"></p></div>
+        <div class="block"><span class="lab">What to do next</span><ol class="todo" id="todo"></ol></div>
+      </div>
+    </div>
+    <div class="block"><span class="lab">Experiments NASA is running on these questions</span><div class="hgrid" id="nextgrid"></div></div>
   </div>
-  <div class="panel"><div id="pchart"></div><div class="legend" id="plegend"></div></div>
-  <div class="two"><div class="panel tablewrap" id="pnear"></div><div class="panel" id="pcard"></div></div>
-</section>
+</div>
 
-<section id="video">
-  <p class="eyebrow">Video lab</p>
-  <h2>Reading flame spread straight from NASA's raw video</h2>
-  <p class="sub" id="vsub"></p>
-  <div class="panel"><div id="vchart"></div><div class="legend" id="vlegend"></div></div>
-  <div class="thumbs" id="vthumbs"></div>
-  <div class="panel tablewrap" id="vtable"></div>
-  <h3>Checks the calibration does not use</h3>
-  <div class="panel tablewrap" id="vchecks"></div>
-  <p class="fine" id="vnote"></p>
-</section>
+<!-- 02 mission check -->
+<div class="page wrap view" id="v-mission" hidden>
+  <div class="sec"><span class="no">02</span><h2>Mission check</h2><p class="sub">Describe a cabin. QUENCH grades the flight evidence behind each fire-safety question, shows the tests it used, and lists what still has to be tested. Every grade follows a written rule and is computed from NASA's run tables.</p></div>
+  <div class="cols side">
+    <div class="block" id="mcform">
+      <span class="lab">Cabin</span>
+      <div class="group" id="mcpresets" role="group" aria-label="Scenario"></div>
+      <label class="field" for="mc_o2"><span>Oxygen <output id="mc_o2o"></output></span><input id="mc_o2" type="range" min="14" max="40" step="0.5"></label>
+      <label class="field" for="mc_p"><span>Pressure <output id="mc_po"></output></span><input id="mc_p" type="range" min="6" max="15" step="0.1"></label>
+      <div class="field"><span>Gravity</span><div class="seg" id="mc_g" role="group" aria-label="Gravity"></div></div>
+      <label class="field" for="mc_flow"><span>Ventilation speed <output id="mc_flowo"></output></span><input id="mc_flow" type="range" min="0" max="30" step="1"></label>
+      <div class="field"><span>Materials in the cabin</span><div class="checks" id="mc_mats"></div></div>
+      <label class="field" for="mc_agent"><span>Extinguishing agent</span><select id="mc_agent"><option value="co2">Carbon dioxide</option><option value="n2">Nitrogen</option><option value="he">Helium</option></select></label>
+      <div class="checks" style="grid-template-columns:1fr"><label><input type="checkbox" id="mc_liq"> Flammable liquids on board</label><label><input type="checkbox" id="mc_vent"> Fire response starts by stopping ventilation</label></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+      <div class="verdict" id="mcverdict" aria-live="polite"></div>
+      <div class="block"><span class="lab">Evidence scorecard</span><div class="score" id="mcscore"></div></div>
+      <div class="block"><span class="lab">Tests this mission still needs, in priority order</span><ol class="todo" id="mcprio"></ol></div>
+      <div class="group"><button class="btn" id="mccopy">Copy report</button><a class="btn line" href="#evidence" id="mcmap">Show on evidence map</a><span class="fine" id="mccopied" role="status"></span></div>
+      <p class="fine" id="mcrules"></p>
+    </div>
+  </div>
+</div>
 
-<section id="history">
-  <p class="eyebrow">Lessons from real fires</p>
-  <h2>Four moments that shaped spacecraft fire safety</h2>
-  <p class="sub">Each card quotes NASA's own account and links it to what this archive can and cannot say today.</p>
-  <div class="gapfig" id="o2hist" role="img" aria-label="Cabin oxygen levels in history compared with the oxygen range of solid-material flight tests"></div>
-  <div class="cards" id="hcards"></div>
-  <h3>Fire safety on Earth</h3>
-  <p class="sub">Space fire research has already changed firefighting at home. Three examples from NASA Spinoff:</p>
-  <div class="cards" id="spin"></div>
-</section>
+<!-- 03 evidence -->
+<div class="page wrap view" id="v-evidence" hidden>
+  <div class="sec"><span class="no">03</span><h2>Evidence map</h2><p class="sub">Each bubble is a group of flight test runs at one oxygen level and pressure. The box is the matching window around the selected cabin atmosphere: what falls inside counts as evidence for it.</p></div>
+  <div class="controls">
+    <div class="group" id="atmchips" role="group" aria-label="Cabin atmosphere"><span class="lab">Atmosphere</span></div>
+    <div class="group" id="kindchips" role="group" aria-label="What burned"><span class="lab">Show</span></div>
+    <button class="chip" id="viewbtn" aria-pressed="false">Table view</button>
+  </div>
+  <div class="frame"><div id="chart"></div><div class="tablewrap" id="maptable" hidden></div><div class="legend" id="legend"></div></div>
+  <p class="fine" id="mapnote"></p>
+  <div class="block"><span class="lab">Runs inside the window, by what burned</span><div class="matrix" id="matrix2"></div></div>
+</div>
 
-<section id="investigations">
-  <p class="eyebrow">Investigations</p>
-  <h2>The archive, one row per investigation</h2>
-  <p class="sub">Select a row for NASA's own description, the publications and a link to the record.</p>
+<!-- 04 findings -->
+<div class="page wrap view" id="v-findings" hidden>
+  <div class="sec"><span class="no">04</span><h2>Ranked findings</h2><p class="sub">Fifteen findings, each with its evidence, its limits, what to do about it and the NASA records behind it. Set what matters to you and the order follows. Scores are our judgement, shown in full; numbers in the text are computed from NASA's tables.</p></div>
+  <div class="block"><span class="lab">Weights</span><div class="weights" id="weights"></div></div>
+  <div class="group" id="tagchips" role="group" aria-label="Filter by topic"><span class="lab">Topic</span></div>
+  <div id="flist" style="border-top:1px solid var(--strong)"></div>
+</div>
+
+<!-- 05 lab -->
+<div class="page wrap view" id="v-lab" hidden>
+  <div class="sec"><span class="no">05</span><h2>Lab</h2><p class="sub">Two tools that turn the archive into new numbers: a model that predicts whether a droplet fire puts itself out, and a tracker that reads flame spread from NASA's raw video.</p></div>
+  <div class="block"><span class="lab">Outcome predictor · will a burning droplet go out on its own?</span>
+    <p class="sub" id="psub"></p>
+    <div class="group" id="ppresets" role="group" aria-label="Start from a preset"><span class="lab">Start from</span></div>
+    <div class="cols even">
+      <div class="frame" style="display:flex;flex-direction:column;gap:14px">
+        <div class="field"><span>Fuel</span><div class="seg" id="pfuel" role="group" aria-label="Fuel"></div></div>
+        <div id="pinputs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 22px"></div>
+      </div>
+      <div class="frame" id="pout" aria-live="polite" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    <div class="frame"><div id="pchart"></div><div class="legend" id="plegend"></div></div>
+    <div class="cols even"><div class="tablewrap" id="pnear"></div><div id="pcard"></div></div>
+  </div>
+  <div class="block" id="videoblock"><span class="lab">Video lab · flame spread read from raw BASS-II video</span>
+    <p class="sub" id="vsub"></p>
+    <div class="frame"><div id="vchart"></div><div class="legend" id="vlegend"></div></div>
+    <div class="thumbs" id="vthumbs"></div>
+    <div class="tablewrap" id="vtable"></div>
+    <span class="lab" style="color:var(--ink)">Checks the calibration does not use</span>
+    <div class="tablewrap" id="vchecks"></div>
+    <p class="fine" id="vnote"></p>
+  </div>
+</div>
+
+<!-- 06 archive -->
+<div class="page wrap view" id="v-archive" hidden>
+  <div class="sec"><span class="no">06</span><h2>Archive</h2><p class="sub">The 24 combustion investigations in NASA's Physical Sciences Informatics repository, one row each. Select a row for NASA's own description, the publications and the record.</p></div>
   <div class="controls"><input class="search" id="invq" type="search" placeholder="Search by name, fuel or keyword" aria-label="Search investigations"><div class="group" id="invkind" role="group" aria-label="Filter investigations"></div></div>
-  <div class="panel tablewrap"><table id="invtable"></table></div>
+  <div class="tablewrap"><table id="invtable"></table></div>
   <p class="fine" id="invnote"></p>
-</section>
+</div>
 
-<section id="ask">
-  <p class="eyebrow">Ask the archive</p>
-  <h2>Ask a question, get the records that answer it</h2>
-  <p class="sub" id="askmode"></p>
+<!-- 07 lessons -->
+<div class="page wrap view" id="v-lessons" hidden>
+  <div class="sec"><span class="no">07</span><h2>Lessons from real fires</h2><p class="sub">Four moments that shaped spacecraft fire safety, in NASA's own words, each tied to what the archive can and cannot say today.</p></div>
+  <div class="frame figbox" id="o2hist" role="img" aria-label="Cabin oxygen levels in history compared with the oxygen range of solid-material flight tests"></div>
+  <div class="hgrid" id="hcards"></div>
+  <div class="block"><span class="lab">Back on Earth · what space fire research gave firefighters</span><div class="hgrid" id="spin"></div></div>
+</div>
+
+<!-- 08 ask -->
+<div class="page wrap view" id="v-ask" hidden>
+  <div class="sec"><span class="no">08</span><h2>Ask the archive</h2><p class="sub" id="asksub"></p></div>
   <form class="askbox" id="askform"><input class="search" id="askq" type="search" placeholder="e.g. Does turning off ventilation put out a fire at 34 % oxygen?" aria-label="Your question"><button class="btn" type="submit">Ask</button></form>
   <div class="group" id="askchips"></div>
   <div class="answer" id="answer" hidden></div>
-</section>
+</div>
 
-<section id="method">
-  <p class="eyebrow">Method and limits</p>
-  <h2>How this was built</h2>
+<!-- 09 method -->
+<div class="page wrap view" id="v-method" hidden>
+  <div class="sec"><span class="no">09</span><h2>Method and limits</h2><p class="sub">How every number on these pages is produced, and where the tool stops.</p></div>
   <div class="method" id="methodbody"></div>
-</section>
+</div>
 </main>
 <footer class="wrap" id="foot"></footer>
 <div class="tip" id="tip" hidden></div>
 
 <script src="data.js"></script>
 <script src="model.js"></script>
-<script>
-(function () {
-"use strict";
-const D = window.FLAME, S = D.stats;
-const $ = (s, r) => (r || document).querySelector(s);
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const f1 = x => (Math.round(x * 10) / 10).toString();
-const f2 = x => x.toFixed(2);
-const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
-const PSIA = 14.696;
-const KIND = {
-  solid: { label: "Solid materials", one: "solid-material", color: "var(--s1)" },
-  droplet: { label: "Liquid droplets", one: "liquid-fuel", color: "var(--s2)" },
-  gas: { label: "Gas flames", one: "gas-flame", color: "var(--s3)" }
-};
-const KINDS = ["solid", "droplet", "gas"];
-const state = { atm: "exp", custom: { o2: 30, p: 0.6 }, kinds: { solid: true, droplet: true, gas: true }, table: false,
-  weights: { safety: 30, evidence: 25, mission: 25, action: 20 }, tag: null, invq: "", invkind: "all", open: null };
-const DIM = { safety: "Safety impact", evidence: "Strength of evidence", mission: "Fit to Moon and Mars missions", action: "Can be acted on now" };
-
-function target() {
-  if (state.atm === "custom") return { id: "custom", name: "Custom atmosphere", short: "Custom", o2: state.custom.o2, p: state.custom.p, psia: state.custom.p * PSIA };
-  return D.atmospheres.find(a => a.id === state.atm);
-}
-const inv = acc => D.investigations.find(i => i.acc === acc);
-
-/* ---------- groups of identical conditions ---------- */
-const pBucket = p => p < 1.5 ? Math.round(p * 20) / 20 : Math.round(p * 2) / 2;
-function groupBy(tests, keyFn) {
-  const m = new Map();
-  for (const t of tests) {
-    const key = keyFn(t); let g = m.get(key);
-    if (!g) { g = { k: t.k, n: 0, so: 0, slp: 0, inv: {}, out: { ext: 0, burn: 0, other: 0, noign: 0, na: 0 } }; m.set(key, g); }
-    g.n++; g.so += t.o; g.slp += Math.log(t.p || 1); g.inv[t.a] = (g.inv[t.a] || 0) + 1; g.out[t.r]++;
-  }
-  return [...m.values()].map(g => Object.assign(g, { o: g.so / g.n, p: Math.exp(g.slp / g.n) }));
-}
-const recorded = D.tests.filter(t => t.o != null && t.p != null && t.ps === "recorded");
-const groups = groupBy(recorded, t => t.k + "|" + Math.round(t.o) + "|" + pBucket(t.p));
-const solidStrip = groupBy(D.tests.filter(t => t.k === "solid" && t.o != null), t => Math.round(t.o));
-const breStrip = (() => { const m = {}; for (const c of D.conditions) if (c.i === "PSI-20") for (const o of c.o) { (m[o] = m[o] || { o, days: 0 }).days++; } return Object.values(m); })();
-const X0 = 10, X1 = 45;
-const offscale = recorded.filter(t => t.o > X1);
-
-/* ---------- hero ---------- */
-function drawHero() {
-  const exp = D.atmospheres[2];
-  $("#lede").innerHTML = `NASA has burned things in orbit for decades. We put ${esc(S.tests)} of those test runs on one map and asked a single question: does the evidence reach the air a Moon base will use? For solid materials it stops at <b>${f1(S.solid_o2_max)} % oxygen</b>. The exploration atmosphere is <b>${f1(exp.o2)} %</b>.`;
-  const box = $("#gapfig"), W = Math.max(300, box.clientWidth - 28), H = 96, l = 8, r = 8;
-  const x = o => l + (o - 10) / 30 * (W - l - r);
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
-  s += `<line x1="${x(10)}" x2="${x(40)}" y1="52" y2="52" stroke="var(--line-2)" stroke-width="1"/>`;
-  for (let o = 10; o <= 40; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="52" y2="57" stroke="var(--line-2)"/><text x="${x(o)}" y="70" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--mono)">${o}</text>`;
-  s += `<text x="${x(40)}" y="86" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--body)">oxygen, % by volume</text>`;
-  s += `<rect x="${x(S.solid_o2_min)}" y="42" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" rx="3" fill="var(--s1)"/>`;
-  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--body)">Solid materials tested in flight: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
-  D.atmospheres.forEach((a, i) => {
-    const hot = a.id === "exp";
-    s += `<line x1="${x(a.o2)}" x2="${x(a.o2)}" y1="${hot ? 10 : 40}" y2="52" stroke="${hot ? "var(--crit)" : "var(--ink-3)"}" stroke-width="${hot ? 2 : 1.2}"/>`;
-    s += `<circle cx="${x(a.o2)}" cy="52" r="${hot ? 4.5 : 3.5}" fill="${hot ? "var(--crit)" : "var(--surface)"}" stroke="${hot ? "var(--crit)" : "var(--ink-3)"}" stroke-width="1.5"/>`;
-    if (hot) s += `<text x="${x(a.o2) - 7}" y="19" text-anchor="end" font-size="12.5" font-weight="600" fill="var(--crit)" font-family="var(--body)">Exploration atmosphere: ${f1(a.o2)} %</text>`;
-    else if (W > 520 || i === 0) s += `<text x="${x(a.o2) + 5}" y="${i === 0 ? 86 : 44}" font-size="11" fill="var(--ink-3)" font-family="var(--body)">${esc(a.short)} ${f1(a.o2)} %</text>`;
-  });
-  box.innerHTML = s + "</svg>";
-  $("#stats").innerHTML = [
-    [S.combustion, "combustion investigations in NASA's PSI archive"],
-    [S.tests, "test runs listed in its tables"],
-    [S.with_outcome, "runs with a result recorded in a table"],
-    [S.raw_tb + " TB", "of raw data, mostly video, behind them"]
-  ].map(a => `<div><b>${esc(a[0])}</b><span>${esc(a[1])}</span></div>`).join("");
-}
-
-/* ---------- evidence map ---------- */
-function chips() {
-  const ac = $("#atmchips"); ac.querySelectorAll("button").forEach(b => b.remove());
-  [...D.atmospheres, { id: "custom", name: "Custom" }].forEach(a => {
-    const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", state.atm === a.id);
-    b.textContent = a.id === "custom" ? "Custom" : `${a.name} · ${f1(a.o2)} %`; b.onclick = () => { state.atm = a.id; refresh(); }; ac.appendChild(b);
-  });
-  const kc = $("#kindchips"); kc.querySelectorAll("button").forEach(b => b.remove());
-  KINDS.forEach(k => {
-    const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", state.kinds[k]);
-    b.innerHTML = `<i class="sw" style="background:${KIND[k].color}"></i>${KIND[k].label}`; b.onclick = () => { state.kinds[k] = !state.kinds[k]; refresh(); }; kc.appendChild(b);
-  });
-}
-let hit = [];
-function drawMap() {
-  const box = $("#chart"), W = Math.max(300, box.clientWidth), small = W < 620;
-  const m = { l: small ? 42 : 60, r: small ? 12 : 22, t: 26 }, mainH = small ? 290 : 370, rowH = 44, gap = 46;
-  const stripY = m.t + mainH + gap, H = stripY + rowH * 2 + 44;
-  const x = o => m.l + (o - X0) / (X1 - X0) * (W - m.l - m.r);
-  const Y0 = 0.4, Y1 = 6, y = p => m.t + (1 - Math.log(p / Y0) / Math.log(Y1 / Y0)) * mainH;
-  const rad = n => 2.6 + (small ? 1.5 : 1.9) * Math.sqrt(n);
-  const T = target(); hit = [];
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flight test runs by oxygen level and pressure" xmlns="http://www.w3.org/2000/svg">`;
-  for (let o = X0; o <= X1; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="${m.t}" y2="${m.t + mainH}" stroke="var(--line)"/><text x="${x(o)}" y="${m.t + mainH + 16}" text-anchor="middle" font-size="11">${o}</text>`;
-  [0.5, 0.7, 1, 2, 3, 5].forEach(p => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)"/><text x="${m.l - 7}" y="${y(p) + 4}" text-anchor="end" font-size="11">${p}</text>`; });
-  s += `<text x="${m.l}" y="14" font-size="11.5" fill="var(--ink-3)">Pressure, atm (log scale)</text><text x="${W - m.r}" y="${m.t + mainH + 32}" text-anchor="end" font-size="11.5">Oxygen, % by volume</text>`;
-  // target window and guide
-  const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = T.p * (1 + S.p_window), wy1 = T.p * (1 - S.p_window);
-  s += `<rect x="${x(wx0)}" y="${y(wy0)}" width="${x(wx1) - x(wx0)}" height="${y(wy1) - y(wy0)}" fill="var(--ink)" fill-opacity=".06" stroke="var(--ink)" stroke-width="1.2" rx="3"/>`;
-  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${stripY + rowH * 2}" stroke="var(--ink)" stroke-width="1" stroke-opacity=".45"/>`;
-  // strip rows
-  const rows = [["solid", "Solid materials", "pressure not in table", solidStrip], ["gas", "Gas burner emulating solids", "ACME BRE, pressure not listed", breStrip]];
-  rows.forEach((r, i) => {
-    const cy = stripY + rowH * i + rowH / 2;
-    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${cy}" y2="${cy}" stroke="var(--line)"/>`;
-    s += `<text x="${m.l}" y="${cy - rowH / 2 + 9}" font-size="11.5" font-weight="600" fill="var(--ink)">${r[1]}<tspan font-weight="400" fill="var(--ink-3)">  ${small ? "" : r[2]}</tspan></text>`;
-  });
-  s += `<text x="${m.l}" y="${stripY - 16}" font-size="11.5" fill="var(--ink-3)">Tests with an oxygen level but no pressure in the table</text>`;
-  const marks = [];
-  if (state.kinds.droplet || state.kinds.gas) groups.filter(g => state.kinds[g.k] && g.o <= X1).forEach(g => marks.push({ cx: x(g.o), cy: y(g.p), r: rad(g.n), g, hollow: false }));
-  if (state.kinds.solid) solidStrip.forEach(g => marks.push({ cx: x(g.o), cy: stripY + rowH / 2 + 4, r: rad(g.n), g, hollow: true, strip: "solid" }));
-  if (state.kinds.gas) breStrip.forEach(b => marks.push({ cx: x(b.o), cy: stripY + rowH * 1.5 + 4, r: rad(b.days * 3), g: { k: "gas", bre: b }, hollow: true, strip: "bre" }));
-  marks.sort((a, b) => b.r - a.r).forEach(mk => {
-    const c = KIND[mk.g.k].color, i = hit.push(mk) - 1;
-    s += `<circle class="bub" data-i="${i}" tabindex="0" cx="${mk.cx.toFixed(1)}" cy="${mk.cy.toFixed(1)}" r="${mk.r.toFixed(1)}" fill="${c}" fill-opacity="${mk.hollow ? 0.28 : 0.82}" stroke="${mk.hollow ? c : "var(--surface)"}" stroke-width="1.5"/>`;
-  });
-  // cabin atmospheres
-  const list = state.atm === "custom" ? [...D.atmospheres, T] : D.atmospheres;
-  list.forEach(a => {
-    const on = a.id === T.id, cx = x(a.o2), cy = y(a.p);
-    s += `<g pointer-events="none"><circle cx="${cx}" cy="${cy}" r="${on ? 7 : 5}" fill="var(--surface)" stroke="var(--ink)" stroke-width="${on ? 2.2 : 1.4}"/><line x1="${cx - 11}" x2="${cx + 11}" y1="${cy}" y2="${cy}" stroke="var(--ink)" stroke-width="${on ? 1.6 : 1}"/><line x1="${cx}" x2="${cx}" y1="${cy - 11}" y2="${cy + 11}" stroke="var(--ink)" stroke-width="${on ? 1.6 : 1}"/>`;
-    if (on || !small) { const lab = on ? `${a.name}: ${f1(a.o2)} %, ${f1(a.psia)} psia` : a.short; const right = cx + 16 + lab.length * 6.4 > W - m.r;
-      s += `<text x="${right ? cx - 15 : cx + 15}" y="${on ? y(a.p * (1 + S.p_window)) - 8 : cy - 13}" text-anchor="${right ? "end" : "start"}" font-size="${on ? 12.5 : 11.5}" font-weight="${on ? 600 : 400}" fill="var(--ink)" stroke="var(--surface)" stroke-width="3.5" paint-order="stroke">${esc(lab)}</text>`; }
-    s += "</g>";
-  });
-  box.innerHTML = s + "</svg>";
-  $("#legend").innerHTML = KINDS.map(k => `<span><i style="background:${KIND[k].color}"></i>${KIND[k].label}</span>`).join("") +
-    `<span><svg width="46" height="18" aria-hidden="true"><circle cx="7" cy="9" r="4.5" fill="var(--ink-3)"/><circle cx="30" cy="9" r="8.6" fill="var(--ink-3)"/></svg>1 run and 10 runs</span>` +
-    `<span><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--ink-3)" stroke-width="1.5"/></svg>oxygen only</span>` +
-    `<span><svg width="20" height="18" aria-hidden="true"><circle cx="10" cy="9" r="4.5" fill="none" stroke="var(--ink)" stroke-width="1.5"/><line x1="1" x2="19" y1="9" y2="9" stroke="var(--ink)"/><line x1="10" x2="10" y1="0" y2="18" stroke="var(--ink)"/></svg>cabin atmosphere, with its matching window</span>`;
-  const off = {}; offscale.forEach(t => off[t.k] = (off[t.k] || 0) + 1);
-  $("#mapnote").textContent = `Not drawn: ${Object.keys(off).map(k => `${off[k]} ${KIND[k].one} runs above ${X1} % oxygen`).join(", ")}; ${S.solid_no_conditions} solid-material runs whose table lists no oxygen level; and the gas-jet and smoke investigations, whose tables hold no oxygen column. ACME BRE bubbles count test days, not runs.`;
-  drawMapTable();
-}
-function tipHtml(mk) {
-  const g = mk.g;
-  if (g.bre) return `<b>ACME BRE · ${f1(g.bre.o)} % oxygen</b><br>${plural(g.bre.days, "test day")} included this level<br><span class="t2">A gas burner that emulates burning solids. PSI lists oxygen per test day and no chamber pressure.</span>`;
-  const invs = Object.keys(g.inv).map(a => `${esc(a)} ${g.inv[a]}`).join(", ");
-  const o = g.out, known = g.n - o.na;
-  let h = `<b>${plural(g.n, "run")} · ${KIND[g.k].label}</b><br>${f1(g.o)} % oxygen` + (mk.strip ? ", cabin pressure (not in table)" : `, ${f2(g.p)} atm (${f1(g.p * PSIA)} psia)`) + `<br><span class="t2">${invs}</span>`;
-  if (known) h += `<br>Went out on its own: ${o.ext} · Kept burning: ${o.burn}` + (o.other ? ` · Other end: ${o.other}` : "") + (o.noign ? ` · No ignition: ${o.noign}` : "");
-  else h += `<br><span class="t2">Result not recorded in the table</span>`;
-  return h;
-}
-function showTip(el, ev) {
-  const mk = hit[+el.dataset.i]; if (!mk) return; const tip = $("#tip"); tip.innerHTML = tipHtml(mk); tip.hidden = false;
-  const r = el.getBoundingClientRect(), px = ev && ev.clientX != null ? ev.clientX : r.left + r.width / 2, py = ev && ev.clientY != null ? ev.clientY : r.top;
-  const tw = tip.offsetWidth, th = tip.offsetHeight;
-  tip.style.left = Math.min(window.innerWidth - tw - 8, Math.max(8, px + 14)) + "px";
-  tip.style.top = Math.max(8, py - th - 12 < 8 ? py + 18 : py - th - 12) + "px";
-}
-function drawMapTable() {
-  const rows = groups.filter(g => state.kinds[g.k]).sort((a, b) => a.k.localeCompare(b.k) || a.o - b.o || a.p - b.p);
-  const strip = state.kinds.solid ? solidStrip.slice().sort((a, b) => a.o - b.o) : [];
-  $("#maptable").innerHTML = `<table><thead><tr><th>What burned</th><th class="n">Oxygen %</th><th class="n">Pressure atm</th><th class="n">Runs</th><th>Investigations</th><th class="n">Went out</th><th class="n">Kept burning</th></tr></thead><tbody>` +
-    strip.concat(rows).map(g => `<tr><td><i class="kdot" style="background:${KIND[g.k].color}"></i>${KIND[g.k].label}</td><td class="n">${f1(g.o)}</td><td class="n">${g.k === "solid" ? "not in table" : f2(g.p)}</td><td class="n">${g.n}</td><td>${esc(Object.keys(g.inv).join(", "))}</td><td class="n">${g.n - g.out.na ? g.out.ext : "–"}</td><td class="n">${g.n - g.out.na ? g.out.burn : "–"}</td></tr>`).join("") + "</tbody></table>";
-  $("#maptable").hidden = !state.table; $("#chart").hidden = state.table; $("#legend").hidden = state.table;
-  $("#viewbtn").setAttribute("aria-pressed", state.table); $("#viewbtn").textContent = state.table ? "Chart view" : "Table view";
-}
-
-/* ---------- mission brief ---------- */
-function coverage(T) {
-  const out = {};
-  KINDS.forEach(k => {
-    const all = D.tests.filter(t => t.k === k && t.o != null);
-    const win = all.filter(t => t.ps === "recorded" && t.p != null && Math.abs(t.o - T.o2) <= S.o2_window && Math.abs(t.p / T.p - 1) <= S.p_window);
-    const o2only = all.filter(t => t.ps !== "recorded" && Math.abs(t.o - T.o2) <= S.o2_window);
-    let best = null;
-    all.forEach(t => { const p = t.p || 1, d = Math.hypot((t.o - T.o2) / S.o2_window, Math.log(p / T.p) / Math.log(1 + S.p_window)); if (!best || d < best.d) best = { d, t, p }; });
-    let near = null;
-    if (best) { const same = all.filter(t => Math.round(t.o) === Math.round(best.t.o) && pBucket(t.p || 1) === pBucket(best.p));
-      near = { n: same.length, o: best.t.o, p: best.p, assumed: best.t.ps !== "recorded", accs: [...new Set(same.map(t => t.a))], do: best.t.o - T.o2, dp: (best.p / T.p - 1) * 100 }; }
-    const res = { ext: 0, burn: 0, other: 0, noign: 0 }; win.forEach(t => { if (res[t.r] != null) res[t.r]++; });
-    const cabin = Math.abs(1 / T.p - 1) <= S.p_window;
-    let status, n;
-    if (k === "solid") { n = cabin ? o2only.length : 0; status = n >= 10 ? "ok" : n > 0 ? "thin" : o2only.length ? "thin" : "none"; }
-    else { n = win.length; status = n >= 10 ? "ok" : n > 0 ? "thin" : "none"; }
-    out[k] = { n, win, o2only, near, res, status, cabin };
-  });
-  out.bre = breStrip.filter(b => Math.abs(b.o - T.o2) <= 1);
-  return out;
-}
-const STATUS = { none: ["✕", "No flight tests"], thin: ["!", "Thin evidence"], ok: ["✓", "Tested"] };
-function nearText(c, k) {
-  const n = c.near; if (!n) return "No runs with an oxygen level on record.";
-  const dOx = Math.abs(n.do) < 0.25 ? "the same oxygen level" : `${f1(Math.abs(n.do))} points ${n.do < 0 ? "less" : "more"} oxygen`;
-  const dP = n.assumed ? "at cabin pressure, which the table does not record" : Math.abs(n.dp) < 3 ? "at the same pressure" : `at ${Math.abs(Math.round(n.dp))} % ${n.dp > 0 ? "higher" : "lower"} pressure`;
-  return `Closest: ${plural(n.n, "run")} from ${n.accs.join(" and ")} at ${f1(n.o)} % oxygen${n.assumed ? "" : " and " + f2(n.p) + " atm"}. That is ${dOx}, ${dP}.`;
-}
-function drawBrief() {
-  const T = target(), C = coverage(T);
-  $("#brieftitle").textContent = `Fire-safety evidence for ${f1(T.o2)} % oxygen at ${f1(T.psia)} psia`;
-  $("#w1").textContent = S.o2_window; $("#w2").textContent = Math.round(S.p_window * 100);
-  $("#sliders").hidden = state.atm !== "custom";
-  $("#o2s").value = T.o2; $("#ps").value = f1(T.psia); $("#o2o").textContent = f1(T.o2) + " %"; $("#po").textContent = `${f1(T.psia)} psia (${f2(T.p)} atm)`;
-  $("#cards").innerHTML = KINDS.map(k => {
-    const c = C[k], st = STATUS[c.status];
-    let line;
-    if (k === "solid") line = c.o2only.length ? (c.cabin ? `${plural(c.o2only.length, "run")} within ${S.o2_window} points of this oxygen level, at cabin pressure.` : `${plural(c.o2only.length, "run")} match the oxygen level, but all at cabin pressure, not ${f2(T.p)} atm.`) : `No solid material was tested within ${S.o2_window} points of ${f1(T.o2)} % oxygen.`;
-    else { const known = c.res.ext + c.res.burn + c.res.other + c.res.noign;
-      line = c.n ? `${plural(c.n, "run")} inside the window.` + (known ? ` Of ${known} with a recorded end, ${c.res.ext} went out on their own and ${c.res.burn} kept burning.` : " Results are not in the table.") : "No runs inside the window."; }
-    return `<div class="card"><h3><i class="kdot" style="background:${KIND[k].color}"></i>${KIND[k].label}</h3><div class="big num">${c.n}<small> ${k === "solid" ? "runs at cabin pressure" : "runs in window"}</small></div><span class="pill ${c.status}"><span aria-hidden="true">${st[0]}</span>${st[1]}</span><p>${esc(line)}</p><p>${esc(c.status === "ok" ? "" : nearText(c, k))}</p></div>`;
-  }).join("");
-  // narrative
-  const items = [];
-  const solid = C.solid, hi = T.o2 >= 25;
-  if (solid.status === "none") items.push(`<b>Materials are the gap.</b> No solid material in the archive was burned above ${f1(S.solid_o2_max)} % oxygen. At ${f1(T.o2)} % you are ${f1(T.o2 - S.solid_o2_max)} points past the last data point, so flammability limits measured on the station do not transfer.`);
-  else if (!solid.cabin) items.push(`<b>Materials were tested at this oxygen level, but not at this pressure.</b> ${plural(solid.o2only.length, "solid-material run")} match the oxygen; every one ran at cabin pressure.`);
-  else items.push(`<b>Materials are covered at station conditions.</b> ${plural(solid.o2only.length, "solid-material run")} sit within ${S.o2_window} points of this oxygen level. Their results are in video and papers, not in the table.`);
-  if (C.droplet.status === "none") items.push(`<b>Liquid fuels come close but do not land.</b> ${esc(nearText(C.droplet))}`);
-  else items.push(`<b>Liquid fuels:</b> ${plural(C.droplet.n, "droplet run")} inside the window${C.droplet.res.ext + C.droplet.res.burn ? `, ${C.droplet.res.ext} of which went out on their own` : ""}.`);
-  if (C.bre.length) items.push(`<b>The one direct hint for solids is indirect.</b> ACME BRE ran a gas burner that emulates solid fuels on ${plural(C.bre[0].days, "test day")} at ${f1(C.bre[0].o)} % oxygen. NASA reports that in elevated oxygen its flames kept burning with no airflow.`);
-  if (hi) items.push(`<b>Do not count on self-extinction.</b> In FLEX, ${S.flex_bands[0].pct} % of droplet runs below 18 % oxygen went out on their own; at 25 % and above, ${S.flex_bands[2].pct} % did.`);
-  items.push(`<b>Gravity is untested.</b> Every flight run here was in microgravity. None was at lunar or Martian gravity.`);
-  $("#brieftext").innerHTML = `<h3>What this means for a designer</h3><ul>${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
-  $("#nextgrid").innerHTML = D.next.map(n => `<div class="card"><h3>${esc(n.name)}</h3><p>${esc(n.full)}</p><p>${esc(n.what)}</p><a href="${esc(n.url)}" target="_blank" rel="noopener">NASA Glenn page</a></div>`).join("");
-  state.briefText = `FIRE-SAFETY EVIDENCE BRIEF\n${f1(T.o2)} % oxygen, ${f1(T.psia)} psia (${f2(T.p)} atm)\nSource: NASA PSI combustion archive, ${S.tests} test runs. Window: oxygen within ${S.o2_window} points, pressure within ${Math.round(S.p_window * 100)} %.\n\n` +
-    KINDS.map(k => `${KIND[k].label}: ${C[k].n} runs (${STATUS[C[k].status][1]}). ${C[k].status === "ok" ? "" : nearText(C[k], k)}`).join("\n") + "\n\n" +
-    items.map(i => "- " + i.replace(/<[^>]+>/g, "")).join("\n") + "\n";
-}
-
-/* ---------- findings ---------- */
-function score(f) { const w = state.weights, tot = Object.keys(w).reduce((a, k) => a + w[k], 0) || 1; return Object.keys(w).reduce((a, k) => a + w[k] * f.scores[k], 0) / tot / 5 * 100; }
-function drawWeights() {
-  $("#weights").innerHTML = Object.keys(DIM).map(k => `<label for="w_${k}"><span>${DIM[k]} <b class="num" id="wv_${k}">${state.weights[k]}</b></span><input id="w_${k}" type="range" min="0" max="50" step="5" value="${state.weights[k]}"></label>`).join("");
-  Object.keys(DIM).forEach(k => { $("#w_" + k).oninput = e => { state.weights[k] = +e.target.value; $("#wv_" + k).textContent = e.target.value; drawFindings(); }; });
-  const tags = [...new Set(D.findings.flatMap(f => f.tags))].sort();
-  const tc = $("#tagchips");
-  ["all", ...tags].forEach(t => { const b = document.createElement("button"); b.className = "chip"; b.textContent = t; b.dataset.t = t; b.onclick = () => { state.tag = t === "all" ? null : t; drawFindings(); }; tc.appendChild(b); });
-}
-function drawFindings() {
-  document.querySelectorAll("#tagchips .chip").forEach(b => b.setAttribute("aria-pressed", (state.tag || "all") === b.dataset.t));
-  const list = D.findings.filter(f => !state.tag || f.tags.includes(state.tag)).map(f => ({ f, s: score(f) })).sort((a, b) => b.s - a.s);
-  $("#flist").innerHTML = list.map((x, i) => {
-    const f = x.f;
-    return `<article class="finding" id="f-${f.id}"><div class="rank">${i + 1}<small>${Math.round(x.s)}/100</small></div><div class="body">
-      <h3>${esc(f.title)}</h3><div class="meta"><span class="tag kind">${esc(f.kind)}</span>${f.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-      <p>${esc(f.claim)}</p>${f.quote ? `<blockquote>“${esc(f.quote)}”<cite>${f.quote_url ? `<a href="${esc(f.quote_url)}" target="_blank" rel="noopener">${esc(f.quote_src)}</a>` : "NASA, " + esc(f.quote_src)}</cite></blockquote>` : ""}
-      <dl><dt>Evidence</dt><dd>${esc(f.evidence)}</dd><dt>Limits</dt><dd>${esc(f.limits)}</dd><dt>What to do</dt><dd class="act">${esc(f.action)}</dd>
-      <dt>Sources</dt><dd>${f.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} (${esc(s.acc)})</a>`).join(", ")}${f.next.length ? ` · open question for ${f.next.map(n => esc(D.next.find(z => z.id === n).name)).join(", ")}` : ""}</dd></dl></div>
-      <div class="scores">${Object.keys(DIM).map(k => `<div><span>${DIM[k]}</span><b>${f.scores[k]}</b><span class="track"><i style="width:${f.scores[k] * 20}%"></i></span></div>`).join("")}</div></article>`;
-  }).join("");
-}
-
-/* ---------- investigations ---------- */
-function drawInv() {
-  const kc = $("#invkind");
-  if (!kc.children.length) [["all", "All"], ["solid", "Solids"], ["droplet", "Liquids"], ["gas", "Gases"], ["outcome", "Has results in table"]].forEach(a => { const b = document.createElement("button"); b.className = "chip"; b.textContent = a[1]; b.dataset.k = a[0]; b.onclick = () => { state.invkind = a[0]; drawInv(); }; kc.appendChild(b); });
-  kc.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === state.invkind));
-  const q = state.invq.toLowerCase();
-  const rows = D.investigations.filter(i => i.combustion).filter(i => state.invkind === "all" || (state.invkind === "outcome" ? i.outcome : i.kind === state.invkind))
-    .filter(i => !q || (i.acr + " " + i.title + " " + i.keywords + " " + i.area + " " + i.objective + " " + (i.summary || "")).toLowerCase().includes(q)).sort((a, b) => b.rows - a.rows);
-  const rng = (r, d) => r ? (r[0] === r[1] ? d(r[0]) : d(r[0]) + " – " + d(r[1])) : "–";
-  $("#invtable").innerHTML = `<thead><tr><th>Investigation</th><th>Burned</th><th>Platform</th><th class="n">Runs listed</th><th class="n">Oxygen %</th><th class="n">Pressure atm</th><th>Results in table</th><th class="n">Raw data</th><th class="n">Papers</th></tr></thead><tbody>` +
-    rows.map(i => `<tr class="row" data-acc="${i.acc}" tabindex="0" aria-expanded="${state.open === i.acc}"><td><b>${esc(i.acr || i.acc)}</b>${i.relevance ? `<span class="rel ${i.relevance}">${{ direct: "fire safety", indirect: "related", background: "background" }[i.relevance]}</span>` : ""}<br><span class="fine">${esc(i.summary || i.title)}</span></td><td>${i.kind ? `<i class="kdot" style="background:${KIND[i.kind].color}"></i>${KIND[i.kind].label}` : esc(i.area || "–")}</td><td>${esc(i.platform.replace("International Space Station (ISS)", "Space station").replace("Not Applicable", "Ground analysis") || "–")}</td><td class="n">${i.rows || "–"}</td><td class="n">${rng(i.o2, f1)}</td><td class="n">${rng(i.p, f2)}</td><td>${esc(i.outcome || "no")}</td><td class="n">${i.raw_gb ? (i.raw_gb >= 1000 ? f1(i.raw_gb / 1000) + " TB" : Math.round(i.raw_gb) + " GB") : "–"}</td><td class="n">${i.npub}</td></tr>` +
-      (state.open === i.acc ? `<tr class="detail"><td colspan="9"><div class="cols"><div><h4>Full title</h4><p>${esc(i.title)}</p><p class="fine" style="margin-top:6px">The one-line summary above was drafted with Claude from this record; every number in it is checked against the record or its table at build time.</p></div><div><h4>Objective</h4><p>${esc(i.objective || "Not given in the record.")}</p></div><div><h4>Hypothesis</h4><p>${esc(i.hypothesis || "Not given in the record.")}</p></div><div><h4>Approach</h4><p>${esc(i.approach || "Not given in the record.")}</p></div><div><h4>Why it matters</h4><p>${esc(i.impacts || "Not given in the record.")}</p></div><div><h4>Publications (${i.pubs.length})</h4><ol>${i.pubs.map(p => `<li>${p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.t)}</a>` : esc(p.t)}</li>`).join("") || "<li>None listed</li>"}</ol></div><div><h4>Record</h4><p><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.acc)} on NASA PSI</a>${i.doi ? `<br>DOI ${esc(i.doi)}` : ""}<br>${esc(i.start || "?")} to ${esc(i.end || "?")}<br>Licence ${esc(i.lic || "not stated")}</p></div></div></td></tr>` : "")).join("") + "</tbody>";
-  const skipped = D.investigations.filter(i => !i.combustion);
-  $("#invnote").textContent = `${rows.length} of ${S.combustion} investigations shown. The archive search for "combustion" also returns ${skipped.map(i => i.acc).join(" and ")}, which are about solders and fluid physics and are left out.`;
-}
-
-/* ---------- ask ---------- */
-const STOP = new Set("a an and are as at be but by can did do does for from has have how if in into is it its of on or that the their there these this to was we what when where which who why will with would you your any about been were than then so not no out up down".split(" "));
-const SYN = { moon: ["lunar", "exploration", "gravity"], lunar: ["moon", "exploration", "gravity"], mars: ["martian", "exploration", "gravity"], o2: ["oxygen"], oxygen: ["o2"], extinguish: ["extinction", "suppression", "suppressant", "extinguisher"], extinguisher: ["suppressant", "suppression"], put: ["extinction", "suppression"], ventilation: ["airflow", "flow", "vent"], vent: ["ventilation", "airflow"], fan: ["ventilation", "airflow"], airflow: ["ventilation"], smoke: ["detector", "detection", "aerosol"], detector: ["smoke", "detection"], material: ["solid", "fabric", "pmma", "materials"], materials: ["solid", "fabric", "pmma"], plastic: ["pmma", "solid", "material"], fabric: ["sibal", "cotton", "material"], liquid: ["droplet", "liquids", "fuel"], droplet: ["liquid", "liquids"], gas: ["gaseous", "flame"], data: ["video", "table", "raw"], video: ["data", "raw"], pressure: ["psia", "atm"], test: ["standard", "screening"], standard: ["6001", "screening", "standards"], habitat: ["cabin", "exploration"], base: ["exploration", "lunar"], co2: ["carbon", "dioxide", "suppressant"], helium: ["suppressant"], cool: ["invisible", "visible"], safe: ["safety"], gap: ["missing", "untested"], missing: ["gap"] };
-const stem = w => w.replace(/(ing|ed|es|s)$/, "");
-const toks = s => s.toLowerCase().replace(/[^a-z0-9.% ]+/g, " ").split(/\s+/).filter(w => w.length > 1 && !STOP.has(w));
-const docs = D.findings.map(f => ({ type: "f", ref: f, title: toks(f.title).map(stem), tags: f.tags.map(stem), body: toks(f.claim + " " + f.evidence + " " + f.action + " " + f.limits).map(stem) }))
-  .concat(D.investigations.filter(i => i.combustion).map(i => ({ type: "i", ref: i, title: toks(i.acr + " " + i.title).map(stem), tags: toks(i.keywords + " " + i.area).map(stem), body: toks(i.objective + " " + i.hypothesis).map(stem) })));
-function search(q) {
-  const base = toks(q), terms = [];
-  base.forEach(w => { terms.push([stem(w), 1]); (SYN[w] || []).forEach(s => terms.push([stem(s), 0.5])); });
-  return docs.map(d => { let s = 0; terms.forEach(([w, wt]) => { if (d.title.includes(w)) s += 3 * wt; if (d.tags.includes(w)) s += 2 * wt; if (d.body.includes(w)) s += wt; }); return { d, s }; }).filter(x => x.s > 0).sort((a, b) => b.s - a.s);
-}
-function countAnswer(q) {
-  const mo = q.match(/(\d+(?:\.\d+)?)\s*(?:%|percent)/i); if (!mo) return "";
-  const mp = q.match(/(\d+(?:\.\d+)?)\s*(psia|psi|atm)/i);
-  const o2 = +mo[1]; if (o2 < 5 || o2 > 100) return "";
-  const p = mp ? (/atm/i.test(mp[2]) ? +mp[1] : +mp[1] / PSIA) : null;
-  const near = k => D.tests.filter(t => t.k === k && t.o != null && Math.abs(t.o - o2) <= S.o2_window && (p == null || (t.ps === "recorded" && Math.abs(t.p / p - 1) <= S.p_window))).length;
-  return `<div class="a"><h3>Counted from the run tables</h3><p>Within ${S.o2_window} points of ${f1(o2)} % oxygen${p ? ` and ${Math.round(S.p_window * 100)} % of ${f2(p)} atm` : " (any pressure)"}: <b>${near("solid")}</b> solid-material runs, <b>${near("droplet")}</b> liquid-droplet runs and <b>${near("gas")}</b> gas-flame runs.${p ? " Solid-material tables record no pressure, so they cannot match a pressure." : ""}</p></div>`;
-}
-const cite = f => f.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.acc)}</a>`).join(", ");
-function localAnswer(q) {
-  const res = search(q), fs = res.filter(x => x.d.type === "f").slice(0, 3), is = res.filter(x => x.d.type === "i").slice(0, 4);
-  let h = countAnswer(q);
-  if (!fs.length && !is.length && !h) return `<p>Nothing in the archive matches that. Try naming a material, a hazard or an oxygen level.</p>`;
-  h += fs.map(x => { const f = x.d.ref; return `<div class="a"><h3><a href="#f-${f.id}">${esc(f.title)}</a></h3><p>${esc(f.claim)}</p><p><b>Limits:</b> ${esc(f.limits)}</p><p class="fine">Records: ${cite(f)}</p></div>`; }).join("");
-  if (is.length) h += `<div class="a"><h3>Investigations to read</h3><p>${is.map(x => `<a href="${esc(x.d.ref.url)}" target="_blank" rel="noopener">${esc(x.d.ref.acr || x.d.ref.acc)}</a> (${esc(x.d.ref.title)})`).join("; ")}.</p></div>`;
-  return h;
-}
-let ASK_URL = (document.querySelector('meta[name="flame-ask-url"]') || {}).content || "";
-let ASK_MODEL = "";
-const refLink = id => { if (/^PSI-\d+$/.test(id) && inv(id)) return `<a href="${inv(id).url}" target="_blank" rel="noopener">${id}</a>`;
-  if (id.startsWith("F-")) return `<a href="#f-${esc(id.slice(2))}">${esc(id)}</a>`; if (id.startsWith("H-")) return `<a href="#history">${esc(id)}</a>`;
-  if (id === "VIDEO") return `<a href="#video">${id}</a>`; if (id === "MODEL") return `<a href="#predict">${id}</a>`; return esc(id); };
-function renderAI(j, q) {
-  const claims = (j.claims || []).map(c => `<div class="claim"><span class="mark ${c.ok ? "ok" : "no"}" title="${c.ok ? "Checked against the cited records" : "Not verified"}">${c.ok ? "✓" : "!"}</span><span>${esc(c.text)}</span><span class="src">${(c.sources || []).map(refLink).join(", ")}${c.ok ? "" : " · " + esc(c.issues.join("; "))}</span></div>`).join("");
-  return `<div class="a"><h3>Answer</h3><p>${esc(j.answer)}</p></div>${claims ? `<div class="a"><h3>Claims, each checked against the records it cites</h3>${claims}<p class="fine">${j.verified} of ${j.total} claims passed: every cited record exists and every number appears in it.</p></div>` : ""}${j.outside_archive ? `<div class="a"><h3>Not covered by the archive</h3><p>${esc(j.outside_archive)}</p></div>` : ""}<p class="fine">Written by ${esc(j.model || "Claude")} from the archive records only. Research aid, not a design basis.</p>` + localAnswer(q);
-}
-async function ask(q) {
-  const box = $("#answer"); box.hidden = false; if (!q.trim()) { box.innerHTML = "<p>Type a question first.</p>"; return; }
-  if (ASK_URL) {
-    box.innerHTML = "<p>Reading the records…</p>";
-    try {
-      const r = await fetch(ASK_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: q }) });
-      if (!r.ok) throw new Error("status " + r.status);
-      const j = await r.json();
-      if (j.error) { box.innerHTML = `<p>${esc(j.error)} Showing the offline search instead.</p>` + localAnswer(q); return; }
-      box.innerHTML = renderAI(j, q); return;
-    } catch (e) { /* fall through to the offline answer */ }
-  }
-  box.innerHTML = localAnswer(q);
-}
-async function detectAI() {
-  if (ASK_URL || !/^https?:/.test(location.protocol)) return;
-  try { const ctl = new AbortController(); setTimeout(() => ctl.abort(), 2500);
-    const r = await fetch("api/health", { signal: ctl.signal }); if (!r.ok) return; const j = await r.json();
-    if (j.ai) { ASK_URL = "api/ask"; ASK_MODEL = j.model; drawAskMode(); } } catch (e) { /* static hosting: stay offline */ }
-}
-function drawAskMode() {
-  $("#askmode").textContent = ASK_URL ? `Answers are written by Claude (${ASK_MODEL || "server model"}) from the records in this archive only. Every claim cites its records, and the server checks that each cited record exists and that each number appears in it before you see it.` : "This copy runs without a model: it finds the findings and investigations that match your words and counts runs from the tables. Run server/serve.py with an Anthropic API key to get answers written by Claude, with every claim checked against the records.";
-}
-function drawAsk() {
-  drawAskMode(); detectAI();
-  ["Does turning off ventilation put out a fire at 34 % oxygen?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "Which materials were tested on the Moon?", "Do smoke detectors work the same in microgravity?", "Where is the raw data for solid materials?"].forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
-  $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
-}
-
-/* ---------- method ---------- */
-function drawMethod() {
-  $("#methodbody").innerHTML = `
-  <div><h3>Data</h3><ul><li>Source: <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA Physical Sciences Informatics</a>, every investigation returned for “combustion”. Public domain (CC0-1.0).</li><li>${S.investigations} records, ${S.combustion} of them about combustion; ${S.table_rows} table rows; ${S.pubs} linked publications.</li><li>Cabin atmospheres are the three NASA names in the ACME BRE record: 14.7 psia at 21 %, 10.2 psia at 26.5 % and 8.2 psia at 34 % oxygen.</li><li>Current experiments are taken from the <a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science page</a>.</li><li>Built ${esc(D.meta.built)}. One script rebuilds every number on this page from the CSV files.</li></ul></div>
-  <div><h3>Rules we held to</h3><ul><li>A missing value stays missing. Nothing is estimated or filled in.</li><li>Runs without a recorded pressure are drawn apart and never counted as a pressure match.</li><li>Quotes are checked against the PSI record at build time; the build fails if one no longer matches.</li><li>Finding scores are judgements. They are shown in full and you can reweight them.</li><li>This is a research prototype. It is not validated for spacecraft design or fire-safety decisions.</li></ul></div>
-  <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
-  <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>Tested with ${esc(M.cv.method)}: accuracy ${Math.round(M.cv.results["Full model"].accuracy.mean * 100)} %, AUC ${f2(M.cv.results["Full model"].auc.mean)}.</li><li>Every query is compared with the nearest real runs; anything farther than ${f2(M.domain.nn95)} standard deviations, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
-  <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li><li>Code: <span class="mono">video/extract.py</span>, <span class="mono">video/run_all.py</span>, method in <span class="mono">video/METHOD.md</span>.</li></ul></div>
-  <div><h3>Use of AI</h3><ul><li>Claude (Anthropic) helped write the code, normalise the tables, draft the one-line investigation summaries and draft the wording of the findings. A person checked them.</li><li>Every number in a finding is computed from NASA's tables by the build script. Every quote is matched word for word against a saved copy of its NASA source, and the build fails if one is not found.</li><li>The question box can call Claude through <span class="mono">server/serve.py</span>. Claude must answer in a fixed shape with record IDs for every claim; the server checks that every cited record exists and that every number appears in it with the same unit. That catches invented numbers; it cannot catch a correct number used in the wrong sense, so each claim links to its record. Without a server, the box runs an offline search.</li></ul></div>
-  <div><h3>Resources from the organizers</h3><ul>${D.sources.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join("")}<li><a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI combustion investigations</a></li><li><a href="${esc(D.meta.glenn_url)}" target="_blank" rel="noopener">NASA Glenn combustion science</a></li></ul></div>`;
-  $("#foot").innerHTML = `FlameGap · NASA Space Apps Challenge 2026 · Data: NASA PSI, CC0-1.0 · Not an official NASA product.`;
-}
-
-/* ---------- predictor (FLEX model) ---------- */
-const M = window.FLAME_MODEL;
-const PQ = { o2: 34, psia: 8.2, fuel: "heptane", d0: 3.0, co2: 0, he: 0 };
-const PIN = [
-  { k: "o2", label: "Oxygen", unit: "%", min: 10, max: 40, step: 0.5, fmt: v => f1(v) + " %" },
-  { k: "psia", label: "Pressure", unit: "psia", min: 6, max: 45, step: 0.1, fmt: v => `${f1(v)} psia (${f2(v / PSIA)} atm)` },
-  { k: "d0", label: "Droplet diameter", unit: "mm", min: 1, max: 5, step: 0.1, fmt: v => f1(v) + " mm" },
-  { k: "co2", label: "Carbon dioxide in the air", unit: "%", min: 0, max: 70, step: 1, fmt: v => Math.round(v) + " %" },
-  { k: "he", label: "Helium in the air", unit: "%", min: 0, max: 45, step: 1, fmt: v => Math.round(v) + " %" }
-];
-const PRESETS = [
-  ["Station air", { o2: 21, psia: 14.7, co2: 0, he: 0 }],
-  ["10.2 psia cabin", { o2: 26.5, psia: 10.2, co2: 0, he: 0 }],
-  ["Exploration atmosphere", { o2: 34, psia: 8.2, co2: 0, he: 0 }],
-  ["Carbon dioxide flooding", { o2: 18, psia: 14.7, co2: 20, he: 0 }]
-];
-const xOf = q => [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.d0, q.co2 / 100, q.he / 100];
-const pOf = x => { let z = M.intercept; x.forEach((v, i) => { z += M.coef[i] * v; }); return 1 / (1 + Math.exp(-z)); };
-function domainOf(x) {
-  const idx = [0, 1, 3, 4, 5], near = [];
-  M.points.forEach((pt, i) => { if (pt[2] !== x[2]) return; let d = 0; idx.forEach(j => { const z = (pt[j] - x[j]) / M.train_sd[j]; d += z * z; }); near.push([Math.sqrt(d), i]); });
-  near.sort((a, b) => a[0] - b[0]);
-  const nn = near.length ? near[0][0] : Infinity;
-  const NAMES = { o2: "oxygen", logp: "pressure", d0: "droplet size", co2: "carbon dioxide", he: "helium" };
-  const out = M.features.filter((f, j) => j !== 2 && (x[j] < M.ranges[f.key][0] - 1e-9 || x[j] > M.ranges[f.key][1] + 1e-9)).map(f => NAMES[f.key]);
-  const status = out.length || nn > 2 * M.domain.nn95 ? "out" : nn > M.domain.nn95 ? "edge" : "in";
-  return { nn, near: near.slice(0, 6), status, out };
-}
-const DOM = { in: ["ok", "✓", "Inside the tested conditions"], edge: ["thin", "!", "Near the edge of the tested conditions"], out: ["none", "✕", "Outside the tested conditions: the model is extrapolating"] };
-function burnK(q) { const b = M.burn_k, x = [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.co2 / 100, q.he / 100]; return b.intercept + b.coef.reduce((a, c, i) => a + c * x[i], 0); }
-function drawPredInputs() {
-  $("#psub").textContent = `A logistic model trained on ${M.n} FLEX droplet runs from the space station. It was tested on whole days of runs it never saw: ${Math.round(M.cv.results["Full model"].accuracy.mean * 100)} % correct, against ${Math.round(M.cv.results["Always the most common outcome"].accuracy.mean * 100)} % for always guessing the most common outcome. It also tells you when your conditions are outside anything NASA tested.`;
-  const pr = $("#ppresets"); PRESETS.forEach(([n, v]) => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = n; b.onclick = () => { Object.assign(PQ, v); syncPred(); }; pr.appendChild(b); });
-  $("#pfuel").innerHTML = ["methanol", "heptane"].map(f => `<button type="button" data-f="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join("");
-  $("#pfuel").onclick = e => { const b = e.target.closest("button"); if (b) { PQ.fuel = b.dataset.f; syncPred(); } };
-  $("#pinputs").innerHTML = PIN.map(i => `<label for="pi_${i.k}"><span>${i.label} <output id="po_${i.k}"></output></span><input id="pi_${i.k}" type="range" min="${i.min}" max="${i.max}" step="${i.step}"></label>`).join("");
-  PIN.forEach(i => { $("#pi_" + i.k).oninput = e => { PQ[i.k] = +e.target.value; if (PQ.o2 + PQ.co2 + PQ.he > 100) { PQ[i.k] -= PQ.o2 + PQ.co2 + PQ.he - 100; } syncPred(); }; });
-}
-function syncPred() {
-  PIN.forEach(i => { $("#pi_" + i.k).value = PQ[i.k]; $("#po_" + i.k).textContent = i.fmt(PQ[i.k]); });
-  document.querySelectorAll("#pfuel button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === PQ.fuel));
-  document.querySelectorAll("#ppresets .chip").forEach((b, i) => { const v = PRESETS[i][1]; b.setAttribute("aria-pressed", Object.keys(v).every(k => Math.abs(PQ[k] - v[k]) < 1e-9)); });
-  const x = xOf(PQ), p = pOf(x), dm = domainOf(x), st = DOM[dm.status], K = burnK(PQ);
-  const word = p >= 0.8 ? "very likely" : p >= 0.6 ? "likely" : p >= 0.4 ? "about as likely as not" : p >= 0.2 ? "unlikely" : "very unlikely";
-  $("#pout").innerHTML = `<p class="eyebrow">Chance the flame goes out on its own</p><div class="big num">${p < 0.005 ? "<1" : p > 0.995 ? ">99" : Math.round(p * 100)} %<small>${word} for a ${f1(PQ.d0)} mm ${PQ.fuel} droplet at ${f1(PQ.o2)} % oxygen and ${f1(PQ.psia)} psia</small></div>
-    <span class="pill ${st[0]}"><span aria-hidden="true">${st[1]}</span>${st[2]}</span>
-    <p class="fine">${dm.status === "in" ? "Real runs exist close to these conditions; the table below lists them." : dm.out.length ? `Beyond the tested range of ${esc(dm.out.join(", "))}: FLEX ran ${dm.out.includes("pressure") ? `${f1(Math.exp(M.ranges.logp[0]) * PSIA)} to ${f1(Math.exp(M.ranges.logp[1]) * PSIA)} psia` : "a narrower range"}. Read the number as a direction, not a forecast.` : "The closest real runs differ noticeably from these conditions. Read the number as a direction, not a forecast."}</p>
-    <p class="fine">Burning-rate constant if it keeps burning: about <b class="num">${f2(Math.max(K, 0))} mm²/s</b> (typical model error ±${f2(M.burn_k.cv_rmse)}), so a ${f1(PQ.d0)} mm droplet would last about ${K > 0.05 ? Math.round(PQ.d0 * PQ.d0 / K) + " s" : "–"} by the d² law.</p>`;
-  drawPredChart(x, dm);
-  const rows = dm.near.map(([d, i]) => { const pt = M.points[i]; return `<tr><td class="mono">${esc(M.point_ids[i])}</td><td class="n">${f1(pt[0] * 100)}</td><td class="n">${f2(Math.exp(pt[1]))}</td><td class="n">${f1(pt[3])}</td><td class="n">${pt[4] ? Math.round(pt[4] * 100) + " % CO₂" : pt[5] ? Math.round(pt[5] * 100) + " % He" : "–"}</td><td>${esc(M.point_end[i])}</td><td class="n">${f2(d)}</td></tr>`; }).join("");
-  $("#pnear").innerHTML = `<h3 style="margin-bottom:8px">Closest real ${PQ.fuel} runs</h3><table><thead><tr><th>FLEX run</th><th class="n">O₂ %</th><th class="n">atm</th><th class="n">Drop mm</th><th class="n">Diluent</th><th>Ended in</th><th class="n">Distance</th></tr></thead><tbody>${rows}</tbody></table><p class="fine" style="margin-top:8px">Distance is in standard deviations of the training data. 95 % of real runs have a neighbour within ${f2(M.domain.nn95)}.</p>`;
-}
-function drawPredChart(x, dm) {
-  const box = $("#pchart"), W = Math.max(300, box.clientWidth), H = 240, m = { l: 44, r: 16, t: 26, b: 52 };
-  const X = o => m.l + (o - 10) / 30 * (W - m.l - m.r), Y = v => m.t + (1 - v) * (H - m.t - m.b);
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Chance of self-extinction against oxygen level" xmlns="http://www.w3.org/2000/svg">`;
-  [0, 0.25, 0.5, 0.75, 1].forEach(v => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l - 7}" y="${Y(v) + 4}" text-anchor="end" font-size="11">${v * 100}%</text>`; });
-  for (let o = 10; o <= 40; o += 5) s += `<text x="${X(o)}" y="${H - m.b + 16}" text-anchor="middle" font-size="11">${o}</text>`;
-  s += `<text x="${W - m.r}" y="${H - m.b + 32}" text-anchor="end" font-size="11.5">Oxygen, % by volume</text><text x="${m.l}" y="14" font-size="11.5" fill="var(--ink-3)">Chance the flame goes out on its own, other conditions as set</text>`;
-  // real runs at similar conditions: rug above (went out) and below (kept burning)
-  M.points.forEach((pt, i) => { if (pt[2] !== x[2] || Math.abs(pt[1] - x[1]) > 0.15 || Math.abs(pt[4] - x[4]) > 0.05 || Math.abs(pt[5] - x[5]) > 0.05) return;
-    const yy = pt[6] ? m.t - 8 : H - m.b - 0 + 0; s += `<line x1="${X(pt[0] * 100)}" x2="${X(pt[0] * 100)}" y1="${pt[6] ? Y(1) - 2 : Y(0) + 2}" y2="${pt[6] ? Y(1) - 9 : Y(0) + 9}" stroke="var(--ink-3)" stroke-width="1.5"/>`; });
-  let seg = [], segs = [];
-  for (let o = 10; o <= 40.001; o += 0.5) { const q = Object.assign({}, PQ, { o2: o }), xx = xOf(q), st = domainOf(xx).status === "out"; const pt = [X(o), Y(pOf(xx)), st];
-    if (seg.length && seg[seg.length - 1][2] !== st) { seg.push(pt); segs.push(seg); seg = [pt]; } else seg.push(pt); }
-  segs.push(seg);
-  segs.forEach(sg => { s += `<polyline fill="none" stroke="var(--s2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ${sg[0][2] ? 'stroke-dasharray="5 5" opacity=".7"' : ""} points="${sg.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"/>`; });
-  const cx = X(Math.min(40, Math.max(10, PQ.o2))), cy = Y(pOf(x));
-  s += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"/><text x="${cx + (cx > W - 140 ? -9 : 9)}" y="${cy - 9}" text-anchor="${cx > W - 140 ? "end" : "start"}" font-size="12" font-weight="600" fill="var(--ink)" stroke="var(--surface)" stroke-width="3" paint-order="stroke">${pOf(x) < 0.005 ? "<1" : Math.round(pOf(x) * 100)} %</text>`;
-  box.innerHTML = s + "</svg>";
-  $("#plegend").innerHTML = `<span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2"/></svg>model, inside or near tested conditions</span><span><svg width="26" height="10" aria-hidden="true"><line x1="0" x2="26" y1="5" y2="5" stroke="var(--s2)" stroke-width="2" stroke-dasharray="5 5"/></svg>extrapolation</span><span><svg width="12" height="14" aria-hidden="true"><line x1="6" x2="6" y1="2" y2="12" stroke="var(--ink-3)" stroke-width="1.5"/></svg>real runs at similar pressure and diluent: top went out, bottom kept burning</span>`;
-}
-function drawPredCard() {
-  const r = M.cv.results, names = Object.keys(r);
-  const eff = [["Oxygen +5 points", Math.exp(M.coef[0] * 0.05)], ["Pressure doubled", Math.exp(M.coef[1] * Math.log(2))], ["Heptane instead of methanol", Math.exp(M.coef[2])],
-    ["Droplet 1 mm larger", Math.exp(M.coef[3])], ["Carbon dioxide +10 points", Math.exp(M.coef[4] * 0.1)], ["Helium +10 points", Math.exp(M.coef[5] * 0.1)]];
-  $("#pcard").innerHTML = `<h3 style="margin-bottom:8px">How good is it?</h3><table><thead><tr><th>Model</th><th class="n">Accuracy</th><th class="n">AUC</th><th class="n">Brier</th></tr></thead><tbody>` +
-    names.map(n => `<tr><td>${esc(n)}</td><td class="n">${Math.round(r[n].accuracy.mean * 100)} %</td><td class="n">${n.startsWith("Always") ? "–" : f2(r[n].auc.mean)}</td><td class="n">${r[n].brier.mean.toFixed(3)}</td></tr>`).join("") +
-    `</tbody></table><p class="fine" style="margin:8px 0 12px">${esc(M.cv.method)}. Lower Brier is better.</p><h3 style="margin-bottom:6px">What moves the odds of going out</h3><div class="effects">${eff.map(e => `<span>${e[0]}</span><b>×${e[1] < 1 ? e[1].toFixed(2) : e[1].toFixed(1)}</b>`).join("")}</div>
-    <p class="fine" style="margin-top:8px">Larger droplets go out more often because they lose more heat by radiation, which FLEX was designed to study. Carbon dioxide and helium are the suppressants FLEX tested.</p>`;
-}
-
-/* ---------- video lab ---------- */
-function drawVideo() {
-  const V = D.video; if (!V) { $("#video").hidden = true; return; }
-  const cols = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
-  const rated = V.tests.filter(t => t.spread_mm_s).map(t => Object.assign({}, t, { series: t.series.filter(p => p[0] >= t.fit_window_s[0] && p[0] <= (t.fan_change_s || t.fit_window_s[1])) }));
-  $("#vsub").textContent = `NASA's table for BASS-II lists the conditions of each test but not what the flame did. That answer sits in ${f1(inv("PSI-25").raw_gb)} GB of raw video. We tracked the flame's leading edge frame by frame in ${V.tests.length} side-view videos from 19 February 2014 and fitted the spread rate. ${V.validation.passed} of ${V.validation.independent} independent checks pass.`;
-  const box = $("#vchart"), W = Math.max(300, box.clientWidth), H = 280, m = { l: 48, r: box.clientWidth >= 600 ? 92 : 16, t: 24, b: 44 };
-  const tmax = Math.max(...rated.map(t => t.series[t.series.length - 1][0] - t.series[0][0]));
-  const ymax = Math.max(...rated.map(t => Math.max(...t.series.map(p => p[1] - t.series[0][1]))));
-  const X = v => m.l + v / tmax * (W - m.l - m.r), Y = v => m.t + (1 - v / (ymax * 1.05)) * (H - m.t - m.b);
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flame front distance against time during steady spread for four tests" xmlns="http://www.w3.org/2000/svg">`;
-  for (let v = 0; v <= ymax; v += 10) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l - 7}" y="${Y(v) + 4}" text-anchor="end" font-size="11">${v}</text>`;
-  for (let t = 0; t <= tmax; t += 10) s += `<text x="${X(t)}" y="${H - m.b + 16}" text-anchor="middle" font-size="11">${t}</text>`;
-  s += `<text x="${m.l}" y="14" font-size="11.5" fill="var(--ink-3)">Distance the flame front travelled, mm</text><text x="${W - m.r}" y="${H - m.b + 32}" text-anchor="end" font-size="11.5">${W >= 600 ? "Seconds from the start of steady spread to the fan cut" : "Seconds of steady spread"}</text>`;
-  const ends = [];
-  rated.forEach((t, i) => { const t0 = t.series[0][0], x0 = t.series[0][1];
-    s += `<polyline fill="none" stroke="${cols[i]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="${t.series.map(p => X(p[0] - t0).toFixed(1) + "," + Y(p[1] - x0).toFixed(1)).join(" ")}"/>`;
-    const l = t.series[t.series.length - 1]; ends.push({ y: Y(l[1] - x0), x: X(l[0] - t0), c: cols[i], lab: `${t.test} · ${t.thickness_um} µm` }); });
-  ends.sort((a, b) => a.y - b.y); for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
-  if (W >= 600) ends.forEach(e => { s += `<text x="${Math.min(e.x + 6, W - m.r + 6)}" y="${e.y + 4}" font-size="11.5" font-weight="600" fill="var(--ink)">${esc(e.lab)}</text>`; });
-  box.innerHTML = s + "</svg>";
-  $("#vlegend").innerHTML = rated.map((t, i) => `<span><i style="background:${cols[i]}"></i>${t.test}: ${t.thickness_um} µm film, ${t.spread_mm_s} mm/s</span>`).join("");
-  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${t.test} with the detected flame front marked by a blue line" loading="lazy" width="480" height="220"><figcaption>${t.test}: ${esc(t.material)}. Blue line: detected leading edge.</figcaption></figure>`).join("");
-  $("#vtable").innerHTML = `<table><thead><tr><th>Test</th><th>Film</th><th class="n">O₂ %</th><th class="n">Air cm/s</th><th class="n">Spread mm/s</th><th class="n">Range across thresholds</th><th class="n">Fit R²</th><th class="n">Out after fan cut</th><th>Confidence</th></tr></thead><tbody>` +
-    V.tests.map(t => `<tr><td><b>${t.test}</b></td><td>${esc(t.material)}</td><td class="n">${t.o2 ?? "–"}</td><td class="n">${esc(t.air_cm_s)}</td><td class="n">${t.spread_mm_s ?? "–"}</td><td class="n">${t.spread_mm_s_range ? t.spread_mm_s_range.join(" – ") : "–"}</td><td class="n">${t.fit_r2 ?? "–"}</td><td class="n">${t.flame_out_after_fan_s != null ? t.flame_out_after_fan_s + " s" : "–"}</td><td>${t.confidence}${t.notes ? `<br><span class="fine">${esc(t.notes)}</span>` : ""}</td></tr>`).join("") + "</tbody></table>";
-  $("#vchecks").innerHTML = `<table><thead><tr><th>Check</th><th>What</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody>` +
-    V.validation.checks.map(c => `<tr><td><b>${esc(c.check)}</b></td><td>${esc(c.what)}</td><td>${esc(c.expected)}</td><td>${esc(c.measured)}</td><td>${c.independent ? (c.pass ? '<span class="ok">✓ pass</span>' : '<span class="no">✕ fail</span>') : "used for scale"}</td></tr>`).join("") + "</tbody></table>";
-  $("#vnote").innerHTML = `Scale ${V.scale_mm_per_px} mm per pixel, set from the 2.2 mm/s that the BASS-II Summary Report (NASA/TM-20210011385) gives for test B1. Ratios between tests do not depend on it. Code and method: <span class="mono">video/</span> in the repository.`;
-}
-
-/* ---------- history ---------- */
-function drawHistory() {
-  const box = $("#o2hist"), W = Math.max(300, box.clientWidth - 28), H = 120, l = 8, r = 16;
-  const x = o => l + o / 100 * (W - l - r);
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
-  s += `<line x1="${x(0)}" x2="${x(100)}" y1="70" y2="70" stroke="var(--line-2)"/>`;
-  for (let o = 0; o <= 100; o += 20) s += `<line x1="${x(o)}" x2="${x(o)}" y1="70" y2="75" stroke="var(--line-2)"/><text x="${x(o)}" y="88" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--mono)">${o}</text>`;
-  s += `<text x="${x(100)}" y="106" text-anchor="end" font-size="11" fill="var(--ink-3)">oxygen in the cabin, % by volume</text>`;
-  s += `<rect x="${x(S.solid_o2_min)}" y="60" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" rx="3" fill="var(--s1)"/><text x="${x(S.solid_o2_min)}" y="52" font-size="12" font-weight="600" fill="var(--ink)">Solid materials tested in flight</text>`;
-  const marks = [{ o2: 21, lab: "ISS", y: 106 }, { o2: 34, lab: "Exploration 34 %", y: 20, hot: true }, { o2: 60, lab: "Apollo prelaunch 60 %", y: 36 }, { o2: 100, lab: "Apollo 1 and Apollo flight 100 %", y: 20, end: true }];
-  marks.forEach(mk => { s += `<line x1="${x(mk.o2)}" x2="${x(mk.o2)}" y1="${mk.y + 4}" y2="70" stroke="${mk.hot ? "var(--crit)" : "var(--ink-3)"}" stroke-width="${mk.hot ? 2 : 1.2}" ${mk.y > 70 ? 'opacity="0"' : ""}/><circle cx="${x(mk.o2)}" cy="70" r="4" fill="${mk.hot ? "var(--crit)" : "var(--surface)"}" stroke="${mk.hot ? "var(--crit)" : "var(--ink-2)"}" stroke-width="1.5"/>`;
-    if (W > 520 || mk.hot || mk.end) s += `<text x="${x(mk.o2) + (mk.end ? -6 : 6)}" y="${mk.y}" text-anchor="${mk.end ? "end" : "start"}" font-size="11.5" ${mk.hot ? 'font-weight="600" fill="var(--crit)"' : 'fill="var(--ink-2)"'}>${mk.lab}</text>`; });
-  box.innerHTML = s + "</svg>";
-  const fl = id => { const f = D.findings.find(z => z.id === id); return f ? `<a href="#f-${id}">${esc(f.title)}</a>` : ""; };
-  $("#hcards").innerHTML = D.history.map(h => `<article class="hcard"><span class="when">${esc(h.date)}</span><h3>${esc(h.name)}</h3>${h.atmosphere ? `<span class="atm">${esc(h.atmosphere.label)}</span>` : ""}<p>${esc(h.what)}</p>
-    ${h.quotes.slice(0, 1).map(q => `<blockquote>“${esc(q.text)}”<cite><a href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.src)}</a></cite></blockquote>`).join("")}
-    <p><b>What changed:</b> ${esc(h.changed)}</p><p class="today">${esc(h.today)}</p><p class="fine">Related: ${h.findings.map(fl).filter(Boolean).join("; ")}</p></article>`).join("");
-  $("#spin").innerHTML = D.spinoffs.map(sp => `<div class="card"><span class="when eyebrow">${sp.year}</span><h3>${esc(sp.name)}</h3><p>${esc(sp.what)}</p><blockquote>“${esc(sp.quote)}”<cite><a href="${esc(sp.url)}" target="_blank" rel="noopener">${esc(sp.src_title)}</a></cite></blockquote></div>`).join("");
-}
-
-/* ---------- wiring ---------- */
-function refresh() { chips(); drawMap(); drawBrief(); }
-$("#chart").addEventListener("mousemove", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); else $("#tip").hidden = true; });
-$("#chart").addEventListener("mouseleave", () => { $("#tip").hidden = true; });
-$("#chart").addEventListener("focusin", e => { const el = e.target.closest(".bub"); if (el) showTip(el); });
-$("#chart").addEventListener("focusout", () => { $("#tip").hidden = true; });
-$("#chart").addEventListener("click", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); });
-$("#viewbtn").onclick = () => { state.table = !state.table; drawMapTable(); };
-$("#o2s").oninput = e => { state.custom.o2 = +e.target.value; drawMap(); drawBrief(); };
-$("#ps").oninput = e => { state.custom.p = +e.target.value / PSIA; drawMap(); drawBrief(); };
-$("#copybrief").onclick = () => { const done = ok => { $("#copied").textContent = ok ? "Copied to clipboard" : "Copy failed. Select the text above instead."; };
-  try { navigator.clipboard.writeText(state.briefText).then(() => done(true), () => done(false)); } catch (e) { done(false); } };
-$("#invq").oninput = e => { state.invq = e.target.value; drawInv(); };
-$("#invtable").addEventListener("click", e => { if (e.target.closest("a")) return; const tr = e.target.closest("tr.row"); if (tr) { state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
-$("#invtable").addEventListener("keydown", e => { if (e.key !== "Enter" && e.key !== " ") return; const tr = e.target.closest("tr.row"); if (tr) { e.preventDefault(); state.open = state.open === tr.dataset.acc ? null : tr.dataset.acc; drawInv(); } });
-let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { drawHero(); drawMap(); syncPred(); drawVideo(); drawHistory(); }, 120); });
-
-drawHero(); refresh(); drawWeights(); drawFindings(); drawPredInputs(); syncPred(); drawPredCard(); drawVideo(); drawHistory(); drawInv(); drawAsk(); drawMethod();
-})();
-</script>
+<script src="core.js"></script>
+<script src="tools.js"></script>
 </body>
 </html>

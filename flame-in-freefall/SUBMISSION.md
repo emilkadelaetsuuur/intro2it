@@ -1,55 +1,59 @@
-# Space Apps 2026 project page: FlameGap
+# Space Apps 2026 project page: QUENCH
 
 Text to paste into the Space Apps submission form. English only, as the rules require.
 Fill in the links marked TODO before submitting.
 
 ## Project name
 
-FlameGap
+QUENCH (Quantified Evidence Navigator for Combustion Hazards)
 
 ## High-level summary
 
-NASA plans to run lunar landers and habitats at 8.2 psia and 34 % oxygen. FlameGap asks whether decades
-of microgravity fire experiments actually cover that air. It reads all 24 combustion investigations in
-NASA's Physical Sciences Informatics archive, places 986 test runs on one oxygen-and-pressure map, and
-ranks 15 evidence-backed findings for mission designers. The answer is clear: no solid material in the
-archive was flight-tested above 22.2 % oxygen. FlameGap adds a model that predicts whether a droplet fire
-puts itself out and flags when it is extrapolating, a video tool that turns NASA's raw flame footage into
-spread rates checked against NASA's own report, lessons from Apollo 1, Apollo 13 and Mir, and a question
-box where Claude answers from the archive only, with every claim checked by code.
+NASA plans to send crews to the Moon in cabin air with 34 % oxygen at 8.2 psia. QUENCH asks whether
+decades of microgravity fire experiments cover that air. It reads all 24 combustion investigations in
+NASA's Physical Sciences Informatics archive, places 986 flight test runs on one oxygen-and-pressure
+map, ranks 15 evidence-backed findings, and turns them into a mission check: describe any cabin and
+get graded evidence for each fire-safety question plus the tests still needed. The answer for the Moon
+is clear: no solid material was ever flight-tested above 22.2 % oxygen. QUENCH also predicts whether a
+droplet fire puts itself out, reads flame spread from NASA's raw video, and answers questions from the
+records only. It is free to run: static files, no API, no key.
 
 ## Links
 
-- Demo (7 slides): https://github.com/emilkadelaetsuuur/intro2it/blob/claude/loving-johnson-f47e2l/flame-in-freefall/submission/FlameGap-demo.pdf
-  (30-second video: `submission/FlameGap-demo-30s.mp4` in the same folder)
-- Project: https://claude.ai/artifact/8mt9hxj4G4EAC5e5hbvMan (turn on public sharing in its Share menu first),
-  or any static host serving the `web/` folder
+- Project: https://nasa.cartify.ink
+- Demo (7 slides): https://github.com/emilkadelaetsuuur/intro2it/blob/claude/loving-johnson-f47e2l/flame-in-freefall/submission/QUENCH-demo.pdf
+  (30-second video: `submission/QUENCH-demo-30s.mp4` in the same folder)
 - Code: https://github.com/emilkadelaetsuuur/intro2it/tree/claude/loving-johnson-f47e2l/flame-in-freefall
 - Check before submitting: every link must open for someone who is not logged in.
 
 ## Project details
 
-**What it does.** FlameGap is one web page with eight parts:
+**What it does.** QUENCH is one web app with nine sections:
 
-1. An evidence map of every flight test by oxygen level and pressure, with the ISS, 10.2 psia and
-   exploration atmospheres and a matching window around each.
-2. A mission brief for any atmosphere: how many solid, droplet and gas-flame runs sit near it, the
-   closest tests, and a plain brief a designer can copy.
-3. Fifteen ranked findings. Each has a claim, evidence, limits, an action and its NASA sources. Users
-   set the weights (safety, evidence, mission fit, actionability) and the ranking follows.
-4. An outcome predictor trained on 261 FLEX droplet runs. On whole test days it never saw, it is right
-   82 % of the time against 69 % for always guessing the common outcome (AUC 0.86). For every query it
-   shows the nearest real runs and warns when the conditions are outside anything NASA tested, as the
-   exploration atmosphere is.
-5. A video lab that measures flame spread from NASA's raw BASS-II video. One scale value comes from the
+1. **Briefing.** The bottom line on one screen: the oxygen gap, the top findings, how many flight runs
+   sit near each of NASA's three cabin atmospheres, and what to do next.
+2. **Mission check.** The user sets oxygen, pressure, gravity, ventilation speed, cabin materials and
+   extinguishing agent. For each fire-safety question (will the materials burn, does stopping
+   ventilation work, will the agent work, will a liquid fire go out, will smoke be detected, does the
+   evidence hold at this gravity) QUENCH grades the flight evidence A to D by written rules, shows the
+   runs it used, and ranks the tests the mission still needs. A lunar habitat scores "no flight
+   evidence" on three of six questions; the space station has evidence for all six.
+3. **Evidence map.** Every flight run by oxygen level and pressure, with a matching window around any cabin.
+4. **Findings.** Fifteen findings, each with a claim, evidence, limits, an action and its NASA sources.
+   Users set the weights (safety, evidence, mission fit, actionability) and the ranking follows.
+5. **Lab: predictor.** A model trained on 261 FLEX droplet runs. On whole test days it never saw it is
+   right 82 % of the time against 69 % for always guessing the common outcome (AUC 0.86). It shows the
+   nearest real runs and warns when conditions are outside anything NASA tested.
+6. **Lab: video.** Flame spread measured from NASA's raw BASS-II video. One scale value comes from the
    NASA report; five checks it does not use all pass: two identical tests agree within 1.6 %, the flame
    goes out 1.9 s after the fan is cut (report: within 2 s), spread follows the thin-fuel law, and the
    camera's field of view and the burn length match the hardware.
-6. Lessons from Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir fire, quoted from NASA
-   and linked to today's gaps, plus three NASA Spinoffs that made firefighting on Earth safer.
-7. A catalogue of the 24 investigations with plain summaries, data coverage and publications.
-8. "Ask the archive": Claude answers using only the archive. Each claim must cite record IDs; code
-   checks that the records exist and that every number appears in them with the same unit.
+7. **Archive.** The 24 investigations with plain summaries, data coverage and publications.
+8. **Lessons.** Apollo 1, the Apollo flammability tests, Apollo 13 and the Mir fire, quoted from NASA
+   and tied to today's gaps, plus three NASA Spinoffs that made firefighting on Earth safer.
+9. **Ask.** Questions in plain words, answered from the records only: live counts from the tables,
+   material and experiment look-ups, and 30 analyst answers written with AI ahead of time whose 56
+   claims were each checked by code against the records they cite.
 
 **Key findings.**
 
@@ -64,17 +68,17 @@ box where Claude answers from the archive only, with every claim checked by code
 
 **How it works.** Python scripts read the raw PSI tables, clean them without guessing missing values,
 compute every number on the page, check every quote word for word against a saved copy of its NASA
-source, and fail the build if anything does not match. A test suite recounts key facts from the raw CSV
-files with independent code. The page is static HTML and JavaScript, so it runs anywhere without a
-server. An optional Python server adds Claude for the question box.
+source, verify the AI-written text against the records, and fail the build if anything does not match.
+A suite of 34 tests recounts key facts from the raw CSV files with independent code. The app is static
+HTML and JavaScript: it needs no server code, no API and no key, and costs nothing to run.
 
-**Benefits and impact.** Mission designers get a one-page answer to "is our atmosphere covered by flight
-data?" with sources. Researchers get a ranked list of the gaps that matter most and a working method to
-unlock the results held only in NASA's 6.3 TB of raw combustion data. The same knowledge protects people
-on Earth in mines, submarines, aircraft and buildings.
+**Benefits and impact.** Mission designers get an evidence check for their own cabin, with sources and a
+ranked test list, in seconds. Researchers get the gaps that matter most and a working method to unlock
+the results held only in NASA's 6.3 TB of raw combustion data. The same knowledge protects people on
+Earth in mines, submarines, aircraft and buildings.
 
-**Tools.** Python (numpy, ffmpeg for video), HTML, CSS and JavaScript (no framework), the Anthropic
-Python SDK. Data processing and tests run on a laptop.
+**Tools.** Python (numpy, ffmpeg for video), HTML, CSS and JavaScript with no framework. Data processing
+and tests run on a laptop.
 
 ## NASA data
 
@@ -99,12 +103,13 @@ None.
 ## Use of artificial intelligence
 
 We used Claude (Anthropic) as a coding and writing assistant: to write and debug code, normalise the
-tables, draft the one-line investigation summaries and the wording of the findings. A team member
-reviewed all of it. No number on the page is written by AI: the build script computes every figure
-from NASA's tables, and checks every quote against its source. In the product, the optional question
-box calls Claude (model claude-opus-5-5) with the archive as its only source; its answers are labelled
-as AI-written and each claim's citations and numbers are checked by code before display. No
-AI-generated images, video or audio are used, and no NASA logos.
+tables, and draft the one-line investigation summaries, the wording of the findings and the 30 analyst
+answers shown in the Ask section. A team member reviewed all of it. Code then checks the AI-written
+text against NASA's records at build time: every cited record must exist and every number must appear
+in it with the same unit, otherwise the build stops. No number on the page is written by AI: the build
+script computes every figure from NASA's tables and checks every quote against its source. No AI model
+runs when the app is used. The predictor is a machine-learning model we trained on NASA data, and the
+video lab uses computer vision. No AI-generated images, video or audio are used, and no NASA logos.
 
 ## References
 

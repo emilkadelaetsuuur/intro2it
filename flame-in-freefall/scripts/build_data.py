@@ -11,6 +11,7 @@ import csv
 import datetime
 import io
 import json
+import math
 import os
 import re
 
@@ -268,6 +269,66 @@ for r in inv_rows:
         "pubs": pubs.get(acc, []), "url": PSI_URL + acc,
     })
 inv_by = {i["acc"]: i for i in investigations}
+
+# ------------------------------------------------------------------ materials
+MATERIAL_DEFS = [
+    ("pmma", "PMMA (acrylic)", "Clear plastic; NASA's reference solid fuel, burned as films, rods, slabs and spheres"),
+    ("sibal", "Cotton-fiberglass fabric (SIBAL)", "Reference fabric, 75 % cotton and 25 % fiberglass"),
+    ("nomex", "Nomex", "Flame-resistant aramid fabric"),
+    ("silicone", "Silicone", "Silicone sheet and rubber"),
+    ("ultem", "Ultem", "Polyetherimide sheet"),
+    ("wax", "Wax", "Candle and paraffin wax"),
+    ("kapton", "Kapton", "Polyimide film"),
+    ("teflon", "Teflon", "PTFE"),
+]
+
+
+def mats_of(text):
+    s, out = text.lower(), []
+    if "sibal" in s or "cotton" in s:
+        out.append("sibal")
+    if "nomex" in s:
+        out.append("nomex")
+    if "silicone" in s:
+        out.append("silicone")
+    if "ultem" in s:
+        out.append("ultem")
+    if "wax" in s or "candle" in s:
+        out.append("wax")
+    if "pmma" in s or (not out and re.search(r"sphere|spherical|rod|film|micron|slab", s)):
+        out.append("pmma")
+    return out
+
+
+for t in tests:
+    if t["k"] == "solid":
+        t["m"] = mats_of(t["f"])
+notes.append("Materials: BASS-II rods, films and slabs are counted as PMMA, as the BASS-II ReadMe on PSI describes them. "
+             "BASS rows that say only 'sphere' are counted as PMMA, like the sphere rows in the same table that name it.")
+smoke = collections.Counter()
+for name, col_i in (("PSI-101_Experimental table_SAME-R.csv", 0), ("PSI-102_Experimental table_SAME.csv", 1)):
+    for r in read_table(name)[1]:
+        w = r[col_i].lower()
+        for key in ("kapton", "teflon", "silicone", "lampwick", "pyrell", "dibutyl"):
+            if key in w:
+                smoke[key] += 1
+materials = []
+for mid, name, what in MATERIAL_DEFS:
+    mine = [t for t in tests if mid in t.get("m", [])]
+    o2 = [t["o"] for t in mine if t["o"] is not None]
+    invs = collections.Counter(t["a"] for t in mine)
+    res = []
+    for s2 in saffire2:
+        if mid in mats_of(s2["material"]):
+            if mid == "nomex":
+                res.append(f"Saffire-II sample {s2['id']} (PMMA and Nomex): the Nomex part did not burn in microgravity.")
+            elif s2["spread"]:
+                res.append(f"Saffire-II sample {s2['id']} ({s2['thick']}): burned {s2['ug_len']}" + (f" at {s2['ug_rate']}" if "mm/s" in s2["ug_rate"] else "") + f" in microgravity; 1 g result: {s2['g_len']}.")
+            else:
+                res.append(f"Saffire-II sample {s2['id']} ({s2['thick']}): did not spread in microgravity; 1 g result: {s2['g_len']}.")
+    materials.append({"id": mid, "name": name, "what": what, "flame": len(mine), "with_o2": len(o2),
+                      "o2": [min(o2), max(o2)] if o2 else None, "invs": dict(invs), "smoke": smoke.get(mid, 0), "results": res})
+smoke_only = {"lampwick": smoke["lampwick"], "pyrell": smoke["pyrell"], "dibutyl": smoke["dibutyl"]}
 
 # -------------------------------------------------------------------- statistics
 def in_window(t, atm):
@@ -612,6 +673,61 @@ NEXT = [
      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/"},
 ]
 
+# ---------------------------------------------- record corpus and answer bank
+# The corpus is every record an answer may cite. The answer bank (data/curated/answers.json) was written
+# ahead of time with an AI model; each claim is checked here against the records it cites, and the build
+# stops if a cited record does not exist or a number is not in it with the same unit.
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from verify import check_claim  # noqa: E402
+
+corpus = collections.OrderedDict()
+for i in investigations:
+    if not i["combustion"]:
+        continue
+    corpus[i["acc"]] = "\n".join(x for x in [
+        f"{i['acr'] or i['acc']}: {i['title']}", f"Platform: {i['platform']}. Dates: {i['start']} to {i['end']}.",
+        f"Runs listed in the PSI table: {i['rows']}." + (f" Oxygen in the table: {i['o2'][0]:g} to {i['o2'][1]:g} %." if i["o2"] else "")
+        + (f" Pressure in the table: {i['p'][0]:g} to {i['p'][1]:g} atm." if i["p"] else ""),
+        f"Summary: {i.get('summary', '')}", f"Objective: {i['objective']}", f"Hypothesis: {i['hypothesis']}",
+        f"Approach: {i['approach']}", f"Research impacts: {i['impacts']}", f"Publications listed: {i['npub']}."] if x.strip())
+for f in findings:
+    corpus["F-" + f["id"]] = "\n".join([f["title"], f["claim"], "Evidence: " + f["evidence"], "Limits: " + f["limits"], "What to do: " + f["action"]]
+                                        + ([f"Quote ({f['quote_src']}): {f['quote']}"] if f.get("quote") else []))
+for h in history:
+    corpus["H-" + h["id"]] = "\n".join([f"{h['name']} ({h['date']})", h["what"], "Afterwards: " + h["changed"], "Today: " + h["today"]]
+                                        + [q["text"] for q in h["quotes"]] + [h["changed_quote"]["text"]])
+for sp in spinoffs:
+    corpus["S-" + sp["src"]] = f"{sp['name']} ({sp['year']}). {sp['what']} {sp['quote']}"
+for m in materials:
+    corpus["M-" + m["id"]] = (f"{m['name']}: {m['what']}. Flaming tests in the archive: {m['flame']}, of which {m['with_o2']} record an oxygen level"
+                              + (f", from {m['o2'][0]:g} to {m['o2'][1]:g} %" if m["o2"] else "") + f". Smoke tests: {m['smoke']}. " + " ".join(m["results"]))
+for n in NEXT:
+    corpus["N-" + n["id"]] = f"{n['name']}: {n['full']}. {n['what']}"
+corpus["ATM"] = "Cabin atmospheres NASA names in the ACME BRE record: " + "; ".join(f"{a['name']}: {a['psia']:g} psia ({a['p']:.2f} atm), {a['o2']:g} % oxygen" for a in ATMOSPHERES) + "."
+corpus["STATS"] = (f"The archive search returns {S['investigations']} records, {S['combustion']} about combustion. Their tables list {S['tests']} test runs that could be placed "
+                   f"or counted, {S['with_outcome']} with a result in a table, {S['pubs']} publications and {S['raw_tb']:g} TB of raw data.")
+corpus["GUIDE"] = "NASA Researcher's Guide to ISS Combustion Science (2015). " + " ".join(q["text"] for q in GQ.values())
+if video:
+    corpus["VIDEO"] = ("Flame spread measured from BASS-II videos. " + video["method"] + " " + " ".join(
+        f"Test {t['test']}: {t.get('material')}, {t.get('thickness_um')} µm, oxygen {t.get('o2')} %, air {t.get('air_cm_s')} cm/s, spread {t.get('spread_mm_s')} mm/s, confidence {t['confidence']}."
+        for t in video["tests"]) + " " + " ".join(f"Check {c['check']}: expected {c['expected']}; measured {c['measured']}." for c in video["validation"]["checks"]))
+if model_card:
+    corpus["MODEL"] = (f"Outcome model trained on {model_card['n']} FLEX droplet runs. {mdl['question']} {mdl['cv']['method']}. "
+                       f"Accuracy {model_card['acc'] * 100:.0f} %, against {model_card['base_acc'] * 100:.0f} % for always guessing the most common outcome. "
+                       f"Area under the ROC curve {model_card['auc']:.2f}. FLEX pressures ran from {math.exp(mdl['ranges']['logp'][0]) * PSIA:.1f} to {math.exp(mdl['ranges']['logp'][1]) * PSIA:.1f} psia.")
+
+with open(os.path.join(ROOT, "data", "curated", "answers.json"), encoding="utf-8") as fh:
+    bank = json.load(fh)["answers"]
+bad = []
+for a in bank:
+    for c in a["claims"]:
+        ok, issues = check_claim(c, corpus)
+        if not ok:
+            bad.append(f"{a['id']}: {c['text'][:70]} -> {'; '.join(issues)}")
+assert not bad, "answer bank claims failed verification:\n" + "\n".join(bad)
+answers = [{"id": a["id"], "q": a["q"], "a": a["a"], "claims": a["claims"]} for a in bank]
+
 data = {
     "meta": {"built": datetime.date.today().isoformat(),
              "source": "NASA Physical Sciences Informatics (PSI), search term 'combustion'",
@@ -621,6 +737,7 @@ data = {
     "atmospheres": ATMOSPHERES, "stats": stats, "flex2": flex2, "next": NEXT, "findings": findings,
     "history": history, "spinoffs": spinoffs, "sources": sources_list, "video": video, "model_card": model_card,
     "apollo_atm": [{"name": "Apollo 1 test (pad)", "o2": 100.0, "psia": 16.2}, {"name": "Apollo flight", "o2": 100.0, "psia": 6.2}, {"name": "Apollo prelaunch, after the fire", "o2": 60.0, "psia": 16.2}],
+    "materials": materials, "smoke_only": smoke_only, "quotes": GQ, "answers": answers, "record_ids": list(corpus.keys()),
     "investigations": investigations, "tests": tests, "conditions": conditions, "notes": notes,
 }
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
@@ -629,6 +746,8 @@ with open(OUT, "w", encoding="utf-8") as fh:
     fh.write("window.FLAME = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
 
 print(f"wrote {os.path.relpath(OUT, ROOT)}  ({os.path.getsize(OUT) / 1024:.0f} KB)")
+print("materials:", [(m["id"], m["flame"], m["with_o2"], m["o2"], m["smoke"]) for m in materials])
+print(f"answer bank: {len(answers)} answers, {sum(len(a['claims']) for a in answers)} claims verified against {len(corpus)} records")
 print(f"investigations {S['investigations']} ({S['combustion']} combustion) | tests {S['tests']} | mapped {S['mapped']} "
       f"| with outcome {S['with_outcome']} | findings {len(findings)}")
 print("solid O2", S["solid_o2_min"], "-", S["solid_o2_max"], "| FLEX bands", [(x["ext"], x["n"], x["pct"]) for x in b])

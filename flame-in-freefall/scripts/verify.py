@@ -1,12 +1,12 @@
-"""Check a model answer against the archive before anyone sees it.
+"""Check AI-written claims against the archive before they ship.
 
 Two rules, applied to every claim the model makes:
 1. Every source it cites must be a real record in the corpus.
 2. Every number in the claim must appear in at least one of the records it cites, with the same unit
    when the claim gives one ('50 %' does not match '50 mm').
 
-A claim that breaks a rule is still shown, but marked as unverified with the reason.
-Pure functions, no network; covered by tests/test_project.py.
+The build stops if any claim in the answer bank breaks a rule.
+Used at build time on the answer bank. Pure functions, no network; covered by tests/test_project.py.
 """
 import re
 

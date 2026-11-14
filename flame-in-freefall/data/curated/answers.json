@@ -1,0 +1,181 @@
+{
+  "_about": "Analyst answers written ahead of time with an AI model (Claude) from the archive records, then reviewed. scripts/build_data.py checks every claim: each cited record must exist and each number must appear in it with the same unit, or the build stops. The page picks the answer that best matches the question; nothing is generated at run time.",
+  "answers": [
+    {"id": "vent", "q": ["Does turning off ventilation put out a fire at 34 % oxygen?", "Does stopping the airflow extinguish a fire?", "Can we cut the fans to kill a fire in an oxygen-rich cabin?"],
+     "a": "Not reliably. At station air it helps: thin plastic films in BASS-II went out once the airflow fell to about 1 cm/s. In oxygen-rich air the one relevant experiment points the other way: Burning Rate Emulator flames kept burning with no airflow at all. No solid material has been tested at 34 % oxygen, so for the exploration atmosphere this step is unproven.",
+     "claims": [
+       {"text": "BASS-II thin films went out when the opposing flow fell to about 1 cm/s at 21 % oxygen.", "sources": ["F-vent-speed"]},
+       {"text": "In the Burning Rate Emulator, flames at 21 % oxygen went out soon after the flow stopped, but flames in elevated oxygen kept burning with no airflow.", "sources": ["F-vent", "PSI-20"]},
+       {"text": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]}
+     ]},
+    {"id": "solid-ceiling", "q": ["What is the highest oxygen level at which solid materials were tested in flight?", "Were materials tested at 34 % oxygen?", "Has any material been burned in the exploration atmosphere?"],
+     "a": "22.2 %. Every solid-material flight test with a recorded oxygen level is between 13.6 and 22.2 %. The exploration atmosphere is 34 %, which is 11.8 points past the last data point.",
+     "claims": [
+       {"text": "140 solid-fuel tests carry an oxygen value, all between 13.6 and 22.2 %.", "sources": ["F-solid-gap"]},
+       {"text": "The exploration atmosphere is 34 %, 11.8 points beyond the last data point.", "sources": ["F-solid-gap"]}
+     ]},
+    {"id": "atmospheres", "q": ["What is the exploration atmosphere?", "Which cabin atmospheres does NASA consider?", "What pressure and oxygen will a Moon base use?"],
+     "a": "NASA's Burning Rate Emulator record names three cabin atmospheres for human missions: 14.7 psia with 21 % oxygen (the space station), 10.2 psia with 26.5 %, and 8.2 psia with 34 %. The last is the exploration atmosphere.",
+     "claims": [
+       {"text": "The three atmospheres are 14.7 psia at 21 % oxygen, 10.2 psia at 26.5 % and 8.2 psia at 34 %.", "sources": ["ATM", "PSI-20"]}
+     ]},
+    {"id": "why-o2", "q": ["Why does NASA want 34 % oxygen?", "Why raise the oxygen level?", "Why lower the cabin pressure?"],
+     "a": "The archive names the candidate atmospheres but does not give the reasons for choosing them. What it does show is the cost on the fire side: the higher the oxygen, the less the flight evidence.",
+     "claims": [
+       {"text": "The exploration atmosphere is 8.2 psia with 34 % oxygen.", "sources": ["ATM"]},
+       {"text": "No solid-fuel test with a recorded oxygen level is above 22.2 %.", "sources": ["F-solid-gap"]}
+     ]},
+    {"id": "selfext", "q": ["Will a fire go out on its own?", "Do flames self-extinguish in microgravity?", "How does oxygen change self-extinction?"],
+     "a": "Less and less as oxygen rises. In FLEX droplet runs with no suppressant, 92 % of those below 18 % oxygen ended in extinction, 56 % between 18 and 25 %, and 8 % at 25 % and above. None of the 9 runs at 34 % went out on their own.",
+     "claims": [
+       {"text": "Below 18 % oxygen, 92 % of FLEX runs with no suppressant ended in extinction; between 18 and 25 % it was 56 %; at 25 % and above it was 8 %.", "sources": ["F-selfext"]},
+       {"text": "None of the 9 runs at 34 % went out on their own.", "sources": ["F-selfext"]}
+     ]},
+    {"id": "liquids-exp", "q": ["Were liquid fuels tested in the exploration atmosphere?", "Were droplets burned at 34 % oxygen?", "What pressure were the high-oxygen droplet tests at?"],
+     "a": "Close, but not quite. FLEX burned 9 droplets at 34 % oxygen, all at about 0.70 atm, which is the 10.2 psia cabin. The exploration atmosphere is 0.56 atm. Below 0.65 atm the archive holds only 3 droplet runs, none above 21 % oxygen.",
+     "claims": [
+       {"text": "FLEX burned 9 droplets at 34 % oxygen, all at about 0.70 atm.", "sources": ["F-corner"]},
+       {"text": "The exploration atmosphere is 0.56 atm.", "sources": ["F-corner", "ATM"]},
+       {"text": "Below 0.65 atm the archive holds 3 droplet runs, none above 21 % oxygen.", "sources": ["F-corner"]}
+     ]},
+    {"id": "std6001", "q": ["Is NASA-STD-6001 conservative in microgravity?", "Is the ground flammability test the worst case?", "Can we trust the 1 g material approval test?"],
+     "a": "No. NASA's own Researcher's Guide reports that BASS results indicate the standard upward-burning test is not conservative: materials can burn at lower oxygen levels in microgravity than on Earth.",
+     "claims": [
+       {"text": "The guide states that NASA-STD-6001 Test 1 is not conservative and that materials can burn at lower oxygen levels in microgravity than on Earth.", "sources": ["F-one-g", "GUIDE"]},
+       {"text": "BASS-II ran 129 tests and BASS 122.", "sources": ["F-one-g"]}
+     ]},
+    {"id": "jet", "q": ["Do fire extinguishers work in microgravity?", "Can a suppressant jet put out a flame in space?", "How should an extinguisher be used in weightlessness?"],
+     "a": "A directed jet can make things worse. NASA's guide reports that local application of suppressant was not adequate: the jet pulled in air and kept the flame alive even with the cabin airflow off. Flooding a volume is the safer design assumption.",
+     "claims": [
+       {"text": "NASA's guide reports that local application of suppressant is not adequate and that the local jet entrains air and sustains the flame even when the ambient airflow is turned off.", "sources": ["F-local-jet", "GUIDE"]}
+     ]},
+    {"id": "co2", "q": ["Does carbon dioxide put out fires at high oxygen?", "Was CO2 tested as a suppressant?", "Do helium or carbon dioxide work at 34 % oxygen?"],
+     "a": "Unknown at high oxygen. FLEX burned droplets in air diluted with carbon dioxide (123 runs) and helium (50 runs), but never above 25 % oxygen for carbon dioxide or 24 % for helium. Agent quantities for 34 % have to be measured, not scaled from station values.",
+     "claims": [
+       {"text": "FLEX ran 123 runs with carbon dioxide and 50 runs with helium.", "sources": ["F-suppress"]},
+       {"text": "None of the carbon dioxide runs went above 25 % oxygen and none of the helium runs above 24 %.", "sources": ["F-suppress"]}
+     ]},
+    {"id": "flow", "q": ["What airflow speed is most dangerous?", "How does ventilation speed affect flame spread?", "At what flow do flames go out?"],
+     "a": "Ordinary ventilation speed. NASA's guide puts the most flammable condition at about 10 cm/s, typical of spacecraft ventilation. At the low end, BASS-II thin films went out at about 1 cm/s in 21 % oxygen and already at 2.6 to 4 cm/s in 16 %.",
+     "claims": [
+       {"text": "The most flammable condition is at about 10 cm/s, the speed typical of spacecraft ventilation.", "sources": ["F-vent-speed", "GUIDE"]},
+       {"text": "BASS-II thin films went out at about 1 cm/s at 21 % oxygen and at about 2.6 to 4 cm/s at 16 %.", "sources": ["F-vent-speed"]}
+     ]},
+    {"id": "depends", "q": ["Is fire always worse in microgravity?", "Do all materials burn better in space?", "What happened to silicone in Saffire?"],
+     "a": "No, it depends on the material. In Saffire-II, 4 of 4 silicone samples did not spread flame in microgravity although 3 of them burned in the 1 g test, while cotton-fiberglass fabric spread steadily at 2.1 mm/s and 2.6 mm/s.",
+     "claims": [
+       {"text": "In Saffire-II, 4 of 4 silicone samples did not spread flame in microgravity, although 3 of them burned in the 1 g test.", "sources": ["F-depends", "PSI-99"]},
+       {"text": "Cotton-fiberglass fabric spread at 2.1 mm/s and 2.6 mm/s.", "sources": ["F-depends"]}
+     ]},
+    {"id": "gravity", "q": ["Has anything been burned at lunar gravity?", "Which materials were tested on the Moon?", "Is there fire data for Mars gravity?"],
+     "a": "Not in this archive. Every combustion flight experiment here flew in orbit, on the space station or a Cygnus cargo ship. NASA's FM2 experiment is the first to burn materials on the Moon, at one sixth gravity.",
+     "claims": [
+       {"text": "Every combustion flight experiment in the archive flew on the space station or on a Cygnus cargo ship in orbit.", "sources": ["F-gravity"]},
+       {"text": "FM2 is the first combustion experiment on another planetary body and burns materials on the Moon at one sixth gravity.", "sources": ["N-fm2"]}
+     ]},
+    {"id": "smoke", "q": ["Do smoke detectors work the same in microgravity?", "How does smoke behave without gravity?", "Will a fire be detected?"],
+     "a": "Not necessarily. SAME tested the hypothesis that smoke particles grow larger in microgravity because nothing carries the smoke away from its source, so detectors tuned on Earth smoke may respond differently. SAME and SAME-R cover 117 table rows, all at station air.",
+     "claims": [
+       {"text": "SAME tested the hypothesis that smoke from overheated materials forms larger particles in microgravity.", "sources": ["F-smoke", "PSI-102"]},
+       {"text": "SAME and SAME-R cover 117 table rows for Teflon, Kapton, silicone rubber, lamp wick and dibutyl phthalate.", "sources": ["F-smoke"]}
+     ]},
+    {"id": "cool", "q": ["Can a fire keep burning after the flame disappears?", "What are cool flames?", "Is a fire out when the flame is no longer visible?"],
+     "a": "It can. FLEX found droplets that kept burning as low-temperature cool flames after the visible flame was gone. Two follow-on investigations studied it: CFI with 87 droplet tests and ACME CFI-G with 154 gas-flame tests.",
+     "claims": [
+       {"text": "FLEX found that some droplets keep burning as low-temperature cool flames after the visible flame disappears.", "sources": ["F-cool"]},
+       {"text": "CFI ran 87 droplet tests from 0.5 to 5 atm and ACME CFI-G ran 154 gas-flame tests.", "sources": ["F-cool"]}
+     ]},
+    {"id": "raw", "q": ["Where is the raw data for solid materials?", "Where are the BASS results?", "Why are there no results in the tables?"],
+     "a": "In video. Only 439 of 986 listed runs have a result in a table. For BASS and BASS-II, 251 tests of real materials, the outcome exists only as 438 GB of raw video. The Video lab shows the results can be extracted automatically.",
+     "claims": [
+       {"text": "Only 439 of 986 listed test runs have a result in a table.", "sources": ["F-video", "STATS"]},
+       {"text": "For BASS and BASS-II, 251 tests, the outcome exists only as 438 GB of raw video.", "sources": ["F-video"]}
+     ]},
+    {"id": "video-acc", "q": ["How accurate is the video measurement?", "Can flame spread be measured from video?", "How was the video lab validated?"],
+     "a": "Two identical tests of a 200 µm film gave 1.26 and 1.28 mm/s, and the flame went out 1.9 s after the fan was cut, matching the NASA report. 5 of 5 independent checks pass. The scale comes from one value in that report, so absolute rates share its uncertainty.",
+     "claims": [
+       {"text": "A 200 µm film spread at 1.26 and 1.28 mm/s in two identical tests.", "sources": ["F-video-lab"]},
+       {"text": "The flame went out 1.9 s after the fan was cut, and 5 of 5 independent checks pass.", "sources": ["F-video-lab"]}
+     ]},
+    {"id": "model-acc", "q": ["How good is the predictor?", "How accurate is the model?", "Can the model predict the exploration atmosphere?"],
+     "a": "Inside the tested range it is useful: trained on 261 FLEX runs, it is right 82 % of the time on test days it never saw, against 69 % for always guessing the most common outcome. For the exploration atmosphere it has to extrapolate, and it says so.",
+     "claims": [
+       {"text": "A model of 261 FLEX runs predicts self-extinction with 82 % accuracy on unseen test days, against 69 % for always guessing the most common outcome.", "sources": ["F-model", "MODEL"]}
+     ]},
+    {"id": "size", "q": ["How many experiments are in the archive?", "How much data is there?", "How many test runs?"],
+     "a": "The search returns 26 records, 24 of them about combustion. Their tables list 986 test runs, 439 with a result in a table, plus 352 publications and 6.3 TB of raw data.",
+     "claims": [
+       {"text": "26 records, 24 about combustion, 986 test runs, 439 with a result in a table, 352 publications and 6.3 TB of raw data.", "sources": ["STATS"]}
+     ]},
+    {"id": "apollo1", "q": ["What happened in the Apollo 1 fire?", "Why was Apollo 1 so deadly?", "What did Apollo 1 teach about oxygen?"],
+     "a": "During a launch-pad test in January 1967 the cabin was filled with pure oxygen, and a fire swept through it before the hatch could be opened. The crew died of carbon monoxide and toxic gases. Afterwards NASA restricted combustible materials and redesigned the hatch.",
+     "claims": [
+       {"text": "The Apollo fire happened in 100 % oxygen at 16.2 psi.", "sources": ["H-apollo1"]},
+       {"text": "NASA restricted and controlled the amount and location of combustible material within the spacecraft.", "sources": ["H-apollo1"]}
+     ]},
+    {"id": "apollotests", "q": ["How did NASA choose the Apollo cabin atmosphere?", "What were the Apollo flammability tests?", "How many test fires did NASA light after Apollo 1?"],
+     "a": "By burning mock-ups on purpose. Engineers ran 102 deliberate ignitions in a command-module boilerplate at different oxygen levels and pressures, and used the results to set the cabin atmospheres for ground testing, prelaunch and flight.",
+     "claims": [
+       {"text": "Engineers conducted 102 deliberate ignitions between December 1967 and February 1968.", "sources": ["H-apollotests"]}
+     ]},
+    {"id": "mir", "q": ["What happened in the Mir fire?", "What caused the fire on Mir?", "How did the Mir crew fight the fire?"],
+     "a": "In February 1997 a solid-fuel oxygen generator caught fire, throwing a three-foot flame and filling the station with dense smoke. The crew put on masks and used extinguishers; the life support system took hours to clear the smoke.",
+     "claims": [
+       {"text": "The canister ignited, shooting a three-foot flame and generating a large quantity of dense smoke.", "sources": ["H-mir"]}
+     ]},
+    {"id": "apollo13", "q": ["What happened on Apollo 13?", "What caused the Apollo 13 explosion?"],
+     "a": "An oxygen tank blew up in flight. Its heaters had been left on during a ground test and overheated, damaging the Teflon insulation on the wiring. NASA then redesigned the oxygen tank system.",
+     "claims": [
+       {"text": "The heaters reached temperatures around 1000 degrees Fahrenheit, degrading the Teflon insulation.", "sources": ["H-apollo13"]}
+     ]},
+    {"id": "earth", "q": ["How does this research help on Earth?", "What are the benefits for firefighters?", "Are there spinoffs from space fire research?"],
+     "a": "NASA Spinoff lists three: firefighter air tanks that weigh 20 pounds for a 30 minute supply, a fire detector first used on the Space Shuttle that tells combustion particles from dust, and firefighter clothing made with fire-resistant spacesuit materials.",
+     "claims": [
+       {"text": "The new air tank system weighs 20 pounds for a 30 minute air supply, 13 pounds less than conventional tanks.", "sources": ["S-airtanks"]},
+       {"text": "The detector can discriminate between combustion particles and dust, so it is less susceptible to false alarms.", "sources": ["S-detector"]},
+       {"text": "Project FIRES applied fire-resistant spacesuit materials to firefighter gear.", "sources": ["S-attire"]}
+     ]},
+    {"id": "top-risk", "q": ["What is the biggest fire risk for a Moon base?", "What matters most for lunar fire safety?", "Summarize the main findings"],
+     "a": "Three things stack up. No solid material has been flight-tested above 22.2 % oxygen while the cabin will be at 34 %. The one experiment at elevated oxygen saw flames keep burning without airflow. And every test was in orbit, none at lunar gravity.",
+     "claims": [
+       {"text": "Solid-fuel tests with a recorded oxygen level stop at 22.2 %; the exploration atmosphere is 34 %.", "sources": ["F-solid-gap"]},
+       {"text": "In the Burning Rate Emulator, flames in elevated oxygen kept burning with no airflow.", "sources": ["F-vent"]},
+       {"text": "Every combustion flight experiment in the archive flew in orbit.", "sources": ["F-gravity"]}
+     ]},
+    {"id": "next", "q": ["What should NASA test next?", "Which experiments would close the gaps?", "What are the research priorities?"],
+     "a": "Burn real cabin materials at 34 % oxygen and 8.2 psia, including with the ventilation off; repeat at lunar gravity; and measure extinguisher agent quantities at high oxygen. NASA's SoFIE, FM2 and FLARE experiments work on the first two.",
+     "claims": [
+       {"text": "SoFIE studies how solid materials ignite and go out on the space station.", "sources": ["N-sofie"]},
+       {"text": "FM2 burns materials on the Moon at one sixth gravity.", "sources": ["N-fm2"]},
+       {"text": "FLARE aims to predict a material's flammability limit in microgravity from tests on the ground.", "sources": ["N-flare"]},
+       {"text": "The exploration atmosphere is 8.2 psia with 34 % oxygen.", "sources": ["ATM"]}
+     ]},
+    {"id": "bre", "q": ["What is the Burning Rate Emulator?", "What is ACME BRE?"],
+     "a": "A porous gas burner on the space station that imitates a burning solid, run in NASA's three candidate cabin atmospheres. It ignited 194 flames over 18 test days. It is the only investigation in the archive designed around the exploration atmosphere.",
+     "claims": [
+       {"text": "ACME BRE ignited 194 flames over 18 test days at oxygen levels of 21, 25, 26.5, 34 and 40 %.", "sources": ["F-vent"]}
+     ]},
+    {"id": "saffire", "q": ["What is Saffire?", "What did the Saffire experiments do?"],
+     "a": "Large fires lit on purpose inside uncrewed Cygnus cargo ships after they left the station, where a big flame endangers no one. Saffire-II burned nine smaller samples and recorded each one beside its normal-gravity result.",
+     "claims": [
+       {"text": "Saffire burned samples inside an uncrewed Cygnus cargo ship.", "sources": ["PSI-98", "PSI-99"]},
+       {"text": "Saffire burned its samples at 20 and 30 cm/s airflow.", "sources": ["F-vent-speed"]}
+     ]},
+    {"id": "shape", "q": ["Why do flames look different in microgravity?", "What does a flame look like in space?", "Why are flames round in space?"],
+     "a": "On Earth hot gas rises and pulls a flame into a pointed cone. Without gravity nothing rises, so fuels burn as rounded balls and the flame is fed only by slow diffusion and whatever airflow the fans provide.",
+     "claims": [
+       {"text": "In space, fuels burn as oval balls rather than with an upward pointed cone flame as they do on Earth.", "sources": ["PSI-25"]}
+     ]},
+    {"id": "upstream", "q": ["Which way does a flame spread in space?", "Can a flame spread against the airflow?"],
+     "a": "Toward the fresh air. NASA's guide notes that at low flow speeds a flame in space spreads upstream, into the oncoming airflow, which is the opposite of what happens on Earth.",
+     "claims": [
+       {"text": "The flame spreads upstream, into the oncoming airflow, in space when the forced-flow velocities are low.", "sources": ["GUIDE"]}
+     ]},
+    {"id": "pressure", "q": ["Does pressure matter for fire in space?", "What pressures were tested?"],
+     "a": "The data cannot say much, because pressure was barely varied where it matters. FLEX ran 103 tests near 0.70 atm and 161 near 1 atm; the exploration atmosphere is 0.56 atm. Solid-material tables do not record pressure at all.",
+     "claims": [
+       {"text": "FLEX ran 103 tests near 0.70 atm and 161 near 1 atm.", "sources": ["F-corner"]},
+       {"text": "The exploration atmosphere is 0.56 atm.", "sources": ["F-corner"]}
+     ]}
+  ]
+}

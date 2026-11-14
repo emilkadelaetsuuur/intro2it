@@ -1,10 +1,10 @@
-"""Checks that every number FlameGap shows is right.
+"""Checks that every number QUENCH shows is right.
 
     python3 -m unittest discover -s tests -v
 
 The tests recount key facts straight from the raw NASA CSV files with independent code,
 then compare them with what the build put into web/data.js. They also check the model,
-the video results, the answer checker and the server's handling of a model reply.
+the video results, the materials table, the answer checker and the offline answer bank.
 Standard library only, plus numpy for the model check.
 """
 import csv
@@ -18,7 +18,7 @@ import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAB = os.path.join(ROOT, "data", "raw", "tables")
-sys.path.insert(0, os.path.join(ROOT, "server"))
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 
 def load_js(name, var):
@@ -226,67 +226,52 @@ class Verifier(unittest.TestCase):
         self.assertTrue(ok, issues)
 
 
-class Server(unittest.TestCase):
-    """The request path with a stand-in client, so no API key or network is needed."""
+class AnswerBank(unittest.TestCase):
+    """The offline analyst answers. The build already refuses unverified claims; these guard the shipped file."""
 
-    def test_ask_parses_and_verifies(self):
-        os.environ.pop("ANTHROPIC_API_KEY", None)
-        import serve
+    def test_every_claim_cites_existing_records(self):
+        ids = set(D["record_ids"])
+        self.assertGreaterEqual(len(D["answers"]), 30)
+        for a in D["answers"]:
+            self.assertTrue(a["q"] and a["a"] and a["claims"], a["id"])
+            for c in a["claims"]:
+                self.assertTrue(c["sources"], a["id"])
+                self.assertTrue(set(c["sources"]) <= ids, f"{a['id']} cites {set(c['sources']) - ids}")
 
-        class Block:
-            type = "text"
-            text = json.dumps({"answer": "No solid material was flight tested above 22.2 % oxygen.",
-                               "claims": [{"text": "BASS-II tested up to 22.2 % oxygen.", "sources": ["PSI-25"]},
-                                          {"text": "BASS-II tested at 40 % oxygen.", "sources": ["PSI-25"]}],
-                               "outside_archive": ""})
+    def test_ids_unique(self):
+        ids = [a["id"] for a in D["answers"]]
+        self.assertEqual(len(ids), len(set(ids)))
 
-        class Resp:
-            stop_reason = "end_turn"
-            content = [Block()]
-            model = "stand-in"
+    def test_a_wrong_number_would_be_refused(self):
+        from verify import check_claim
+        corpus = {"F-solid-gap": "Every solid-fuel test with a recorded oxygen level sits between 13.6 and 22.2 %."}
+        ok, _ = check_claim({"text": "Solid materials were tested up to 34 % oxygen.", "sources": ["F-solid-gap"]}, corpus)
+        self.assertFalse(ok)
 
-        class Msgs:
-            def create(self, **kw):
-                self.kw = kw
-                return Resp()
 
-        class Beta:
-            messages = Msgs()
+class Materials(unittest.TestCase):
+    def test_no_material_tested_near_exploration_oxygen(self):
+        for m in D["materials"]:
+            if m["o2"]:
+                self.assertLessEqual(m["o2"][1], 22.2, m["id"])
 
-        class Client:
-            beta = Beta()
+    def test_counts_match_tagged_tests(self):
+        for m in D["materials"]:
+            n = sum(1 for t in D["tests"] if m["id"] in t.get("m", []))
+            self.assertEqual(n, m["flame"], m["id"])
 
-        serve.CLIENT = Client()
-        out, code = serve.ask("What oxygen levels were solids tested at?")
-        self.assertEqual(code, 200)
-        self.assertEqual(out["total"], 2)
-        self.assertEqual(out["verified"], 1, "the claim with an invented 40 % must fail")
-        self.assertIn("40 %", out["claims"][1]["issues"][0])
-        kw = Client.beta.messages.kw
-        self.assertEqual(kw["model"], serve.MODEL)
-        self.assertEqual(kw["output_config"]["format"]["type"], "json_schema")
-        self.assertIn("PSI-25", kw["system"][0]["text"])
+    def test_nomex_recount_from_csv(self):
+        n = 0
+        for name, col in (("PSI-25_Experimental table_BASS-II.csv", 5), ("PSI-26_Experimental table_BASS.csv", 5), ("PSI-99_Experimental table_SAFFIRE-2.csv", 1)):
+            h, b = rows(name)
+            n += sum(1 for r in b if "nomex" in r[col].lower())
+        self.assertEqual(n, next(m for m in D["materials"] if m["id"] == "nomex")["flame"])
 
-    def test_refusal_is_reported(self):
-        import serve
-
-        class Resp:
-            stop_reason = "refusal"
-            content = []
-
-        class Msgs:
-            def create(self, **kw):
-                return Resp()
-
-        class Beta:
-            messages = Msgs()
-
-        class Client:
-            beta = Beta()
-
-        serve.CLIENT = Client()
-        out, code = serve.ask("x")
-        self.assertIn("error", out)
+    def test_wire_insulation_never_flame_tested(self):
+        for mid in ("kapton", "teflon"):
+            m = next(x for x in D["materials"] if x["id"] == mid)
+            self.assertEqual(m["flame"], 0)
+            self.assertGreater(m["smoke"], 0)
 
 
 if __name__ == "__main__":

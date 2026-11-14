@@ -1,141 +1,125 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>FlameGap demo</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>QUENCH demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
 <style>
 @page { size: 1280px 720px; margin: 0; }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: Inter, "Liberation Sans", sans-serif; color: #0f1522; }
-.s { width: 1280px; height: 720px; padding: 52px 64px; position: relative; overflow: hidden; break-after: page; background: #f4f6f9; display: flex; flex-direction: column; gap: 22px; }
+body { margin: 0; font-family: "Public Sans", "Liberation Sans", sans-serif; color: #0b0c0e; }
+.s { width: 1280px; height: 720px; padding: 44px 60px 54px; position: relative; overflow: hidden; break-after: page; background: #fff; display: flex; flex-direction: column; gap: 18px; }
 .s:last-child { break-after: auto; }
-.eb { font: 500 15px "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #6f7a8e; }
-h1 { font: 700 84px "Space Grotesk", sans-serif; letter-spacing: -0.03em; margin: 0; line-height: 1; }
-h1 i { font-style: normal; color: #eb6834; }
-h2 { font: 700 44px "Space Grotesk", sans-serif; letter-spacing: -0.02em; margin: 0; line-height: 1.1; max-width: 26ch; }
-p, li { font-size: 21px; line-height: 1.45; color: #485266; margin: 0; }
-ul { margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
-b { color: #0f1522; }
-.big { font: 700 34px "Space Grotesk", sans-serif; color: #1b2f6b; }
-.row { display: flex; gap: 28px; align-items: flex-start; min-height: 0; flex: 1; }
+.lab { font: 500 13px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #6a7280; }
+.rule { border-top: 3px solid #0b0c0e; padding-top: 12px; display: flex; gap: 26px; align-items: baseline; }
+.rule .no { font: 500 14px "DM Mono", monospace; color: #6a7280; }
+h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin: 0; line-height: 1.08; max-width: 27ch; }
+p, li { font-size: 20px; line-height: 1.42; color: #434851; margin: 0; }
+ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 9px; }
+b { color: #0b0c0e; } .hot { color: #d42a1a; }
+.row { display: flex; gap: 30px; align-items: flex-start; min-height: 0; flex: 1; }
 .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
-.shot { border: 1px solid #dde2ea; border-radius: 12px; background: #fff; overflow: hidden; }
+.shot { border: 1px solid #d4d8df; overflow: hidden; }
 .shot img { display: block; width: 100%; height: auto; }
-.foot { position: absolute; left: 64px; right: 64px; bottom: 26px; display: flex; justify-content: space-between; font: 500 13px "IBM Plex Mono", monospace; color: #6f7a8e; }
-.stat { display: flex; gap: 40px; }
-.stat div b { display: block; font: 700 46px "Space Grotesk", sans-serif; color: #1b2f6b; }
-.stat div span { font-size: 17px; color: #485266; }
-.hot { color: #c03232; }
-.title { background: #0f1522; color: #fff; }
-.title p { color: #b8c0ce; }
-.title .eb { color: #8a94a6; }
-.title .shot { border-color: #252d3a; }
-blockquote { margin: 0; border-left: 4px solid #c03232; padding: 6px 0 6px 18px; font-size: 20px; color: #0f1522; }
-blockquote cite { display: block; font: 500 13px "IBM Plex Mono", monospace; color: #6f7a8e; margin-top: 6px; font-style: normal; }
+.foot { position: absolute; left: 60px; right: 60px; bottom: 20px; display: flex; justify-content: space-between; font: 500 12px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #6a7280; }
+.stat { display: flex; gap: 34px; }
+.stat div b { display: block; font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.stat div span { font-size: 15px; color: #434851; display: block; margin-top: 6px; max-width: 16ch; }
+blockquote { margin: 0; border-left: 3px solid #d42a1a; padding: 2px 0 2px 16px; font-size: 19px; }
+blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6a7280; margin-top: 6px; font-style: normal; }
+.cover { background: #05070b; color: #f4f6f9; padding: 0 60px; gap: 0; }
+.cover .strip { display: flex; justify-content: space-between; padding: 22px 0 16px; border-bottom: 1px solid #2b3241; font: 500 13px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; }
+.cover h1 { font-size: 236px; font-weight: 900; letter-spacing: -0.045em; line-height: .86; margin: 46px 0 0 -10px; }
+.cover h1 span { color: #ff4b2e; }
+.cover .long { font: 500 14px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9b1bf; margin-top: 16px; }
+.cover .thesis { font-size: 30px; line-height: 1.3; font-weight: 500; color: #f4f6f9; margin-top: 34px; max-width: 30ch; }
+.cover .thesis b { color: #ff4b2e; }
+.cover .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #2b3241; margin-top: auto; margin-bottom: 26px; }
+.cover .facts div { padding: 16px 16px 0 0; }
+.cover .facts b { display: block; font-size: 42px; font-weight: 800; letter-spacing: -0.03em; color: #f4f6f9; }
+.cover .facts b.hot { color: #ff4b2e; }
+.cover .facts span { font-size: 14px; color: #a9b1bf; }
 </style></head><body>
 
-<section class="s title">
-  <p class="eb">NASA Space Apps 2026 · Flame in Freefall</p>
-  <h1>Flame<i>Gap</i></h1>
-  <h2 style="color:#fff;max-width:30ch">Where the flight evidence on spacecraft fire ends, and what it means for a Moon base</h2>
-  <div class="shot" style="margin-top:auto"><img src="img/gap.png" alt=""></div>
-  <div class="foot" style="color:#8a94a6"><span>Data: NASA Physical Sciences Informatics (CC0)</span><span>1 / 7</span></div>
+<section class="s cover">
+  <div class="strip"><span>NASA Space Apps Challenge 2026 · Flame in Freefall</span><span>Team project · not a NASA product</span></div>
+  <h1>QUENCH<span>.</span></h1>
+  <p class="long">Quantified Evidence Navigator for Combustion Hazards</p>
+  <p class="thesis">NASA plans to send crews to the Moon in cabin air with <b>34 % oxygen</b>. No solid material has ever been flight-tested above <b>22.2 %</b>.</p>
+  <div class="facts"><div><b class="hot">22.2 %</b><span>highest oxygen in any solid-material flight test</span></div><div><b>34 %</b><span>oxygen in the exploration atmosphere</span></div><div><b class="hot">0</b><span>solid or liquid test runs in that atmosphere</span></div><div><b>986</b><span>flight test runs from 24 NASA investigations</span></div></div>
 </section>
 
 <section class="s">
-  <p class="eb">The question</p>
-  <h2>NASA plans to fly lunar crews in 34&nbsp;% oxygen at 8.2&nbsp;psia. Has anything been burned in that air?</h2>
+  <div class="rule"><span class="no">01</span><h2>Decades of fire experiments in orbit. Do they cover the air a Moon base will use?</h2></div>
   <div class="row">
     <div class="col">
-      <p>We read all <b>24 combustion investigations</b> in NASA's PSI archive: <b>986 test runs</b>, 352 papers and 6.3 TB of raw data, and placed every run by the oxygen and pressure it burned in.</p>
-      <blockquote>“Because of the pure oxygen atmosphere, the fire spread quickly…”<cite>Apollo 1, NASA Office of Safety and Mission Assurance</cite></blockquote>
+      <p>We read every combustion investigation in NASA's PSI archive: <b>24 investigations, 986 test runs</b>, 352 papers and 6.3 TB of raw data, and placed each run by the oxygen and pressure it burned in.</p>
+      <blockquote>“Because of the pure oxygen atmosphere, the fire spread quickly…”<cite>Apollo 1 · NASA Office of Safety and Mission Assurance</cite></blockquote>
+      <p>Oxygen-rich cabins have killed before. The exploration atmosphere raises oxygen again, to 34 %.</p>
     </div>
-    <div class="col"><div class="shot"><img src="img/o2hist.png" alt=""></div><p style="font-size:16px">Cabin oxygen through history against the range of solid-material flight tests.</p></div>
+    <div class="col"><div class="shot"><img src="img/o2hist.png" alt=""></div><div class="shot"><img src="img/gap.png" alt=""></div></div>
   </div>
-  <div class="foot"><span>FlameGap</span><span>2 / 7</span></div>
+  <div class="foot"><span>QUENCH</span><span>2 / 7</span></div>
 </section>
 
 <section class="s">
-  <p class="eb">The answer</p>
-  <h2>No solid material was flight-tested above <span class="hot">22.2 %</span> oxygen</h2>
+  <div class="rule"><span class="no">02</span><h2>The evidence stops at <span class="hot">22.2 %</span> oxygen for every solid material</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.35"><div class="shot"><img src="img/map.png" alt=""></div></div>
+    <div class="col" style="flex:1.45"><div class="shot"><img src="img/map.png" alt=""></div></div>
     <div class="col">
-      <ul>
-        <li>Zero solid or droplet runs inside the exploration window.</li>
-        <li>Droplets reached 34 %, but at <b>0.70 atm</b>, not 0.56.</li>
-        <li>At 25 % oxygen and above, only <b>8 %</b> of droplet flames went out on their own, against 92 % below 18 %.</li>
-        <li>Every run was in microgravity. None at lunar gravity.</li>
-      </ul>
+      <div class="shot"><img src="img/matrix.png" alt=""></div>
+      <ul><li>Droplets reached 34 %, but at <b>0.70 atm</b>, not 0.56.</li><li>At 25 % oxygen and above only <b>8 %</b> of droplet flames went out on their own; below 18 % it was 92 %.</li><li>Every run was in orbit. None at lunar gravity.</li></ul>
     </div>
   </div>
-  <div class="foot"><span>Evidence map · Mission brief</span><span>3 / 7</span></div>
+  <div class="foot"><span>Evidence map</span><span>3 / 7</span></div>
 </section>
 
 <section class="s">
-  <p class="eb">Ranked findings</p>
-  <h2>15 findings, each with evidence, limits, an action and NASA sources</h2>
+  <div class="rule"><span class="no">03</span><h2>Mission check: describe a cabin, get graded evidence and the tests still needed</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.3"><div class="shot"><img src="img/finding.png" alt=""></div></div>
+    <div class="col" style="flex:1.25"><div class="shot"><img src="img/verdict.png" alt=""></div><div class="shot" style="max-height:330px"><img src="img/scorecard.png" alt=""></div></div>
     <div class="col">
-      <p>Users weight <b>safety, evidence, mission fit and actionability</b>; the ranking follows. Top of the list:</p>
-      <ul>
-        <li>Cutting the airflow may not put a fire out in oxygen-rich air.</li>
-        <li>NASA's own results say the material approval test is not the worst case.</li>
-        <li>A local extinguisher jet can feed a fire in weightlessness.</li>
-      </ul>
+      <p>Oxygen, pressure, gravity, ventilation, materials, extinguishing agent. For each fire-safety question QUENCH grades the flight evidence <b>A to D</b> by written rules, shows the runs it used, and ranks what to test next.</p>
+      <ul><li>Lunar habitat: <b class="hot">3 of 6 questions have no flight evidence.</b></li><li>Space station: evidence for every question.</li><li>One click copies the report.</li></ul>
     </div>
   </div>
-  <div class="foot"><span>Findings</span><span>4 / 7</span></div>
+  <div class="foot"><span>Mission check</span><span>4 / 7</span></div>
 </section>
 
 <section class="s">
-  <p class="eb">Predictor</p>
-  <h2>Will a burning droplet go out on its own? And can we trust the answer?</h2>
+  <div class="rule"><span class="no">04</span><h2>15 ranked findings, and an analyst that answers only from NASA's records</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.3"><div class="shot"><img src="img/predict.png" alt=""></div></div>
+    <div class="col"><div class="shot" style="max-height:300px"><img src="img/finding.png" alt=""></div><ul><li>Each finding: evidence, limits, action, sources. You set the weights.</li><li>NASA's own results: the material approval test is <b>not the worst case</b>.</li></ul></div>
+    <div class="col"><div class="shot" style="max-height:300px"><img src="img/answer.png" alt=""></div><ul><li>Runs in the browser: <b>no API, no key, no cost</b>.</li><li>30 answers written with AI ahead of time; code checked all <b>56 claims</b> against the records.</li></ul></div>
+  </div>
+  <div class="foot"><span>Findings · Ask the archive</span><span>5 / 7</span></div>
+</section>
+
+<section class="s">
+  <div class="rule"><span class="no">05</span><h2>Lab: a model that knows its limits, and results read from raw NASA video</h2></div>
+  <div class="row">
     <div class="col">
+      <div class="shot"><img src="img/pout.png" alt=""></div>
       <div class="stat"><div><b>82 %</b><span>right on unseen test days</span></div><div><b>69 %</b><span>always guessing</span></div></div>
-      <p>Logistic model on <b>261 FLEX runs</b>, cross-validated by test date. It shows the nearest real runs and <b>flags extrapolation</b>: the exploration atmosphere is outside every FLEX pressure.</p>
+      <p>Trained on <b>261 FLEX runs</b>. It flags extrapolation.</p>
     </div>
-  </div>
-  <div class="foot"><span>Outcome predictor</span><span>5 / 7</span></div>
-</section>
-
-<section class="s">
-  <p class="eb">Video lab</p>
-  <h2>NASA keeps the results as raw video. We turned it into numbers.</h2>
-  <div class="row">
-    <div class="col" style="flex:1.25"><div class="shot"><img src="img/vchart.png" alt=""></div></div>
     <div class="col">
+      <div class="shot"><img src="img/vchart.png" alt=""></div>
       <div class="stat"><div><b>5 / 5</b><span>independent checks pass</span></div><div><b>1.6 %</b><span>between repeat tests</span></div></div>
-      <ul>
-        <li>Flame out <b>1.9 s</b> after the fan cut; NASA report: within 2 s.</li>
-        <li>Spread falls with film thickness, as thin-fuel theory predicts.</li>
-        <li>Ready to run over all 244 BASS-II videos.</li>
-      </ul>
+      <p>Flame out <b>1.9 s</b> after the fan cut; NASA's report says within 2 s.</p>
     </div>
   </div>
-  <div class="foot"><span>Video lab</span><span>6 / 7</span></div>
+  <div class="foot"><span>Lab</span><span>6 / 7</span></div>
 </section>
 
 <section class="s">
-  <p class="eb">Built to be trusted</p>
-  <h2>Every number computed from NASA data. Every quote checked. Every AI claim verified.</h2>
+  <div class="rule"><span class="no">06</span><h2>Built to be trusted, free to run</h2></div>
   <div class="row">
     <div class="col">
-      <ul>
-        <li>The build recomputes all figures from the raw PSI tables and <b>fails</b> if a quote is not word for word in its NASA source.</li>
-        <li><b>29 tests</b> recount key facts from the CSVs with independent code.</li>
-        <li>Claude answers questions from the archive only; code checks each claim's records and numbers.</li>
-      </ul>
+      <span class="lab">Trust</span>
+      <ul><li>One script recomputes every number from NASA's raw tables.</li><li>Every quote is matched word for word against its NASA source, or the build stops.</li><li><b>34 automated tests</b> recount key facts with independent code.</li><li>No model runs at use time, so nothing can be made up on the spot.</li></ul>
     </div>
     <div class="col">
-      <p class="big">Next</p>
-      <ul>
-        <li>Feed the gaps to SoFIE and FM2, which can test elevated oxygen and lunar gravity.</li>
-        <li>Publish a BASS results table from the videos.</li>
-        <li>On Earth: the same science made firefighter air tanks lighter and fire detectors smarter.</li>
-      </ul>
+      <span class="lab">Next</span>
+      <ul><li>Feed the gaps to SoFIE and FM2, which can test elevated oxygen and lunar gravity.</li><li>Run the video tracker over all 244 BASS-II videos and publish the results table the archive lacks.</li><li>On Earth, the same science already made firefighter air tanks lighter and detectors smarter.</li></ul>
     </div>
   </div>
-  <div class="foot"><span>FlameGap · research prototype, not a design basis · not an official NASA product</span><span>7 / 7</span></div>
+  <div class="foot"><span>QUENCH · research prototype, not a design basis · not an official NASA product</span><span>7 / 7</span></div>
 </section>
 </body></html>

@@ -94,7 +94,7 @@ function drawGap(box) {
   s += `<rect x="${x(S.moon_o2_min)}" y="24" width="${x(40) - x(S.moon_o2_min)}" height="28" fill="var(--red)" fill-opacity=".09"/><line x1="${x(S.moon_o2_min)}" x2="${x(S.moon_o2_min)}" y1="24" y2="52" stroke="var(--red)" stroke-dasharray="3 3"/>`;
   if (W > 520) s += `<text x="${x(40) - 6}" y="38" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${W > 760 ? "MOON BASE: " : ""}${f1(S.moon_o2_min)} % OR MORE</text>`;
   s += `<rect x="${x(S.solid_o2_min)}" y="42" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" fill="var(--s1)"/>`;
-  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="700" fill="var(--ink)">Solid materials in the archive: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
+  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="700" fill="var(--ink)">${W > 520 ? "Solid materials in the archive" : "Solids"}: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
   D.atmospheres.forEach((a, i) => {
     const hot = a.id === "exp";
     s += `<line x1="${x(a.o2)}" x2="${x(a.o2)}" y1="${hot ? 10 : 40}" y2="52" stroke="${hot ? "var(--red)" : "var(--ink3)"}" stroke-width="${hot ? 2 : 1.2}"/>`;

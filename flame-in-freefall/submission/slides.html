@@ -1,4 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><title>QUENCH demo</title>
+<!-- SI notice: these slides were laid out with SI (AI) assistance (Claude, Anthropic). The pictures are screenshots of the live site. -->
+<meta name="si-disclosure" content="Slides laid out with SI assistance; screenshots of the live site; no SI-generated images.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
 <style>
 @page { size: 1280px 720px; margin: 0; }
@@ -35,91 +37,135 @@ blockquote cite { display: block; font: 400 12px "DM Mono", monospace; color: #6
 .cover .facts b { display: block; font-size: 42px; font-weight: 800; letter-spacing: -0.03em; color: #f4f6f9; }
 .cover .facts b.hot { color: #ff4b2e; }
 .cover .facts span { font-size: 14px; color: #a9b1bf; }
+
+.cover .team { margin-top: 18px; font: 500 15px "DM Mono", monospace; letter-spacing: .06em; color: #f4f6f9; }
+.cover .team span { color: #a9b1bf; }
+.cover h1 { font-size: 200px; margin-top: 34px; }
+.cover .thesis { margin-top: 26px; font-size: 28px; max-width: 34ch; }
+.s.tight { gap: 14px; } .s.tight p, .s.tight li { font-size: 18.5px; }
+.shot.fix { flex: none; }
+.pill { display: inline-block; font: 500 12px "DM Mono", monospace; letter-spacing: .06em; text-transform: uppercase; background: #e6f3ea; color: #1c6b3a; padding: 2px 8px; margin-right: 6px; }
+.small { font-size: 15px !important; color: #6a7280 !important; }
 </style></head><body>
 
 <section class="s cover">
-  <div class="strip"><span>NASA Space Apps Challenge 2026 · Flame in Freefall</span><span>Team project · not a NASA product</span></div>
+  <div class="strip"><span>NASA Space Apps Challenge 2026</span><span>Challenge: Flame in Freefall · SI-Powered Fire Safety Insights from Microgravity Combustion Data</span></div>
   <h1>QUENCH<span>.</span></h1>
   <p class="long">Quantified Evidence Navigator for Combustion Hazards</p>
-  <p class="thesis">NASA plans to send crews to the Moon in cabin air with <b>34 % oxygen</b>. No solid material has ever been flight-tested above <b>22.2 %</b>.</p>
-  <div class="facts"><div><b class="hot">22.2 %</b><span>highest oxygen in any solid-material flight test</span></div><div><b>34 %</b><span>oxygen in the exploration atmosphere</span></div><div><b class="hot">0</b><span>solid or liquid test runs in that atmosphere</span></div><div><b>986</b><span>flight test runs from 24 NASA investigations</span></div></div>
+  <p class="team"><span>Team</span> [TEAM NAME] &nbsp;·&nbsp; <span>Members</span> [NAMES OF TEAM MEMBERS]</p>
+  <p class="thesis">NASA expects Moon-base air with <b>30 % oxygen or more</b>. NASA's open combustion archive holds no solid-fuel flight test above <b>22.2 %</b>.</p>
+  <div class="facts"><div><b class="hot">22.2 %</b><span>highest oxygen of any solid-fuel flight test in the archive</span></div><div><b>30 %+</b><span>oxygen NASA expects on the Moon, at 10.2 psi or less</span></div><div><b class="hot">0</b><span>solid-fuel runs at 30 % oxygen or more</span></div><div><b>986</b><span>flight test runs read from 24 NASA investigations</span></div></div>
 </section>
 
 <section class="s">
   <div class="rule"><span class="no">01</span><h2>Decades of fire experiments in orbit. Do they cover the air a Moon base will use?</h2></div>
   <div class="row">
     <div class="col">
-      <p>We read every combustion investigation in NASA's PSI archive: <b>24 investigations, 986 test runs</b>, 352 papers and 6.3 TB of raw data, and placed each run by the oxygen and pressure it burned in.</p>
-      <blockquote>“Because of the pure oxygen atmosphere, the fire spread quickly…”<cite>Apollo 1 · NASA Office of Safety and Mission Assurance</cite></blockquote>
-      <p>Oxygen-rich cabins have killed before. The exploration atmosphere raises oxygen again, to 34 %.</p>
+      <p>The challenge: a dashboard that <b>summarizes, ranks and interprets</b> NASA's microgravity combustion investigations for fire safety.</p>
+      <p>We read all of them in NASA's PSI archive: <b>24 investigations, 986 flight test runs</b>, 352 papers, 6.3 TB of raw data, and placed every run by the oxygen and pressure it burned in.</p>
     </div>
-    <div class="col"><div class="shot"><img src="img/o2hist.png" alt=""></div><div class="shot"><img src="img/gap.png" alt=""></div></div>
+    <div class="col">
+      <blockquote>“The intermediate oxygen concentration used on the Moon will likely be 30% or greater, with a corresponding pressure of 10.2 psi or less.”<cite>Flame in Freefall challenge statement</cite></blockquote>
+      <p>At that oxygen level the archive holds <b class="hot">0 solid-fuel runs</b>, 24 droplet runs and 246 gas-flame runs.</p>
+    </div>
   </div>
-  <div class="foot"><span>QUENCH</span><span>2 / 7</span></div>
+  <div class="shot fix"><img src="img/gap.png" alt="Oxygen range of solid-fuel flight tests, 13.6 to 22.2 percent, against the Moon-base range of 30 percent or more"></div>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>2 / 7</span></div>
 </section>
 
-<section class="s">
-  <div class="rule"><span class="no">02</span><h2>The evidence stops at <span class="hot">22.2 %</span> oxygen for every solid material</h2></div>
+<section class="s tight">
+  <div class="rule"><span class="no">02</span><h2>Rank: which investigations matter for your habitat</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.45"><div class="shot"><img src="img/map.png" alt=""></div></div>
+    <div class="col" style="flex:1.75"><div class="shot"><img src="img/ranking.png" alt="The archive ranked for a Moon base or rover"></div></div>
     <div class="col">
-      <div class="shot"><img src="img/matrix.png" alt=""></div>
-      <ul><li>Droplets reached 34 %, but at <b>0.70 atm</b>, not 0.56.</li><li>At 25 % oxygen and above only <b>8 %</b> of droplet flames went out on their own; below 18 % it was 92 %.</li><li>Every run was in orbit. None at lunar gravity.</li></ul>
+      <ul>
+        <li>Pick a <b>station, spacecraft, Moon base or rover, or Mars base</b>. All 24 investigations are ranked for it.</li>
+        <li>The score has four visible parts: named for fire safety by NASA, fuel close to cabin materials, tested near that cabin's air, data ready to use.</li>
+        <li>You can change the weights. Every rule is printed.</li>
+        <li><span class="pill">Prevention</span><span class="pill">Detection</span><span class="pill">Suppression</span> follow the challenge statement word for word.</li>
+      </ul>
     </div>
   </div>
-  <div class="foot"><span>Evidence map</span><span>3 / 7</span></div>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>3 / 7</span></div>
 </section>
 
-<section class="s">
-  <div class="rule"><span class="no">03</span><h2>Mission check: describe a cabin, get graded evidence and the tests still needed</h2></div>
+<section class="s tight">
+  <div class="rule"><span class="no">03</span><h2>Summarize and compare: what each one burned, varied and measured</h2></div>
   <div class="row">
-    <div class="col" style="flex:1.25"><div class="shot"><img src="img/verdict.png" alt=""></div><div class="shot" style="max-height:330px"><img src="img/scorecard.png" alt=""></div></div>
+    <div class="col" style="flex:1.75"><div class="shot"><img src="img/compare.png" alt="BASS-II, SAME and FLEX compared side by side"></div></div>
     <div class="col">
-      <p>Oxygen, pressure, gravity, ventilation, materials, extinguishing agent. For each fire-safety question QUENCH grades the flight evidence <b>A to D</b> by written rules, shows the runs it used, and ranks what to test next.</p>
-      <ul><li>Lunar habitat: <b class="hot">3 of 6 questions have no flight evidence.</b></li><li>Space station: evidence for every question.</li><li>One click copies the report.</li></ul>
+      <ul>
+        <li>Each investigation opens to its objective, fuels with sample or burner size, <b>what changed between runs, what stayed the same</b> and what was recorded.</li>
+        <li>These lists are computed from NASA's run tables, not typed in.</li>
+        <li>Tick two or three to see them <b>side by side</b>. Matching rows are marked.</li>
+        <li>Six hardware families show which experiments can be compared directly.</li>
+      </ul>
     </div>
   </div>
-  <div class="foot"><span>Mission check</span><span>4 / 7</span></div>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>4 / 7</span></div>
 </section>
 
-<section class="s">
-  <div class="rule"><span class="no">04</span><h2>15 ranked findings, and an analyst that answers only from NASA's records</h2></div>
+<section class="s tight">
+  <div class="rule"><span class="no">04</span><h2>Interpret: grade the evidence for any cabin and list the tests still needed</h2></div>
   <div class="row">
-    <div class="col"><div class="shot" style="max-height:300px"><img src="img/finding.png" alt=""></div><ul><li>Each finding: evidence, limits, action, sources. You set the weights.</li><li>NASA's own results: the material approval test is <b>not the worst case</b>.</li></ul></div>
-    <div class="col"><div class="shot" style="max-height:300px"><img src="img/answer.png" alt=""></div><ul><li>Runs in the browser: <b>no API, no key, no cost</b>.</li><li>30 answers written with AI ahead of time; code checked all <b>56 claims</b> against the records.</li></ul></div>
+    <div class="col" style="flex:1.05"><div class="shot"><img src="img/verdict.png" alt="Moon base: 3 of 6 questions have no flight evidence"></div><div class="shot" style="max-height:388px"><img src="img/scorecard.png" alt="Evidence scorecard with grades A to D"></div></div>
+    <div class="col">
+      <ul>
+        <li><b>Mission check:</b> set oxygen, pressure, gravity, ventilation, materials and extinguishing agent. Six fire-safety questions are graded A to D by written rules.</li>
+        <li>Moon base: <b class="hot">3 of 6 questions have no flight evidence.</b> Space station: evidence for all six.</li>
+        <li><b>15 ranked findings</b> for prevention, detection and suppression, each with evidence, limits, an action and NASA sources.</li>
+        <li>Example: in elevated oxygen, flames kept burning after the airflow stopped, the first step of today's fire response.</li>
+      </ul>
+    </div>
   </div>
-  <div class="foot"><span>Findings · Ask the archive</span><span>5 / 7</span></div>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>5 / 7</span></div>
 </section>
 
-<section class="s">
-  <div class="rule"><span class="no">05</span><h2>Lab: a model that knows its limits, and results read from raw NASA video</h2></div>
+<section class="s tight">
+  <div class="rule"><span class="no">05</span><h2>Data for models: every run as CSV, a predictor that knows its limits, results read from NASA video</h2></div>
   <div class="row">
+    <div class="col" style="flex:1.5"><div class="shot"><img src="img/map.png" alt="Every flight run by oxygen and pressure, with the Moon-base range"></div></div>
     <div class="col">
-      <div class="shot"><img src="img/pout.png" alt=""></div>
-      <div class="stat"><div><b>82 %</b><span>right on unseen test days</span></div><div><b>69 %</b><span>always guessing</span></div></div>
-      <p>Trained on <b>261 FLEX runs</b>. It flags extrapolation.</p>
-    </div>
-    <div class="col">
-      <div class="shot"><img src="img/vchart.png" alt=""></div>
-      <div class="stat"><div><b>5 / 5</b><span>independent checks pass</span></div><div><b>1.6 %</b><span>between repeat tests</span></div></div>
-      <p>Flame out <b>1.9 s</b> after the fan cut; NASA's report says within 2 s.</p>
+      <div class="stat"><div><b>82 %</b><span>right on test days the model never saw</span></div><div><b>69 %</b><span>always guessing the common outcome</span></div></div>
+      <ul>
+        <li>All <b>986 runs download as CSV</b>, or only those near your cabin.</li>
+        <li>Predictor trained on 261 FLEX droplet runs. It flags extrapolation.</li>
+        <li>Flame spread measured from raw BASS-II video: <b>5 of 5</b> independent checks pass.</li>
+      </ul>
     </div>
   </div>
-  <div class="foot"><span>Lab</span><span>6 / 7</span></div>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>6 / 7</span></div>
 </section>
 
-<section class="s">
-  <div class="rule"><span class="no">06</span><h2>Built to be trusted, free to run</h2></div>
+<section class="s tight">
+  <div class="rule"><span class="no">06</span><h2>Built to be trusted, free to run, open about SI</h2></div>
   <div class="row">
     <div class="col">
-      <span class="lab">Trust</span>
-      <ul><li>One script recomputes every number from NASA's raw tables.</li><li>Every quote is matched word for word against its NASA source, or the build stops.</li><li><b>34 automated tests</b> recount key facts with independent code.</li><li>No model runs at use time, so nothing can be made up on the spot.</li></ul>
+      <p class="lab">Trust</p>
+      <ul>
+        <li>One script recomputes every number from NASA's raw tables.</li>
+        <li>Every quote is matched word for word to its source, or the build stops.</li>
+        <li>44 automated tests recount key facts with independent code.</li>
+      </ul>
     </div>
     <div class="col">
-      <span class="lab">Next</span>
-      <ul><li>Feed the gaps to SoFIE and FM2, which can test elevated oxygen and lunar gravity.</li><li>Run the video tracker over all 244 BASS-II videos and publish the results table the archive lacks.</li><li>On Earth, the same science already made firefighter air tanks lighter and detectors smarter.</li></ul>
+      <p class="lab">Use of SI</p>
+      <ul>
+        <li>SI (Claude) helped write code and draft summaries, findings and answers.</li>
+        <li>Code checks all 81 claims in the answers against NASA records.</li>
+        <li>No model runs when you use it: no API, no key, no cost.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <p class="lab">Next</p>
+      <ul>
+        <li>Bring the Saffire-IV, -V and -VI and FLEX-2 run data into PSI.</li>
+        <li>Read all 244 BASS-II videos into a public results table.</li>
+        <li>On Earth the same science already made firefighter gear and smoke detectors better.</li>
+      </ul>
     </div>
   </div>
-  <div class="foot"><span>QUENCH · research prototype, not a design basis · not an official NASA product</span><span>7 / 7</span></div>
+  <p class="small">NASA data: Physical Sciences Informatics combustion investigations, BASS-II raw video and report, Researcher's Guide to ISS Combustion Science. Research prototype, not a design basis. Not an official NASA product. Slides laid out with SI assistance; pictures are screenshots of the live site.</p>
+  <div class="foot"><span>QUENCH · Flame in Freefall · NASA Space Apps 2026</span><span>7 / 7</span></div>
 </section>
 </body></html>

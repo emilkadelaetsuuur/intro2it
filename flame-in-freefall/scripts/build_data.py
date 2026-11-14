@@ -490,7 +490,7 @@ HEADER_FIX = {"O initial ambient composition; mole fraction": "O2 in the atmosph
               "CO initial ambient composition; mole fraction": "CO2 in the atmosphere; mole fraction",
               "He initial ambient composition; mole fraction": "He in the atmosphere; mole fraction",
               "Samle Thickness": "Sample Thickness", "?-g Burn Length": "µg Burn Length", "?-g Spread Length": "µg Spread Length"}
-BLANK = {"", "n/a", "na", "-", "--", "tbd", "none"}
+BLANK = {"", "n/a", "na", "-", "--", "tbd", "none", "?", "\u2014", "\u2013", "\ufffd"}   # PSI writes a lost symbol (U+FFFD) where FLEX has no value
 
 
 def table_columns(acc):

@@ -59,10 +59,20 @@ const roleTags = i => (i.pillars.length ? i.pillars.map(p => `<span class="rel d
 const sbar = x => `<span class="sbar" role="img" aria-label="Score ${Math.round(x.s)} of 100">${x.parts.map(p => `<i style="width:${(p[1] * p[2] / x.tot * 100).toFixed(1)}%" title="${esc((IW[p[0]] || "Link to partial gravity") + ": " + p[3])}"></i>`).join("")}</span>`;
 
 /* ---------- downloads ---------- */
-function download(name, text, type) {
+async function download(name, text, type) {
+  // Inside a claude.ai artifact the page may not save files itself: it asks the viewer through the host.
+  if (window.claude && window.claude.use) {
+    try { const cap = await window.claude.use("downloads"); if (cap) { await cap.save({ filename: name, data: text }); return; } }
+    catch (e) { return; }   // the viewer said no, or saving is switched off in this view
+  }
   const a = document.createElement("a"), url = URL.createObjectURL(new Blob([text], { type: type || "text/csv;charset=utf-8" }));
   a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[download]"); if (!a || !window.claude) return;
+  e.preventDefault(); const href = a.getAttribute("href");
+  fetch(href).then(r => r.text()).then(t => download(href.split("/").pop(), t)).catch(() => {});
+});
 const cell = v => { const s = v == null ? "" : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 const RUN_COLS = ["accession", "investigation", "fuel_type", "test_id", "fuel_or_material", "o2_percent", "pressure_atm", "pressure_source", "outcome", "outcome_in_source", "co2_mole_fraction", "he_mole_fraction", "droplet_diameter_mm", "extinction_diameter_mm", "burning_rate", "burn_time_s", "airflow_cm_s", "flow_direction", "normal_gravity_result", "materials", "psi_url"];
 const OUTCOME = { ext: "self-extinguished", burn: "burned", noign: "did not ignite", other: "other", na: "" };

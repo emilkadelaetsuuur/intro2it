@@ -84,59 +84,29 @@ function matrixHtml(atms) {
 /* ---------- briefing ---------- */
 function score(f) { const w = state.weights, tot = Object.keys(w).reduce((a, k) => a + w[k], 0) || 1; return Object.keys(w).reduce((a, k) => a + w[k] * f.scores[k], 0) / tot / 5 * 100; }
 const ranked = () => D.findings.filter(f => (!state.tag || f.tags.includes(state.tag)) && (state.fpillar === "all" || f.pillar === state.fpillar)).map(f => ({ f, s: score(f) })).sort((a, b) => b.s - a.s);
-function drawGap(box) {
-  const W = Math.max(300, box.clientWidth - 28), H = 96, l = 8, r = 8;
-  const x = o => l + (o - 10) / 30 * (W - l - r);
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
-  s += `<line x1="${x(10)}" x2="${x(40)}" y1="52" y2="52" stroke="var(--strong)" stroke-width="1"/>`;
-  for (let o = 10; o <= 40; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="52" y2="57" stroke="var(--strong)"/><text x="${x(o)}" y="70" text-anchor="middle" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${o}</text>`;
-  s += `<text x="${x(40)}" y="86" text-anchor="end" font-size="11" fill="var(--ink3)" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
-  s += `<rect x="${x(S.moon_o2_min)}" y="24" width="${x(40) - x(S.moon_o2_min)}" height="28" fill="var(--red)" fill-opacity=".09"/><line x1="${x(S.moon_o2_min)}" x2="${x(S.moon_o2_min)}" y1="24" y2="52" stroke="var(--red)" stroke-dasharray="3 3"/>`;
-  if (W > 520) s += `<text x="${x(40) - 6}" y="38" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${W > 760 ? "MOON BASE: " : ""}${f1(S.moon_o2_min)} % OR MORE</text>`;
-  s += `<rect x="${x(S.solid_o2_min)}" y="42" width="${x(S.solid_o2_max) - x(S.solid_o2_min)}" height="10" fill="var(--s1)"/>`;
-  s += `<text x="${x(S.solid_o2_min)}" y="34" font-size="12.5" font-weight="700" fill="var(--ink)">${W > 520 ? "Solid materials in the archive" : "Solids"}: ${f1(S.solid_o2_min)} to ${f1(S.solid_o2_max)} %</text>`;
-  D.atmospheres.forEach((a, i) => {
-    const hot = a.id === "exp";
-    s += `<line x1="${x(a.o2)}" x2="${x(a.o2)}" y1="${hot ? 10 : 40}" y2="52" stroke="${hot ? "var(--red)" : "var(--ink3)"}" stroke-width="${hot ? 2 : 1.2}"/>`;
-    s += `<rect x="${x(a.o2) - 4}" y="48" width="8" height="8" fill="${hot ? "var(--red)" : "var(--bg)"}" stroke="${hot ? "var(--red)" : "var(--ink3)"}" stroke-width="1.5"/>`;
-    if (hot) s += `<text x="${x(a.o2) - 8}" y="19" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--red)">Exploration atmosphere: ${f1(a.o2)} %</text>`;
-    else if (W > 900 || i === 0) s += `<text x="${x(a.o2) + 6}" y="${i === 0 ? 86 : 44}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${esc(a.short).toUpperCase()} ${f1(a.o2)} %</text>`;
-  });
-  box.innerHTML = s + "</svg>";
-}
 function drawBrief() {
-  const overview = [
-    [S.combustion, "Investigations", "archive", "M4 5h7l2 2h7v12H4z M7 11h10m-10 4h7"],
-    [S.tests, "Flight test runs", "evidence", "M2 13h5l3-8 4 15 3-9 2 2h3"],
-    [D.findings.length, "Ranked findings", "findings", "M5 18V12m5 6V8m5 10V5m5 13H3"],
-    [D.families.length, "Hardware families", "archive", "m12 3 8 4.5v9L12 21l-8-4.5v-9z M4 7.5l8 4.5 8-4.5 M12 12v9"]
+  const index = [
+    [S.combustion, "investigations", "archive"],
+    [S.tests, "flight test runs", "evidence"],
+    [D.findings.length, "ranked findings", "findings"]
   ];
-  $("#overview-metrics").innerHTML = overview.map(([value, label, route, path]) =>
-    `<a class="overview-metric" href="#${route}" data-go="${route}"${label === "Hardware families" ? ' data-scroll-to="invfam"' : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg><span><b>${value}</b><span>${label}</span></span></a>`
+  $("#overview-metrics").innerHTML = index.map(([count, label, route]) =>
+    `<a href="#${route}" data-go="${route}"><b>${count}</b> ${label}</a>`
   ).join("");
-  $("#thesis").innerHTML = `NASA expects Moon-base air with <b>${f1(S.moon_o2_min)} % oxygen or more</b>. NASA's open combustion archive holds no solid-fuel flight test above <b>${f1(S.solid_o2_max)} %</b>.`;
-  $("#facts").innerHTML = [
-    [f1(S.solid_o2_max) + " %", "highest oxygen level of any solid-fuel flight test in the archive", 1],
-    [f1(S.moon_o2_min) + " %+", `oxygen NASA expects on the Moon, at ${f1(S.moon_psia_max)} psi or less`, 0],
-    [S.hi_o2.solid, `solid-fuel runs at ${f1(S.moon_o2_min)} % oxygen or more`, 1],
-    [S.tests, `flight test runs read from ${S.combustion} NASA investigations`, 0]
-  ].map(a => `<div><b class="${a[2] ? "hot" : ""}">${esc(a[0])}</b><span>${esc(a[1])}</span></div>`).join("");
-  $("#briefsub").textContent = `QUENCH (Quantified Evidence Navigator for Combustion Hazards) reads every combustion investigation in NASA's Physical Sciences Informatics archive, ${S.tests} test runs in all, and answers one question for mission designers, researchers and students: does flight evidence cover the air your crew will breathe? It summarises the archive, ranks what matters, and turns it into a check you can run on any cabin.`;
-  drawGap($("#gapfig"));
-  const C = D.challenge, hiP = S.moon_range, nearP = S.moon_near;
-  $("#o2ctx").innerHTML = `<p>Spacesuits hold pure oxygen at ${f1(S.suit_psia)} psi. To shorten the oxygen pre-breathe before a moonwalk, NASA expects the Moon base and its rovers to run in between: <b>${f1(S.moon_o2_min)} % oxygen or more at ${f1(S.moon_psia_max)} psi or less</b>. That makes materials much more flammable.</p>
-    <p>At ${f1(S.moon_o2_min)} % oxygen or more the archive holds <b>${S.hi_o2.solid} solid-fuel runs</b>, ${S.hi_o2.droplet} droplet runs (${hiP.droplet} at ${f1(S.moon_psia_max)} psi or less, ${nearP.droplet} just above it at ${f1(S.moon_near_psia[0])} to ${f1(S.moon_near_psia[1])} psia) and ${S.hi_o2.gas} gas-flame runs (${hiP.gas} at ${f1(S.moon_psia_max)} psi or less, all from ${esc(Object.keys(S.moon_range_by).join(", "))}).</p>
-    <blockquote>“${esc(C.moon_air.text)}”<cite><a href="${esc(C.moon_air.url)}" target="_blank" rel="noopener">Flame in Freefall challenge statement</a></cite></blockquote>`;
-  const tools = [
-    ["archive", "Investigation archive", "Compare the fuels, conditions and measurements from each investigation."],
-    ["evidence", "Evidence map", "Plot flight tests by oxygen and pressure. Export the runs that match your cabin."],
-    ["findings", "Safety findings", "Rank the evidence for fire prevention, detection and suppression."]
-  ];
-  $("#tasks").innerHTML = tools.map(([route, title, summary]) =>
-    `<a class="research-tool" href="#${route}" data-go="${route}">
-      <img src="img/${route}-diagram.svg" width="310" height="110" alt="">
-      <div class="tool-content"><h3>${title}</h3><p>${summary}</p></div></a>`
-  ).join("");
+  const moon = D.challenge.moon_air, saffire = D.challenge.saffire6;
+  const min = f1(S.moon_o2_min), pressure = f1(S.moon_psia_max);
+  $("#thesis").textContent = `The PSI archive contains ${S.solid_with_o2} solid-fuel flight runs with a reported oxygen level. The proposed lunar cabin starts above the highest value in those records.`;
+  $("#gapfig").innerHTML = `<table class="oxygen-table"><caption>Oxygen by volume</caption>
+    <thead><tr><th scope="col">Condition</th><th scope="col">Oxygen</th></tr></thead>
+    <tbody><tr><th scope="row">Solid-fuel runs in NASA PSI</th><td>${f1(S.solid_o2_min)}–${f1(S.solid_o2_max)}%</td></tr>
+    <tr><th scope="row">Proposed lunar cabin <small>At or below ${pressure} psia</small></th><td>≥${min}%</td></tr></tbody></table>
+    <p class="source-line">Sources <a href="${esc(D.meta.source_url)}" target="_blank" rel="noopener">NASA PSI</a>
+    <span> / </span><a href="${esc(moon.url)}" target="_blank" rel="noopener">Lunar cabin specification</a></p>`;
+  $("#archive-limit").innerHTML = `NASA also burned solid samples at higher oxygen and lower pressure during <a href="${esc(saffire.url)}" target="_blank" rel="noopener">Saffire-VI</a>. Its run tables are absent from this archive.`;
+  $("#o2ctx").innerHTML = `<table class="breakdown-table"><caption>Number of flight runs meeting each condition</caption>
+    <thead><tr><th scope="col">Fuel</th><th scope="col">O₂ ≥${min}%</th><th scope="col">O₂ ≥${min}% and ≤${pressure} psia</th></tr></thead>
+    <tbody>${KINDS.map(k => `<tr><th scope="row">${KIND[k].label}</th><td>${S.hi_o2[k]}</td><td>${S.moon_range[k]}</td></tr>`).join("")}</tbody></table>
+    <p>The gas-flame runs meeting both conditions come from ${esc(Object.keys(S.moon_range_by).join(", "))}. <a href="#evidence" data-go="evidence">Inspect individual runs</a></p>`;
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");
   $("#matrix1").innerHTML = matrixHtml(D.atmospheres);

@@ -125,8 +125,8 @@ same unit), matches every quote word for word against its saved source, and stop
 model runs when the site is used. The predictor is a machine-learning model trained on NASA data and the
 video lab is computer vision.
 
-OpenAI Codex assisted with the interface redesign. OpenAI image generation was used for the orbital
-cover illustration and the QUENCH logo design. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
+OpenAI Codex assisted with the interface redesign. OpenAI image generation was used for the QUENCH logo and an earlier orbital illustration.
+The current website uses credited NASA photographs. The Lab uses frames from NASA BASS-II video. Charts are drawn from project data.
 
 ## NASA Data
 
@@ -157,7 +157,8 @@ Everything else used to make the project:
 - Olson, S. L., Ferkul, P. V. et al., BASS-II Summary Report, NASA/TM-20210011385.
 - A Researcher's Guide to International Space Station Combustion Science, NASA, 2015.
 - The publications listed in each PSI record, linked from the Archive page.
-- Website fonts: Barlow, Barlow Condensed and IBM Plex Mono, distributed locally under the SIL Open Font License.
+- Website fonts: Barlow, STIX Two Text and IBM Plex Mono, distributed locally under the SIL Open Font License.
 - Software: Python 3, numpy, ffmpeg, Playwright and Chromium (testing and slide rendering).
 - SI tools: Claude (Anthropic), Codex and image generation (OpenAI), as described above.
-- The interface includes original diagrams, the generated cover illustration and NASA experiment frames.
+- Cover photograph: NASA, Jessica Watkins servicing SoFIE aboard the ISS, Expedition 67, June 2022 (ISS067-E-170237). https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/
+- Candle photographs: NASA Glenn Research Center, GRC-1998-C-00485. https://science.nasa.gov/image-detail/amf-grc-1998-c-00485/

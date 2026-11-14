@@ -36,7 +36,7 @@ const pct = p => p < 0.005 ? "<1" : p > 0.995 ? ">99" : String(Math.round(p * 10
 function burnK(q) { const b = M.burn_k, x = [q.o2 / 100, Math.log(q.psia / PSIA), q.fuel === "heptane" ? 1 : 0, q.co2 / 100, q.he / 100]; return b.intercept + b.coef.reduce((a, c, i) => a + c * x[i], 0); }
 function drawPredInputs() {
   const R = M.cv.results;
-  $("#psub").textContent = `A logistic model trained on ${M.n} FLEX droplet runs from the space station. Tested on whole days of runs it never saw, it is right ${Math.round(R["Full model"].accuracy.mean * 100)} % of the time, against ${Math.round(R["Always the most common outcome"].accuracy.mean * 100)} % for always guessing the most common outcome. It tells you when your conditions are outside anything NASA tested.`;
+  $("#psub").textContent = `The model was fitted to ${M.n} FLEX droplet runs. On held-out test days it predicted the recorded outcome with ${Math.round(R["Full model"].accuracy.mean * 100)}% accuracy. A most-common-outcome baseline scored ${Math.round(R["Always the most common outcome"].accuracy.mean * 100)}%. The results flag conditions outside the training data.`;
   const pr = $("#ppresets"); PRESETS.forEach(([n, v]) => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = n; b.onclick = () => { Object.assign(PQ, v); syncPred(); }; pr.appendChild(b); });
   $("#pfuel").innerHTML = ["methanol", "heptane"].map(f => `<button type="button" data-f="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join("");
   $("#pfuel").onclick = e => { const b = e.target.closest("button"); if (b) { PQ.fuel = b.dataset.f; syncPred(); } };
@@ -91,7 +91,7 @@ function drawVideo() {
   const V = D.video; if (!V) { $("#videoblock").hidden = true; return; }
   const cols = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
   const rated = V.tests.filter(t => t.spread_mm_s).map(t => Object.assign({}, t, { series: t.series.filter(p => p[0] >= t.fit_window_s[0] && p[0] <= (t.fan_change_s || t.fit_window_s[1])) }));
-  $("#vsub").textContent = `NASA's table for BASS-II lists the conditions of each test but not what the flame did. That answer sits in ${f1(inv("PSI-25").raw_gb)} GB of raw video. We tracked the flame's leading edge frame by frame in ${V.tests.length} side-view videos from 19 February 2014 and fitted the spread rate. ${V.validation.passed} of ${V.validation.independent} independent checks pass.`;
+  $("#vsub").textContent = `On 19 February 2014, the BASS-II cameras recorded these thin-film tests in orbit. We tracked the leading edge of the flame in ${V.tests.length} side-view videos. The test table below reports spread rates where the front could be measured. ${V.validation.passed} of ${V.validation.independent} independent checks passed.`;
   const box = $("#vchart"), W = Math.max(300, box.clientWidth), wide = W >= 600, H = 280, m = { l: 48, r: wide ? 96 : 16, t: 24, b: 44 };
   const tmax = Math.max(...rated.map(t => t.series[t.series.length - 1][0] - t.series[0][0]));
   const ymax = Math.max(...rated.map(t => Math.max(...t.series.map(p => p[1] - t.series[0][1]))));
@@ -108,8 +108,8 @@ function drawVideo() {
   if (wide) ends.forEach(e => { s += `<text x="${Math.min(e.x + 6, W - m.r + 6)}" y="${e.y + 4}" font-size="11.5" font-weight="700" fill="var(--ink)">${esc(e.lab)}</text>`; });
   box.innerHTML = s + "</svg>";
   $("#vlegend").innerHTML = rated.map((t, i) => `<span><i style="background:${cols[i]}"></i>${t.test}: ${t.thickness_um} µm film, ${t.spread_mm_s} mm/s</span>`).join("");
-  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${t.test} with the detected flame front marked by a blue line" width="480" height="220"><figcaption>${t.test}: ${esc(t.material)}. Blue line: detected leading edge.</figcaption></figure>`).join("");
-  $("#vtable").innerHTML = `<table><thead><tr><th>Test</th><th>Film</th><th class="n">O₂ %</th><th class="n">Air cm/s</th><th class="n">Spread mm/s</th><th class="n">Range across thresholds</th><th class="n">Fit R²</th><th class="n">Out after fan cut</th><th>Confidence</th></tr></thead><tbody>` +
+  $("#vthumbs").innerHTML = rated.map(t => `<figure><img src="${esc(t.frames_web[0])}" alt="Side view of test ${t.test} with the detected flame front marked by a blue line" width="480" height="220"><figcaption><b>${t.test}</b> ${t.thickness_um} µm film</figcaption></figure>`).join("");
+  $("#vtable").innerHTML = `<table><thead><tr><th>Test</th><th>Film</th><th class="n">O₂ %</th><th class="n">Airflow (cm/s)</th><th class="n">Spread (mm/s)</th><th class="n">Threshold range (mm/s)</th><th class="n">Fit R²</th><th class="n">Out after fan cut</th><th>Confidence</th></tr></thead><tbody>` +
     V.tests.map(t => `<tr><td><b>${t.test}</b></td><td>${esc(t.material)}</td><td class="n">${t.o2 == null ? "–" : t.o2}</td><td class="n">${esc(t.air_cm_s)}</td><td class="n">${t.spread_mm_s == null ? "–" : t.spread_mm_s}</td><td class="n">${t.spread_mm_s_range ? t.spread_mm_s_range.join(" – ") : "–"}</td><td class="n">${t.fit_r2 == null ? "–" : t.fit_r2}</td><td class="n">${t.flame_out_after_fan_s != null ? t.flame_out_after_fan_s + " s" : "–"}</td><td>${t.confidence}${t.notes ? `<br><span class="fine">${esc(t.notes)}</span>` : ""}</td></tr>`).join("") + "</tbody></table>";
   $("#vchecks").innerHTML = `<table><thead><tr><th>Check</th><th>What</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody>` +
     V.validation.checks.map(c => `<tr><td><b>${esc(c.check)}</b></td><td>${esc(c.what)}</td><td>${esc(c.expected)}</td><td>${esc(c.measured)}</td><td>${c.independent ? (c.pass ? '<span class="ok">✓ pass</span>' : '<span class="no">✕ fail</span>') : "used for scale"}</td></tr>`).join("") + "</tbody></table>";
@@ -302,7 +302,7 @@ function ask(q) {
 }
 function askSetup() {
   const nClaims = D.answers.reduce((n, a) => n + a.claims.length, 0);
-  $("#asksub").textContent = `Ask in plain words. QUENCH answers from the records only: it counts runs in the tables, looks up materials and experiments, and picks from ${D.answers.length} analyst answers that were written with SI (AI) ahead of time and checked claim by claim (${nClaims} claims against ${D.record_ids.length} records). It runs in your browser: no account, no key, no cost, and nothing is made up on the spot.`;
+  $("#asksub").textContent = `Search the run tables by material, oxygen level or pressure, or choose a question below. The browser can also retrieve ${D.answers.length} prepared answers drafted with SI. Their ${nClaims} claims were checked against ${D.record_ids.length} records.`;
   ["Does turning off ventilation put out a fire at 34 % oxygen?", "Has Nomex been tested?", "How many tests were run at 26.5 % oxygen and 10.2 psia?", "What is the biggest fire risk for a Moon base?", "What did FLEX do?", "Is the ground flammability test the worst case?"]
     .forEach(q => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.textContent = q; b.onclick = () => { $("#askq").value = q; ask(q); }; $("#askchips").appendChild(b); });
   $("#askform").addEventListener("submit", e => { e.preventDefault(); ask($("#askq").value); });
@@ -317,7 +317,7 @@ function drawMethod() {
   <div><h3>Mission check</h3><ul><li>Grades are set by fixed rules, printed under the scorecard, from counts of flight runs near the cabin's oxygen level and pressure.</li><li>Materials are matched by name in the BASS, BASS-II and Saffire tables; smoke-only materials come from SAME.</li><li>The ventilation, agent and smoke rows rest on the findings they link to, including their limits.</li></ul></div>
   <div><h3>Predictor</h3><ul><li>Logistic regression on ${M.n} FLEX runs (${M.dropped.length} dropped for a missing droplet size or pressure). Inputs: oxygen, pressure, fuel, droplet size, carbon dioxide, helium.</li><li>${esc(M.cv.method)}: accuracy ${Math.round(R["Full model"].accuracy.mean * 100)} %, AUC ${f2(R["Full model"].auc.mean)}.</li><li>A query farther than ${f2(M.domain.nn95)} standard deviations from every real run, or beyond a tested range, is flagged as extrapolation.</li></ul></div>
   <div><h3>Video lab</h3><ul><li>Leading-edge tracking on BASS-II side-view video at 10 frames per second, straight-line fit between ignition and the fan cut, repeated at three brightness thresholds.</li><li>One scale value from the NASA report; ${D.video ? D.video.validation.passed + " of " + D.video.validation.independent : "–"} checks it does not use pass.</li></ul></div>
-  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used to design the QUENCH logo. The cover shows an OpenAI-generated illustration of a station in orbit. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
+  <div><h3>Use of SI</h3><ul><li>NASA Space Apps 2026 uses the term Super Intelligence (SI) for what is usually called AI. This is where it sits in QUENCH.</li><li>SI wrote the first draft, code checks it: Claude (Anthropic) was used to write code, normalise tables, and draft the ${S.combustion} investigation summaries, the wording of the ${D.findings.length} findings and the ${D.answers.length} analyst answers.</li><li>Each analyst claim must cite existing records and every number must appear in them with the same unit; every number in a summary must be in its record or table; every quote must match its saved source word for word. The build stops otherwise. This catches invented numbers and quotes; it cannot catch a correct number used in the wrong sense, so each claim links to its records.</li><li>Machine learning: the predictor is a model trained here on NASA data, with its accuracy on unseen test days shown beside it. Computer vision: the video lab measures flame spread from NASA's raw video.</li><li>No model is called while you use QUENCH: no API, no key, no cost. Everything on these pages is computed in your browser from files shipped with it. OpenAI Codex assisted with the interface redesign. OpenAI image generation was used to design the QUENCH logo. The cover and candle photographs are credited to NASA. The experimental frames in the Lab come from NASA, and the charts are drawn from the project data.</li></ul></div>
   <div><h3>What the challenge asks</h3><ul><li>“${esc(D.challenge.task.text)}”</li><li>Summarise: Briefing, Archive rows, Lessons. Rank: Archive (investigations for a habitat) and Findings (by weights you set). Interpret: Mission check, Findings, Ask.</li><li>${esc(D.challenge.obj_relevant.text)} See <a href="#archive" data-go="archive">Archive</a> and <a href="#mission" data-go="mission">Mission check</a>.</li><li>${esc(D.challenge.obj_data.text)} See the downloads in <a href="#evidence" data-go="evidence">Evidence</a> and the <a href="#lab" data-go="lab">Lab</a>.</li><li>${esc(D.challenge.obj_controls.text)} See <a href="#findings" data-go="findings">Findings</a>, sorted into prevention, detection and suppression.</li><li>${esc(D.challenge.scope.text)} QUENCH leaves rockets and propellants out as well.</li></ul></div>
   <div><h3>Ranking of investigations</h3><ul><li>Four parts, each from 0 to 100, combined with weights you can change: how the challenge statement and PSI tie the investigation to fire safety, how close its fuel is to cabin materials, how close its runs come to the chosen cabin's oxygen and pressure, and how ready its data is to use.</li><li>Tier 1 (${S.tiers["1"]} investigations) is named in the challenge statement as a prevention, detection or suppression study. Tier 2 (${S.tiers["2"]}) is named there as related, filed by PSI under fire safety, or built on a tier 1 study. Tier 3 (${S.tiers["3"]}) is every other combustion investigation, which the statement calls “still relevant to fire safety, just not as strongly or directly”.</li><li>What varied, what stayed the same and what was recorded are computed from each PSI run table. Measurement types are found by keyword in the record, so a type the record does not name is not listed.</li><li>The parts follow NASA's records. The numbers given to them are our judgement and are printed in full under the weights.</li></ul></div>
   <div><h3>Cleaning decisions</h3><ul>${D.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>
@@ -325,54 +325,6 @@ function drawMethod() {
 }
 
 /* ---------- navigation and wiring ---------- */
-const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-const motionControl = $("#motion-control");
-const orbitArt = $(".orbit-art");
-const orbitHero = $(".orbit-hero");
-let pauseRequested = false;
-let playForThisVisit = false;
-try { pauseRequested = localStorage.getItem("quench-motion") === "off"; } catch { /* Storage is optional. */ }
-function setMotion(enabled) {
-  document.documentElement.dataset.motion = enabled ? "on" : "off";
-  if (enabled) orbitArt.setAttribute("data-drift", "");
-  else if (motionPreference.matches) orbitArt.removeAttribute("data-drift");
-  const label = enabled ? "Pause motion" : "Play motion";
-  motionControl.setAttribute("aria-label", label);
-  motionControl.title = label;
-}
-function syncMotion() {
-  setMotion(!pauseRequested && (!motionPreference.matches || playForThisVisit));
-}
-motionControl.addEventListener("click", () => {
-  pauseRequested = document.documentElement.dataset.motion === "on";
-  playForThisVisit = !pauseRequested;
-  try {
-    if (pauseRequested) localStorage.setItem("quench-motion", "off");
-    else localStorage.removeItem("quench-motion");
-  } catch { /* Still applies in this tab. */ }
-  syncMotion();
-});
-motionPreference.addEventListener("change", () => {
-  playForThisVisit = false;
-  syncMotion();
-});
-syncMotion();
-
-// Fine pointer input changes the camera framing by only a few pixels.
-orbitHero.addEventListener("pointermove", event => {
-  if (event.pointerType !== "mouse" || document.documentElement.dataset.motion !== "on") return;
-  const rect = orbitHero.getBoundingClientRect();
-  const dx = ((event.clientX - rect.left) / rect.width - .5) * 10;
-  const dy = ((event.clientY - rect.top) / rect.height - .5) * 6;
-  orbitArt.style.setProperty("--look-x", dx.toFixed(2) + "px");
-  orbitArt.style.setProperty("--look-y", dy.toFixed(2) + "px");
-});
-orbitHero.addEventListener("pointerleave", () => {
-  if (document.documentElement.dataset.motion === "off") return;
-  orbitArt.style.removeProperty("--look-x");
-  orbitArt.style.removeProperty("--look-y");
-});
-
 $(".skip-link").addEventListener("click", e => {
   e.preventDefault();
   $("#main-content").focus({ preventScroll: true });
@@ -418,7 +370,7 @@ $("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
 $("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69")));
 $("#dlmodel").onclick = () => download("quench-flex-model.json", JSON.stringify(M, null, 1), "application/json");
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => DRAW[state.view](), 120); });
-$("#foot").textContent = "QUENCH · NASA Space Apps Challenge 2026 · Flame in Freefall · Data: NASA Physical Sciences Informatics, CC0-1.0 · Code and draft text made with SI (AI) assistance and checked against NASA records · Research prototype, not a design basis · Not an official NASA product";
+$("#foot").innerHTML = `<strong>QUENCH</strong><span>Independent NASA Space Apps Challenge project, 2026. Research use only.</span><a href="#method" data-go="method">Sources, methods and use of SI</a>`;
 
 drawWeights(); drawPredInputs(); drawPredCard(); mcSetup(); askSetup(); invSetup();
 show(location.hash.slice(1) || "brief");

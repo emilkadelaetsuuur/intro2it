@@ -290,6 +290,10 @@ const VIEWS = [["brief", "Briefing"], ["mission", "Mission check"], ["evidence",
 const DRAW = { brief: drawBrief, mission: drawMission, evidence: drawEvidence, findings: drawFindings, lab: () => { syncPred(); drawVideo(); }, archive: drawInv, lessons: drawHistory, ask: () => {}, method: drawMethod };
 function show(name, f) {
   if (!Object.prototype.hasOwnProperty.call(DRAW, name)) name = "brief";   // "#constructor" and the like are not views
+  if (name !== "evidence") {
+    $("#tip").hidden = true;
+    if (EvidenceInspector.isOpen()) EvidenceInspector.clear();
+  }
   state.view = name;
   VIEWS.forEach(([id]) => { $("#v-" + id).hidden = id !== name; });
   document.querySelectorAll("#tabs a").forEach(a => { if (a.dataset.go === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
@@ -320,7 +324,71 @@ $("#chart").addEventListener("mousemove", e => { const el = e.target.closest(".b
 $("#chart").addEventListener("mouseleave", () => { $("#tip").hidden = true; });
 $("#chart").addEventListener("focusin", e => { const el = e.target.closest(".bub"); if (el) showTip(el); });
 $("#chart").addEventListener("focusout", () => { $("#tip").hidden = true; });
-$("#chart").addEventListener("click", e => { const el = e.target.closest(".bub"); if (el) showTip(el, e); });
+let evidenceOpener = null;
+function mapMarkCenter(mark) {
+  // The SoFIE range is a horizontal segment and can intersect a publication triangle.
+  return { left: mark.cx, right: mark.x2 ?? mark.cx, y: mark.cy, radius: mark.g.pub ? 7 : mark.r };
+}
+function distanceToMark(mark, x, y) {
+  const m = mapMarkCenter(mark);
+  return Math.hypot(Math.max(m.left - x, x - m.right, 0), m.y - y) - m.radius;
+}
+function overlappingMarks(mark) {
+  const a = mapMarkCenter(mark);
+  return hit.filter(other => {
+    if (other === mark) return false;
+    const b = mapMarkCenter(other);
+    return Math.hypot(Math.max(a.left - b.right, b.left - a.right, 0), a.y - b.y) <= a.radius + b.radius;
+  });
+}
+function inspectEvidence(trigger) {
+  if (!trigger) return;
+  const group = evidencePoints[Number(trigger.dataset.point)];
+  if (!group) return;
+  if (!EvidenceInspector.isOpen()) evidenceOpener = { id: trigger.dataset.point, table: state.table };
+  const mark = trigger.matches(".bub") ? hit[Number(trigger.dataset.i)] : null;
+  const nearby = mark ? overlappingMarks(mark).map(other => ({
+    label: pointLabel(other.g),
+    select: () => inspectEvidence($("#chart [data-point='" + pointIds.get(other.g) + "']"))
+  })) : [];
+  document.querySelectorAll(".map-selected").forEach(el => el.classList.remove("map-selected"));
+  trigger.classList.add("map-selected");
+  $("#tip").hidden = true;
+  EvidenceInspector.open(getEvidenceDetail(group), trigger, {nearby});
+}
+document.addEventListener("evidence-inspector-close", event => {
+  document.querySelectorAll(".map-selected").forEach(el => el.classList.remove("map-selected"));
+  if (event.detail.restoreFocus && state.view === "evidence" && evidenceOpener) {
+    const root = evidenceOpener.table ? "#maptable" : "#chart";
+    const opener = $(root + " [data-point='" + evidenceOpener.id + "']");
+    opener?.focus({preventScroll: true});
+  }
+  evidenceOpener = null;
+  $("#tip").hidden = true;
+});
+$("#chart").addEventListener("click", event => {
+  const direct = event.target.closest(".bub");
+  if (direct) { inspectEvidence(direct); return; }
+  const svg = event.target.closest("svg");
+  if (!svg) return;
+  // Also accept a near miss on a small marker, using its actual SVG coordinates.
+  const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(svg.getScreenCTM().inverse());
+  const reach = matchMedia("(pointer: coarse)").matches ? 13 : 4;
+  let closest = null, best = reach;
+  for (const mark of hit) {
+    const d = distanceToMark(mark, point.x, point.y);
+    if (d < best) { best = d; closest = mark; }
+  }
+  if (closest) inspectEvidence(svg.querySelector("[data-point='" + pointIds.get(closest.g) + "']"));
+});
+$("#chart").addEventListener("keydown", event => {
+  const mark = event.target.closest(".bub");
+  if (mark && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    if (!event.repeat) inspectEvidence(mark);
+  }
+});
+$("#maptable").addEventListener("click", event => inspectEvidence(event.target.closest("button[data-point]")));
 $("#viewbtn").onclick = () => { state.table = !state.table; drawMapTable(); };
 $("#dlall").onclick = () => download("quench-runs.csv", runsCsv(D.tests));
 $("#dlflex").onclick = () => download("quench-flex-training-runs.csv", runsCsv(D.tests.filter(t => t.i === "PSI-69" && t.p > 0 && t.o != null && t.d0 != null && ["Extinction", "Completion", "Disruption"].includes(t.rr))));

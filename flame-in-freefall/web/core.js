@@ -199,6 +199,17 @@ const publishedMarks = [
   ...saffireEvents.map(r => ({ kind: "saffire", o: r.oxygen_percent, p: r.pressure_kpa == null ? null : r.pressure_kpa / 101.325, r })),
   ...(D.external_sofie ? [{ kind: "sofie", o: D.external_sofie.oxygen_max_percent, p: null, r: D.external_sofie }] : [])
 ];
+// The plot and table refer to the same membership, including groups outside the axes.
+const brePoints = breStrip.map(bre => ({ k: "gas", bre }));
+const publicationPoints = publishedMarks.map(pub => ({ k: "solid", pub }));
+const evidencePoints = [...groups, ...brePoints, ...publicationPoints];
+const pointIds = new Map(evidencePoints.map((group, id) => [group, id]));
+function pointLabel(g) {
+  if (g.bre) return `BRE · ${g.bre.o}% O₂ · ${plural(g.bre.days, "test day")}`;
+  if (g.pub?.kind === "sofie") return "SoFIE-GEL · published oxygen range";
+  if (g.pub) return `Saffire-VI · event ${g.pub.r.event} · ${g.pub.r.material} · ${g.pub.o}% O₂`;
+  return `${KIND[g.k].label} · ${plural(g.n, "run")} · ${f1(g.o)}% O₂ · ${g.recorded ? f2(g.p) + " atm" : "pressure unreported"}`;
+}
 const pubOutcome = { burn: "burned", noign: "did not ignite" };
 function chips() {
   const ac = $("#atmchips"); ac.querySelectorAll("button").forEach(b => b.remove());
@@ -220,56 +231,61 @@ function chips() {
 }
 let hit = [];
 function drawMap() {
-  const box = $("#chart"), W = Math.max(240, box.clientWidth), small = W < 620;
+  const box = $("#chart"), frame = box.parentElement;
+  const frameStyle = getComputedStyle(frame);
+  const frameWidth = frame.clientWidth - parseFloat(frameStyle.paddingLeft) - parseFloat(frameStyle.paddingRight);
+  const W = Math.max(240, box.clientWidth || frameWidth), small = W < 620;
   const m = { l: small ? 42 : 60, r: small ? 12 : 22, t: small ? 55 : 26 };
-  const mainH = small ? 290 : 380, rowH = 54, gap = small ? 76 : 55;
+  const mainH = small ? 290 : 380, rowH = 54, gap = 76;
   const pubRow = state.published && publishedMarks.some(q => q.p == null);
   const stripY = m.t + mainH + gap, stripCount = stripKinds.length + 1 + (pubRow ? 1 : 0), stripBottom = stripY + rowH * stripCount, H = stripBottom + 16;
   const x = o => m.l + (o - X0) / (X1 - X0) * (W - m.l - m.r);
   const y = p => m.t + (1 - Math.log(p / Y0) / Math.log(Y1 / Y0)) * mainH;
   const rad = n => 2.6 + (small ? 1.5 : 1.9) * Math.sqrt(n);
   const T = target(); hit = [];
-  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Flight test runs by oxygen level and pressure" xmlns="http://www.w3.org/2000/svg">`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="group" aria-label="Flight test runs by oxygen level and pressure. Select a point to inspect its records." xmlns="http://www.w3.org/2000/svg">`;
   if (small) {
     const selected = `${T.name} · ${f1(T.o2)}% O₂ · ${f1(T.psia)} psia`;
     s += `<desc>Selected cabin: ${esc(selected)}. The lower rows show runs with unreported pressure and the approximate oxygen settings listed on BRE test days.</desc>
       <text x="6" y="15" fill="var(--red)" font-size="13" font-weight="600">${esc(selected)}</text>`;
   }
   for (let o = X0; o <= X1; o += 5) s += `<line x1="${x(o)}" x2="${x(o)}" y1="${m.t}" y2="${m.t + mainH}" stroke="var(--rule)"/><text x="${x(o)}" y="${m.t + mainH + 16}" text-anchor="middle" font-size="11" font-family="var(--mono)">${o}</text>`;
-  [0.5, 0.7, 1, 2, 3, 5].forEach(p => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" stroke="var(--rule)"/><text x="${m.l - 7}" y="${y(p) + 4}" text-anchor="end" font-size="11" font-family="var(--mono)">${p}</text>`; });
+  [0.5, 0.7, 1, 2, 3, 5].forEach(p => { s += `<line class="${p === 1 ? "map-sea-level" : ""}" x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" stroke="var(--rule)"/><text x="${m.l - 7}" y="${y(p) + 4}" text-anchor="end" font-size="11" font-family="var(--mono)">${p}</text>`; });
   s += `<text x="${m.l}" y="${m.t - 12}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">PRESSURE, ATM (LOG SCALE)</text><text x="${W - m.r}" y="${m.t + mainH + 32}" text-anchor="end" font-size="11" font-family="var(--mono)">OXYGEN, % BY VOLUME</text>`;
   const mp = S.moon_psia_max / PSIA;
   s += `<rect x="${x(S.moon_o2_min)}" y="${y(mp)}" width="${x(X1) - x(S.moon_o2_min)}" height="${y(Y0) - y(mp)}" fill="var(--red)" fill-opacity=".05" stroke="var(--red)" stroke-opacity=".7" stroke-dasharray="4 4"/>`;
   s += `<text x="${x(X1) - 6}" y="${y(Y0) - 7}" text-anchor="end" font-size="11" fill="var(--red)" font-family="var(--mono)">${small ? "MOON RANGE" : `MOON BASE RANGE: ${f1(S.moon_o2_min)} % OR MORE, ${f1(S.moon_psia_max)} PSI OR LESS`}</text>`;
   const wx0 = Math.max(X0, T.o2 - S.o2_window), wx1 = Math.min(X1, T.o2 + S.o2_window), wy0 = Math.min(Y1, T.p * (1 + S.p_window)), wy1 = Math.max(Y0, T.p * (1 - S.p_window));
   s += `<rect x="${x(wx0)}" y="${y(wy0)}" width="${x(wx1) - x(wx0)}" height="${y(wy1) - y(wy0)}" fill="var(--red)" fill-opacity=".08" stroke="var(--red)" stroke-width="1.5"/>`;
-  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${small ? m.t + mainH : stripBottom}" stroke="var(--red)" stroke-width="1" stroke-opacity=".6"/>`;
-  if (small) s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${stripY}" y2="${stripBottom}" stroke="var(--red)" stroke-opacity=".6"/>`;
+  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${y(wy1)}" y2="${m.t + mainH}" stroke="var(--red)" stroke-opacity=".6"/>`;
+  s += `<rect class="map-lanes-bg" x="0" y="${stripY - 29}" width="${W}" height="${rowH * stripCount + 42}" rx="4"/>`;
+  s += `<line x1="${x(T.o2)}" x2="${x(T.o2)}" y1="${stripY}" y2="${stripBottom}" stroke="var(--red)" stroke-opacity=".48"/>`;
   [...stripKinds.map(k => [KIND[k].label, "runs"]), ["BRE test days", "approximate chamber oxygen settings"],
     ...(pubRow ? [["Published outside PSI", "solid materials, no paired pressure"]] : [])].forEach((r, i) => {
     const cy = stripY + rowH * i + rowH / 2;
     s += `<line x1="${m.l}" x2="${W - m.r}" y1="${cy}" y2="${cy}" stroke="var(--rule)"/>`;
     s += `<text x="${m.l}" y="${cy - rowH / 2 + 9}" font-size="11.5" font-weight="700" fill="var(--ink)">${r[0]}<tspan font-weight="400" fill="var(--ink3)">  ${small ? "" : r[1]}</tspan></text>`;
   });
-  s += `<text x="${m.l}" y="${stripY - 12}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">OXYGEN ONLY · PRESSURE UNRECORDED</text>`;
+  s += `<text x="${m.l}" y="${stripY - 12}" font-size="11" fill="var(--ink3)" font-family="var(--mono)">${small ? "NO PAIRED PRESSURE" : "OXYGEN RECORDS WITHOUT PAIRED PRESSURE"}</text>`;
   const marks = [];
   groups.filter(g => state.kinds[g.k] && !g.off).forEach(g => {
     const cy = g.recorded ? y(g.p) : stripY + rowH * (stripKinds.indexOf(g.k) + 0.5) + 4;
     marks.push({ cx: x(g.o), cy, r: rad(g.n), g, hollow: !g.recorded });
   });
-  if (state.kinds.gas) breStrip.filter(b => b.o >= X0 && b.o <= X1).forEach(b => {
-    marks.push({ cx: x(b.o), cy: stripY + rowH * (stripKinds.length + 0.5) + 4, r: 6, g: { k: "gas", bre: b } });
+  if (state.kinds.gas) brePoints.filter(g => g.bre.o >= X0 && g.bre.o <= X1).forEach(g => {
+    marks.push({ cx: x(g.bre.o), cy: stripY + rowH * (stripKinds.length + 0.5) + 4, r: 6, g });
   });
   if (state.published) {
     const rowY = stripY + rowH * (stripKinds.length + 1.5) + 4;
-    publishedMarks.forEach(q => {
-      if (q.kind === "sofie") marks.push({ cx: x(q.r.oxygen_min_percent), cy: rowY, x2: x(Math.min(X1, q.r.oxygen_max_percent)), r: 2, g: { k: "solid", pub: q } });
-      else if (q.o >= X0 && q.o <= X1 && (q.p == null || (q.p >= Y0 && q.p <= Y1))) marks.push({ cx: x(q.o), cy: q.p == null ? rowY : y(q.p), r: 1, g: { k: "solid", pub: q } });
+    publicationPoints.forEach(g => {
+      const q = g.pub;
+      if (q.kind === "sofie") marks.push({ cx: x(q.r.oxygen_min_percent), cy: rowY, x2: x(Math.min(X1, q.r.oxygen_max_percent)), r: 2, g });
+      else if (q.o >= X0 && q.o <= X1 && (q.p == null || (q.p >= Y0 && q.p <= Y1))) marks.push({ cx: x(q.o), cy: q.p == null ? rowY : y(q.p), r: 1, g });
     });
   }
   marks.sort((a, b) => b.r - a.r).forEach(mk => {
     const c = KIND[mk.g.k].color, i = hit.push(mk) - 1;
-    const attrs = `class="bub" data-i="${i}" tabindex="0" aria-label="${esc(tipHtml(mk).replace(/<br>/g, ". ").replace(/<[^>]+>/g, ""))}"`;
+    const attrs = `class="bub" data-point="${pointIds.get(mk.g)}" data-i="${i}" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="evidence-inspector" aria-label="${esc(pointLabel(mk.g))}"`;
     if (mk.g.pub) {
       s += mk.g.pub.kind === "sofie"
         ? `<g ${attrs}><rect x="${mk.cx.toFixed(1)}" y="${mk.cy - 8}" width="${(mk.x2 - mk.cx).toFixed(1)}" height="16" fill="transparent"/><path d="M${mk.cx.toFixed(1)} ${mk.cy - 5}v10M${mk.x2.toFixed(1)} ${mk.cy - 5}v10M${mk.cx.toFixed(1)} ${mk.cy}H${mk.x2.toFixed(1)}" fill="none" stroke="${c}" stroke-width="2.5"/></g>`
@@ -288,7 +304,7 @@ function drawMap() {
     s += "</g>";
   });
   box.innerHTML = s + "</svg>";
-  $("#legend").innerHTML = KINDS.map(k => `<span><i style="background:${KIND[k].color}"></i>${KIND[k].label}</span>`).join("") +
+  $("#legend").innerHTML =
     `<span><svg width="46" height="20" aria-hidden="true"><circle cx="7" cy="10" r="${rad(1)}" fill="var(--ink3)"/><circle cx="30" cy="10" r="${rad(10)}" fill="var(--ink3)"/></svg>1 run and 10 runs</span>` +
     `<span><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="var(--ink3)" fill-opacity=".28" stroke="var(--ink3)" stroke-width="1.5"/></svg>runs with oxygen only</span>` +
     `<span><svg width="18" height="18" aria-hidden="true"><path d="M9 3l6 6-6 6-6-6z" fill="var(--s3)"/></svg>oxygen setting listed by BRE test day</span>` +
@@ -331,16 +347,26 @@ function showTip(el, ev) {
   tip.style.left = Math.min(window.innerWidth - tw - 8, Math.max(8, px + 14)) + "px";
   tip.style.top = Math.max(8, py - th - 12 < 8 ? py + 18 : py - th - 12) + "px";
 }
+function recordButton(g, text) {
+  return `<button class="map-record-button" type="button" data-point="${pointIds.get(g)}" aria-label="Inspect ${esc(pointLabel(g))}" aria-haspopup="dialog" aria-controls="evidence-inspector">${esc(text)}<span aria-hidden="true"> ↗</span></button>`;
+}
 function drawMapTable() {
   const rows = groups.filter(g => state.kinds[g.k]).sort((a, b) => a.k.localeCompare(b.k) || a.o - b.o || a.p - b.p);
-  const runRows = rows.map(g => `<tr><td><i class="kdot" style="background:${KIND[g.k].color}"></i>${KIND[g.k].label}</td><td class="n">${rangeText(g.oxygen)}</td><td class="n">${g.recorded ? rangeText(g.pressure) : "Unreported"}</td><td>${plural(g.n, "run")}</td><td>${esc(Object.keys(g.inv).join(", "))}</td><td>${groupOutcomes(g)}</td><td>${g.off ? "Off scale · " + g.off : g.recorded ? "Main plot" : "Oxygen strip"}</td></tr>`).join("");
-  const breRows = state.kinds.gas ? breStrip.map(b => `<tr><td>Gas burner</td><td class="n">≈${b.o}</td><td>Unreported</td><td>${plural(b.days, "test day")}</td><td>ACME BRE</td><td>Daily settings only</td><td>${b.o >= X0 && b.o <= X1 ? "BRE strip" : "Off scale"}</td></tr>`).join("") : "";
-  const pubRows = state.published ? publishedMarks.map(q => q.kind === "sofie"
-    ? `<tr><td>Solid material, published</td><td class="n">${q.r.oxygen_min_percent}–${q.r.oxygen_max_percent}</td><td class="n">${q.r.pressure_min_atm}–${q.r.pressure_max_atm}, not paired</td><td>Published range</td><td>SoFIE-GEL</td><td>See the study</td><td>Published row</td></tr>`
-    : `<tr><td>${esc(q.r.material)}, published</td><td class="n">${q.r.oxygen_percent.toFixed(1)}</td><td class="n">${q.p == null ? "Unreported" : f2(q.p)}</td><td>1 flight event</td><td>Saffire-VI</td><td>${pubOutcome[q.r.outcome] || esc(q.r.outcome)}</td><td>${q.p == null ? "Published row" : "Main plot, triangle"}</td></tr>`).join("") : "";
+  const runRows = rows.map(g => `<tr><td><i class="kdot" style="background:${KIND[g.k].color}"></i>${KIND[g.k].label}</td><td class="n">${rangeText(g.oxygen)}</td><td class="n">${g.recorded ? rangeText(g.pressure) : "Unreported"}</td><td>${recordButton(g, plural(g.n, "run"))}</td><td>${esc(Object.keys(g.inv).join(", "))}</td><td>${groupOutcomes(g)}</td><td>${g.off ? "Off scale · " + g.off : g.recorded ? "Main plot" : "Oxygen strip"}</td></tr>`).join("");
+  const breRows = state.kinds.gas ? brePoints.map(g => {
+    const b = g.bre;
+    return `<tr><td>Gas burner</td><td class="n">≈${b.o}</td><td>Unreported</td><td>${recordButton(g, plural(b.days, "test day"))}</td><td>ACME BRE</td><td>Daily settings only</td><td>${b.o >= X0 && b.o <= X1 ? "BRE strip" : "Off scale"}</td></tr>`;
+  }).join("") : "";
+  const pubRows = state.published ? publicationPoints.map(g => {
+    const q = g.pub;
+    if (q.kind === "sofie") return `<tr><td>Solid material, published</td><td class="n">${q.r.oxygen_min_percent}–${q.r.oxygen_max_percent}</td><td class="n">${q.r.pressure_min_atm}–${q.r.pressure_max_atm}, not paired</td><td>${recordButton(g, "Published range")}</td><td>SoFIE-GEL</td><td>See the study</td><td>Published row</td></tr>`;
+    return `<tr><td>${esc(q.r.material)}, published</td><td class="n">${q.r.oxygen_percent.toFixed(1)}</td><td class="n">${q.p == null ? "Unreported" : f2(q.p)}</td><td>${recordButton(g, "1 flight event")}</td><td>Saffire-VI</td><td>${pubOutcome[q.r.outcome] || esc(q.r.outcome)}</td><td>${q.p == null ? "Published row" : "Main plot, triangle"}</td></tr>`;
+  }).join("") : "";
   $("#maptable").innerHTML = `<table><caption>Conditions within each plotted group and groups outside the axes</caption><thead><tr><th>Fuel</th><th>Ambient O₂ (%)</th><th>Pressure (atm)</th><th>Count and unit</th><th>Investigations</th><th>Outcomes</th><th>Map position</th></tr></thead><tbody>` + runRows + breRows + pubRows + "</tbody></table>";
   $("#maptable").hidden = !state.table; $("#chart").hidden = state.table; $("#legend").hidden = state.table;
   $("#viewbtn").setAttribute("aria-pressed", state.table); $("#viewbtn").textContent = state.table ? "Chart view" : "Table view";
+  $("#viewbtn").setAttribute("aria-label", state.table ? "Switch to chart view" : "Switch to table view");
+  $("#map-action").textContent = state.table ? "Select a count to inspect its records." : "Select a point to inspect its records.";
 }
 function drawWindow() {
   const T = target(), C = coverage(T);

@@ -18,6 +18,10 @@ const KINDS = ["solid", "droplet", "gas"];
 const DIM = { safety: "Safety impact", evidence: "Strength of evidence", mission: "Fit to Moon and Mars missions", action: "Can be acted on now" };
 const state = { atm: "exp", custom: { o2: 30, p: 0.6 }, kinds: { solid: true, droplet: true, gas: true }, table: false,
   weights: { safety: 30, evidence: 25, mission: 25, action: 20 }, tag: null, fpillar: "all", invq: "", invkind: "all", open: null, openF: null, view: "brief" };
+if (location.hash === "#evidence") {
+  const cabin = new URLSearchParams(location.search).get("cabin");
+  if (D.atmospheres.some(a => a.id === cabin)) state.atm = cabin;
+}
 const EXP = D.atmospheres[2];
 const inv = acc => D.investigations.find(i => i.acc === acc);
 function target() {
@@ -71,17 +75,58 @@ function nearText(c) {
   const dP = n.assumed ? "at cabin pressure, which the table does not record" : Math.abs(n.dp) < 3 ? "at the same pressure" : `at ${Math.abs(Math.round(n.dp))} % ${n.dp > 0 ? "higher" : "lower"} pressure`;
   return `Closest: ${plural(n.n, "run")} from ${n.accs.join(" and ")} at ${f1(n.o)} % oxygen${n.assumed ? "" : " and " + f2(n.p) + " atm"}. That is ${dOx}, ${dP}.`;
 }
-function matrixHtml(atms) {
-  const NM = { iss: "Space station", eva: "Reduced-pressure cabin", exp: "Exploration atmosphere" };
-  let h = `<div class="h">What burned</div>` + atms.map(a => `<div class="h">${esc(NM[a.id] || a.name)}<br>${f1(a.psia)} psia · ${f1(a.o2)} %</div>`).join("");
-  KINDS.forEach(k => {
-    h += `<div class="h"><i class="kdot" style="background:${KIND[k].color}"></i>${KIND[k].label}</div>`;
-    atms.forEach(a => { const c = coverage(a)[k]; h += `<div class="c ${c.status}"><b>${c.n}</b><span>${STATUS[c.status][1]}</span></div>`; });
-  });
-  return h;
-}
 
 /* ---------- briefing ---------- */
+const cabinCoverage = Object.fromEntries(D.atmospheres.map(a => [a.id, coverage(a)]));
+const maxCabinRuns = Math.max(1, ...Object.values(cabinCoverage).flatMap(c => KINDS.map(k => c[k].n)));
+let briefingCabin = "iss";
+
+function drawCabinCoverage() {
+  const cabin = D.atmospheres.find(a => a.id === briefingCabin);
+  $(".cabin-switch").querySelectorAll("button").forEach(button => {
+    button.setAttribute("aria-pressed", button.dataset.cabin === cabin.id);
+  });
+  $("#cabin-o2").textContent = f1(cabin.o2) + "%";
+  $("#cabin-pressure").textContent = f1(cabin.psia) + " psia";
+  const evidenceLink = $("#cabin-evidence");
+  evidenceLink.href = "?cabin=" + encodeURIComponent(cabin.id) + "#evidence";
+  evidenceLink.setAttribute("aria-label", "Open evidence map for " + cabin.name);
+  KINDS.forEach(k => {
+    const row = $("#cabin-row-" + k), count = cabinCoverage[cabin.id][k].n;
+    $(".cabin-count", row).textContent = count;
+    $(".cabin-track i", row).style.transform = "scaleX(" + count / maxCabinRuns + ")";
+  });
+}
+
+function setupCabinCoverage() {
+  $("#cabin-chart").innerHTML = KINDS.map(k =>
+    `<div class="cabin-row" id="cabin-row-${k}"><span class="cabin-fuel">${KIND[k].label}</span>
+      <span class="cabin-track" aria-hidden="true"><i style="background:${KIND[k].color}"></i></span><b class="cabin-count"></b></div>`
+  ).join("");
+  $("#matrix1").innerHTML = `<thead><tr><th scope="col">Fuel</th>${D.atmospheres.map(a =>
+    `<th scope="col">${esc(a.name)}<small>${f1(a.o2)}% O₂ · ${f1(a.psia)} psia</small></th>`
+  ).join("")}</tr></thead><tbody>${KINDS.map(k =>
+    `<tr><th scope="row">${KIND[k].label}</th>${D.atmospheres.map(a => {
+      const cell = cabinCoverage[a.id][k];
+      return `<td><b>${cell.n}</b><small>${STATUS[cell.status][1]}</small></td>`;
+    }).join("")}</tr>`
+  ).join("")}</tbody>`;
+  $("#matrixnote").textContent = `A run counts within ±${S.o2_window} percentage points of the cabin oxygen level and ±${Math.round(S.p_window * 100)}% of its pressure. For solid materials the tables omit pressure, so oxygen matches count only for the station cabin.`;
+  $(".cabin-switch").addEventListener("click", event => {
+    const button = event.target.closest("button[data-cabin]");
+    if (!button || button.dataset.cabin === briefingCabin) return;
+    briefingCabin = button.dataset.cabin;
+    drawCabinCoverage();
+  });
+  $("#cabin-evidence").addEventListener("click", event => {
+    if (event.currentTarget.search === location.search && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      state.atm = briefingCabin;
+    }
+  });
+  drawCabinCoverage();
+}
+setupCabinCoverage();
+
 function score(f) { const w = state.weights, tot = Object.keys(w).reduce((a, k) => a + w[k], 0) || 1; return Object.keys(w).reduce((a, k) => a + w[k] * f.scores[k], 0) / tot / 5 * 100; }
 const ranked = () => D.findings.filter(f => (!state.tag || f.tags.includes(state.tag)) && (state.fpillar === "all" || f.pillar === state.fpillar)).map(f => ({ f, s: score(f) })).sort((a, b) => b.s - a.s);
 function drawBrief() {
@@ -109,8 +154,6 @@ function drawBrief() {
     <p>The gas-flame runs meeting both conditions come from ${esc(Object.keys(S.moon_range_by).join(", "))}. <a href="#evidence" data-go="evidence">Inspect individual runs</a></p>`;
   const top = ranked().slice(0, 5);
   $("#toplist").innerHTML = top.map((x, i) => `<a href="#findings" data-go="findings" data-f="${x.f.id}"><span class="r">${pad2(i + 1)}</span><h3>${esc(x.f.title)}</h3><span class="sc">${Math.round(x.s)}/100</span><p>${esc(x.f.claim)}</p></a>`).join("");
-  $("#matrix1").innerHTML = matrixHtml(D.atmospheres);
-  $("#matrixnote").textContent = `A run counts when its oxygen is within ${S.o2_window} points and its pressure within ${Math.round(S.p_window * 100)} % of the cabin. Solid-material tables record no pressure, so they count only for a cabin at station pressure.`;
   $("#todo").innerHTML = top.map(x => `<li>${esc(x.f.action)}<span>${esc(x.f.title)}</span></li>`).join("");
   $("#nextgrid").innerHTML = D.next.map(n => `<div class="hcard"><span class="lab">${esc(n.full)}</span><h3>${esc(n.name)}</h3><p>${esc(n.what)}</p><a href="${esc(n.url)}" target="_blank" rel="noopener">${/nasa\.gov/.test(n.url) ? "NASA Glenn page" : "Challenge statement"}</a></div>`).join("");
 }

@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>QUENCH</title>
+<meta name="theme-color" content="#080f1a">
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="QUENCH: fire-safety evidence for crews beyond Earth. Explore flight tests in NASA’s open combustion archive and compare them with the air a crew will breathe.">
 <meta name="generator" content="Hand-written static site. The original code and draft text used Claude (Anthropic). The interface redesign used OpenAI Codex.">
 <meta name="si-disclosure" content="SI-assisted: code, data normalisation, draft summaries, findings wording and analyst answers. Every number is recomputed from NASA PSI tables and every quote is matched to its saved source at build time. OpenAI image generation was used to design the QUENCH logo. The photographs are credited to their sources. Experimental imagery comes from NASA.">
 <link rel="icon" type="image/svg+xml" href="img/quench-sign.svg">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/stix-two-text-500.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/barlowcondensed-600.woff2">
 <style>
 /* Shared structure and scientific chart primitives. */
 :root {
@@ -276,8 +277,8 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 .todo li b { font-weight: 600; } .todo li .rel { font-size: 10.5px; }
 @media (max-width: 860px) { .o2ctx { grid-template-columns: 1fr; } .o2ctx blockquote { grid-column: 1; grid-row: auto; } }
 </style>
-<link rel="stylesheet" href="console.css?v=d39428c8fc">
-<link rel="stylesheet" href="flight.css?v=9888321e13">
+<link rel="stylesheet" href="console.css?v=24a8714197">
+<link rel="stylesheet" href="flight.css?v=476d18714d">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
@@ -307,6 +308,34 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
         <a href="https://www.nasa.gov/humans-in-space/best-space-station-science-imagery-of-2022/#:~:text=Igniting%20science" target="_blank" rel="noopener">NASA · Expedition 67 · ISS067-E-170237</a></figcaption>
     </figure>
   </section>
+  <section class="wrap cabin-workspace" aria-labelledby="cabin-heading">
+    <div class="cabin-panel">
+      <header class="cabin-header">
+        <h2 id="cabin-heading">Cabin coverage</h2>
+        <a class="cabin-evidence" id="cabin-evidence" href="?cabin=iss#evidence">Open evidence map <span aria-hidden="true">↗</span></a>
+      </header>
+      <div class="cabin-body">
+        <div class="cabin-conditions">
+          <h3 class="cabin-label" id="cabin-selector-label">Cabin atmosphere</h3>
+          <div class="cabin-switch" role="group" aria-labelledby="cabin-selector-label">
+            <button type="button" data-cabin="iss" aria-pressed="true">ISS</button>
+            <button type="button" data-cabin="eva" aria-pressed="false">Reduced pressure</button>
+            <button type="button" data-cabin="exp" aria-pressed="false">Exploration</button>
+          </div>
+          <p class="cabin-reading"><span>Oxygen <strong id="cabin-o2"></strong></span><span>Pressure <strong id="cabin-pressure"></strong></span></p>
+        </div>
+        <div class="cabin-runs" role="status" aria-live="polite" aria-atomic="true">
+          <h3 class="cabin-label">Matching flight runs</h3>
+          <div id="cabin-chart"></div>
+        </div>
+      </div>
+      <details class="cabin-method">
+        <summary>Compare all cabins and see matching criteria</summary>
+        <p class="fine" id="matrixnote"></p>
+        <div class="tablewrap"><table class="cabin-comparison" id="matrix1" aria-label="Flight runs by fuel and cabin atmosphere"></table></div>
+      </details>
+    </div>
+  </section>
   <div class="wrap field-report">
     <article class="oxygen-story" aria-labelledby="oxygen-heading">
       <div class="oxygen-copy">
@@ -331,10 +360,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
   <div class="wrap view briefing-notes">
     <div class="cols">
       <div class="block"><h2>Highest-ranked findings</h2><div class="toplist" id="toplist"></div><a class="btn line" href="#findings" data-go="findings" style="align-self:flex-start">All findings</a></div>
-      <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
-        <div class="block"><h2>Flight test runs near each cabin atmosphere</h2><div class="matrix" id="matrix1"></div><p class="fine" id="matrixnote"></p></div>
-        <div class="block"><h2>Recommended tests</h2><ol class="todo" id="todo"></ol></div>
-      </div>
+      <div class="block"><h2>Recommended tests</h2><ol class="todo" id="todo"></ol></div>
     </div>
     <div class="block"><h2>Related investigations</h2><div class="hgrid" id="nextgrid"></div></div>
   </div>
@@ -466,7 +492,7 @@ a.chip { text-decoration: none; color: inherit; } .hcard > .chip { align-self: f
 
 <script src="data.js?v=dc8d00f044"></script>
 <script src="model.js?v=96b86849b6"></script>
-<script src="core.js?v=89b976c8a4"></script>
+<script src="core.js?v=f13aa97df2"></script>
 <script src="archive.js?v=ddcd373693"></script>
 <script src="tools.js?v=af7c0954de"></script>
 </body>

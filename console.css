@@ -1,8 +1,9 @@
 /* Research screens share the flight deck's type, palette and data colors. */
 .view {
-  --field-bg: color-mix(in srgb, var(--bg) 62%, var(--sunk));
-  --tint-blue: color-mix(in srgb, var(--blue) 9%, var(--bg));
-  --panel-pad: clamp(16px, 2vw, 28px);
+  --panel-bg: color-mix(in srgb, var(--sunk) 72%, var(--bg));
+  --field-bg: color-mix(in srgb, var(--bg) 82%, var(--sunk));
+  --tint-blue: color-mix(in srgb, var(--blue) 12%, var(--sunk));
+  --panel-pad: clamp(16px, 1.8vw, 24px);
   gap: clamp(20px, 2.3vw, 32px);
   padding-block: clamp(30px, 4vw, 64px) clamp(52px, 7vw, 100px);
   font-variant-numeric: tabular-nums;
@@ -19,7 +20,8 @@
   font-size: clamp(32px, 3.3vw, 50px);
   line-height: 1.08;
   font-weight: 600;
-  letter-spacing: -.035em;
+  letter-spacing: -.045em;
+  text-wrap: balance;
 }
 .view .sec .sub {
   max-width: 76ch;
@@ -43,11 +45,15 @@
 }
 .view .cols { gap: clamp(20px, 2.8vw, 40px); }
 .view .frame, .view .compare, .view .how {
-  background: transparent;
+  background: var(--panel-bg);
   border-color: var(--rule);
   border-radius: 0;
 }
 .view .frame { padding: clamp(14px, 1.65vw, 22px); }
+.view .frame:has(> :is(#chart, #vchart, #pchart)) {
+  background: var(--field-bg);
+  border-top-color: var(--ink3);
+}
 .view .figbox { padding: 14px; }
 .view .controls {
   padding: 0;
@@ -59,7 +65,7 @@
 .view .chip, .view .seg button {
   background: var(--field-bg);
   border-color: var(--rule);
-  border-radius: 4px;
+  border-radius: 2px;
   min-height: 34px;
   padding: 7px 12px;
   color: var(--ink2);
@@ -70,10 +76,10 @@
 .view .chip[aria-pressed="true"], .view .seg button[aria-pressed="true"] {
   color: var(--blue);
   background: var(--tint-blue);
-  border-color: color-mix(in srgb, var(--blue) 60%, var(--rule));
+  border-color: color-mix(in srgb, var(--blue) 65%, var(--rule));
   font-weight: 600;
 }
-.view .seg { max-width: 100%; border-radius: 4px; }
+.view .seg { max-width: 100%; border-radius: 2px; }
 .view .seg button { border-radius: 0; }
 .view .seg:focus-within { overflow: visible; }
 .view :is(.chip, .seg button):hover:not(:disabled) {
@@ -86,7 +92,7 @@
   color: var(--bg);
   background: var(--strong);
   border-color: var(--strong);
-  border-radius: 4px;
+  border-radius: 2px;
   font: 600 14px/1.3 var(--sans);
   letter-spacing: 0;
   text-transform: none;
@@ -125,7 +131,7 @@
 .view #askchips .chip:hover { color: var(--ink); }
 .view :is(.search, select) {
   min-height: 39px;
-  border-radius: 4px;
+  border-radius: 2px;
   border-color: var(--rule);
   background: var(--field-bg);
   padding: 8px 11px;
@@ -137,6 +143,7 @@
 .view .field { gap: 7px; }
 .view .field > span { color: var(--ink2); }
 .view .field output { color: var(--blue); font-weight: 500; }
+.page.view .group > .lab { margin-right: 5px; }
 .view :is(a, button, input, select, summary, tr.row):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
@@ -145,6 +152,8 @@
   max-width: 100%;
   scrollbar-color: var(--ink3) var(--sunk);
 }
+.page.view .tablewrap:has(> table) { border: 1px solid var(--rule); background: var(--field-bg); }
+.page.view .frame .tablewrap { border: 0; }
 .view th {
   color: var(--ink3);
   background: var(--sunk);
@@ -153,6 +162,7 @@
   padding: 9px 11px;
 }
 .view td { padding: 11px; }
+.page.view tr:last-child > td { border-bottom: 0; }
 .view .accession { display:block; margin-bottom:3px; font:500 11px/1.4 var(--mono); color:var(--ink3); }
 .view table tr.row td { transition: background-color .16s ease; }
 .view table tr.row:hover td, .view table tr.row:focus-visible td { background: var(--tint-blue); }
@@ -161,7 +171,7 @@
 .view .detail td { padding: var(--panel-pad); }
 .view .detail h4 { margin-bottom: 7px; color: var(--blue); }
 .view .detail .dcols { gap: 19px 28px; }
-.view .sbar { height: 6px; }
+.view .sbar { height: 4px; background: var(--rule); }
 .view .sbar i { background: var(--blue); }
 .view .compare { padding: var(--panel-pad); border-top: 2px solid var(--blue); }
 .view .how { padding-inline: 16px; }
@@ -172,29 +182,28 @@
   border-top: 1px solid var(--rule);
 }
 .view .matrix { border-color: var(--rule); }
-.view .matrix .c { background: var(--field-bg); }
+.view .matrix .c { background: var(--panel-bg); }
 .view .matrix .c.none { background: var(--crit-bg); }
 .view .matrix .c.thin { background: var(--warn-bg); }
 .view .matrix .c b { font-size: clamp(20px, 2.5vw, 33px); }
 .view .matrix .h, .view .matrix .c { overflow-wrap: anywhere; }
 .view .verdict {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--rule);
+  background: var(--sunk);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--blue);
   border-radius: 0;
-  padding: 0 0 18px;
+  padding: var(--panel-pad);
 }
 .view .verdict h3 { font-size: clamp(22px, 1.9vw, 29px); font-weight:600; line-height:1.18; }
 .view .verdict .meter { gap:2px; }
 .view .verdict .meter i { width:7px; height:16px; }
 .view #mcform {
-  border: 0;
-  border-left: 2px solid var(--rule);
-  padding: 0 0 0 18px;
-  background: transparent;
+  border: 1px solid var(--rule);
+  padding: var(--panel-pad);
+  background: var(--panel-bg);
   gap: 17px;
 }
-.view #mcform > .lab { padding:0; }
+.view #mcform > .lab { padding-bottom:12px; border-bottom:1px solid var(--rule); }
 .view .score .q { padding-block: 17px; }
 .view .score .q h3 { font-size: 16px; }
 .view :is(.grade i, .pill, .tagk, .rel, .atm) { border-radius: 3px; }
@@ -230,26 +239,33 @@
   padding-left: 15px;
 }
 .view .weights { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
-.view details.f summary { padding-block: 17px; }
+.view #weights {
+  background: var(--panel-bg);
+  border-block: 1px solid var(--rule);
+  padding: 15px var(--panel-pad);
+}
+.view details.f summary { padding: 15px var(--panel-pad); }
+.view details.f summary:hover { background: var(--sunk); }
 .view details.f summary .sc, .view .toplist .sc { color: var(--blue); }
-.view details.f .body { padding-top: 8px; }
-.view details.f[open] { background:transparent; }
-.view #flist { border-block-start:1px solid var(--rule); }
+.view details.f .body { padding: 8px var(--panel-pad) var(--panel-pad); }
+.view details.f[open] { background:var(--panel-bg); box-shadow:inset 2px 0 var(--blue); }
+.view #flist { border:1px solid var(--rule); }
+.view #flist > details:last-child { border-bottom:0; }
 .view .scores .track { background: var(--rule); }
 .view .scores .track i { background: var(--blue); }
 .view .pbig { color:var(--ink); font-size:clamp(32px,3.5vw,51px); font-weight:600; letter-spacing:-.035em; }
 .view .pbig small { font-family: var(--sans); }
-.view .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(6px, 1.2vw, 17px); }
-.view .thumbs figure { border:0; background:transparent; }
+.view .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border:1px solid var(--rule); background:var(--rule); }
+.view .thumbs figure { border:0; background:var(--panel-bg); }
 .view .thumbs img { width:100%; height:auto; }
-.view .thumbs figcaption { display:flex; flex-wrap:wrap; gap:2px 8px; padding:7px 0; color:var(--ink2); font-size:13px; }
-.view .thumbs figcaption b { color:var(--ink); font-family:var(--mono); }
+.view .thumbs figcaption { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:9px 12px; color:var(--ink2); font-size:13px; }
+.view .thumbs figcaption b { color:var(--blue); font-family:var(--mono); }
 .view #videoblock > .fine { max-width: 85ch; }
 .view .askbox {
-  max-width: 770px;
-  border: 0;
-  padding: 0;
-  background: transparent;
+  max-width: 850px;
+  border: 1px solid var(--rule);
+  padding: var(--panel-pad);
+  background: var(--panel-bg);
 }
 .view .askbox .search { flex-basis: min(100%, 230px); }
 .view .askbox .btn { padding-inline: 24px; }
@@ -260,7 +276,15 @@
 footer.wrap { padding-block: 24px 38px; line-height: 1.7; letter-spacing: .01em; }
 
 @media (min-width: 861px) {
-  .view .cols.side { grid-template-columns: minmax(0, 315px) minmax(0, 1fr); }
+  .page.view .sec {
+    display: grid;
+    grid-template-columns: minmax(270px, .78fr) minmax(0, 1fr);
+    align-items: end;
+    gap: clamp(24px, 4vw, 80px);
+    padding-bottom: 22px;
+  }
+  .page.view .sec .sub { margin: 0; max-width: 65ch; font-size: 15px; }
+  .view .cols.side { grid-template-columns: minmax(0, 330px) minmax(0, 1fr); }
   .view .score .q { grid-template-columns: minmax(0, 1fr) minmax(114px, auto); }
   .view .score .q .grade { max-width: 185px; white-space: normal; }
 }
@@ -275,6 +299,7 @@ footer.wrap { padding-block: 24px 38px; line-height: 1.7; letter-spacing: .01em;
   .view .controls .search { flex: 1 1 100%; }
   .view .weights { grid-template-columns: 1fr; }
   .view .frame { padding: 12px; }
+  .view details.f summary, .view details.f .body { padding-inline: 10px; }
   .view .figbox { padding: 14px; }
   .view .matrix { grid-template-columns: minmax(64px, .85fr) repeat(3, minmax(0, 1fr)); }
   .view .matrix > div { padding: 7px 5px; }
